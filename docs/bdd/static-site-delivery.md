@@ -21,8 +21,15 @@ Scenario: Pages remain reachable through direct navigation
   Then the requested content renders without requiring a login
   And the site does not depend on a client-only router to display the first view
 
-Scenario: Last-updated date is visible
-  Given the pricing data has a lastUpdated field
-  When the visitor views the pricing section
-  Then the last-updated date is displayed
+Scenario: Site-wide last-updated disclosure is visible in the footer
+  Given the site content has a siteLastUpdated date
+  When the visitor views the footer
+  Then a "Site last updated" timestamp is displayed
+  And it is rendered as a <time> element whose datetime attribute holds the
+    machine-readable ISO date
+  And it reflects when the site content as a whole was last updated, independent
+    of the pricing-freshness date shown in the pricing section
 ```
+
+> The pricing section's own "Pricing last updated" timestamp (pricing freshness)
+> is specified in [Pricing Disclosure](./pricing-disclosure.md).

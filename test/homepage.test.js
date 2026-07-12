@@ -75,3 +75,52 @@ test("primary navigation targets exist as sections", () => {
     assert.ok(ids.has(id), `missing section id="${id}"`);
   }
 });
+
+/** Inner HTML of the first <tag>...</tag> block, or "" if absent. */
+const blockOf = (tag) =>
+  html.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"))?.[1] ?? "";
+
+test("footer carries the site-wide last-updated disclosure", () => {
+  // The site-wide freshness stamp lives in the footer as a machine-readable
+  // <time>, kept separate from the pricing section's own freshness stamp.
+  const footer = blockOf("footer");
+  assert.ok(footer, "index.html has a <footer>");
+  assert.match(footer, /Site last updated:/i, "footer labels the disclosure");
+  assert.match(
+    footer,
+    /<time[^>]+id="site-last-updated"[^>]+datetime="[^"]*"/i,
+    "footer stamp is a <time> with a datetime attribute"
+  );
+  // The pricing-freshness stamp must not leak into the footer.
+  assert.doesNotMatch(
+    footer,
+    /id="pricing-last-updated"/i,
+    "pricing-freshness stamp stays out of the footer"
+  );
+});
+
+test("pricing section carries its own pricing-freshness disclosure", () => {
+  // Distinct from the footer stamp: pricing freshness lives in the pricing
+  // section as its own machine-readable <time>.
+  const pricingSection =
+    html.match(
+      /<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i
+    )?.[1] ?? "";
+  assert.ok(pricingSection, "index.html has a #pricing section");
+  assert.match(
+    pricingSection,
+    /Pricing last updated:/i,
+    "pricing section labels the disclosure"
+  );
+  assert.match(
+    pricingSection,
+    /<time[^>]+id="pricing-last-updated"[^>]+datetime="[^"]*"/i,
+    "pricing stamp is a <time> with a datetime attribute"
+  );
+  // The site-wide stamp must not leak into the pricing section.
+  assert.doesNotMatch(
+    pricingSection,
+    /id="site-last-updated"/i,
+    "site-wide stamp stays out of the pricing section"
+  );
+});

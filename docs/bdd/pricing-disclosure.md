@@ -5,7 +5,16 @@ Scenario: Subscription prices and sources are disclosed
   Given the pricing section
   When the visitor views it
   Then each subscription's price, plan, and source is listed
-  And the date the price was last updated is shown
+
+Scenario: Pricing section shows pricing freshness
+  Given the pricing section
+  When the visitor views it
+  Then a "Pricing last updated" timestamp reflecting when the pricing data was
+    last curated is shown
+  And it is rendered as a <time> element whose datetime attribute holds the
+    machine-readable ISO date
+  And this pricing-freshness date is distinct from the site-wide last-updated
+    disclosure shown in the footer
 
 Scenario: Hardware prices and sources are disclosed
   Given the hardware comparison section
