@@ -1,0 +1,10 @@
+{
+  "name": "ai-subscription-payback",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Static payback calculator comparing AI coding subscriptions against a local inference box.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
