@@ -1,0 +1,6 @@
+# AI Box Payback — static GitHub Pages site.
+# The whole site is public and intended to be indexed.
+User-agent: *
+Allow: /
+
+Sitemap: https://ozanzal.github.io/ai-subscription-payback/sitemap.xml

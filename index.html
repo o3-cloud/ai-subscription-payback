@@ -9,17 +9,97 @@
     content="Free calculator: how long until buying a local AI inference box is cheaper than paying for AI coding subscriptions like Codex and Claude Code?"
   />
   <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#1f5fd6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)" />
+  <meta name="author" content="AI Box Payback" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta
+    name="keywords"
+    content="AI coding subscription payback, local AI inference box, Mac Studio AI build, DGX Spark price, Strix Halo AI workstation, Codex vs local AI box cost, Claude Code subscription payback"
+  />
   <link rel="canonical" href="https://ozanzal.github.io/ai-subscription-payback/" />
+  <link rel="sitemap" type="application/xml" href="./sitemap.xml" />
 
   <!-- Open Graph / social sharing -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI Box Payback" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:title" content="AI Coding Subscription vs. Local Inference Box — Payback Calculator" />
   <meta
     property="og:description"
     content="Model the break-even point of a financed local AI box versus AI coding subscriptions."
   />
   <meta property="og:url" content="https://ozanzal.github.io/ai-subscription-payback/" />
+  <meta property="og:image" content="https://ozanzal.github.io/ai-subscription-payback/assets/img/og-card.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="AI Box Payback social card showing the calculator headline and featured hardware boxes." />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Coding Subscription vs. Local Inference Box — Payback Calculator" />
+  <meta
+    name="twitter:description"
+    content="Free calculator: how long until a local AI box is cheaper than paying for Codex and Claude Code?"
+  />
+  <meta name="twitter:image" content="https://ozanzal.github.io/ai-subscription-payback/assets/img/og-card.png" />
+  <meta
+    name="twitter:image:alt"
+    content="AI Box Payback — calculate when a local AI inference box beats your AI coding subscriptions."
+  />
+
+  <!-- Structured data: the app itself plus the on-page methodology FAQ, so the
+       calculator and its Q&A copy are eligible for rich results in search. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "AI Box Payback",
+        "url": "https://ozanzal.github.io/ai-subscription-payback/",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any (modern web browser)",
+        "browserRequirements": "Requires JavaScript",
+        "description": "Free calculator that estimates when a financed local AI inference box becomes cheaper than paying for AI coding subscriptions like Codex and Claude Code.",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How is break-even calculated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "For each month we compare the running total of subscription spend against the total cost of owning the box — the financed hardware payments (principal plus interest), plus electricity and any optional operating costs you enable. The break-even month is the first month where cumulative ownership cost drops below cumulative subscription cost."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What assumptions are used?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The model uses maintainer-curated default assumptions for subscription prices, box price, down payment, financing APR and term, electricity rate, power draw, and hours of use per day. The current defaults are listed on the page and can be adjusted in the calculator."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What costs are excluded by default?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "By default the model excludes maintenance/depreciation, hardware resale value, and sales tax. Each can be toggled on in the Optional assumptions section of the calculator. The model is cost-only — it does not rate model quality or coding performance, and it is not financial advice."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <link rel="stylesheet" href="./assets/css/styles.css" />
   <script type="module" src="./assets/js/main.js"></script>

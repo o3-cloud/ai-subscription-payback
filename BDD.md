@@ -11,5 +11,6 @@ The behavior specifications now live in `docs/bdd/` as one file per feature area
 - [Responsive Design](docs/bdd/responsive-design.md)
 - [Shareable Scenarios](docs/bdd/shareable-scenarios.md)
 - [Methodology and Assumptions](docs/bdd/methodology-and-assumptions.md)
+- [SEO and Launch Metadata](docs/bdd/seo-and-metadata.md)
 - [Accessibility](docs/bdd/accessibility.md)
 - [Privacy and Analytics](docs/bdd/privacy-and-analytics.md)
