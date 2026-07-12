@@ -133,7 +133,7 @@
 
         <!-- Results -->
         <div class="results-panel">
-          <div id="results" class="results" role="region" aria-live="polite" aria-labelledby="results-title">
+          <div id="results" class="results" role="region" aria-live="polite" aria-atomic="true" aria-labelledby="results-title">
             <h3 id="results-title">Results</h3>
 
             <dl class="result-metrics">
@@ -198,7 +198,12 @@
     <!-- ===================== COMPARISON TABLE ===================== -->
     <section class="comparison" id="comparison" aria-labelledby="comparison-title">
       <h2 id="comparison-title">Subscriptions vs. local box</h2>
-      <div class="table-scroll">
+      <div
+        class="table-scroll"
+        role="region"
+        aria-labelledby="comparison-title"
+        tabindex="0"
+      >
         <table class="comparison-table" id="comparison-table">
           <thead>
             <tr>

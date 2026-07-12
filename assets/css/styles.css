@@ -4,6 +4,10 @@
    ============================================================ */
 
 :root {
+  /* Opt native form controls, scrollbars, and spinners into both themes so
+     they track the visitor's OS preference instead of forcing a light UA. */
+  color-scheme: light dark;
+
   --max-width: 60rem;
   --radius: 0.5rem;
   --gap: 1rem;
@@ -88,6 +92,23 @@ body {
 :focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+/* Honor an explicit request for more contrast: thicken borders and the focus
+   ring so controls and boundaries stay legible. */
+@media (prefers-contrast: more) {
+  :root {
+    --color-border: #000000;
+  }
+  :focus-visible {
+    outline-width: 4px;
+  }
+}
+
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root {
+    --color-border: #ffffff;
+  }
 }
 
 /* ---------- Header ---------- */
@@ -208,7 +229,10 @@ main > section {
 
 input[type="number"] {
   font: inherit;
-  padding: 0.45rem 0.55rem;
+  /* Full-width so number fields are comfortable tap targets on phones and
+     never overflow their single-column container. */
+  width: 100%;
+  padding: 0.55rem 0.6rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   background: var(--color-bg);
