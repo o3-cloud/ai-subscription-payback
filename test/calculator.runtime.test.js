@@ -13,7 +13,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { initCalculator } from "../assets/js/calculator.js";
+import { computeResult, initCalculator } from "../assets/js/calculator.js";
 import {
   subscriptions,
   hardware,
@@ -22,6 +22,7 @@ import {
   assumptions,
   pricingLastUpdated,
   siteLastUpdated,
+  horizonMonths,
 } from "../assets/js/data.js";
 
 /* ----------------------------- DOM stub ----------------------------- */
@@ -196,6 +197,7 @@ const REQUIRED_IDS = [
   "site-last-updated",
   "assumptions-list",
   "share-button",
+  "cost-table",
 ];
 
 const NUMERIC_INPUT_IDS = [
@@ -247,6 +249,14 @@ function buildDocument() {
     body.appendChild(el);
   }
 
+  // Chart data table (accessible equivalent of the cost-over-time chart): the
+  // series renders into its tbody, so mirror index.html's table > tbody nesting.
+  const costTable = doc.createElement("table");
+  costTable.id = "cost-table";
+  const costBody = doc.createElement("tbody");
+  costTable.appendChild(costBody);
+  body.appendChild(costTable);
+
   const comparison = doc.createElement("tbody");
   comparison.id = "comparison-body";
   body.appendChild(comparison);
@@ -270,6 +280,13 @@ function buildDocument() {
   const shareStatus = doc.createElement("p");
   shareStatus.id = "share-status";
   body.appendChild(shareStatus);
+
+  const chart = doc.createElement("div");
+  chart.id = "cost-chart";
+  const hint = doc.createElement("span");
+  hint.className = "chart-hint";
+  chart.appendChild(hint);
+  body.appendChild(chart);
 
   return doc;
 }
@@ -312,6 +329,66 @@ function boot(search = "") {
 }
 
 /* ----------------------------- tests ----------------------------- */
+
+test("computeResult calculates payback metrics deterministically", () => {
+  const result = computeResult({
+    subscriptions: ["codex", "claude-code"],
+    boxPrice: 5000,
+    downPayment: 0,
+    apr: 12,
+    term: 12,
+    electricityRate: 0,
+    powerDraw: 0,
+    hoursPerDay: 0,
+    maintenance: false,
+    resale: false,
+    taxes: false,
+  });
+
+  const principal = 5000;
+  const monthlyRate = 0.12 / 12;
+  const expectedPayment =
+    (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -12));
+
+  assert.equal(result.breakEvenMonth, null);
+  assert.equal(result.series.length, horizonMonths);
+  assert.ok(Math.abs(result.monthlyPayment - expectedPayment) < 0.01);
+  assert.ok(Math.abs(result.monthlyNetSavings - (40 - expectedPayment)) < 0.01);
+  assert.equal(result.series[0].subscriptionCost, 40);
+  assert.ok(result.series[0].ownershipCost > 0);
+});
+
+test("computeResult finds break-even and supports optional assumptions", () => {
+  const base = {
+    subscriptions: ["codex", "claude-code"],
+    boxPrice: 100,
+    downPayment: 0,
+    apr: 0,
+    term: 10,
+    electricityRate: 0,
+    powerDraw: 0,
+    hoursPerDay: 0,
+    maintenance: false,
+    resale: false,
+    taxes: false,
+  };
+
+  const noExtras = computeResult(base);
+  assert.equal(noExtras.breakEvenMonth, 1);
+  assert.equal(noExtras.series[0].ownershipCost, 10);
+  assert.equal(noExtras.series[0].subscriptionCost, 40);
+
+  const withExtras = computeResult({
+    ...base,
+    maintenance: true,
+    resale: true,
+    taxes: true,
+  });
+  assert.ok(withExtras.series[0].ownershipCost > noExtras.series[0].ownershipCost);
+  assert.ok(
+    withExtras.series[horizonMonths - 1].ownershipCost < noExtras.series[horizonMonths - 1].ownershipCost
+  );
+});
 
 test("initCalculator wires up every DOM hook the UI depends on", () => {
   const { doc } = boot();
@@ -360,6 +437,11 @@ test("initCalculator boots the form from static data and defaults", () => {
     doc.getElementById("assumptions-list").children.length,
     assumptions.length
   );
+  assert.equal(
+    doc.querySelectorAll("#cost-table tbody tr").length,
+    horizonMonths,
+    "renders one cumulative-cost row per month"
+  );
 
   // Last-updated timestamps stamped with both text and machine-readable attr.
   const pricingTime = doc.getElementById("pricing-last-updated");
@@ -368,6 +450,10 @@ test("initCalculator boots the form from static data and defaults", () => {
   assert.equal(
     doc.getElementById("site-last-updated").getAttribute("datetime"),
     siteLastUpdated
+  );
+  assert.match(
+    doc.getElementById("results-status").textContent,
+    /^Break-even (not reached within \d+ months\.|reached in Month \d+\.)$/
   );
 });
 
@@ -391,16 +477,15 @@ test("featured hardware renders affiliate CTAs from the separate affiliate metad
   }
 });
 
-test("initCalculator renders the coming-soon results state for valid inputs", () => {
+test("initCalculator renders the real results state for valid inputs", () => {
   const { doc } = boot();
   assert.equal(
     doc.getElementById("results-status").textContent,
-    "Inputs look valid. Full payback calculation is coming soon."
+    "Break-even not reached within 60 months."
   );
-  // computeResult is a documented stub, so metrics show placeholders.
-  assert.equal(doc.querySelector('[data-metric="breakeven"]').textContent, "Not reached");
-  assert.equal(doc.querySelector('[data-metric="payment"]').textContent, "—");
-  assert.equal(doc.querySelector('[data-metric="savings"]').textContent, "—");
+  assert.match(doc.querySelector('[data-metric="breakeven"]').textContent, /^(Not reached|Month \d+)$/);
+  assert.match(doc.querySelector('[data-metric="payment"]').textContent, /^\$\d/);
+  assert.match(doc.querySelector('[data-metric="savings"]').textContent, /^-?\$\d/);
 });
 
 test("initCalculator hydrates state from the location query string", () => {
@@ -437,7 +522,7 @@ test("a live edit re-validates and updates the results status", async () => {
   assert.equal(doc.getElementById("apr-error"), null, "removes the field error");
   assert.equal(
     doc.getElementById("results-status").textContent,
-    "Inputs look valid. Full payback calculation is coming soon."
+    "Break-even not reached within 60 months."
   );
 });
 

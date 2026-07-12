@@ -7,9 +7,8 @@
  *  - wires live-update + validation listeners
  *  - serializes state into a shareable URL
  *
- * The core payback math (`computeResult`) is deliberately a documented stub;
- * see GitHub issue for the calculator-logic milestone. The plumbing around it
- * (inputs, live updates, results region, chart table) is complete and usable.
+ * The core payback computation is real and deterministic so the UI can render
+ * break-even results and the cumulative cost table entirely in the browser.
  */
 
 import {
@@ -20,6 +19,9 @@ import {
   assumptions,
   pricingLastUpdated,
   siteLastUpdated,
+  horizonMonths,
+  daysPerMonth,
+  optionalCostRates,
 } from "./data.js";
 import {
   NUMERIC_FIELDS,
@@ -45,20 +47,158 @@ const FIELD_IDS = {
   taxes: "opt-taxes",
 };
 
+// Model constants live in data.js so the methodology copy and the math share a
+// single source of truth.
+const DAYS_PER_MONTH = daysPerMonth;
+const MAINTENANCE_RATE_ANNUAL = optionalCostRates.maintenanceAnnualRate;
+const RESALE_RATE = optionalCostRates.resaleValueRate;
+const SALES_TAX_RATE = optionalCostRates.salesTaxRate;
+
+function toNumber(value) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : 0;
+}
+
+function clamp(value, min = 0, max = Number.POSITIVE_INFINITY) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function selectedSubscriptionMonthlyCost(state) {
+  const selected = new Set(Array.isArray(state.subscriptions) ? state.subscriptions : []);
+  return subscriptions.reduce(
+    (total, sub) => total + (selected.has(sub.id) ? sub.monthlyPrice : 0),
+    0
+  );
+}
+
+function monthlyElectricityCost(state) {
+  return (
+    (clamp(toNumber(state.powerDraw)) / 1000) *
+    clamp(toNumber(state.hoursPerDay), 0, 24) *
+    DAYS_PER_MONTH *
+    clamp(toNumber(state.electricityRate))
+  );
+}
+
+function monthlyMaintenanceCost(state) {
+  if (!state.maintenance) return 0;
+  return clamp(toNumber(state.boxPrice)) * (MAINTENANCE_RATE_ANNUAL / 12);
+}
+
+function upfrontSalesTax(state) {
+  if (!state.taxes) return 0;
+  return clamp(toNumber(state.boxPrice)) * SALES_TAX_RATE;
+}
+
+function resaleCredit(state) {
+  if (!state.resale) return 0;
+  return clamp(toNumber(state.boxPrice)) * RESALE_RATE;
+}
+
+function loanPayment(principal, apr, termMonths) {
+  const term = Math.max(1, Math.round(termMonths));
+  const borrowed = Math.max(0, principal);
+  if (borrowed === 0) return 0;
+
+  const monthlyRate = clamp(apr) / 100 / 12;
+  if (monthlyRate === 0) {
+    return borrowed / term;
+  }
+
+  const factor = 1 - Math.pow(1 + monthlyRate, -term);
+  if (factor === 0) return borrowed / term;
+  return (borrowed * monthlyRate) / factor;
+}
+
+function renderSeries(doc, series, breakEvenMonth) {
+  const tbody = doc.querySelector("#cost-table tbody");
+  if (!tbody) return;
+
+  tbody.innerHTML = "";
+  if (!series.length) {
+    const row = doc.createElement("tr");
+    const cell = doc.createElement("td");
+    cell.colSpan = 3;
+    cell.textContent = "Cost breakdown appears here after calculation.";
+    row.appendChild(cell);
+    tbody.appendChild(row);
+    return;
+  }
+
+  for (const point of series) {
+    const row = doc.createElement("tr");
+    if (breakEvenMonth !== null && point.month === breakEvenMonth) {
+      row.setAttribute("data-breakeven", "true");
+    }
+
+    const monthCell = doc.createElement("td");
+    monthCell.textContent = String(point.month);
+    const subCell = doc.createElement("td");
+    subCell.textContent = formatCurrency(point.subscriptionCost);
+    const ownCell = doc.createElement("td");
+    ownCell.textContent = formatCurrency(point.ownershipCost);
+
+    row.appendChild(monthCell);
+    row.appendChild(subCell);
+    row.appendChild(ownCell);
+    tbody.appendChild(row);
+  }
+}
+
 /**
- * Placeholder for the payback computation. Returns nulls so the UI renders a
- * clear "coming soon" state instead of misleading numbers. Future work fills
- * this in using the documented methodology.
+ * Compute the payback comparison from calculator state.
  *
- * @param {Record<string, number|boolean|string[]>} _state
- * @returns {{ breakEvenMonth: number|null, monthlyPayment: number|null, monthlyNetSavings: number|null, series: Array<{month:number, subscriptionCost:number, ownershipCost:number}> }}
+ * The comparison uses cumulative costs over a fixed horizon:
+ * - subscription spend grows linearly from the selected plans
+ * - ownership cost includes the upfront down payment, financing payment,
+ *   operating electricity, optional maintenance, optional sales tax, and an
+ *   optional resale credit at the end of the analysis horizon
+ *
+ * @param {Record<string, number|boolean|string[]>} state
+ * @returns {{ breakEvenMonth: number|null, monthlyPayment: number|null, monthlyNetSavings: number|null, series: Array<{month:number, subscriptionCost:number, ownershipCost:number, monthlySubscriptionCost:number, monthlyOwnershipCost:number}> }}
  */
-export function computeResult(_state) {
+export function computeResult(state) {
+  const subscriptionMonthlyCost = selectedSubscriptionMonthlyCost(state);
+  const boxPrice = clamp(toNumber(state.boxPrice));
+  const downPayment = clamp(toNumber(state.downPayment), 0, boxPrice);
+  const principal = Math.max(0, boxPrice - downPayment);
+  const term = Math.max(1, Math.round(toNumber(state.term)) || 1);
+  const monthlyPayment = loanPayment(principal, toNumber(state.apr), term);
+  const recurringMonthlyCost = monthlyPayment + monthlyElectricityCost(state) + monthlyMaintenanceCost(state);
+  const monthlyNetSavings = subscriptionMonthlyCost - recurringMonthlyCost;
+  const upfrontCost = downPayment + upfrontSalesTax(state);
+  const resale = resaleCredit(state);
+  const series = [];
+  let breakEvenMonth = null;
+
+  for (let month = 1; month <= horizonMonths; month += 1) {
+    const loanMonthsPaid = Math.min(month, term);
+    const cumulativeSubscriptionCost = subscriptionMonthlyCost * month;
+    const cumulativeOwnershipCost =
+      upfrontCost +
+      monthlyElectricityCost(state) * month +
+      monthlyMaintenanceCost(state) * month +
+      monthlyPayment * loanMonthsPaid -
+      (month === horizonMonths ? resale : 0);
+
+    series.push({
+      month,
+      subscriptionCost: cumulativeSubscriptionCost,
+      ownershipCost: cumulativeOwnershipCost,
+      monthlySubscriptionCost: subscriptionMonthlyCost,
+      monthlyOwnershipCost: month <= term ? recurringMonthlyCost : recurringMonthlyCost - monthlyPayment,
+    });
+
+    if (breakEvenMonth === null && cumulativeOwnershipCost <= cumulativeSubscriptionCost) {
+      breakEvenMonth = month;
+    }
+  }
+
   return {
-    breakEvenMonth: null,
-    monthlyPayment: null,
-    monthlyNetSavings: null,
-    series: [],
+    breakEvenMonth,
+    monthlyPayment,
+    monthlyNetSavings,
+    series,
   };
 }
 
@@ -124,6 +264,7 @@ function renderResults(doc, state, valid) {
     if (breakevenEl) breakevenEl.textContent = "—";
     if (paymentEl) paymentEl.textContent = "—";
     if (savingsEl) savingsEl.textContent = "—";
+    renderSeries(doc, []);
     return;
   }
 
@@ -136,15 +277,23 @@ function renderResults(doc, state, valid) {
   }
   if (savingsEl) {
     savingsEl.textContent =
-      result.monthlyNetSavings === null
-        ? "—"
-        : formatCurrency(result.monthlyNetSavings);
+      result.monthlyNetSavings === null ? "—" : formatCurrency(result.monthlyNetSavings);
   }
   if (status) {
     status.textContent =
       result.breakEvenMonth === null
-        ? "Inputs look valid. Full payback calculation is coming soon."
-        : "";
+        ? `Break-even not reached within ${horizonMonths} months.`
+        : `Break-even reached in ${formatBreakEven(result.breakEvenMonth)}.`;
+  }
+
+  renderSeries(doc, result.series, result.breakEvenMonth);
+
+  const chartHint = doc.querySelector("#cost-chart .chart-hint");
+  if (chartHint) {
+    chartHint.textContent =
+      result.breakEvenMonth === null
+        ? `No break-even within ${horizonMonths} months.`
+        : `Break-even reached in ${formatBreakEven(result.breakEvenMonth)}.`;
   }
 }
 
@@ -305,8 +454,7 @@ function wireShare(doc, win) {
   button.addEventListener("click", async () => {
     const state = readState(doc);
     const query = serializeState(state);
-    const base =
-      win.location.origin + win.location.pathname;
+    const base = win.location.origin + win.location.pathname;
     const url = query ? `${base}?${query}` : base;
 
     try {

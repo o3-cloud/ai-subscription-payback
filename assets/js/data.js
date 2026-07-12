@@ -197,11 +197,31 @@ export const defaults = {
 /** Number of months the model projects when looking for a break-even point. */
 export const horizonMonths = 60;
 
+/** Days per month used to convert a daily electricity draw into a monthly cost. */
+export const daysPerMonth = 30.4;
+
+/**
+ * Rates for the optional cost toggles (all off by default). Each is a simple,
+ * documented multiplier of the box price so the math stays deterministic and
+ * explainable in the methodology section.
+ */
+export const optionalCostRates = {
+  /** Annual maintenance allowance as a fraction of box price, spread monthly. */
+  maintenanceAnnualRate: 0.03,
+  /** One-time sales tax applied to the box price at purchase. */
+  salesTaxRate: 0.08,
+  /** Residual resale value as a fraction of box price, credited at horizon end. */
+  resaleValueRate: 0.25,
+};
+
 /** Human-readable assumptions surfaced in the methodology section. */
 export const assumptions = [
   "Subscriptions are billed monthly at the listed per-seat price.",
-  "Hardware is financed: principal is (box price − down payment), repaid over the term at the given APR.",
-  "Electricity cost = power draw (kW) × hours per day × 30.4 days × rate per kWh.",
+  "Hardware is financed: principal is (box price − down payment), repaid over the term at the given APR as a fixed monthly loan payment.",
+  `Electricity cost = power draw (kW) × hours per day × ${daysPerMonth} days × rate per kWh.`,
+  `Optional maintenance adds ${optionalCostRates.maintenanceAnnualRate * 100}% of the box price per year, spread evenly across the months.`,
+  `Optional sales tax adds ${optionalCostRates.salesTaxRate * 100}% of the box price as a one-time upfront cost.`,
+  `Optional resale value credits ${optionalCostRates.resaleValueRate * 100}% of the box price against ownership cost at the end of the horizon.`,
   "Maintenance, resale value, and sales tax are excluded unless toggled on.",
-  `Break-even is searched over a ${horizonMonths}-month horizon.`,
+  `Break-even is the first month within a ${horizonMonths}-month horizon where cumulative subscription spend catches up to cumulative ownership cost.`,
 ];

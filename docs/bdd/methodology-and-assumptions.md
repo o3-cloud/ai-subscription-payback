@@ -23,3 +23,33 @@ Scenario: Methodology matches displayed outputs
   When the visitor compares the result to the methodology
   Then the result is consistent with the documented formula
 ```
+
+## Model clarifications
+
+These pin down the deterministic formulas `computeResult` implements so outputs
+stay consistent with the methodology copy.
+
+- **Monthly subscription cost** is the sum of the monthly price of every
+  selected plan. With no plan selected it is `0`.
+- **Monthly loan payment** amortizes the financed principal
+  `max(0, boxPrice − downPayment)` over `term` months at `apr/100/12` per month.
+  When the APR is `0` the payment is a flat `principal / term`; when nothing is
+  financed the payment is `0`.
+- **Electricity (monthly)** = `(powerDraw ÷ 1000) × hoursPerDay × 30.4 × rate`.
+- **Optional maintenance** adds `3%` of the box price per year, spread evenly
+  across the months (off by default).
+- **Optional sales tax** adds `8%` of the box price as a one-time upfront cost
+  (off by default).
+- **Optional resale value** credits `25%` of the box price against ownership
+  cost, realized once at the end of the horizon (off by default).
+- **Cumulative ownership cost** at month _m_ =
+  `downPayment + taxUpfront + payment × min(m, term)
+   + (electricity + maintenance) × m`, less the resale credit at the final month.
+- **Cumulative subscription cost** at month _m_ = `monthlySubscription × m`.
+- **Break-even month** is the first month within the 60-month horizon where
+  cumulative subscription cost reaches cumulative ownership cost. If that never
+  happens within the horizon, the result reports that break-even is not reached
+  rather than showing a month.
+- **Monthly net savings** compares monthly subscription spend against the
+  recurring monthly cost of ownership (loan payment + electricity + maintenance);
+  a negative value means owning the box costs more each month.
