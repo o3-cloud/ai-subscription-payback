@@ -16,6 +16,8 @@ import assert from "node:assert/strict";
 import { initCalculator } from "../assets/js/calculator.js";
 import {
   subscriptions,
+  hardware,
+  getAffiliate,
   defaults,
   assumptions,
   pricingLastUpdated,
@@ -344,14 +346,15 @@ test("initCalculator boots the form from static data and defaults", () => {
   assert.equal(doc.getElementById("box-price").value, defaults.boxPrice);
   assert.equal(doc.getElementById("apr").value, defaults.apr);
 
-  // Static content sections rendered (subscriptions + hardware row/item).
+  // Static content sections rendered: one row/item per subscription plus one
+  // per featured hardware box (no hardcoded single-box assumption).
   assert.equal(
     doc.getElementById("comparison-body").children.length,
-    subscriptions.length + 1
+    subscriptions.length + hardware.length
   );
   assert.equal(
     doc.getElementById("pricing-list").children.length,
-    subscriptions.length + 1
+    subscriptions.length + hardware.length
   );
   assert.equal(
     doc.getElementById("assumptions-list").children.length,
@@ -366,6 +369,26 @@ test("initCalculator boots the form from static data and defaults", () => {
     doc.getElementById("site-last-updated").getAttribute("datetime"),
     siteLastUpdated
   );
+});
+
+test("featured hardware renders affiliate CTAs from the separate affiliate metadata", () => {
+  const { doc } = boot();
+  const links = doc.querySelectorAll("#comparison-body a");
+  const hrefs = links.map((a) => a.getAttribute("href"));
+
+  for (const box of hardware) {
+    // The price source link is always present and points at the pricing source.
+    assert.ok(hrefs.includes(box.sourceUrl), `missing source link for ${box.id}`);
+
+    // The affiliate CTA is looked up from the affiliates map, not the pricing
+    // entry, and is marked as an affiliate/sponsored link.
+    const affiliate = getAffiliate(box.id);
+    assert.ok(affiliate, `expected affiliate metadata for ${box.id}`);
+    const cta = links.find((a) => a.getAttribute("href") === affiliate.url);
+    assert.ok(cta, `missing affiliate CTA for ${box.id}`);
+    assert.match(cta.textContent, /\(affiliate\)/);
+    assert.match(cta.getAttribute("rel"), /sponsored/);
+  }
 });
 
 test("initCalculator renders the coming-soon results state for valid inputs", () => {

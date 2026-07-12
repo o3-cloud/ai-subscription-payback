@@ -27,19 +27,70 @@ for (const name of modules) {
   });
 }
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
 test("data.js exports the datasets the UI renders", async () => {
   const data = await import(new URL("data.js", jsDir));
+  assert.equal(typeof data.defaults, "object");
+  assert.ok(Array.isArray(data.assumptions));
+  assert.match(data.pricingLastUpdated, ISO_DATE);
+  assert.match(data.siteLastUpdated, ISO_DATE);
+});
+
+test("every pricing entry carries a source URL and a last-updated date", async () => {
+  const data = await import(new URL("data.js", jsDir));
+
   assert.ok(Array.isArray(data.subscriptions) && data.subscriptions.length > 0);
   for (const sub of data.subscriptions) {
     assert.equal(typeof sub.id, "string");
     assert.equal(typeof sub.name, "string");
     assert.equal(typeof sub.monthlyPrice, "number");
+    assert.match(sub.sourceUrl, /^https?:\/\//, `${sub.id} needs a source URL`);
+    assert.match(sub.lastUpdated, ISO_DATE, `${sub.id} needs a last-updated date`);
   }
-  assert.equal(typeof data.hardware, "object");
-  assert.equal(typeof data.defaults, "object");
-  assert.ok(Array.isArray(data.assumptions));
-  assert.match(data.pricingLastUpdated, /^\d{4}-\d{2}-\d{2}$/);
-  assert.match(data.siteLastUpdated, /^\d{4}-\d{2}-\d{2}$/);
+
+  assert.ok(Array.isArray(data.hardware) && data.hardware.length > 0);
+  for (const box of data.hardware) {
+    assert.equal(typeof box.id, "string");
+    assert.equal(typeof box.name, "string");
+    assert.equal(typeof box.priceLow, "number");
+    assert.equal(typeof box.priceHigh, "number");
+    assert.ok(box.priceHigh >= box.priceLow, `${box.id} range is inverted`);
+    assert.equal(typeof box.priceNote, "string");
+    assert.match(box.sourceUrl, /^https?:\/\//, `${box.id} needs a source URL`);
+    assert.match(box.lastUpdated, ISO_DATE, `${box.id} needs a last-updated date`);
+  }
+});
+
+test("hardware features the Mac Studio, DGX Spark, and Strix Halo classes", async () => {
+  const { hardware } = await import(new URL("data.js", jsDir));
+  const names = hardware.map((h) => h.name).join(" | ");
+  for (const product of ["Mac Studio", "DGX Spark", "Strix Halo"]) {
+    assert.match(names, new RegExp(product), `missing ${product}`);
+  }
+});
+
+test("affiliate metadata is stored separately from pricing data", async () => {
+  const data = await import(new URL("data.js", jsDir));
+
+  // Affiliate links live in their own map, not on the pricing entries.
+  assert.equal(typeof data.affiliates, "object");
+  for (const entry of [...data.subscriptions, ...data.hardware]) {
+    assert.ok(
+      !("affiliate" in entry) && !("affiliateUrl" in entry),
+      `${entry.id} leaks affiliate metadata into pricing data`
+    );
+  }
+
+  // getAffiliate resolves a CTA for every featured box and is null for unknowns.
+  for (const box of data.hardware) {
+    const affiliate = data.getAffiliate(box.id);
+    assert.ok(affiliate, `no affiliate CTA for ${box.id}`);
+    assert.match(affiliate.url, /^https?:\/\//);
+    assert.equal(typeof affiliate.label, "string");
+    assert.equal(typeof affiliate.vendor, "string");
+  }
+  assert.equal(data.getAffiliate("does-not-exist"), null);
 });
 
 test("state.js round-trips calculator state through the URL helpers", async () => {

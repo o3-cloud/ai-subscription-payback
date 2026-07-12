@@ -2,20 +2,64 @@
  * Static, maintainer-editable data for the payback calculator.
  *
  * This is intentionally plain data (no fetch, no backend) so the site works as
- * a static GitHub Pages app and even from the file:// protocol. Each dataset
- * carries a `lastUpdated` date that is surfaced in the UI.
+ * a static GitHub Pages app and even from the file:// protocol.
+ *
+ * The data model is split into two concerns so they can be maintained
+ * independently:
+ *
+ *  1. PRICING DATA — `subscriptions` and `hardware`. Each entry carries a
+ *     price (or price range), a human `priceNote`, a `sourceUrl` for the quote,
+ *     and its own `lastUpdated` date. Pricing entries never carry affiliate
+ *     links.
+ *  2. AFFILIATE METADATA — `affiliates`, keyed by the pricing entry's `id`.
+ *     Reseller / affiliate URLs, vendor names, and disclosure labels live here,
+ *     kept deliberately separate from pricing so a monetization change can never
+ *     silently edit a price or source. Look them up with `getAffiliate(id)`.
  *
  * Prices are hand-curated estimates and may be out of date — see the pricing
  * disclosure section on the page.
  */
 
-/** @typedef {{ id: string, name: string, plan: string, monthlyPrice: number, sourceUrl: string, affiliate?: boolean }} Subscription */
+/**
+ * @typedef {Object} Subscription
+ * @property {string} id
+ * @property {string} name
+ * @property {string} plan
+ * @property {number} monthlyPrice
+ * @property {string} sourceUrl - where the price was quoted from
+ * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was curated
+ * @property {boolean} [defaultSelected]
+ */
 
-/** ISO date (YYYY-MM-DD) the pricing data was last curated. */
+/**
+ * @typedef {Object} Hardware
+ * @property {string} id
+ * @property {string} name
+ * @property {string} spec
+ * @property {number} priceLow
+ * @property {number} priceHigh
+ * @property {string} priceNote - context for the range (config, estimate, etc.)
+ * @property {string} sourceUrl - where the price was quoted from
+ * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was curated
+ * @property {number} [defaultBoxPrice] - price used when this box seeds the form
+ * @property {number} [powerDraw] - representative power draw under load (W)
+ */
+
+/**
+ * @typedef {Object} Affiliate
+ * @property {string} vendor - who the outbound link points at
+ * @property {string} url - affiliate / reseller destination
+ * @property {string} label - call-to-action text
+ * @property {boolean} affiliate - true when `url` is a commissioned link
+ */
+
+/** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
 export const pricingLastUpdated = "2026-07-01";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
 export const siteLastUpdated = "2026-07-12";
+
+/* ----------------------------- pricing data ----------------------------- */
 
 /** @type {Subscription[]} */
 export const subscriptions = [
@@ -25,6 +69,7 @@ export const subscriptions = [
     plan: "Individual (monthly)",
     monthlyPrice: 20,
     sourceUrl: "https://openai.com/",
+    lastUpdated: "2026-07-01",
     defaultSelected: true,
   },
   {
@@ -33,23 +78,107 @@ export const subscriptions = [
     plan: "Pro (monthly)",
     monthlyPrice: 20,
     sourceUrl: "https://claude.com/product/claude-code",
+    lastUpdated: "2026-07-01",
     defaultSelected: true,
   },
 ];
 
 /**
- * Representative local inference box. A single editable profile for the
- * scaffold; multiple hardware profiles are an open question in the PRD.
+ * Featured local-inference boxes. Ranges span the entry-level and high-memory
+ * configurations most relevant to local AI coding workloads; exact numbers vary
+ * by config and retailer, so each carries a `priceNote`.
+ *
+ * @type {Hardware[]}
  */
-export const hardware = {
-  id: "reference-box",
-  name: "Reference inference box",
-  spec: "Single-GPU workstation, 24 GB VRAM class",
-  priceLow: 2500,
-  priceHigh: 4000,
-  sourceUrl: "https://example.com/hardware-pricing",
-  affiliate: true,
+export const hardware = [
+  {
+    id: "mac-studio",
+    name: "Mac Studio",
+    spec: "Apple silicon, up to 512 GB unified memory",
+    priceLow: 3999,
+    priceHigh: 8999,
+    priceNote:
+      "Range spans M-series Max to Ultra configurations; unified memory drives most of the price.",
+    sourceUrl: "https://www.apple.com/mac-studio/",
+    lastUpdated: "2026-07-01",
+    defaultBoxPrice: 3999,
+    powerDraw: 270,
+  },
+  {
+    id: "dgx-spark",
+    name: "NVIDIA DGX Spark",
+    spec: "GB10 Grace Blackwell desktop, 128 GB unified memory",
+    priceLow: 2999,
+    priceHigh: 3999,
+    priceNote:
+      "Estimated street price for the desktop unit; availability and bundling vary by reseller.",
+    sourceUrl: "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
+    lastUpdated: "2026-07-01",
+    defaultBoxPrice: 3999,
+    powerDraw: 240,
+  },
+  {
+    id: "strix-halo",
+    name: "AMD Strix Halo workstation",
+    spec: "Ryzen AI Max+ 395 mini-PC, up to 128 GB unified memory",
+    priceLow: 1599,
+    priceHigh: 2499,
+    priceNote:
+      "Class estimate across Ryzen AI Max+ 395 mini-PCs and small-form-factor desktops; not a single SKU.",
+    sourceUrl:
+      "https://www.amd.com/en/products/processors/laptop/ryzen/ai-max.html",
+    lastUpdated: "2026-07-01",
+    defaultBoxPrice: 1999,
+    powerDraw: 140,
+  },
+];
+
+/* --------------------------- affiliate metadata --------------------------- */
+
+/**
+ * Reseller / affiliate destinations, keyed by pricing-entry `id`. Kept separate
+ * from pricing data: editing monetization here can never change a displayed
+ * price, source, or last-updated date. An entry with no key simply has no
+ * affiliate call to action.
+ *
+ * URLs are placeholders until affiliate programs are finalized (see the PRD
+ * open questions); swap the `url` values as programs come online.
+ *
+ * @type {Record<string, Affiliate>}
+ */
+export const affiliates = {
+  "mac-studio": {
+    vendor: "Apple",
+    url: "https://www.apple.com/shop/buy-mac/mac-studio",
+    label: "Shop Mac Studio",
+    affiliate: true,
+  },
+  "dgx-spark": {
+    vendor: "NVIDIA",
+    url: "https://marketplace.nvidia.com/en-us/developer/dgx-spark/",
+    label: "Find a DGX Spark reseller",
+    affiliate: true,
+  },
+  "strix-halo": {
+    vendor: "AMD",
+    url: "https://www.amd.com/en/where-to-buy/ryzen-ai-max.html",
+    label: "Find a Strix Halo system",
+    affiliate: true,
+  },
 };
+
+/**
+ * Look up the affiliate / reseller call to action for a pricing entry.
+ * @param {string} id - a subscription or hardware id
+ * @returns {Affiliate|null}
+ */
+export function getAffiliate(id) {
+  return Object.prototype.hasOwnProperty.call(affiliates, id)
+    ? affiliates[id]
+    : null;
+}
+
+/* ------------------------- calculator configuration ------------------------- */
 
 /** Default calculator inputs used to populate the form on load. */
 export const defaults = {

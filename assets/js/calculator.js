@@ -15,6 +15,7 @@
 import {
   subscriptions,
   hardware,
+  getAffiliate,
   defaults,
   assumptions,
   pricingLastUpdated,
@@ -180,11 +181,32 @@ function renderSubscriptionOptions(doc, preselected) {
 
 function externalLink(doc, href, text, affiliate) {
   const a = doc.createElement("a");
-  a.href = href;
+  a.setAttribute("href", href);
   a.textContent = affiliate ? `${text} (affiliate)` : text;
-  a.target = "_blank";
-  a.rel = "noopener noreferrer" + (affiliate ? " sponsored" : "");
+  a.setAttribute("target", "_blank");
+  a.setAttribute("rel", "noopener noreferrer" + (affiliate ? " sponsored" : ""));
   return a;
+}
+
+/**
+ * Append the reseller / affiliate call to action for a pricing entry, pulling
+ * it from the separate affiliate metadata rather than the pricing entry itself.
+ * No-op when the entry has no affiliate record.
+ */
+function appendAffiliateLink(doc, parent, id) {
+  const affiliate = getAffiliate(id);
+  if (!affiliate) return;
+  parent.appendChild(doc.createTextNode(" "));
+  parent.appendChild(
+    externalLink(doc, affiliate.url, affiliate.label, affiliate.affiliate)
+  );
+}
+
+/** Render a currency range, collapsing to a single value when low === high. */
+function priceRange(low, high) {
+  return low === high
+    ? formatCurrency(low)
+    : `${formatCurrency(low)}–${formatCurrency(high)}`;
 }
 
 function renderComparison(doc) {
@@ -198,21 +220,23 @@ function renderComparison(doc) {
       `<td>${sub.name}</td><td>${sub.plan}</td>` +
       `<td>${formatCurrency(sub.monthlyPrice)}/mo</td>`;
     const sourceCell = doc.createElement("td");
-    sourceCell.appendChild(externalLink(doc, sub.sourceUrl, "Source", sub.affiliate));
+    sourceCell.appendChild(externalLink(doc, sub.sourceUrl, "Source", false));
+    appendAffiliateLink(doc, sourceCell, sub.id);
     row.appendChild(sourceCell);
     body.appendChild(row);
   }
 
-  const hwRow = doc.createElement("tr");
-  hwRow.innerHTML =
-    `<td>${hardware.name}</td><td>${hardware.spec}</td>` +
-    `<td>${formatCurrency(hardware.priceLow)}–${formatCurrency(hardware.priceHigh)}</td>`;
-  const hwSource = doc.createElement("td");
-  hwSource.appendChild(
-    externalLink(doc, hardware.sourceUrl, "Source", hardware.affiliate)
-  );
-  hwRow.appendChild(hwSource);
-  body.appendChild(hwRow);
+  for (const box of hardware) {
+    const row = doc.createElement("tr");
+    row.innerHTML =
+      `<td>${box.name}</td><td>${box.spec}</td>` +
+      `<td>${priceRange(box.priceLow, box.priceHigh)}</td>`;
+    const sourceCell = doc.createElement("td");
+    sourceCell.appendChild(externalLink(doc, box.sourceUrl, "Source", false));
+    appendAffiliateLink(doc, sourceCell, box.id);
+    row.appendChild(sourceCell);
+    body.appendChild(row);
+  }
 }
 
 function renderPricing(doc) {
@@ -222,15 +246,20 @@ function renderPricing(doc) {
     for (const sub of subscriptions) {
       const li = doc.createElement("li");
       li.textContent = `${sub.name} — ${sub.plan}: ${formatCurrency(sub.monthlyPrice)}/mo. `;
-      li.appendChild(externalLink(doc, sub.sourceUrl, "Source", sub.affiliate));
+      li.appendChild(externalLink(doc, sub.sourceUrl, "Source", false));
+      appendAffiliateLink(doc, li, sub.id);
       list.appendChild(li);
     }
-    const hwLi = doc.createElement("li");
-    hwLi.textContent = `${hardware.name} (${hardware.spec}): ${formatCurrency(
-      hardware.priceLow
-    )}–${formatCurrency(hardware.priceHigh)}. `;
-    hwLi.appendChild(externalLink(doc, hardware.sourceUrl, "Source", hardware.affiliate));
-    list.appendChild(hwLi);
+    for (const box of hardware) {
+      const li = doc.createElement("li");
+      li.textContent = `${box.name} (${box.spec}): ${priceRange(
+        box.priceLow,
+        box.priceHigh
+      )}. ${box.priceNote} `;
+      li.appendChild(externalLink(doc, box.sourceUrl, "Source", false));
+      appendAffiliateLink(doc, li, box.id);
+      list.appendChild(li);
+    }
   }
 
   const pricingTime = doc.getElementById("pricing-last-updated");

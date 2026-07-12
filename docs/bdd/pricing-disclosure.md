@@ -19,6 +19,13 @@ Scenario: Hardware prices and sources are disclosed
   Then each featured hardware option shows a visible price or price range
   And the source of the hardware price is listed
 
+Scenario: Affiliate links are separate from price sources
+  Given a featured hardware option with a reseller or affiliate CTA
+  When the visitor views the comparison row or pricing list
+  Then the source link points to the pricing source
+  And the affiliate CTA points to a separate destination
+  And changing affiliate metadata does not change the displayed price or source URL
+
 Scenario: Featured products are named clearly
   Given the hardware comparison section
   When the visitor views it
