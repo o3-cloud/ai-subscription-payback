@@ -70,6 +70,25 @@ test("results metrics expose the data-metric hooks", () => {
   }
 });
 
+test("results area ships an accessible chart placeholder and data table", () => {
+  // The payback math is a documented stub, so the chart figure renders a
+  // labeled placeholder plus a table equivalent that the future logic fills in.
+  assert.ok(ids.has("cost-chart"), "chart placeholder mount point present");
+  assert.match(
+    html,
+    /id="cost-chart"[^>]*role="img"[^>]*aria-label="[^"]+"/i,
+    "chart placeholder is an aria-labeled role=img"
+  );
+  assert.ok(ids.has("cost-table"), "accessible data table present");
+  for (const heading of ["Month", "Subscription cost", "Ownership cost"]) {
+    assert.match(
+      html,
+      new RegExp(`<th[^>]*>\\s*${heading}\\s*</th>`, "i"),
+      `data table has a "${heading}" column`
+    );
+  }
+});
+
 test("primary navigation targets exist as sections", () => {
   for (const id of ["calculator", "comparison", "pricing", "methodology"]) {
     assert.ok(ids.has(id), `missing section id="${id}"`);
