@@ -4,13 +4,19 @@
 Scenario: Default inputs produce a result on load
   Given the visitor has not changed any input
   When the page loads
-  Then default values are populated for subscriptions and hardware
+  Then default values are populated for subscriptions and hardware profiles
   And a break-even result is shown immediately
 
 Scenario: Select subscriptions to compare
   Given the calculator is visible
   When the visitor selects Codex and Claude Code
   Then both subscriptions are included in the monthly subscription cost
+
+Scenario: Select a featured hardware profile
+  Given the calculator is visible
+  When the visitor selects Mac Studio, DGX Spark, or Strix Halo
+  Then the corresponding hardware assumptions load into the form
+  And the selected profile updates the payoff calculation
 
 Scenario: Adjust hardware and financing inputs
   Given the calculator is visible

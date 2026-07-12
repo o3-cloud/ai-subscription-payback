@@ -1,13 +1,11 @@
 # Feature: Static Site Delivery
 
-Gherkin-style scenarios describing observable behavior for the site as a static GitHub Pages app.
-
 ```gherkin
 Scenario: Site loads without a backend
   Given the site is deployed to GitHub Pages
   When a visitor opens the site URL
   Then the page renders fully from static assets
-  And no server-side API call is required to show the calculator
+  And no server-side API call is required to show the calculator or featured hardware
 
 Scenario: Calculator works without a backend API
   Given the page has finished loading

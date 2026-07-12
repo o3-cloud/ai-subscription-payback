@@ -16,4 +16,10 @@ Scenario: Affiliate clicks do not affect calculations
   Given the calculator has a computed result
   When the visitor clicks a reseller or affiliate link
   Then the current calculation remains visible when the visitor returns
+
+Scenario: Product cards contain affiliate calls to action
+  Given a featured hardware card for Mac Studio, DGX Spark, or Strix Halo
+  When the visitor views the card
+  Then the card includes a primary affiliate or reseller call to action
+  And the call to action is visually distinct from the calculator controls
 ```

@@ -4,6 +4,7 @@ This directory contains one behavior-focused BDD file per feature area for the s
 
 ## Files
 - [Static Site Delivery](./static-site-delivery.md)
+- [Featured Hardware Cards](./featured-hardware-cards.md)
 - [Calculator Inputs](./calculator-inputs.md)
 - [Calculator Outputs](./calculator-outputs.md)
 - [Pricing Disclosure](./pricing-disclosure.md)
