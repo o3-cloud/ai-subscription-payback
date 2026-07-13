@@ -29,11 +29,10 @@ Scenario: Site-wide last-updated disclosure is visible in the footer
     of the pricing-freshness date shown in the pricing section
 ```
 
-> Current blocker: GitHub Pages publishing for this repository is gated by
-> repository eligibility. The workflow is configured to enable Pages
-> automatically when the repo is eligible, but a private repository on a free
-> organization plan cannot be published until the repo is made public or the
-> organization is upgraded.
+> Deployment: GitHub Pages publishing is gated by repository eligibility. The
+> workflow enables Pages automatically on the first successful run, and because
+> the repository is public it is eligible for Pages on any plan, so each push to
+> `main` publishes the site.
 
 > The pricing section's own "Pricing last updated" timestamp (pricing freshness)
 > is specified in [Pricing Disclosure](./pricing-disclosure.md).

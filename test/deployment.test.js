@@ -87,17 +87,17 @@ test("the README documents the Pages deployment location and process", () => {
   assert.match(readme, /deploy\.yml/, "README links the deployment workflow");
   assert.match(
     readme,
-    /Repository eligibility \(current blocker\)/,
-    "README explains the current Pages eligibility blocker"
+    /merging to `main`[\s\S]*publishes the site/i,
+    "README explains that a push to main publishes the site"
   );
 });
 
-test("the static-site-delivery BDD records the current Pages eligibility blocker", () => {
+test("the static-site-delivery BDD documents the Pages deploy path", () => {
   const bdd = read("docs/bdd/static-site-delivery.md");
-  assert.match(bdd, /Current blocker: GitHub Pages publishing/i, "notes the blocker");
+  assert.match(bdd, /GitHub Pages publishing/i, "describes Pages publishing");
   assert.match(
     bdd,
-    /private repository on a free[\s\S]*organization plan/i,
-    "states the plan constraint"
+    /each push to[\s>]*`main` publishes the site/i,
+    "states that a push to main publishes the site"
   );
 });
