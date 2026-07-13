@@ -25,7 +25,12 @@
  * @property {string} id
  * @property {string} name
  * @property {string} plan
- * @property {number} monthlyPrice
+ * @property {number} monthlyPrice - the value the calculator compares against. For
+ *   annually billed tiers this is the effective monthly cost (annual price ÷ 12),
+ *   so the comparison stays month-by-month regardless of billing cadence.
+ * @property {string} billingCadence - how the tier is billed (monthly, annual up
+ *   front, per seat, …) in plain language
+ * @property {string} includedValue - what a seat/plan at this tier includes
  * @property {string} sourceUrl - where the price was quoted from
  * @property {string} sourceLabel - short provenance for the number (official vendor pricing, …)
  * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was curated
@@ -63,13 +68,26 @@ export const siteLastUpdated = "2026-07-12";
 
 /* ----------------------------- pricing data ----------------------------- */
 
-/** @type {Subscription[]} */
+/**
+ * Public subscription tiers people run AI coding assistants on. Codex keeps its
+ * single individual plan; Claude Code carries the full public ladder (Pro, Max,
+ * and Team seats) so a visitor can compare their real tier.
+ *
+ * `monthlyPrice` is always the month-by-month comparison value — for annually
+ * billed tiers it is the effective monthly cost (annual price ÷ 12), which keeps
+ * the calculator's cumulative math cadence-agnostic. `billingCadence` and
+ * `includedValue` document how the tier is actually billed and what it includes.
+ *
+ * @type {Subscription[]}
+ */
 export const subscriptions = [
   {
     id: "codex",
     name: "Codex",
-    plan: "Individual (monthly)",
+    plan: "Individual",
     monthlyPrice: 20,
+    billingCadence: "Billed monthly",
+    includedValue: "Individual Codex plan for a single developer.",
     sourceUrl: "https://openai.com/",
     sourceLabel: "Official OpenAI pricing",
     lastUpdated: "2026-07-01",
@@ -80,10 +98,78 @@ export const subscriptions = [
     name: "Claude Code",
     plan: "Pro (monthly)",
     monthlyPrice: 20,
-    sourceUrl: "https://claude.com/product/claude-code",
+    billingCadence: "Billed monthly",
+    includedValue: "Individual Pro plan: Claude Code plus web and desktop chat for one person.",
+    sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     lastUpdated: "2026-07-01",
     defaultSelected: true,
+  },
+  {
+    id: "claude-pro-annual",
+    name: "Claude Code",
+    plan: "Pro (annual)",
+    monthlyPrice: 17,
+    billingCadence: "Billed annually — $200 up front (~$17/mo effective)",
+    includedValue: "The Pro plan prepaid for a year at a lower effective monthly rate.",
+    sourceUrl: "https://claude.com/pricing",
+    sourceLabel: "Official Anthropic pricing",
+    lastUpdated: "2026-07-01",
+  },
+  {
+    id: "claude-max-5x",
+    name: "Claude Code",
+    plan: "Max 5×",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly — from $100/mo",
+    includedValue: "Roughly 5× the Pro usage limits for heavier Claude Code sessions.",
+    sourceUrl: "https://claude.com/pricing",
+    sourceLabel: "Official Anthropic pricing",
+    lastUpdated: "2026-07-01",
+  },
+  {
+    id: "claude-team-standard-monthly",
+    name: "Claude Code",
+    plan: "Team — Standard seat (monthly)",
+    monthlyPrice: 25,
+    billingCadence: "Billed monthly, per seat",
+    includedValue: "Per-seat Team plan with collaboration and central billing at standard usage.",
+    sourceUrl: "https://claude.com/pricing",
+    sourceLabel: "Official Anthropic pricing",
+    lastUpdated: "2026-07-01",
+  },
+  {
+    id: "claude-team-standard-annual",
+    name: "Claude Code",
+    plan: "Team — Standard seat (annual)",
+    monthlyPrice: 20,
+    billingCadence: "Billed annually, per seat (~$20/mo effective)",
+    includedValue: "The standard Team seat prepaid annually at a lower effective monthly rate.",
+    sourceUrl: "https://claude.com/pricing",
+    sourceLabel: "Official Anthropic pricing",
+    lastUpdated: "2026-07-01",
+  },
+  {
+    id: "claude-team-premium-monthly",
+    name: "Claude Code",
+    plan: "Team — Premium seat (monthly)",
+    monthlyPrice: 125,
+    billingCadence: "Billed monthly, per seat",
+    includedValue: "Premium Team seat bundling higher Claude Code usage with Team collaboration.",
+    sourceUrl: "https://claude.com/pricing",
+    sourceLabel: "Official Anthropic pricing",
+    lastUpdated: "2026-07-01",
+  },
+  {
+    id: "claude-team-premium-annual",
+    name: "Claude Code",
+    plan: "Team — Premium seat (annual)",
+    monthlyPrice: 100,
+    billingCadence: "Billed annually, per seat (~$100/mo effective)",
+    includedValue: "The premium Team seat prepaid annually at a lower effective monthly rate.",
+    sourceUrl: "https://claude.com/pricing",
+    sourceLabel: "Official Anthropic pricing",
+    lastUpdated: "2026-07-01",
   },
 ];
 
