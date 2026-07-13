@@ -12,6 +12,23 @@ Scenario: Select subscriptions to compare
   When the visitor selects Codex and Claude Code
   Then both subscriptions are included in the monthly subscription cost
 
+Scenario: Choose a custom monthly subscription spend
+  Given the calculator is visible
+  When the visitor selects a preset or types a custom subscription budget
+  Then the custom spend field drives the comparison basis
+  And the preset selector stays in sync with the typed amount when it matches a preset
+
+Scenario: Invalid custom subscription spend is rejected
+  Given the calculator is visible
+  When the visitor enters a negative or non-numeric custom spend
+  Then the custom spend field shows a validation message
+  And the result does not display a nonsensical value
+
+Scenario: A shared link that matches a featured profile loads it active
+  Given a shared link whose hardware price and power draw match a featured profile
+  When the page loads from that link
+  Then that featured hardware card is marked as active on initial render
+
 Scenario: Select a featured hardware profile
   Given the calculator is visible
   When the visitor clicks "Use this system" on Mac Studio, DGX Spark, or Strix Halo
@@ -19,11 +36,6 @@ Scenario: Select a featured hardware profile
   And the selected profile updates the payoff calculation
   And the selected hardware card is visibly marked as active
   And any previously active hardware card is no longer marked active
-
-Scenario: A shared link that matches a featured profile loads it active
-  Given a shared link whose hardware price and power draw match a featured profile
-  When the page loads from that link
-  Then that featured hardware card is marked as active on initial render
 
 Scenario: Adjust hardware and financing inputs
   Given the calculator is visible

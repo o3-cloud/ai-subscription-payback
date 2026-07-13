@@ -23,6 +23,7 @@ import {
   pricingLastUpdated,
   siteLastUpdated,
   horizonMonths,
+  spendPresets,
 } from "../assets/js/data.js";
 
 /* ----------------------------- DOM stub ----------------------------- */
@@ -190,6 +191,9 @@ function querySelectorAll(root, selector) {
 const REQUIRED_IDS = [
   "calculator-form",
   "subscription-options",
+  "spend-preset",
+  "custom-spend",
+  "spend-basis",
   "results-status",
   "comparison-body",
   "pricing-list",
@@ -211,6 +215,7 @@ const NUMERIC_INPUT_IDS = [
   "electricity-rate",
   "power-draw",
   "hours-per-day",
+  "custom-spend",
 ];
 
 function buildDocument() {
@@ -232,6 +237,9 @@ function buildDocument() {
     wrap.appendChild(input);
     form.appendChild(wrap);
   }
+  const preset = doc.createElement("select");
+  preset.id = "spend-preset";
+  form.appendChild(preset);
   for (const id of ["opt-maintenance", "opt-resale", "opt-taxes"]) {
     const input = doc.createElement("input");
     input.id = id;
@@ -246,6 +254,9 @@ function buildDocument() {
   const status = doc.createElement("p");
   status.id = "results-status";
   body.appendChild(status);
+  const basis = doc.createElement("p");
+  basis.id = "spend-basis";
+  body.appendChild(basis);
   for (const metric of ["breakeven", "payment", "savings"]) {
     const el = doc.createElement("span");
     el.setAttribute("data-metric", metric);
@@ -351,7 +362,7 @@ function boot(search = "", options = {}) {
 /* ----------------------------- tests ----------------------------- */
 
 test("computeResult calculates payback metrics deterministically", () => {
-  const result = computeResult({
+  const input = {
     subscriptions: ["codex", "claude-code"],
     boxPrice: 5000,
     downPayment: 0,
@@ -363,7 +374,8 @@ test("computeResult calculates payback metrics deterministically", () => {
     maintenance: false,
     resale: false,
     taxes: false,
-  });
+  };
+  const result = computeResult(input);
 
   const principal = 5000;
   const monthlyRate = 0.12 / 12;
@@ -376,6 +388,12 @@ test("computeResult calculates payback metrics deterministically", () => {
   assert.ok(Math.abs(result.monthlyNetSavings - (40 - expectedPayment)) < 0.01);
   assert.equal(result.series[0].subscriptionCost, 40);
   assert.ok(result.series[0].ownershipCost > 0);
+
+  const customSpend = computeResult({ ...input, customSpend: 75 });
+  assert.equal(customSpend.series[0].subscriptionCost, 75);
+  assert.ok(
+    Math.abs(customSpend.monthlyNetSavings - (75 - expectedPayment)) < 0.01
+  );
 });
 
 test("computeResult finds break-even and supports optional assumptions", () => {
@@ -438,6 +456,12 @@ test("initCalculator boots the form from static data and defaults", () => {
     checkedValues,
     subscriptions.filter((s) => s.defaultSelected).map((s) => s.id)
   );
+  assert.equal(doc.getElementById("custom-spend").value, "");
+  assert.equal(doc.getElementById("spend-preset").value, "");
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against $40/mo from the selected subscriptions."
+  );
 
   // Default numeric inputs hydrated from data.js defaults.
   assert.equal(doc.getElementById("box-price").value, defaults.boxPrice);
@@ -499,6 +523,23 @@ test("initCalculator boots the form from static data and defaults", () => {
   assert.match(
     doc.getElementById("results-status").textContent,
     /^Break-even (not reached within \d+ months\.|reached in Month \d+\.)$/
+  );
+});
+
+test("preset spend selector fills the custom spend input", async () => {
+  const { doc } = boot();
+  const select = doc.getElementById("spend-preset");
+  const input = doc.getElementById("custom-spend");
+
+  assert.equal(select.children.length, spendPresets.length + 1);
+  select.value = String(spendPresets.at(-1).value);
+  await select.dispatch("change");
+
+  assert.equal(input.value, String(spendPresets.at(-1).value));
+  assert.equal(select.value, String(spendPresets.at(-1).value));
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against your custom $200/mo subscription spend."
   );
 });
 
@@ -673,6 +714,31 @@ test("a live edit re-validates and updates the results status", async () => {
   assert.equal(chartHint.textContent, "No break-even within 60 months.");
 });
 
+test("custom spend validates like the other numeric inputs", async () => {
+  const { doc } = boot();
+  const customSpend = doc.getElementById("custom-spend");
+
+  customSpend.value = "-1";
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  assert.equal(
+    doc.getElementById("results-status").textContent,
+    "Some inputs need attention — fix the highlighted fields to see results."
+  );
+  assert.equal(customSpend.getAttribute("aria-invalid"), "true");
+  assert.ok(doc.getElementById("custom-spend-error"), "renders an inline field error");
+
+  customSpend.value = "";
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  assert.equal(customSpend.getAttribute("aria-invalid"), "false");
+  assert.equal(doc.getElementById("custom-spend-error"), null);
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against $40/mo from the selected subscriptions."
+  );
+});
+
 test("analytics wiring records pageviews, calculator interaction, share, and outbound clicks", async () => {
   const { doc, win } = boot();
 
@@ -787,12 +853,15 @@ test("editing inputs keeps the shareable URL in sync", async () => {
   const { doc, win } = boot();
   const boxPrice = doc.getElementById("box-price");
   boxPrice.value = "4200";
+  const customSpend = doc.getElementById("custom-spend");
+  customSpend.value = "80";
 
   await doc.getElementById("calculator-form").dispatch("input");
 
   const latest = new URL(win._historyUrls.at(-1));
   const params = new URLSearchParams(latest.hash.slice(1));
   assert.equal(params.get("boxPrice"), "4200");
+  assert.equal(params.get("customSpend"), "80");
 });
 
 test("resetting the form restores inputs, subscriptions, results, and hash to defaults", async () => {
@@ -809,11 +878,13 @@ test("resetting the form restores inputs, subscriptions, results, and hash to de
   const defaultSubs = subscriptions.filter((s) => s.defaultSelected).map((s) => s.id);
   assert.deepEqual(subscriptionSelection(), defaultSubs);
 
-  // Edit a spread of controls: numeric inputs, an optional toggle, and the
-  // subscription selection, so every reset-restored surface starts off-default.
+  // Edit a spread of controls: numeric inputs, the custom spend selector, an
+  // optional toggle, and the subscription selection.
   doc.getElementById("box-price").value = "9999";
   doc.getElementById("apr").value = "3.3";
   doc.getElementById("term").value = "48";
+  doc.getElementById("custom-spend").value = "120";
+  doc.getElementById("spend-preset").value = "120";
   doc.getElementById("opt-maintenance").checked = true;
   const claudeCode = doc
     .querySelectorAll('#subscription-options input[type="checkbox"]')
@@ -834,12 +905,18 @@ test("resetting the form restores inputs, subscriptions, results, and hash to de
   assert.equal(doc.getElementById("apr").value, defaults.apr);
   assert.equal(doc.getElementById("term").value, defaults.term);
   assert.equal(doc.getElementById("opt-maintenance").checked, defaults.maintenance);
+  assert.equal(doc.getElementById("custom-spend").value, "");
+  assert.equal(doc.getElementById("spend-preset").value, "");
 
   // The default subscriptions are re-selected.
   assert.deepEqual(subscriptionSelection(), defaultSubs);
 
   // Results are recomputed from the defaults.
   assert.equal(doc.getElementById("results-status").textContent, defaultStatus);
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against $40/mo from the selected subscriptions."
+  );
 
   // The shareable hash is back to the default scenario.
   assert.equal(new URL(win._historyUrls.at(-1)).hash, defaultHash);

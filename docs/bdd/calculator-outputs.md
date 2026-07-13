@@ -29,6 +29,12 @@ Scenario: Net savings or overage is shown
   Then the site shows whether the hardware option is cheaper each month
   And the result includes monthly net savings or extra cost
 
+Scenario: Comparison basis reflects the active subscription spend
+  Given the visitor uses checked subscriptions, a preset spend, or a custom spend
+  When the calculation runs
+  Then the results identify which monthly subscription budget is being compared
+  And the chart summary matches the selected comparison basis
+
 Scenario: Chart reflects the numbers
   Given a computed result
   When the chart renders

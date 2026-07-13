@@ -97,11 +97,18 @@ test("affiliate metadata is stored separately from pricing data", async () => {
 
 test("state.js round-trips calculator state through the URL helpers", async () => {
   const state = await import(new URL("state.js", jsDir));
-  const input = { boxPrice: 3000, apr: 9.9, maintenance: true, subscriptions: ["codex"] };
+  const input = {
+    boxPrice: 3000,
+    apr: 9.9,
+    maintenance: true,
+    customSpend: 75,
+    subscriptions: ["codex"],
+  };
   const parsed = state.parseState(state.serializeState(input));
   assert.equal(parsed.boxPrice, 3000);
   assert.equal(parsed.apr, 9.9);
   assert.equal(parsed.maintenance, true);
+  assert.equal(parsed.customSpend, 75);
   assert.deepEqual(parsed.subscriptions, ["codex"]);
 
   const hashed = state.readShareParams({ hash: "#boxPrice=4200&subs=codex" });
@@ -117,6 +124,15 @@ test("state.js round-trips calculator state through the URL helpers", async () =
     state.buildShareUrl({ origin: "https://payback.example", pathname: "/index.html" }, "boxPrice=4200"),
     "https://payback.example/index.html#boxPrice=4200"
   );
+});
+
+test("state.js validates optional custom spend correctly", async () => {
+  const state = await import(new URL("state.js", jsDir));
+  assert.equal(state.validateCustomSpend("").valid, true);
+  assert.equal(state.validateCustomSpend(null).valid, true);
+  assert.equal(state.validateCustomSpend(100).valid, true);
+  assert.equal(state.validateCustomSpend(-1).valid, false);
+  assert.equal(state.validateCustomSpend("abc").valid, false);
 });
 
 test("analytics.js exports the tracking helpers the UI depends on", async () => {

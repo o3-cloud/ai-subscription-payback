@@ -196,10 +196,26 @@ export const defaults = {
   electricityRate: 0.17,
   powerDraw: 450,
   hoursPerDay: 8,
+  // Empty by default: with no custom spend the calculator totals the checked
+  // subscriptions. A provided value overrides that total (see calculator.js).
+  customSpend: "",
   maintenance: false,
   resale: false,
   taxes: false,
 };
+
+/**
+ * Common monthly AI-coding spend levels offered as a quick preset selector.
+ * Choosing one fills the custom-spend input; it never persists on its own.
+ *
+ * @type {Array<{ label: string, value: number }>}
+ */
+export const spendPresets = [
+  { label: "Light — $20/mo", value: 20 },
+  { label: "Standard — $40/mo", value: 40 },
+  { label: "Heavy — $100/mo", value: 100 },
+  { label: "Power user — $200/mo", value: 200 },
+];
 
 /** Number of months the model projects when looking for a break-even point. */
 export const horizonMonths = 60;

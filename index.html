@@ -180,6 +180,17 @@
         <form class="inputs-panel" id="calculator-form" novalidate>
           <fieldset class="field-group">
             <legend>Subscriptions to compare</legend>
+            <div class="field">
+              <label for="spend-preset">Quick monthly spend presets</label>
+              <select id="spend-preset" name="spendPreset">
+                <option value="">Custom / from subscriptions</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="custom-spend">Custom monthly subscription spend (USD)</label>
+              <input type="number" id="custom-spend" name="customSpend" min="0" step="1" inputmode="decimal" placeholder="Leave blank to total the checked subscriptions" />
+            </div>
+            <p class="field-help">Leave the spend blank to use the checked subscriptions, or enter your own monthly budget and the calculator will use that instead.</p>
             <div id="subscription-options" class="checkbox-list">
               <!-- Populated from data by scripts; static fallback below. -->
               <p class="data-fallback">Subscription options load here.</p>
@@ -247,6 +258,7 @@
         <div class="results-panel">
           <div id="results" class="results" role="region" aria-live="polite" aria-atomic="true" aria-labelledby="results-title">
             <h3 id="results-title">Results</h3>
+            <p id="spend-basis" class="results-basis" aria-live="polite"></p>
 
             <dl class="result-metrics">
               <div class="metric">

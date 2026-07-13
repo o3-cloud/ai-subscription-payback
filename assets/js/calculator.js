@@ -16,6 +16,7 @@ import {
   hardware,
   getAffiliate,
   defaults,
+  spendPresets,
   assumptions,
   pricingLastUpdated,
   siteLastUpdated,
@@ -27,6 +28,7 @@ import {
   NUMERIC_FIELDS,
   BOOLEAN_FIELDS,
   validateNumber,
+  validateCustomSpend,
   serializeState,
   parseState,
   readShareParams,
@@ -45,6 +47,7 @@ const FIELD_IDS = {
   electricityRate: "electricity-rate",
   powerDraw: "power-draw",
   hoursPerDay: "hours-per-day",
+  customSpend: "custom-spend",
   maintenance: "opt-maintenance",
   resale: "opt-resale",
   taxes: "opt-taxes",
@@ -72,6 +75,24 @@ function selectedSubscriptionMonthlyCost(state) {
     (total, sub) => total + (selected.has(sub.id) ? sub.monthlyPrice : 0),
     0
   );
+}
+
+/** True when a usable (non-negative, numeric) custom spend has been entered. */
+function hasCustomSpend(state) {
+  const value = state.customSpend;
+  if (value === "" || value === null || value === undefined) return false;
+  const num = Number(value);
+  return Number.isFinite(num) && num >= 0;
+}
+
+/**
+ * The monthly subscription spend the comparison runs against: the custom spend
+ * when the visitor has entered one, otherwise the sum of the checked plans.
+ */
+function monthlySubscriptionCost(state) {
+  return hasCustomSpend(state)
+    ? Number(state.customSpend)
+    : selectedSubscriptionMonthlyCost(state);
 }
 
 function monthlyElectricityCost(state) {
@@ -152,7 +173,8 @@ function renderSeries(doc, series, breakEvenMonth) {
  * Compute the payback comparison from calculator state.
  *
  * The comparison uses cumulative costs over a fixed horizon:
- * - subscription spend grows linearly from the selected plans
+ * - subscription spend grows linearly from the custom monthly spend when one is
+ *   entered, otherwise from the sum of the selected plans
  * - ownership cost includes the upfront down payment, financing payment,
  *   operating electricity, optional maintenance, optional sales tax, and an
  *   optional resale credit at the end of the analysis horizon
@@ -161,7 +183,7 @@ function renderSeries(doc, series, breakEvenMonth) {
  * @returns {{ breakEvenMonth: number|null, monthlyPayment: number|null, monthlyNetSavings: number|null, series: Array<{month:number, subscriptionCost:number, ownershipCost:number, monthlySubscriptionCost:number, monthlyOwnershipCost:number}> }}
  */
 export function computeResult(state) {
-  const subscriptionMonthlyCost = selectedSubscriptionMonthlyCost(state);
+  const subscriptionMonthlyCost = monthlySubscriptionCost(state);
   const boxPrice = clamp(toNumber(state.boxPrice));
   const downPayment = clamp(toNumber(state.downPayment), 0, boxPrice);
   const principal = Math.max(0, boxPrice - downPayment);
@@ -225,30 +247,47 @@ function readState(doc) {
   return state;
 }
 
+/**
+ * Reflect a field's validity in the DOM: toggle aria-invalid and add or remove
+ * an inline `<p class="field-error">` describing the problem.
+ */
+function applyFieldValidity(doc, el, valid, message) {
+  el.setAttribute("aria-invalid", valid ? "false" : "true");
+
+  const errorId = `${el.id}-error`;
+  let errorEl = doc.getElementById(errorId);
+  if (!valid) {
+    if (!errorEl) {
+      errorEl = doc.createElement("p");
+      errorEl.id = errorId;
+      errorEl.className = "field-error";
+      el.setAttribute("aria-describedby", errorId);
+      el.parentElement.appendChild(errorEl);
+    }
+    errorEl.textContent = message;
+  } else if (errorEl) {
+    errorEl.remove();
+    el.removeAttribute("aria-describedby");
+  }
+}
+
 function validateForm(doc) {
   let allValid = true;
   for (const [key, bounds] of Object.entries(NUMERIC_FIELDS)) {
     const el = doc.getElementById(FIELD_IDS[key]);
     if (!el) continue;
     const { valid, message } = validateNumber(el.value, bounds);
-    el.setAttribute("aria-invalid", valid ? "false" : "true");
+    applyFieldValidity(doc, el, valid, message);
+    if (!valid) allValid = false;
+  }
 
-    const errorId = `${el.id}-error`;
-    let errorEl = doc.getElementById(errorId);
-    if (!valid) {
-      if (!errorEl) {
-        errorEl = doc.createElement("p");
-        errorEl.id = errorId;
-        errorEl.className = "field-error";
-        el.setAttribute("aria-describedby", errorId);
-        el.parentElement.appendChild(errorEl);
-      }
-      errorEl.textContent = message;
-      allValid = false;
-    } else if (errorEl) {
-      errorEl.remove();
-      el.removeAttribute("aria-describedby");
-    }
+  // Custom spend is optional: blank falls back to the checked subscriptions, so
+  // it validates separately (empty is fine, a provided value must be >= 0).
+  const spendEl = doc.getElementById(FIELD_IDS.customSpend);
+  if (spendEl) {
+    const { valid, message } = validateCustomSpend(spendEl.value);
+    applyFieldValidity(doc, spendEl, valid, message);
+    if (!valid) allValid = false;
   }
   return allValid;
 }
@@ -260,6 +299,7 @@ function renderResults(doc, state, valid) {
   const savingsEl = doc.querySelector('[data-metric="savings"]');
 
   const chartHint = doc.querySelector("#cost-chart .chart-hint");
+  const spendBasis = doc.getElementById("spend-basis");
 
   if (!valid) {
     if (status) {
@@ -269,6 +309,7 @@ function renderResults(doc, state, valid) {
     if (breakevenEl) breakevenEl.textContent = "—";
     if (paymentEl) paymentEl.textContent = "—";
     if (savingsEl) savingsEl.textContent = "—";
+    if (spendBasis) spendBasis.textContent = "";
     // Clear any stale summary so an invalid state never leaves a prior
     // "no break-even" (or break-even) message visible in the chart region.
     if (chartHint) {
@@ -294,6 +335,12 @@ function renderResults(doc, state, valid) {
       result.breakEvenMonth === null
         ? `Break-even not reached within ${horizonMonths} months.`
         : `Break-even reached in ${formatBreakEven(result.breakEvenMonth)}.`;
+  }
+  if (spendBasis) {
+    const monthly = formatCurrency(monthlySubscriptionCost(state));
+    spendBasis.textContent = hasCustomSpend(state)
+      ? `Comparing against your custom ${monthly}/mo subscription spend.`
+      : `Comparing against ${monthly}/mo from the selected subscriptions.`;
   }
 
   renderSeries(doc, result.series, result.breakEvenMonth);
@@ -321,6 +368,7 @@ function update(doc, win) {
   const valid = validateForm(doc);
   const state = readState(doc);
   renderResults(doc, state, valid);
+  syncSpendPreset(doc);
   if (win) syncShareUrl(doc, win);
   return state;
 }
@@ -347,6 +395,56 @@ function renderSubscriptionOptions(doc, preselected) {
     );
     container.appendChild(label);
   }
+}
+
+/**
+ * Populate the common-spend preset selector from data. The leading placeholder
+ * option keeps the "custom / from subscriptions" fallback selectable.
+ */
+function renderSpendPresets(doc) {
+  const select = doc.getElementById("spend-preset");
+  if (!select) return;
+  select.innerHTML = "";
+
+  const placeholder = doc.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Custom / from subscriptions";
+  select.appendChild(placeholder);
+
+  for (const preset of spendPresets) {
+    const option = doc.createElement("option");
+    option.value = String(preset.value);
+    option.textContent = preset.label;
+    select.appendChild(option);
+  }
+}
+
+/**
+ * Keep the preset selector in step with the custom-spend input: a value that
+ * matches a preset selects it, anything else (including a manual entry or a
+ * blank) falls back to the placeholder.
+ */
+function syncSpendPreset(doc) {
+  const select = doc.getElementById("spend-preset");
+  const input = doc.getElementById(FIELD_IDS.customSpend);
+  if (!select || !input) return;
+  const match = spendPresets.find((preset) => String(preset.value) === input.value);
+  select.value = match ? String(match.value) : "";
+}
+
+/**
+ * Wire the preset selector so choosing a level fills the custom-spend input and
+ * recomputes. The selector itself is never part of the serialized state — it is
+ * purely a shortcut for the custom-spend input.
+ */
+function wireSpendPresets(doc, win) {
+  const select = doc.getElementById("spend-preset");
+  const input = doc.getElementById(FIELD_IDS.customSpend);
+  if (!select || !input) return;
+  select.addEventListener("change", () => {
+    if (select.value !== "") input.value = select.value;
+    update(doc, win);
+  });
 }
 
 function externalLink(doc, href, text, affiliate) {
@@ -622,6 +720,11 @@ function applyState(doc, state) {
     if (!el) continue;
     if (el.type === "checkbox") {
       if (BOOLEAN_FIELDS.includes(key)) el.checked = Boolean(state[key]);
+    } else if (key === "customSpend") {
+      // Optional field: an empty default must actively clear a prior entry
+      // (e.g. on reset), so unlike the numeric inputs it is not guarded on "".
+      el.value =
+        state[key] === undefined || state[key] === "" ? "" : state[key];
     } else if (state[key] !== undefined && state[key] !== "") {
       el.value = state[key];
     }
@@ -687,12 +790,15 @@ export function initCalculator(doc, win) {
 
   const hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
   renderSubscriptionOptions(doc, initialState.subscriptions);
+  renderSpendPresets(doc);
   renderComparison(doc);
   renderPricing(doc);
   renderAssumptions(doc);
 
   wireOutboundLinks(doc, analytics);
+  wireSpendPresets(doc, win);
   applyState(doc, { ...defaults, ...initialState });
+  syncSpendPreset(doc);
   // Reflect a preset that arrived via the URL/hash, so a shared link that
   // matches a featured box lands with that card already highlighted.
   setActiveHardwareCard(hardwareCards, matchLoadedHardware(doc));

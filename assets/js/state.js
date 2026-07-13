@@ -20,6 +20,27 @@ export const NUMERIC_FIELDS = {
 export const BOOLEAN_FIELDS = ["maintenance", "resale", "taxes"];
 
 /**
+ * Optional custom monthly subscription spend. Kept out of NUMERIC_FIELDS
+ * because an empty value is meaningful (fall back to the checked subscriptions)
+ * rather than an error; only a provided value is validated.
+ */
+export const CUSTOM_SPEND_FIELD = "customSpend";
+
+/**
+ * Validate the optional custom monthly spend. Blank is valid (the calculator
+ * falls back to the checked subscriptions); any provided value must be a
+ * non-negative number.
+ * @param {unknown} value
+ * @returns {{ valid: boolean, message: string }}
+ */
+export function validateCustomSpend(value) {
+  if (value === "" || value === null || value === undefined) {
+    return { valid: true, message: "" };
+  }
+  return validateNumber(value, { min: 0 });
+}
+
+/**
  * Validate a single numeric field value.
  * @param {unknown} value
  * @param {{ min?: number, max?: number }} bounds
@@ -56,6 +77,12 @@ export function serializeState(state) {
   }
   for (const key of BOOLEAN_FIELDS) {
     if (state[key]) params.set(key, "1");
+  }
+  if (
+    state[CUSTOM_SPEND_FIELD] !== undefined &&
+    state[CUSTOM_SPEND_FIELD] !== ""
+  ) {
+    params.set(CUSTOM_SPEND_FIELD, String(state[CUSTOM_SPEND_FIELD]));
   }
   if (Array.isArray(state.subscriptions) && state.subscriptions.length) {
     params.set("subs", state.subscriptions.join(","));
@@ -112,6 +139,10 @@ export function parseState(search, defaults = {}) {
   }
   for (const key of BOOLEAN_FIELDS) {
     if (params.has(key)) state[key] = params.get(key) === "1";
+  }
+  if (params.has(CUSTOM_SPEND_FIELD)) {
+    const num = Number(params.get(CUSTOM_SPEND_FIELD));
+    if (Number.isFinite(num)) state[CUSTOM_SPEND_FIELD] = num;
   }
   if (params.has("subs")) {
     state.subscriptions = params.get("subs").split(",").filter(Boolean);
