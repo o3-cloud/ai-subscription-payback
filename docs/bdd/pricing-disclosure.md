@@ -4,7 +4,8 @@
 Scenario: Subscription prices and sources are disclosed
   Given the pricing section
   When the visitor views it
-  Then each subscription's price, plan, and source is listed
+  Then each subscription's price, plan, source label, and source link are listed
+  And each entry shows when the price was last curated
 
 Scenario: Pricing section shows pricing freshness
   Given the pricing section

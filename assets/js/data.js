@@ -27,6 +27,7 @@
  * @property {string} plan
  * @property {number} monthlyPrice
  * @property {string} sourceUrl - where the price was quoted from
+ * @property {string} sourceLabel - short provenance for the number (official vendor pricing, …)
  * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was curated
  * @property {boolean} [defaultSelected]
  */
@@ -70,6 +71,7 @@ export const subscriptions = [
     plan: "Individual (monthly)",
     monthlyPrice: 20,
     sourceUrl: "https://openai.com/",
+    sourceLabel: "Official OpenAI pricing",
     lastUpdated: "2026-07-01",
     defaultSelected: true,
   },
@@ -79,6 +81,7 @@ export const subscriptions = [
     plan: "Pro (monthly)",
     monthlyPrice: 20,
     sourceUrl: "https://claude.com/product/claude-code",
+    sourceLabel: "Official Anthropic pricing",
     lastUpdated: "2026-07-01",
     defaultSelected: true,
   },
@@ -96,7 +99,6 @@ export const hardware = [
     id: "mac-studio",
     name: "Mac Studio",
     spec: "Apple silicon, up to 512 GB unified memory",
-    sourceLabel: "Official Apple listing",
     priceLow: 3999,
     priceHigh: 8999,
     priceNote:
@@ -111,7 +113,6 @@ export const hardware = [
     id: "dgx-spark",
     name: "NVIDIA DGX Spark",
     spec: "GB10 Grace Blackwell desktop, 128 GB unified memory",
-    sourceLabel: "Estimated street price",
     priceLow: 2999,
     priceHigh: 3999,
     priceNote:
@@ -126,7 +127,6 @@ export const hardware = [
     id: "strix-halo",
     name: "AMD Strix Halo workstation",
     spec: "Ryzen AI Max+ 395 mini-PC, up to 128 GB unified memory",
-    sourceLabel: "Class estimate",
     priceLow: 1599,
     priceHigh: 2499,
     priceNote:

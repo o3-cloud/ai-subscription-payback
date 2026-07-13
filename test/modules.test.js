@@ -45,6 +45,7 @@ test("every pricing entry carries a source URL and a last-updated date", async (
     assert.equal(typeof sub.id, "string");
     assert.equal(typeof sub.name, "string");
     assert.equal(typeof sub.monthlyPrice, "number");
+    assert.equal(typeof sub.sourceLabel, "string");
     assert.match(sub.sourceUrl, /^https?:\/\//, `${sub.id} needs a source URL`);
     assert.match(sub.lastUpdated, ISO_DATE, `${sub.id} needs a last-updated date`);
   }

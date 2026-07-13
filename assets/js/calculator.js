@@ -352,6 +352,38 @@ function externalLink(doc, href, text, affiliate) {
   return a;
 }
 
+/** Append a machine-readable last-updated stamp for a pricing entry. */
+function appendFreshness(doc, parent, lastUpdated) {
+  if (!lastUpdated) return;
+  parent.appendChild(doc.createTextNode(" · updated "));
+  const time = doc.createElement("time");
+  time.className = "source-updated";
+  time.setAttribute("datetime", lastUpdated);
+  time.textContent = lastUpdated;
+  parent.appendChild(time);
+}
+
+/**
+ * Append the price provenance for a pricing entry: a short source label, an
+ * outbound link to the quoted source, and the date the number was last curated.
+ *
+ * This deliberately renders only pricing provenance — never the affiliate CTA —
+ * so the visible "where this price came from" trail can never be conflated with
+ * a commissioned link. Callers append the affiliate CTA separately with
+ * `appendAffiliateLink`, keeping the two concerns visibly and structurally apart.
+ */
+function appendSourceProvenance(doc, parent, entry) {
+  if (entry.sourceLabel) {
+    const label = doc.createElement("span");
+    label.className = "source-label";
+    label.textContent = entry.sourceLabel;
+    parent.appendChild(label);
+    parent.appendChild(doc.createTextNode(" · "));
+  }
+  parent.appendChild(externalLink(doc, entry.sourceUrl, "Source", false));
+  appendFreshness(doc, parent, entry.lastUpdated);
+}
+
 /**
  * Append the reseller / affiliate call to action for a pricing entry, pulling
  * it from the separate affiliate metadata rather than the pricing entry itself.
@@ -384,7 +416,7 @@ function renderComparison(doc) {
       `<td>${sub.name}</td><td>${sub.plan}</td>` +
       `<td>${formatCurrency(sub.monthlyPrice)}/mo</td>`;
     const sourceCell = doc.createElement("td");
-    sourceCell.appendChild(externalLink(doc, sub.sourceUrl, "Source", false));
+    appendSourceProvenance(doc, sourceCell, sub);
     appendAffiliateLink(doc, sourceCell, sub.id);
     row.appendChild(sourceCell);
     body.appendChild(row);
@@ -396,7 +428,7 @@ function renderComparison(doc) {
       `<td>${box.name}</td><td>${box.spec}</td>` +
       `<td>${priceRange(box.priceLow, box.priceHigh)}</td>`;
     const sourceCell = doc.createElement("td");
-    sourceCell.appendChild(externalLink(doc, box.sourceUrl, "Source", false));
+    appendSourceProvenance(doc, sourceCell, box);
     appendAffiliateLink(doc, sourceCell, box.id);
     row.appendChild(sourceCell);
     body.appendChild(row);
@@ -438,8 +470,8 @@ function renderFeaturedHardware(doc, win, analytics) {
 
     const source = doc.createElement("p");
     source.className = "hardware-card-source";
-    source.appendChild(doc.createTextNode(`Source: ${box.sourceLabel} `));
-    source.appendChild(externalLink(doc, box.sourceUrl, "View source", false));
+    source.appendChild(doc.createTextNode("Source: "));
+    appendSourceProvenance(doc, source, box);
     card.appendChild(source);
 
     const note = doc.createElement("p");
@@ -498,7 +530,7 @@ function renderPricing(doc) {
     for (const sub of subscriptions) {
       const li = doc.createElement("li");
       li.textContent = `${sub.name} — ${sub.plan}: ${formatCurrency(sub.monthlyPrice)}/mo. `;
-      li.appendChild(externalLink(doc, sub.sourceUrl, "Source", false));
+      appendSourceProvenance(doc, li, sub);
       appendAffiliateLink(doc, li, sub.id);
       list.appendChild(li);
     }
@@ -508,7 +540,7 @@ function renderPricing(doc) {
         box.priceLow,
         box.priceHigh
       )}. ${box.priceNote} `;
-      li.appendChild(externalLink(doc, box.sourceUrl, "Source", false));
+      appendSourceProvenance(doc, li, box);
       appendAffiliateLink(doc, li, box.id);
       list.appendChild(li);
     }
