@@ -1,5 +1,10 @@
 # PRD — Affiliate Payback Calculator for Local AI Inference Boxes
 
+> **MVP scope:** the launch boundary, shipped assumptions, and commercial model
+> are specified as behavior in
+> [MVP Scope and Commercial Model](docs/bdd/mvp-scope.md). The Goals, Non-Goals,
+> and Monetization sections below are the source those scenarios track.
+
 ## Problem Statement
 
 Developers and small teams often pay recurring monthly fees for AI coding

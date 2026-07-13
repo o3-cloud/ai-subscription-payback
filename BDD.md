@@ -3,6 +3,7 @@
 The behavior specifications now live in `docs/bdd/` as one file per feature area.
 
 ## Files
+- [MVP Scope and Commercial Model](docs/bdd/mvp-scope.md)
 - [Static Site Delivery](docs/bdd/static-site-delivery.md)
 - [Calculator Inputs](docs/bdd/calculator-inputs.md)
 - [Calculator Outputs](docs/bdd/calculator-outputs.md)

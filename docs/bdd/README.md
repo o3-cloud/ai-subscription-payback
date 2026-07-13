@@ -3,6 +3,7 @@
 This directory contains one behavior-focused BDD file per feature area for the static GitHub Pages site.
 
 ## Files
+- [MVP Scope and Commercial Model](./mvp-scope.md)
 - [Static Site Delivery](./static-site-delivery.md)
 - [Featured Hardware Cards](./featured-hardware-cards.md)
 - [Calculator Inputs](./calculator-inputs.md)
