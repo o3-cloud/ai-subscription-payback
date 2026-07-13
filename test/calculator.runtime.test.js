@@ -746,3 +746,53 @@ test("editing inputs keeps the shareable URL in sync", async () => {
   const params = new URLSearchParams(latest.hash.slice(1));
   assert.equal(params.get("boxPrice"), "4200");
 });
+
+test("resetting the form restores inputs, subscriptions, results, and hash to defaults", async () => {
+  const { doc, win } = boot();
+
+  // The hash the calculator boots with is the default scenario we must return to.
+  const defaultHash = new URL(win._historyUrls.at(-1)).hash;
+  const defaultStatus = doc.getElementById("results-status").textContent;
+
+  const subscriptionSelection = () =>
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+      .map((el) => el.value);
+  const defaultSubs = subscriptions.filter((s) => s.defaultSelected).map((s) => s.id);
+  assert.deepEqual(subscriptionSelection(), defaultSubs);
+
+  // Edit a spread of controls: numeric inputs, an optional toggle, and the
+  // subscription selection, so every reset-restored surface starts off-default.
+  doc.getElementById("box-price").value = "9999";
+  doc.getElementById("apr").value = "3.3";
+  doc.getElementById("term").value = "48";
+  doc.getElementById("opt-maintenance").checked = true;
+  const claudeCode = doc
+    .querySelectorAll('#subscription-options input[type="checkbox"]')
+    .find((el) => el.value === "claude-code");
+  assert.ok(claudeCode, "expected the Claude Code subscription checkbox");
+  claudeCode.checked = false;
+
+  // Push the edits through so the pre-reset hash and results diverge from default.
+  await doc.getElementById("calculator-form").dispatch("input");
+  assert.notEqual(new URL(win._historyUrls.at(-1)).hash, defaultHash);
+  assert.notDeepEqual(subscriptionSelection(), defaultSubs);
+
+  // Reset, awaiting in case the handler defers its restore.
+  await doc.getElementById("calculator-form").dispatch("reset");
+
+  // Every visible input is back to its default value.
+  assert.equal(doc.getElementById("box-price").value, defaults.boxPrice);
+  assert.equal(doc.getElementById("apr").value, defaults.apr);
+  assert.equal(doc.getElementById("term").value, defaults.term);
+  assert.equal(doc.getElementById("opt-maintenance").checked, defaults.maintenance);
+
+  // The default subscriptions are re-selected.
+  assert.deepEqual(subscriptionSelection(), defaultSubs);
+
+  // Results are recomputed from the defaults.
+  assert.equal(doc.getElementById("results-status").textContent, defaultStatus);
+
+  // The shareable hash is back to the default scenario.
+  assert.equal(new URL(win._historyUrls.at(-1)).hash, defaultHash);
+});

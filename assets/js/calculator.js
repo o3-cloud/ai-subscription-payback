@@ -661,13 +661,19 @@ export function initCalculator(doc, win) {
       analytics.trackInteraction();
       update(doc, win);
     });
-    form.addEventListener("reset", () => {
-      // Let the native reset run first, then restore data-driven defaults.
-      win.setTimeout(() => {
-        renderSubscriptionOptions(doc);
-        applyState(doc, defaults);
-        update(doc, win);
-      }, 0);
+    form.addEventListener("reset", (event) => {
+      // Own the restore outright instead of racing the native reset. The inputs
+      // carry no default `value` attributes, so a native reset would blank them
+      // and leave correctness depending on a deferred re-apply firing in time.
+      // Cancel it and restore the data-driven defaults synchronously so every
+      // visible input, the selected subscriptions, the results, and the
+      // shareable hash return to defaults in one pass.
+      if (event && typeof event.preventDefault === "function") {
+        event.preventDefault();
+      }
+      renderSubscriptionOptions(doc);
+      applyState(doc, defaults);
+      update(doc, win);
     });
   }
 

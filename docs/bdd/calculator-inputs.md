@@ -46,4 +46,12 @@ Scenario: Fixing an invalid input restores the result
   When the visitor corrects the value so all inputs are valid
   Then the field validation message clears
   And the chart summary and result are recomputed from the corrected inputs
+
+Scenario: Reset restores the default scenario
+  Given the visitor has changed inputs, optional toggles, or the selected subscriptions
+  When the visitor clicks "Reset to defaults"
+  Then every calculator input returns to its default value
+  And the default subscriptions are re-selected
+  And the result recomputes from the defaults
+  And the shareable link reflects the default scenario
 ```
