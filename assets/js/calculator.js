@@ -447,16 +447,54 @@ function setInputValue(doc, id, value) {
   el.value = String(value);
 }
 
+/**
+ * Mark the card for `boxId` as the loaded system and clear the highlight from
+ * every other card, so the featured grid always shows exactly one active box.
+ * Pass `null` to clear all highlights.
+ * @param {Array<{ id: string, card: object }>} cards
+ * @param {string|null} boxId
+ */
+function setActiveHardwareCard(cards, boxId) {
+  for (const { id, card } of cards) {
+    if (id === boxId) {
+      card.setAttribute("data-active", "true");
+    } else {
+      card.removeAttribute("data-active");
+    }
+  }
+}
+
+/**
+ * Identify which featured hardware box, if any, the current inputs match. A box
+ * is considered "loaded" only when both its price and power draw match, which
+ * disambiguates boxes that share a default price.
+ * @param {object} doc
+ * @returns {string|null} the matching hardware id, or null
+ */
+function matchLoadedHardware(doc) {
+  const boxPrice = toNumber(doc.getElementById(FIELD_IDS.boxPrice)?.value);
+  const powerDraw = toNumber(doc.getElementById(FIELD_IDS.powerDraw)?.value);
+  const match = hardware.find(
+    (box) =>
+      (box.defaultBoxPrice ?? box.priceLow) === boxPrice &&
+      (box.powerDraw ?? defaults.powerDraw) === powerDraw
+  );
+  return match ? match.id : null;
+}
+
 function renderFeaturedHardware(doc, win, analytics) {
   const container = doc.getElementById("featured-hardware-cards");
   const status = doc.getElementById("featured-hardware-status");
-  if (!container) return;
+  if (!container) return null;
 
   container.innerHTML = "";
+
+  const cards = [];
 
   for (const box of hardware) {
     const card = doc.createElement("article");
     card.className = "hardware-card";
+    cards.push({ id: box.id, card });
 
     const title = doc.createElement("h3");
     title.className = "hardware-card-title";
@@ -509,6 +547,7 @@ function renderFeaturedHardware(doc, win, analytics) {
       if (status) {
         status.textContent = `${box.name} loaded into the calculator.`;
       }
+      setActiveHardwareCard(cards, box.id);
       update(doc, win);
     });
     actions.appendChild(useButton);
@@ -527,6 +566,8 @@ function renderFeaturedHardware(doc, win, analytics) {
   if (status && !status.textContent.trim()) {
     status.textContent = "Choose a system to load its assumptions into the calculator.";
   }
+
+  return cards;
 }
 
 function renderPricing(doc) {
@@ -644,7 +685,7 @@ export function initCalculator(doc, win) {
     defaults
   );
 
-  renderFeaturedHardware(doc, win, analytics);
+  const hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
   renderSubscriptionOptions(doc, initialState.subscriptions);
   renderComparison(doc);
   renderPricing(doc);
@@ -652,6 +693,9 @@ export function initCalculator(doc, win) {
 
   wireOutboundLinks(doc, analytics);
   applyState(doc, { ...defaults, ...initialState });
+  // Reflect a preset that arrived via the URL/hash, so a shared link that
+  // matches a featured box lands with that card already highlighted.
+  setActiveHardwareCard(hardwareCards, matchLoadedHardware(doc));
   update(doc, win);
 
   const form = doc.getElementById("calculator-form");
@@ -673,6 +717,7 @@ export function initCalculator(doc, win) {
       }
       renderSubscriptionOptions(doc);
       applyState(doc, defaults);
+      setActiveHardwareCard(hardwareCards, matchLoadedHardware(doc));
       update(doc, win);
     });
   }

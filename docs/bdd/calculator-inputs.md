@@ -14,9 +14,16 @@ Scenario: Select subscriptions to compare
 
 Scenario: Select a featured hardware profile
   Given the calculator is visible
-  When the visitor selects Mac Studio, DGX Spark, or Strix Halo
+  When the visitor clicks "Use this system" on Mac Studio, DGX Spark, or Strix Halo
   Then the corresponding hardware assumptions load into the form
   And the selected profile updates the payoff calculation
+  And the selected hardware card is visibly marked as active
+  And any previously active hardware card is no longer marked active
+
+Scenario: A shared link that matches a featured profile loads it active
+  Given a shared link whose hardware price and power draw match a featured profile
+  When the page loads from that link
+  Then that featured hardware card is marked as active on initial render
 
 Scenario: Adjust hardware and financing inputs
   Given the calculator is visible
@@ -54,4 +61,5 @@ Scenario: Reset restores the default scenario
   And the default subscriptions are re-selected
   And the result recomputes from the defaults
   And the shareable link reflects the default scenario
+  And no featured hardware card is marked active
 ```

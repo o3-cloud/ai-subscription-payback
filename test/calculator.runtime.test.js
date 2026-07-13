@@ -551,6 +551,54 @@ test("featured hardware preload button loads the calculator scenario", async () 
   );
 });
 
+test("preloading a hardware card marks it active and clears the others", async () => {
+  const { doc } = boot();
+  const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  const buttons = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use");
+
+  await buttons[1].dispatch("click");
+  assert.equal(cards[1].getAttribute("data-active"), "true", "clicked card is active");
+  assert.equal(cards[0].getAttribute("data-active"), null, "other cards stay inactive");
+  assert.equal(cards[2].getAttribute("data-active"), null, "other cards stay inactive");
+
+  await buttons[0].dispatch("click");
+  assert.equal(cards[0].getAttribute("data-active"), "true", "newly clicked card is active");
+  assert.equal(cards[1].getAttribute("data-active"), null, "prior active card is cleared");
+});
+
+test("a hardware preset from the URL renders with its card already active", () => {
+  const box = hardware[2];
+  const { doc } = boot(
+    `?boxPrice=${box.defaultBoxPrice ?? box.priceLow}&powerDraw=${box.powerDraw}`
+  );
+  const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+
+  assert.equal(cards[2].getAttribute("data-active"), "true", "matching card is active");
+  assert.equal(cards[0].getAttribute("data-active"), null);
+  assert.equal(cards[1].getAttribute("data-active"), null);
+});
+
+test("default boot leaves every hardware card inactive", () => {
+  const { doc } = boot();
+  const active = doc.querySelectorAll(
+    '#featured-hardware-cards .hardware-card[data-active="true"]'
+  );
+  assert.equal(active.length, 0, "no card is active until a system is loaded");
+});
+
+test("resetting the form clears the active hardware card", async () => {
+  const { doc } = boot();
+  const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  await doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[0].dispatch("click");
+  assert.equal(cards[0].getAttribute("data-active"), "true");
+
+  await doc.getElementById("calculator-form").dispatch("reset");
+  const active = doc.querySelectorAll(
+    '#featured-hardware-cards .hardware-card[data-active="true"]'
+  );
+  assert.equal(active.length, 0, "reset clears the active highlight");
+});
+
 test("initCalculator renders the real results state for valid inputs", () => {
   const { doc } = boot();
   assert.equal(
