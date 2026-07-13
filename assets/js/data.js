@@ -325,7 +325,7 @@ export const optionalCostRates = {
 
 /** Human-readable assumptions surfaced in the methodology section. */
 export const assumptions = [
-  "Subscriptions are billed monthly at the listed per-seat price.",
+  "Subscriptions are compared at their monthly per-seat price. Annually billed tiers use the effective monthly cost (annual price ÷ 12), so the comparison stays month-by-month even when a plan is paid yearly up front.",
   "Hardware is financed: principal is (box price − down payment), repaid over the term at the given APR as a fixed monthly loan payment.",
   `Electricity cost = power draw (kW) × hours per day × ${daysPerMonth} days × rate per kWh.`,
   `Optional maintenance adds ${optionalCostRates.maintenanceAnnualRate * 100}% of the box price per year, spread evenly across the months.`,
