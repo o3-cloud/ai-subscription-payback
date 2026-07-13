@@ -54,6 +54,17 @@ test("the workflow uses the official Pages actions to publish the site root", ()
   );
 });
 
+test("the workflow enables Pages itself, needing no manual Settings step", () => {
+  const yml = read(WORKFLOW);
+  // configure-pages with enablement: true turns Pages on via the API on the
+  // first run, so deploys stay hands-off once the repo is eligible for Pages.
+  assert.match(
+    yml,
+    /configure-pages@[^\n]*[\s\S]*?enablement:\s*true/,
+    "configure-pages sets enablement: true"
+  );
+});
+
 test("the workflow publishes to the github-pages environment", () => {
   const yml = read(WORKFLOW);
   assert.match(yml, /name:\s*github-pages/, "targets the github-pages environment");
@@ -74,4 +85,19 @@ test("the README documents the Pages deployment location and process", () => {
   assert.ok(readme.includes(SITE_URL), "README states the live site URL");
   assert.match(readme, /GitHub Pages/i, "README names the hosting platform");
   assert.match(readme, /deploy\.yml/, "README links the deployment workflow");
+  assert.match(
+    readme,
+    /Repository eligibility \(current blocker\)/,
+    "README explains the current Pages eligibility blocker"
+  );
+});
+
+test("the static-site-delivery BDD records the current Pages eligibility blocker", () => {
+  const bdd = read("docs/bdd/static-site-delivery.md");
+  assert.match(bdd, /Current blocker: GitHub Pages publishing/i, "notes the blocker");
+  assert.match(
+    bdd,
+    /private repository on a free[\s\S]*organization plan/i,
+    "states the plan constraint"
+  );
 });
