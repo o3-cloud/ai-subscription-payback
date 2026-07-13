@@ -526,6 +526,60 @@ test("initCalculator boots the form from static data and defaults", () => {
   );
 });
 
+test("comparison table renders billing cadence and included value for every tier", () => {
+  const { doc } = boot();
+
+  // One subscription row per tier, each carrying a billing-cadence line and an
+  // included-value line alongside the headline monthly price.
+  assert.equal(
+    doc.querySelectorAll("#comparison-body .plan-cadence").length,
+    subscriptions.length,
+    "every subscription row shows its billing cadence"
+  );
+  assert.equal(
+    doc.querySelectorAll("#comparison-body .plan-included").length,
+    subscriptions.length,
+    "every subscription row shows its included value"
+  );
+
+  const cadences = doc
+    .querySelectorAll("#comparison-body .plan-cadence")
+    .map((el) => el.textContent);
+  const included = doc
+    .querySelectorAll("#comparison-body .plan-included")
+    .map((el) => el.textContent);
+  for (const sub of subscriptions) {
+    assert.ok(cadences.includes(sub.billingCadence), `missing cadence for ${sub.id}`);
+    assert.ok(included.includes(sub.includedValue), `missing included value for ${sub.id}`);
+  }
+});
+
+test("pricing list discloses billing cadence for every tier", () => {
+  const { doc } = boot();
+  const items = doc.getElementById("pricing-list").children.slice(0, subscriptions.length);
+  for (let i = 0; i < subscriptions.length; i += 1) {
+    const sub = subscriptions[i];
+    assert.match(
+      items[i].textContent,
+      new RegExp(sub.billingCadence.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+      `pricing list discloses the ${sub.id} billing cadence`
+    );
+  }
+});
+
+test("default selected subscriptions compare against $40/mo", () => {
+  const { doc } = boot();
+  // Codex + Claude Code Pro (monthly) are preselected and total $40/mo.
+  const checked = doc
+    .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+    .map((el) => el.value);
+  assert.deepEqual(checked, ["codex", "claude-code"]);
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against $40/mo from the selected subscriptions."
+  );
+});
+
 test("preset spend selector fills the custom spend input", async () => {
   const { doc } = boot();
   const select = doc.getElementById("spend-preset");

@@ -44,7 +44,14 @@ test("every pricing entry carries a source URL and a last-updated date", async (
   for (const sub of data.subscriptions) {
     assert.equal(typeof sub.id, "string");
     assert.equal(typeof sub.name, "string");
+    assert.equal(typeof sub.plan, "string");
     assert.equal(typeof sub.monthlyPrice, "number");
+    // Every tier documents its billing cadence and what it includes while still
+    // carrying a numeric monthlyPrice for the comparison.
+    assert.equal(typeof sub.billingCadence, "string", `${sub.id} needs a billing cadence`);
+    assert.ok(sub.billingCadence.length > 0, `${sub.id} billing cadence is empty`);
+    assert.equal(typeof sub.includedValue, "string", `${sub.id} needs included-value text`);
+    assert.ok(sub.includedValue.length > 0, `${sub.id} included-value is empty`);
     assert.equal(typeof sub.sourceLabel, "string");
     assert.match(sub.sourceUrl, /^https?:\/\//, `${sub.id} needs a source URL`);
     assert.match(sub.lastUpdated, ISO_DATE, `${sub.id} needs a last-updated date`);
@@ -62,6 +69,44 @@ test("every pricing entry carries a source URL and a last-updated date", async (
     assert.match(box.sourceUrl, /^https?:\/\//, `${box.id} needs a source URL`);
     assert.match(box.lastUpdated, ISO_DATE, `${box.id} needs a last-updated date`);
   }
+});
+
+test("subscriptions cover the Codex and Claude Code public tiers", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Codex keeps its single individual plan; Claude Code carries the full ladder.
+  const expected = {
+    codex: 20,
+    "claude-code": 20, // Pro monthly
+    "claude-pro-annual": 17,
+    "claude-max-5x": 100,
+    "claude-team-standard-monthly": 25,
+    "claude-team-standard-annual": 20,
+    "claude-team-premium-monthly": 125,
+    "claude-team-premium-annual": 100,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    assert.ok(byId.has(id), `missing subscription tier: ${id}`);
+    assert.equal(byId.get(id).monthlyPrice, monthlyPrice, `${id} monthly price`);
+  }
+
+  // Annually billed tiers compare at their effective monthly price and say so.
+  for (const id of ["claude-pro-annual", "claude-team-standard-annual", "claude-team-premium-annual"]) {
+    assert.match(byId.get(id).billingCadence, /annual/i, `${id} discloses annual billing`);
+  }
+});
+
+test("default-selected subscriptions total $40/mo", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const defaultSelected = subscriptions.filter((s) => s.defaultSelected);
+  // Exactly Codex + Claude Code Pro (monthly), the baseline comparison basis.
+  assert.deepEqual(
+    defaultSelected.map((s) => s.id),
+    ["codex", "claude-code"]
+  );
+  const total = defaultSelected.reduce((sum, s) => sum + s.monthlyPrice, 0);
+  assert.equal(total, 40);
 });
 
 test("hardware features the Mac Studio, DGX Spark, and Strix Halo classes", async () => {

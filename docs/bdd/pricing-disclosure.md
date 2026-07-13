@@ -7,6 +7,26 @@ Scenario: Subscription prices and sources are disclosed
   Then each subscription's price, plan, source label, and source link are listed
   And each entry shows when the price was last curated
 
+Scenario: Supported subscription tiers are listed
+  Given the comparison and pricing sections
+  When the visitor views them
+  Then the Codex individual plan is listed
+  And the Claude Code tiers are listed: Pro monthly, Pro annual, Max 5×, Team standard seat (monthly and annual), and Team premium seat (monthly and annual)
+  And each tier is distinguishable by its plan name even when it shares a product name
+
+Scenario: Billing cadence and included value are shown
+  Given a subscription tier in the comparison or pricing section
+  When the visitor views it
+  Then the monthly comparison price is shown as the headline number
+  And the tier's billing cadence is shown (monthly, annual up front, or per seat)
+  And a short description of what the tier includes is shown
+
+Scenario: Annually billed tiers compare at their effective monthly price
+  Given an annually billed tier such as Claude Code Pro annual
+  When the calculator compares subscription spend
+  Then the tier contributes its effective monthly price (annual price ÷ 12) to the comparison
+  And the annual billing cadence is disclosed as context but does not change the math
+
 Scenario: Pricing section shows pricing freshness
   Given the pricing section
   When the visitor views it

@@ -31,6 +31,13 @@ stay consistent with the methodology copy.
 
 - **Monthly subscription cost** is the sum of the monthly price of every
   selected plan. With no plan selected it is `0`.
+- **`monthlyPrice` is the comparison value for every tier, regardless of billing
+  cadence.** Annually billed tiers store their effective monthly cost
+  (annual price ÷ 12) as `monthlyPrice`, so the cumulative comparison stays
+  month-by-month even when a plan is actually paid yearly up front. The real
+  cadence is documented per tier in `billingCadence` and shown in the comparison
+  and pricing sections, but it never changes the math — a $200/yr Pro annual plan
+  compares at `$17/mo`, not as a lump sum.
 - **Monthly loan payment** amortizes the financed principal
   `max(0, boxPrice − downPayment)` over `term` months at `apr/100/12` per month.
   When the APR is `0` the payment is a flat `principal / term`; when nothing is

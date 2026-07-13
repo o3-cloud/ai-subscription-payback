@@ -453,6 +453,16 @@ thead th {
   font-size: 0.9rem;
 }
 
+/* Secondary plan lines in the comparison table: billing cadence and what a tier
+   includes, kept muted so the monthly comparison price stays the headline. */
+.plan-detail {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
 /* ---------- Disclosures / lists ---------- */
 .disclosure {
   background: var(--color-surface);

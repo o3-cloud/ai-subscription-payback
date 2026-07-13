@@ -533,9 +533,26 @@ function renderComparison(doc) {
 
   for (const sub of subscriptions) {
     const row = doc.createElement("tr");
-    row.innerHTML =
-      `<td>${sub.name}</td><td>${sub.plan}</td>` +
-      `<td>${formatCurrency(sub.monthlyPrice)}/mo</td>`;
+
+    const nameCell = doc.createElement("td");
+    nameCell.textContent = sub.name;
+    row.appendChild(nameCell);
+
+    // Plan cell carries the tier name plus what a seat at this tier includes.
+    const planCell = doc.createElement("td");
+    planCell.appendChild(doc.createTextNode(sub.plan));
+    appendPlanDetail(doc, planCell, "plan-included", sub.includedValue);
+    row.appendChild(planCell);
+
+    // Price cell keeps the monthly comparison value as the headline and shows
+    // the real billing cadence (monthly, annual up front, per seat) beneath it.
+    const priceCell = doc.createElement("td");
+    priceCell.appendChild(
+      doc.createTextNode(`${formatCurrency(sub.monthlyPrice)}/mo`)
+    );
+    appendPlanDetail(doc, priceCell, "plan-cadence", sub.billingCadence);
+    row.appendChild(priceCell);
+
     const sourceCell = doc.createElement("td");
     appendSourceProvenance(doc, sourceCell, sub);
     appendAffiliateLink(doc, sourceCell, sub.id);
@@ -691,7 +708,9 @@ function renderPricing(doc) {
     list.innerHTML = "";
     for (const sub of subscriptions) {
       const li = doc.createElement("li");
-      li.textContent = `${sub.name} — ${sub.plan}: ${formatCurrency(sub.monthlyPrice)}/mo. `;
+      li.textContent =
+        `${sub.name} — ${sub.plan}: ${formatCurrency(sub.monthlyPrice)}/mo ` +
+        `(${sub.billingCadence}). ${sub.includedValue} `;
       appendSourceProvenance(doc, li, sub);
       appendAffiliateLink(doc, li, sub.id);
       list.appendChild(li);
