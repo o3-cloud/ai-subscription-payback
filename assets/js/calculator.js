@@ -390,8 +390,12 @@ function renderSubscriptionOptions(doc, preselected) {
       ? preselected.includes(sub.id)
       : Boolean(sub.defaultSelected);
     label.appendChild(input);
+    // Include the plan so tiers that share a product name (the Claude Code
+    // ladder) stay distinguishable in the checkbox list.
     label.appendChild(
-      doc.createTextNode(` ${sub.name} — ${formatCurrency(sub.monthlyPrice)}/mo`)
+      doc.createTextNode(
+        ` ${sub.name} — ${sub.plan} · ${formatCurrency(sub.monthlyPrice)}/mo`
+      )
     );
     container.appendChild(label);
   }
@@ -500,6 +504,19 @@ function appendAffiliateLink(doc, parent, id) {
   parent.appendChild(
     externalLink(doc, affiliate.url, affiliate.label, affiliate.affiliate)
   );
+}
+
+/**
+ * Append a muted secondary detail line to a table/list cell — used for a plan's
+ * billing cadence and included-value copy, kept separate from the price so the
+ * comparison value (`monthlyPrice`) always reads as the headline number.
+ */
+function appendPlanDetail(doc, parent, className, text) {
+  if (!text) return;
+  const span = doc.createElement("span");
+  span.className = `plan-detail ${className}`;
+  span.textContent = text;
+  parent.appendChild(span);
 }
 
 /** Render a currency range, collapsing to a single value when low === high. */
