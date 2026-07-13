@@ -259,6 +259,8 @@ function renderResults(doc, state, valid) {
   const paymentEl = doc.querySelector('[data-metric="payment"]');
   const savingsEl = doc.querySelector('[data-metric="savings"]');
 
+  const chartHint = doc.querySelector("#cost-chart .chart-hint");
+
   if (!valid) {
     if (status) {
       status.textContent =
@@ -267,6 +269,11 @@ function renderResults(doc, state, valid) {
     if (breakevenEl) breakevenEl.textContent = "—";
     if (paymentEl) paymentEl.textContent = "—";
     if (savingsEl) savingsEl.textContent = "—";
+    // Clear any stale summary so an invalid state never leaves a prior
+    // "no break-even" (or break-even) message visible in the chart region.
+    if (chartHint) {
+      chartHint.textContent = "Fix the highlighted fields to see the chart.";
+    }
     renderSeries(doc, []);
     return;
   }
@@ -291,7 +298,6 @@ function renderResults(doc, state, valid) {
 
   renderSeries(doc, result.series, result.breakEvenMonth);
 
-  const chartHint = doc.querySelector("#cost-chart .chart-hint");
   if (chartHint) {
     chartHint.textContent =
       result.breakEvenMonth === null

@@ -38,4 +38,12 @@ Scenario: Invalid input is handled
   When the visitor enters a negative or non-numeric value
   Then the field shows a validation message
   And the result does not display a nonsensical value
+  And the chart summary does not keep any stale break-even text
+  And the chart region shows a validation-specific hint instead
+
+Scenario: Fixing an invalid input restores the result
+  Given a numeric input field showing a validation message
+  When the visitor corrects the value so all inputs are valid
+  Then the field validation message clears
+  And the chart summary and result are recomputed from the corrected inputs
 ```

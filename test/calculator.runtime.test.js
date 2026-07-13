@@ -585,6 +585,10 @@ test("initCalculator hydrates state from a hash-based share link", () => {
 test("a live edit re-validates and updates the results status", async () => {
   const { doc } = boot();
   const apr = doc.getElementById("apr");
+  const chartHint = doc.querySelector("#cost-chart .chart-hint");
+
+  // The valid default state leaves a "no break-even" summary in the chart hint.
+  assert.equal(chartHint.textContent, "No break-even within 60 months.");
 
   // Invalid: clear a required numeric field, then fire the input listener.
   apr.value = "";
@@ -597,6 +601,15 @@ test("a live edit re-validates and updates the results status", async () => {
   assert.equal(apr.getAttribute("aria-invalid"), "true");
   assert.ok(doc.getElementById("apr-error"), "renders an inline field error");
   assert.equal(doc.querySelector('[data-metric="breakeven"]').textContent, "—");
+  // The stale "no break-even" summary must not survive an invalid input.
+  assert.ok(
+    !/break-even/i.test(chartHint.textContent),
+    "clears stale break-even summary from the chart hint on invalid input"
+  );
+  assert.equal(
+    chartHint.textContent,
+    "Fix the highlighted fields to see the chart."
+  );
 
   // Fixing the value clears the error and restores the valid status.
   apr.value = "5";
@@ -608,6 +621,8 @@ test("a live edit re-validates and updates the results status", async () => {
     doc.getElementById("results-status").textContent,
     "Break-even not reached within 60 months."
   );
+  // Recovery restores the break-even summary in the chart hint.
+  assert.equal(chartHint.textContent, "No break-even within 60 months.");
 });
 
 test("analytics wiring records pageviews, calculator interaction, share, and outbound clicks", async () => {
