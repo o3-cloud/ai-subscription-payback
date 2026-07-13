@@ -15,7 +15,7 @@ import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const jsDir = new URL("../assets/js/", import.meta.url);
-const modules = ["main.js", "calculator.js", "state.js", "data.js"];
+const modules = ["main.js", "calculator.js", "analytics.js", "state.js", "data.js"];
 
 for (const name of modules) {
   test(`${name} exists and is syntactically valid`, () => {
@@ -101,6 +101,52 @@ test("state.js round-trips calculator state through the URL helpers", async () =
   assert.equal(parsed.apr, 9.9);
   assert.equal(parsed.maintenance, true);
   assert.deepEqual(parsed.subscriptions, ["codex"]);
+});
+
+test("analytics.js exports the tracking helpers the UI depends on", async () => {
+  const analytics = await import(new URL("analytics.js", jsDir));
+  assert.equal(typeof analytics.createAnalytics, "function");
+  assert.equal(typeof analytics.track, "function");
+  assert.equal(typeof analytics.doNotTrack, "function");
+  assert.equal(analytics.EVENTS.pageview, "pageview");
+  assert.match(analytics.EVENTS.outboundClick, /Outbound Link/);
+});
+
+test("analytics.js emits aggregate events and honors Do Not Track", async () => {
+  const analyticsModule = await import(new URL("analytics.js", jsDir));
+  const calls = [];
+  const win = {
+    location: { href: "https://payback.example/index.html", pathname: "/index.html" },
+    navigator: {},
+    plausible: (...args) => calls.push(args),
+  };
+
+  const analytics = analyticsModule.createAnalytics(win);
+  analytics.trackPageview();
+  analytics.trackInteraction();
+  analytics.trackInteraction(); // once-per-load
+  analytics.trackShare();
+  analytics.trackOutbound("https://example.com/out", true);
+
+  assert.equal(calls.length, 4);
+  assert.deepEqual(calls[0], [analyticsModule.EVENTS.pageview]);
+  assert.deepEqual(calls[1], [analyticsModule.EVENTS.calculatorInteract]);
+  assert.deepEqual(calls[2], [analyticsModule.EVENTS.scenarioShare]);
+  assert.deepEqual(calls[3], [analyticsModule.EVENTS.outboundClick, {
+    props: {
+      url: "https://example.com/out",
+      affiliate: true,
+    },
+  }]);
+
+  const dntCalls = [];
+  const dntWin = {
+    location: { href: "https://payback.example/index.html", pathname: "/index.html" },
+    navigator: { doNotTrack: "1" },
+    plausible: (...args) => dntCalls.push(args),
+  };
+  analyticsModule.createAnalytics(dntWin).trackPageview();
+  assert.equal(dntCalls.length, 0);
 });
 
 test("state.js validation and formatting behave", async () => {

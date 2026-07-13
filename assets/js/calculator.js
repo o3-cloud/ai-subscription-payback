@@ -32,6 +32,7 @@ import {
   formatCurrency,
   formatBreakEven,
 } from "./state.js";
+import { createAnalytics } from "./analytics.js";
 
 /** Map of state keys to their input element ids. */
 const FIELD_IDS = {
@@ -446,12 +447,33 @@ function applyState(doc, state) {
   }
 }
 
-function wireShare(doc, win) {
+/**
+ * Attach outbound-click tracking to every external link in the comparison and
+ * pricing sections. Links funnel through `externalLink`, which marks affiliate
+ * links with `rel="... sponsored"`, so we can tag each click as affiliate or
+ * not without threading extra state through the render helpers. These sections
+ * render once at boot, so a single pass is enough.
+ */
+function wireOutboundLinks(doc, analytics) {
+  const links = [
+    ...doc.querySelectorAll("#comparison-body a"),
+    ...doc.querySelectorAll("#pricing-list a"),
+  ];
+  for (const link of links) {
+    const href = link.getAttribute("href");
+    if (!href) continue;
+    const affiliate = /\bsponsored\b/.test(link.getAttribute("rel") || "");
+    link.addEventListener("click", () => analytics.trackOutbound(href, affiliate));
+  }
+}
+
+function wireShare(doc, win, analytics) {
   const button = doc.getElementById("share-button");
   const status = doc.getElementById("share-status");
   if (!button) return;
 
   button.addEventListener("click", async () => {
+    if (analytics) analytics.trackShare();
     const state = readState(doc);
     const query = serializeState(state);
     const base = win.location.origin + win.location.pathname;
@@ -480,6 +502,7 @@ function wireShare(doc, win) {
  * @param {Window} win
  */
 export function initCalculator(doc, win) {
+  const analytics = createAnalytics(win);
   const initialState = parseState(win.location ? win.location.search : "", defaults);
 
   renderSubscriptionOptions(doc, initialState.subscriptions);
@@ -487,12 +510,16 @@ export function initCalculator(doc, win) {
   renderPricing(doc);
   renderAssumptions(doc);
 
+  wireOutboundLinks(doc, analytics);
   applyState(doc, { ...defaults, ...initialState });
 
   const form = doc.getElementById("calculator-form");
   if (form) {
     form.addEventListener("input", () => update(doc));
-    form.addEventListener("change", () => update(doc));
+    form.addEventListener("change", () => {
+      analytics.trackInteraction();
+      update(doc);
+    });
     form.addEventListener("reset", () => {
       // Let the native reset run first, then restore data-driven defaults.
       win.setTimeout(() => {
@@ -503,6 +530,7 @@ export function initCalculator(doc, win) {
     });
   }
 
-  wireShare(doc, win);
+  wireShare(doc, win, analytics);
+  analytics.trackPageview();
   update(doc);
 }

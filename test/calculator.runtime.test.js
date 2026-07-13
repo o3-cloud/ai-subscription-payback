@@ -291,9 +291,10 @@ function buildDocument() {
   return doc;
 }
 
-function buildWindow(search = "") {
+function buildWindow(search = "", options = {}) {
   const clipboardWrites = [];
   const historyUrls = [];
+  const plausibleCalls = [];
   return {
     location: {
       search,
@@ -305,6 +306,7 @@ function buildWindow(search = "") {
       return 0;
     },
     navigator: {
+      doNotTrack: options.dnt,
       clipboard: {
         writeText: async (text) => {
           clipboardWrites.push(text);
@@ -316,14 +318,18 @@ function buildWindow(search = "") {
         historyUrls.push(url);
       },
     },
+    plausible: (...args) => {
+      plausibleCalls.push(args);
+    },
     _clipboardWrites: clipboardWrites,
     _historyUrls: historyUrls,
+    _plausibleCalls: plausibleCalls,
   };
 }
 
-function boot(search = "") {
+function boot(search = "", options = {}) {
   const doc = buildDocument();
-  const win = buildWindow(search);
+  const win = buildWindow(search, options);
   initCalculator(doc, win);
   return { doc, win };
 }
@@ -524,6 +530,64 @@ test("a live edit re-validates and updates the results status", async () => {
     doc.getElementById("results-status").textContent,
     "Break-even not reached within 60 months."
   );
+});
+
+test("analytics wiring records pageviews, calculator interaction, share, and outbound clicks", async () => {
+  const { doc, win } = boot();
+
+  assert.deepEqual(win._plausibleCalls[0], ["pageview"]);
+
+  const apr = doc.getElementById("apr");
+  apr.value = "6.5";
+  await doc.getElementById("calculator-form").dispatch("change");
+  assert.ok(
+    win._plausibleCalls.some(([name]) => name === "Calculator: Interact"),
+    "records a calculator interaction"
+  );
+
+  const statusBeforeShare = doc.getElementById("results-status").textContent;
+  await doc.getElementById("share-button").dispatch("click");
+  assert.ok(
+    win._plausibleCalls.some(([name]) => name === "Scenario: Share"),
+    "records a scenario share"
+  );
+  assert.equal(
+    doc.getElementById("results-status").textContent,
+    statusBeforeShare,
+    "sharing does not change the calculator state"
+  );
+
+  const outbound = doc
+    .querySelectorAll("#comparison-body a")
+    .find((a) => /\bsponsored\b/.test(a.getAttribute("rel") || ""));
+  assert.ok(outbound, "expected an affiliate link to click");
+  const statusBeforeClick = doc.getElementById("results-status").textContent;
+  await outbound.dispatch("click");
+  assert.ok(
+    win._plausibleCalls.some(([name, opts]) =>
+      name === "Outbound Link: Click" && opts?.props?.affiliate === true
+    ),
+    "records affiliate outbound clicks"
+  );
+  assert.equal(
+    doc.getElementById("results-status").textContent,
+    statusBeforeClick,
+    "clicking outbound links does not change calculator state"
+  );
+});
+
+test("analytics wiring respects Do Not Track", async () => {
+  const { doc, win } = boot("", { dnt: "1" });
+
+  assert.equal(win._plausibleCalls.length, 0, "pageview is suppressed");
+  await doc.getElementById("calculator-form").dispatch("change");
+  await doc.getElementById("share-button").dispatch("click");
+  const outbound = doc
+    .querySelectorAll("#comparison-body a")
+    .find((a) => /\bsponsored\b/.test(a.getAttribute("rel") || ""));
+  assert.ok(outbound, "expected an affiliate link to click");
+  await outbound.dispatch("click");
+  assert.equal(win._plausibleCalls.length, 0, "all analytics are suppressed");
 });
 
 test("the share button serializes current state into a shareable URL", async () => {

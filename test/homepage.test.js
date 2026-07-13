@@ -41,6 +41,23 @@ test("head wires the stylesheet and ES module entry point", () => {
   );
 });
 
+test("head loads Plausible in manual mode so pageviews stay DNT-gated", () => {
+  // analytics.js sends the pageview itself (plausible('pageview')) through its
+  // Do-Not-Track check. The default script.js also auto-fires a pageview on
+  // load, which would double-count and bypass DNT — so we must use the manual
+  // build, whose only pageview is the one our code sends.
+  assert.match(
+    html,
+    /<script[^>]+data-domain="[^"]+"[^>]+src="https:\/\/plausible\.io\/js\/script\.manual\.js"/i,
+    "loads plausible script.manual.js"
+  );
+  assert.doesNotMatch(
+    html,
+    /src="https:\/\/plausible\.io\/js\/script\.js"/i,
+    "does not load the auto-pageview script.js"
+  );
+});
+
 test("document ids are unique", () => {
   // Duplicate ids make getElementById results ambiguous for the scripts.
   assert.equal(ids.size, idList.length, "an id is used more than once");
