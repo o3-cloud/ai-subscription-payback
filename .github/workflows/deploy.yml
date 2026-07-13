@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+# Publishes the static site from the repository root to GitHub Pages.
+# Runs on every push to main (and can be triggered by hand), so a merge to
+# main is the deploy. The site is served at
+# https://ozanzal.github.io/ai-subscription-payback/.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least-privilege token: read the repo, mint the Pages OIDC token, publish.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two publishes at once; let an in-flight deploy finish rather than
+# cancel it, so main always lands on Pages in order.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # Verify the static-site contract before publishing anything.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm test
+
+  # Package the repository root (index.html + assets) as the Pages artifact.
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  # Publish the artifact to the github-pages environment.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
