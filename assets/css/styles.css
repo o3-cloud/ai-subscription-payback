@@ -163,6 +163,10 @@ a {
   font-weight: 600;
 }
 
+.button-secondary {
+  background: transparent;
+}
+
 /* ---------- Sections ---------- */
 main > section {
   padding-block: 2.5rem;
@@ -183,6 +187,88 @@ main > section {
 
 .hero-cta {
   margin-top: 1.25rem;
+}
+
+/* ---------- Featured hardware cards ---------- */
+.featured-hardware-status {
+  color: var(--color-muted);
+  margin: 0.5rem 0 0;
+}
+
+.hardware-cards {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+}
+
+@media (min-width: 40rem) {
+  .hardware-cards {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+}
+
+.hardware-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  height: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  background: var(--color-surface);
+}
+
+/* Highlight the box whose numbers are currently loaded into the calculator. */
+.hardware-card[data-active="true"] {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.hardware-card-title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.hardware-card-spec {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.hardware-card-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.hardware-card-source {
+  display: block;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+.hardware-card-note {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.hardware-card-actions {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hardware-card-actions .button {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.hardware-card-cta {
+  border-style: dashed;
 }
 
 /* ---------- Calculator layout ---------- */

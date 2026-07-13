@@ -57,6 +57,7 @@ test("every pricing entry carries a source URL and a last-updated date", async (
     assert.equal(typeof box.priceHigh, "number");
     assert.ok(box.priceHigh >= box.priceLow, `${box.id} range is inverted`);
     assert.equal(typeof box.priceNote, "string");
+    assert.equal(typeof box.sourceLabel, "string");
     assert.match(box.sourceUrl, /^https?:\/\//, `${box.id} needs a source URL`);
     assert.match(box.lastUpdated, ISO_DATE, `${box.id} needs a last-updated date`);
   }

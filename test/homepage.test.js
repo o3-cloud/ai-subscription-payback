@@ -75,6 +75,9 @@ test("scaffold exposes the ids the scripts mount onto", () => {
     "site-last-updated",
     "assumptions-list",
     "share-button",
+    "featured-hardware",
+    "featured-hardware-cards",
+    "featured-hardware-status",
   ];
   for (const id of requiredIds) {
     assert.ok(ids.has(id), `missing id="${id}"`);

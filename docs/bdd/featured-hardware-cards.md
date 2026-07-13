@@ -17,6 +17,7 @@ Scenario: Featured hardware cards can drive the calculator
   Given a featured hardware card and calculator on the same page
   When the visitor selects a featured product
   Then the calculator loads the matching price assumptions
+  And it preloads at least the box price and power draw inputs
   And the payoff estimate updates for that product
 
 Scenario: Featured hardware cards show a source label

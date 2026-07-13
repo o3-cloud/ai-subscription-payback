@@ -40,6 +40,7 @@
  * @property {number} priceHigh
  * @property {string} priceNote - context for the range (config, estimate, etc.)
  * @property {string} sourceUrl - where the price was quoted from
+ * @property {string} sourceLabel - short provenance for the number (official vendor pricing, retail street price, class estimate, …)
  * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was curated
  * @property {number} [defaultBoxPrice] - price used when this box seeds the form
  * @property {number} [powerDraw] - representative power draw under load (W)
@@ -95,11 +96,13 @@ export const hardware = [
     id: "mac-studio",
     name: "Mac Studio",
     spec: "Apple silicon, up to 512 GB unified memory",
+    sourceLabel: "Official Apple listing",
     priceLow: 3999,
     priceHigh: 8999,
     priceNote:
       "Range spans M-series Max to Ultra configurations; unified memory drives most of the price.",
     sourceUrl: "https://www.apple.com/mac-studio/",
+    sourceLabel: "Official Apple pricing",
     lastUpdated: "2026-07-01",
     defaultBoxPrice: 3999,
     powerDraw: 270,
@@ -108,11 +111,13 @@ export const hardware = [
     id: "dgx-spark",
     name: "NVIDIA DGX Spark",
     spec: "GB10 Grace Blackwell desktop, 128 GB unified memory",
+    sourceLabel: "Estimated street price",
     priceLow: 2999,
     priceHigh: 3999,
     priceNote:
       "Estimated street price for the desktop unit; availability and bundling vary by reseller.",
     sourceUrl: "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
+    sourceLabel: "Estimated retail / street price",
     lastUpdated: "2026-07-01",
     defaultBoxPrice: 3999,
     powerDraw: 240,
@@ -121,12 +126,14 @@ export const hardware = [
     id: "strix-halo",
     name: "AMD Strix Halo workstation",
     spec: "Ryzen AI Max+ 395 mini-PC, up to 128 GB unified memory",
+    sourceLabel: "Class estimate",
     priceLow: 1599,
     priceHigh: 2499,
     priceNote:
       "Class estimate across Ryzen AI Max+ 395 mini-PCs and small-form-factor desktops; not a single SKU.",
     sourceUrl:
       "https://www.amd.com/en/products/processors/laptop/ryzen/ai-max.html",
+    sourceLabel: "Class estimate (multiple SKUs)",
     lastUpdated: "2026-07-01",
     defaultBoxPrice: 1999,
     powerDraw: 140,

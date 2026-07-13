@@ -197,6 +197,9 @@ const REQUIRED_IDS = [
   "site-last-updated",
   "assumptions-list",
   "share-button",
+  "featured-hardware",
+  "featured-hardware-cards",
+  "featured-hardware-status",
   "cost-table",
 ];
 
@@ -280,6 +283,16 @@ function buildDocument() {
   const shareStatus = doc.createElement("p");
   shareStatus.id = "share-status";
   body.appendChild(shareStatus);
+
+  const featured = doc.createElement("section");
+  featured.id = "featured-hardware";
+  body.appendChild(featured);
+  const featuredStatus = doc.createElement("p");
+  featuredStatus.id = "featured-hardware-status";
+  featured.appendChild(featuredStatus);
+  const featuredCards = doc.createElement("div");
+  featuredCards.id = "featured-hardware-cards";
+  featured.appendChild(featuredCards);
 
   const chart = doc.createElement("div");
   chart.id = "cost-chart";
@@ -440,6 +453,16 @@ test("initCalculator boots the form from static data and defaults", () => {
     subscriptions.length + hardware.length
   );
   assert.equal(
+    doc.querySelectorAll("#featured-hardware-cards .hardware-card").length,
+    hardware.length,
+    "renders one featured hardware card per box"
+  );
+  assert.equal(
+    doc.querySelectorAll("#featured-hardware-cards .hardware-card-use").length,
+    hardware.length,
+    "renders one preload button per featured hardware card"
+  );
+  assert.equal(
     doc.getElementById("assumptions-list").children.length,
     assumptions.length
   );
@@ -481,6 +504,35 @@ test("featured hardware renders affiliate CTAs from the separate affiliate metad
     assert.match(cta.textContent, /\(affiliate\)/);
     assert.match(cta.getAttribute("rel"), /sponsored/);
   }
+});
+
+test("featured hardware preload button loads the calculator scenario", async () => {
+  const { doc, win } = boot();
+  const loadButton = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[0];
+  assert.ok(loadButton, "expected a featured hardware preload button");
+
+  await loadButton.dispatch("click");
+
+  const macStudio = hardware[0];
+  assert.equal(
+    doc.getElementById("box-price").value,
+    String(macStudio.defaultBoxPrice ?? macStudio.priceLow)
+  );
+  assert.equal(doc.getElementById("power-draw").value, String(macStudio.powerDraw));
+  assert.match(
+    doc.getElementById("featured-hardware-status").textContent,
+    /loaded into the calculator/,
+    "clicking the preload button announces the selected system"
+  );
+  assert.ok(
+    win._plausibleCalls.some(([name]) => name === "Calculator: Interact"),
+    "preloading a hardware card counts as calculator interaction"
+  );
+  assert.match(
+    doc.getElementById("results-status").textContent,
+    /Break-even/,
+    "the calculator recomputes after loading a hardware preset"
+  );
 });
 
 test("initCalculator renders the real results state for valid inputs", () => {
@@ -557,6 +609,24 @@ test("analytics wiring records pageviews, calculator interaction, share, and out
     "sharing does not change the calculator state"
   );
 
+  const featuredOutbound = doc
+    .querySelectorAll("#featured-hardware-cards a")
+    .find((a) => /\bsponsored\b/.test(a.getAttribute("rel") || ""));
+  assert.ok(featuredOutbound, "expected a featured hardware affiliate link to click");
+  const featuredStatusBeforeClick = doc.getElementById("results-status").textContent;
+  await featuredOutbound.dispatch("click");
+  assert.ok(
+    win._plausibleCalls.some(([name, opts]) =>
+      name === "Outbound Link: Click" && opts?.props?.affiliate === true
+    ),
+    "records affiliate outbound clicks"
+  );
+  assert.equal(
+    doc.getElementById("results-status").textContent,
+    featuredStatusBeforeClick,
+    "clicking featured hardware outbound links does not change calculator state"
+  );
+
   const outbound = doc
     .querySelectorAll("#comparison-body a")
     .find((a) => /\bsponsored\b/.test(a.getAttribute("rel") || ""));
@@ -582,6 +652,11 @@ test("analytics wiring respects Do Not Track", async () => {
   assert.equal(win._plausibleCalls.length, 0, "pageview is suppressed");
   await doc.getElementById("calculator-form").dispatch("change");
   await doc.getElementById("share-button").dispatch("click");
+  const featuredOutbound = doc
+    .querySelectorAll("#featured-hardware-cards a")
+    .find((a) => /\bsponsored\b/.test(a.getAttribute("rel") || ""));
+  assert.ok(featuredOutbound, "expected a featured hardware affiliate link to click");
+  await featuredOutbound.dispatch("click");
   const outbound = doc
     .querySelectorAll("#comparison-body a")
     .find((a) => /\bsponsored\b/.test(a.getAttribute("rel") || ""));

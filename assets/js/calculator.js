@@ -389,6 +389,94 @@ function renderComparison(doc) {
   }
 }
 
+function setInputValue(doc, id, value) {
+  const el = doc.getElementById(id);
+  if (!el) return;
+  el.value = String(value);
+}
+
+function renderFeaturedHardware(doc, analytics) {
+  const container = doc.getElementById("featured-hardware-cards");
+  const status = doc.getElementById("featured-hardware-status");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  for (const box of hardware) {
+    const card = doc.createElement("article");
+    card.className = "hardware-card";
+
+    const title = doc.createElement("h3");
+    title.className = "hardware-card-title";
+    title.textContent = box.name;
+    card.appendChild(title);
+
+    const spec = doc.createElement("p");
+    spec.className = "hardware-card-spec";
+    spec.textContent = box.spec;
+    card.appendChild(spec);
+
+    const price = doc.createElement("p");
+    price.className = "hardware-card-amount";
+    price.appendChild(doc.createTextNode("Price: "));
+    price.appendChild(doc.createTextNode(priceRange(box.priceLow, box.priceHigh)));
+    card.appendChild(price);
+
+    const source = doc.createElement("p");
+    source.className = "hardware-card-source";
+    source.appendChild(doc.createTextNode(`Source: ${box.sourceLabel} `));
+    source.appendChild(externalLink(doc, box.sourceUrl, "View source", false));
+    card.appendChild(source);
+
+    const note = doc.createElement("p");
+    note.className = "hardware-card-note";
+    note.textContent = box.priceNote;
+    card.appendChild(note);
+
+    const actions = doc.createElement("div");
+    actions.className = "hardware-card-actions";
+
+    const useButton = doc.createElement("button");
+    useButton.type = "button";
+    useButton.className = "button button-primary hardware-card-use";
+    useButton.textContent = "Use this system";
+    useButton.addEventListener("click", () => {
+      if (analytics) analytics.trackInteraction();
+      const boxPrice = box.defaultBoxPrice ?? box.priceLow;
+      const powerDraw = box.powerDraw ?? defaults.powerDraw;
+      setInputValue(doc, FIELD_IDS.boxPrice, boxPrice);
+      setInputValue(doc, FIELD_IDS.powerDraw, powerDraw);
+      setInputValue(
+        doc,
+        FIELD_IDS.downPayment,
+        Math.min(
+          toNumber(doc.getElementById(FIELD_IDS.downPayment)?.value || defaults.downPayment),
+          boxPrice
+        )
+      );
+      if (status) {
+        status.textContent = `${box.name} loaded into the calculator.`;
+      }
+      update(doc);
+    });
+    actions.appendChild(useButton);
+
+    const affiliate = getAffiliate(box.id);
+    if (affiliate) {
+      const cta = externalLink(doc, affiliate.url, affiliate.label, affiliate.affiliate);
+      cta.className = "button hardware-card-cta";
+      actions.appendChild(cta);
+    }
+
+    card.appendChild(actions);
+    container.appendChild(card);
+  }
+
+  if (status && !status.textContent.trim()) {
+    status.textContent = "Choose a system to load its assumptions into the calculator.";
+  }
+}
+
 function renderPricing(doc) {
   const list = doc.getElementById("pricing-list");
   if (list) {
@@ -456,6 +544,7 @@ function applyState(doc, state) {
  */
 function wireOutboundLinks(doc, analytics) {
   const links = [
+    ...doc.querySelectorAll("#featured-hardware-cards a"),
     ...doc.querySelectorAll("#comparison-body a"),
     ...doc.querySelectorAll("#pricing-list a"),
   ];
@@ -505,6 +594,7 @@ export function initCalculator(doc, win) {
   const analytics = createAnalytics(win);
   const initialState = parseState(win.location ? win.location.search : "", defaults);
 
+  renderFeaturedHardware(doc, analytics);
   renderSubscriptionOptions(doc, initialState.subscriptions);
   renderComparison(doc);
   renderPricing(doc);
