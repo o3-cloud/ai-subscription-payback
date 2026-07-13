@@ -102,6 +102,20 @@ test("state.js round-trips calculator state through the URL helpers", async () =
   assert.equal(parsed.apr, 9.9);
   assert.equal(parsed.maintenance, true);
   assert.deepEqual(parsed.subscriptions, ["codex"]);
+
+  const hashed = state.readShareParams({ hash: "#boxPrice=4200&subs=codex" });
+  assert.equal(hashed, "boxPrice=4200&subs=codex");
+  const parsedHash = state.parseState(hashed);
+  assert.equal(parsedHash.boxPrice, 4200);
+  assert.deepEqual(parsedHash.subscriptions, ["codex"]);
+
+  const searchFallback = state.readShareParams({ hash: "#calculator", search: "?term=24" });
+  assert.equal(searchFallback, "term=24");
+
+  assert.equal(
+    state.buildShareUrl({ origin: "https://payback.example", pathname: "/index.html" }, "boxPrice=4200"),
+    "https://payback.example/index.html#boxPrice=4200"
+  );
 });
 
 test("analytics.js exports the tracking helpers the UI depends on", async () => {

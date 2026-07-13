@@ -29,6 +29,8 @@ import {
   validateNumber,
   serializeState,
   parseState,
+  readShareParams,
+  buildShareUrl,
   formatCurrency,
   formatBreakEven,
 } from "./state.js";
@@ -298,10 +300,22 @@ function renderResults(doc, state, valid) {
   }
 }
 
-function update(doc) {
+/**
+ * Rewrite the address bar so the shareable link always mirrors the current
+ * inputs. Uses the hash fragment and replaceState, so it never reloads the page
+ * or adds history entries as the visitor edits.
+ */
+function syncShareUrl(doc, win) {
+  if (!win || !win.history || !win.history.replaceState) return;
+  const url = buildShareUrl(win.location, serializeState(readState(doc)));
+  win.history.replaceState(null, "", url);
+}
+
+function update(doc, win) {
   const valid = validateForm(doc);
   const state = readState(doc);
   renderResults(doc, state, valid);
+  if (win) syncShareUrl(doc, win);
   return state;
 }
 
@@ -395,7 +409,7 @@ function setInputValue(doc, id, value) {
   el.value = String(value);
 }
 
-function renderFeaturedHardware(doc, analytics) {
+function renderFeaturedHardware(doc, win, analytics) {
   const container = doc.getElementById("featured-hardware-cards");
   const status = doc.getElementById("featured-hardware-status");
   if (!container) return;
@@ -457,7 +471,7 @@ function renderFeaturedHardware(doc, analytics) {
       if (status) {
         status.textContent = `${box.name} loaded into the calculator.`;
       }
-      update(doc);
+      update(doc, win);
     });
     actions.appendChild(useButton);
 
@@ -563,10 +577,7 @@ function wireShare(doc, win, analytics) {
 
   button.addEventListener("click", async () => {
     if (analytics) analytics.trackShare();
-    const state = readState(doc);
-    const query = serializeState(state);
-    const base = win.location.origin + win.location.pathname;
-    const url = query ? `${base}?${query}` : base;
+    const url = buildShareUrl(win.location, serializeState(readState(doc)));
 
     try {
       if (win.navigator && win.navigator.clipboard) {
@@ -579,9 +590,7 @@ function wireShare(doc, win, analytics) {
       if (status) status.textContent = "Copy failed — copy from the address bar.";
     }
     // Reflect the scenario in the address bar without reloading.
-    if (win.history && win.history.replaceState) {
-      win.history.replaceState(null, "", url);
-    }
+    syncShareUrl(doc, win);
   });
 }
 
@@ -592,9 +601,12 @@ function wireShare(doc, win, analytics) {
  */
 export function initCalculator(doc, win) {
   const analytics = createAnalytics(win);
-  const initialState = parseState(win.location ? win.location.search : "", defaults);
+  const initialState = parseState(
+    readShareParams(win.location ? win.location : {}),
+    defaults
+  );
 
-  renderFeaturedHardware(doc, analytics);
+  renderFeaturedHardware(doc, win, analytics);
   renderSubscriptionOptions(doc, initialState.subscriptions);
   renderComparison(doc);
   renderPricing(doc);
@@ -602,20 +614,21 @@ export function initCalculator(doc, win) {
 
   wireOutboundLinks(doc, analytics);
   applyState(doc, { ...defaults, ...initialState });
+  update(doc, win);
 
   const form = doc.getElementById("calculator-form");
   if (form) {
-    form.addEventListener("input", () => update(doc));
+    form.addEventListener("input", () => update(doc, win));
     form.addEventListener("change", () => {
       analytics.trackInteraction();
-      update(doc);
+      update(doc, win);
     });
     form.addEventListener("reset", () => {
       // Let the native reset run first, then restore data-driven defaults.
       win.setTimeout(() => {
         renderSubscriptionOptions(doc);
         applyState(doc, defaults);
-        update(doc);
+        update(doc, win);
       }, 0);
     });
   }

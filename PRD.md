@@ -113,7 +113,7 @@ and the fact that all savings numbers are estimates.
   headings, and prominent product cards.
 - Open Graph / Twitter card metadata for shareable results.
 - Fast load and mobile-friendliness as ranking factors.
-- Shareable, query-parameter-encoded scenarios to earn links and social shares.
+- Shareable, hash-encoded scenarios to earn links and social shares.
 - Content: methodology, FAQ, and product comparison copy should be indexable.
 
 ## Analytics

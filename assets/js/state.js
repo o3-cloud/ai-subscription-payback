@@ -64,8 +64,39 @@ export function serializeState(state) {
 }
 
 /**
- * Decode calculator state from a query string, falling back to defaults.
- * @param {string} search - e.g. location.search ("?boxPrice=3000")
+ * Extract the raw scenario parameter string from a location, preferring the
+ * hash fragment (used by newly shared links) and falling back to the query
+ * string so older "?"-style links keep working.
+ * @param {{ search?: string, hash?: string }} location
+ * @returns {string}
+ */
+export function readShareParams(location = {}) {
+  const hash =
+    typeof location.hash === "string" ? location.hash.replace(/^#/, "") : "";
+  // Only treat the hash as scenario state when it carries key=value pairs; a
+  // bare in-page anchor like "#calculator" must not shadow a "?"-style link.
+  if (hash.includes("=")) return hash;
+  const search = typeof location.search === "string" ? location.search : "";
+  return search.replace(/^\?/, "");
+}
+
+/**
+ * Build a shareable URL that stores the scenario in the hash fragment. The hash
+ * survives static hosting that ignores unknown query params and never triggers
+ * a navigation/reload when written to the address bar.
+ * @param {{ origin?: string, pathname?: string }} location
+ * @param {string} query - serialized state from serializeState()
+ * @returns {string}
+ */
+export function buildShareUrl(location = {}, query = "") {
+  const base = (location.origin || "") + (location.pathname || "");
+  return query ? `${base}#${query}` : base;
+}
+
+/**
+ * Decode calculator state from a query/hash param string, falling back to
+ * defaults. Accepts either a "?"-prefixed search string or a bare hash body.
+ * @param {string} search - e.g. location.search ("?boxPrice=3000") or hash body
  * @param {Record<string, number|boolean>} defaults
  * @returns {Record<string, number|boolean|string[]>}
  */

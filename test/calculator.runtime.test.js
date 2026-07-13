@@ -311,6 +311,7 @@ function buildWindow(search = "", options = {}) {
   return {
     location: {
       search,
+      hash: options.hash || "",
       origin: "https://payback.example",
       pathname: "/index.html",
     },
@@ -556,6 +557,16 @@ test("initCalculator hydrates state from the location query string", () => {
   assert.deepEqual(checked, ["codex"]);
 });
 
+test("initCalculator hydrates state from a hash-based share link", () => {
+  const { doc } = boot("", { hash: "#boxPrice=4200&subs=codex" });
+
+  assert.equal(doc.getElementById("box-price").value, 4200);
+  const checked = doc
+    .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+    .map((el) => el.value);
+  assert.deepEqual(checked, ["codex"]);
+});
+
 test("a live edit re-validates and updates the results status", async () => {
   const { doc } = boot();
   const apr = doc.getElementById("apr");
@@ -673,10 +684,13 @@ test("the share button serializes current state into a shareable URL", async () 
   assert.equal(win._clipboardWrites.length, 1, "copies exactly one URL");
   const url = new URL(win._clipboardWrites[0]);
   assert.equal(url.origin + url.pathname, "https://payback.example/index.html");
-  assert.equal(url.searchParams.get("boxPrice"), String(defaults.boxPrice));
-  assert.equal(url.searchParams.get("term"), String(defaults.term));
+  assert.equal(url.search, "", "share URLs no longer rely on query parameters");
+  assert.equal(url.hash.startsWith("#"), true);
+  const params = new URLSearchParams(url.hash.slice(1));
+  assert.equal(params.get("boxPrice"), String(defaults.boxPrice));
+  assert.equal(params.get("term"), String(defaults.term));
   assert.equal(
-    url.searchParams.get("subs"),
+    params.get("subs"),
     subscriptions
       .filter((s) => s.defaultSelected)
       .map((s) => s.id)
@@ -689,4 +703,16 @@ test("the share button serializes current state into a shareable URL", async () 
     doc.getElementById("share-status").textContent,
     "Link copied to clipboard."
   );
+});
+
+test("editing inputs keeps the shareable URL in sync", async () => {
+  const { doc, win } = boot();
+  const boxPrice = doc.getElementById("box-price");
+  boxPrice.value = "4200";
+
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  const latest = new URL(win._historyUrls.at(-1));
+  const params = new URLSearchParams(latest.hash.slice(1));
+  assert.equal(params.get("boxPrice"), "4200");
 });
