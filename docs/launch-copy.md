@@ -8,7 +8,7 @@ mention the calculator is free, and point people at the main page URL.
 > How long until a local AI box beats your coding subscriptions?
 > I built a free payback calculator for Codex, Claude Code, and local hardware
 > like Mac Studio, DGX Spark, and Strix Halo systems.
-> https://ozanzal.github.io/ai-subscription-payback/
+> https://o3-cloud.github.io/ai-subscription-payback/
 
 ## LinkedIn
 
@@ -22,7 +22,7 @@ mention the calculator is free, and point people at the main page URL.
 > The site is transparent about pricing sources, affiliate relationships, and the
 > assumptions behind the math.
 >
-> https://ozanzal.github.io/ai-subscription-payback/
+> https://o3-cloud.github.io/ai-subscription-payback/
 
 ## Hacker News / community intro
 

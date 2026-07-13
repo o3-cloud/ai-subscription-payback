@@ -25,7 +25,7 @@ npm test
 
 The site is hosted on **GitHub Pages** at:
 
-**https://ozanzal.github.io/ai-subscription-payback/**
+**https://o3-cloud.github.io/ai-subscription-payback/**
 
 Deployment is automated by the [`Deploy to GitHub Pages`](.github/workflows/deploy.yml)
 GitHub Actions workflow. It runs on every push to `main` (and can be triggered

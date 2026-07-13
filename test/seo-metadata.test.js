@@ -18,7 +18,7 @@ const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
 const exists = (rel) => existsSync(fileURLToPath(new URL(rel, root)));
 
 const html = read("index.html");
-const SITE_URL = "https://ozanzal.github.io/ai-subscription-payback/";
+const SITE_URL = "https://o3-cloud.github.io/ai-subscription-payback/";
 
 /** Value of the first <meta> matching an attr=value selector, or "". */
 const metaContent = (attr, value) =>
