@@ -53,5 +53,7 @@ test("the repo docs point to the MVP scope source of truth", () => {
   assert.match(readme, /MVP scope and assumptions/i, "README introduces the launch scope");
   assert.match(readme, /docs\/bdd\/mvp-scope\.md/i, "README links the scope BDD");
   assert.match(rootIndex, /MVP Scope and Commercial Model/i, "root BDD index links the scope file");
+  assert.match(rootIndex, /Featured Hardware Cards/i, "root BDD index links featured hardware cards");
   assert.match(bddIndex, /MVP Scope and Commercial Model/i, "bdd index links the scope file");
+  assert.match(bddIndex, /Featured Hardware Cards/i, "bdd index links featured hardware cards");
 });
