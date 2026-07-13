@@ -53,6 +53,11 @@ Because the artifact is the repository root and the site uses relative
 `.nojekyll` marker at the root disables GitHub's Jekyll processing so files are
 served exactly as committed.
 
+A root `404.html` is published too; GitHub Pages serves it for any unmatched
+path, so unknown or stale deep links get a styled, `noindex` fallback that links
+back to the calculator. Its asset/link references are base-qualified absolute
+paths (`/ai-subscription-payback/...`) so they resolve at any URL depth.
+
 ### Repository eligibility
 
 GitHub Pages must be available for the repository before the workflow can
