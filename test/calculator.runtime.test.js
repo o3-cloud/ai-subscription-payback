@@ -961,6 +961,34 @@ test("the share button serializes current state into a shareable URL", async () 
   );
 });
 
+test("an explicitly empty subscription selection survives share and reload", async () => {
+  const { doc, win } = boot();
+  const checkboxes = doc.querySelectorAll('#subscription-options input[type="checkbox"]');
+  for (const el of checkboxes) {
+    el.checked = false;
+  }
+
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  const shared = new URL(win._historyUrls.at(-1));
+  const params = new URLSearchParams(shared.hash.slice(1));
+  assert.equal(params.get("subs"), "", "the shared URL keeps an explicit empty selection");
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against $0/mo from the selected subscriptions."
+  );
+
+  const reloaded = boot(`?${shared.hash.slice(1)}`);
+  const restored = reloaded.doc
+    .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+    .map((el) => el.value);
+  assert.deepEqual(restored, [], "reloading the shared URL keeps zero subscriptions selected");
+  assert.equal(
+    reloaded.doc.getElementById("spend-basis").textContent,
+    "Comparing against $0/mo from the selected subscriptions."
+  );
+});
+
 test("editing inputs keeps the shareable URL in sync", async () => {
   const { doc, win } = boot();
   const boxPrice = doc.getElementById("box-price");

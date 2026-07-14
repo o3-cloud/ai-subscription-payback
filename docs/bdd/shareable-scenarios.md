@@ -12,6 +12,13 @@ Scenario: Shared URL restores the scenario
   Then the calculator restores the encoded inputs from either a query string or a hash fragment
   And the displayed result matches the shared values
 
+Scenario: An empty subscription selection round-trips
+  Given the visitor has deselected every subscription plan
+  When the visitor copies the page URL
+  Then the shared URL keeps an explicit empty subscription selection
+  And reloading the URL leaves no subscription plans selected
+  And the calculator compares against $0/mo from the selected subscriptions
+
 Scenario: Share link is available
   Given a computed result is displayed
   When the visitor views the results area

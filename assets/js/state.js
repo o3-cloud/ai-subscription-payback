@@ -84,7 +84,7 @@ export function serializeState(state) {
   ) {
     params.set(CUSTOM_SPEND_FIELD, String(state[CUSTOM_SPEND_FIELD]));
   }
-  if (Array.isArray(state.subscriptions) && state.subscriptions.length) {
+  if (Array.isArray(state.subscriptions)) {
     params.set("subs", state.subscriptions.join(","));
   }
   return params.toString();

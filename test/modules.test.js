@@ -169,6 +169,26 @@ test("state.js round-trips calculator state through the URL helpers", async () =
     state.buildShareUrl({ origin: "https://payback.example", pathname: "/index.html" }, "boxPrice=4200"),
     "https://payback.example/index.html#boxPrice=4200"
   );
+
+  const emptySerialized = state.serializeState({
+    ...input,
+    subscriptions: [],
+  });
+  const emptyParams = new URLSearchParams(emptySerialized);
+  assert.equal(
+    emptyParams.get("subs"),
+    "",
+    "explicitly serializes an empty subscription selection"
+  );
+
+  const emptyParsed = state.parseState(emptySerialized, {
+    subscriptions: ["codex", "claude-code"],
+  });
+  assert.deepEqual(
+    emptyParsed.subscriptions,
+    [],
+    "parses an empty subscription selection back to []"
+  );
 });
 
 test("state.js validates optional custom spend correctly", async () => {
