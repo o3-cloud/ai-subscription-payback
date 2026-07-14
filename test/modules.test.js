@@ -117,6 +117,23 @@ test("hardware features the Mac Studio, DGX Spark, and Strix Halo classes", asyn
   }
 });
 
+test("Mac Studio matches Apple's official buy-page structured data", async () => {
+  const { hardware } = await import(new URL("data.js", jsDir));
+  const macStudio = hardware.find((h) => h.id === "mac-studio");
+  assert.ok(macStudio, "missing mac-studio hardware entry");
+
+  // Configurable low/high from the buy page's AggregateOffer (M4 Max → M3 Ultra).
+  assert.equal(macStudio.priceLow, 2499);
+  assert.equal(macStudio.priceHigh, 14299);
+  // Source is the buy/configuration page, not the marketing page.
+  assert.equal(
+    macStudio.sourceUrl,
+    "https://www.apple.com/shop/buy-mac/mac-studio"
+  );
+  // The featured preload defaults to the low end of the configurable range.
+  assert.equal(macStudio.defaultBoxPrice, macStudio.priceLow);
+});
+
 test("affiliate metadata is stored separately from pricing data", async () => {
   const data = await import(new URL("data.js", jsDir));
 

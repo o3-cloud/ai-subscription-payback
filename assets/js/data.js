@@ -185,14 +185,14 @@ export const hardware = [
     id: "mac-studio",
     name: "Mac Studio",
     spec: "Apple silicon, up to 512 GB unified memory",
-    priceLow: 3999,
-    priceHigh: 8999,
+    priceLow: 2499,
+    priceHigh: 14299,
     priceNote:
-      "Range spans M-series Max to Ultra configurations; unified memory drives most of the price.",
-    sourceUrl: "https://www.apple.com/mac-studio/",
-    sourceLabel: "Official Apple pricing",
-    lastUpdated: "2026-07-01",
-    defaultBoxPrice: 3999,
+      "Configurable range from the base M4 Max to a fully specced M3 Ultra; unified memory drives most of the price.",
+    sourceUrl: "https://www.apple.com/shop/buy-mac/mac-studio",
+    sourceLabel: "Official Apple configurable pricing",
+    lastUpdated: "2026-07-14",
+    defaultBoxPrice: 2499,
     powerDraw: 270,
   },
   {
@@ -242,8 +242,8 @@ export const hardware = [
 export const affiliates = {
   "mac-studio": {
     vendor: "Apple",
-    url: "https://www.apple.com/shop/buy-mac/mac-studio",
-    label: "Shop Mac Studio",
+    url: "https://www.apple.com/mac-studio/",
+    label: "Explore Mac Studio",
     affiliate: true,
   },
   "dgx-spark": {

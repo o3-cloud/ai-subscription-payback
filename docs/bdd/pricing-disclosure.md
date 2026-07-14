@@ -40,6 +40,13 @@ Scenario: Hardware prices and sources are disclosed
   Then each featured hardware option shows a visible price or price range
   And the source of the hardware price is listed
 
+Scenario: Mac Studio pricing uses the official buy-page range
+  Given the hardware comparison section
+  When the visitor views the Mac Studio card
+  Then the displayed price range comes from Apple's buy/configuration page
+  And the source link points to the direct buy page for Mac Studio
+  And the featured preload uses the low end of the configurable range
+
 Scenario: Affiliate links are separate from price sources
   Given a featured hardware option with a reseller or affiliate CTA
   When the visitor views the comparison row or pricing list
