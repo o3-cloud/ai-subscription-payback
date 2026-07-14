@@ -401,16 +401,63 @@ input[aria-invalid="true"] {
   margin-bottom: 0.5rem;
 }
 
-.chart-placeholder {
+.chart-visual {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
   min-height: 10rem;
-  border: 1px dashed var(--color-border);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  color: var(--color-muted);
-  text-align: center;
   padding: 1rem;
+}
+
+.cost-chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-visual .chart-hint {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.chart-axis {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.chart-line {
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-line-subscription {
+  stroke: var(--color-muted);
+}
+
+.chart-line-ownership {
+  stroke: var(--color-accent);
+}
+
+.chart-breakeven-line {
+  stroke: var(--color-text);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.chart-breakeven-dot {
+  fill: var(--color-accent);
+  stroke: var(--color-bg);
+  stroke-width: 1.5;
+}
+
+.chart-breakeven-label {
+  fill: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .share {

@@ -134,6 +134,164 @@ function loanPayment(principal, apr, termMonths) {
   return (borrowed * monthlyRate) / factor;
 }
 
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+// Viewport for the cumulative-cost chart. The SVG scales to its container via a
+// viewBox, so these are relative units, not pixels.
+const CHART = {
+  width: 640,
+  height: 280,
+  padding: { top: 18, right: 16, bottom: 30, left: 56 },
+};
+
+/**
+ * Build the cumulative-cost line chart as an inline SVG from the computed
+ * series. The chart is decorative (aria-hidden): the enclosing figure carries
+ * the role=img label and the `#cost-table` data table is the accessible
+ * equivalent, so announcing the SVG too would duplicate the information.
+ *
+ * @param {Document} doc
+ * @param {Array<{month:number, subscriptionCost:number, ownershipCost:number}>} series
+ * @param {number|null} breakEvenMonth
+ * @returns {object} an SVG element
+ */
+function buildChartSvg(doc, series, breakEvenMonth) {
+  const { width, height, padding } = CHART;
+  const plotW = width - padding.left - padding.right;
+  const plotH = height - padding.top - padding.bottom;
+
+  const minMonth = series[0].month;
+  const maxMonth = series[series.length - 1].month;
+  const monthSpan = maxMonth - minMonth || 1;
+  const values = series.flatMap((p) => [p.subscriptionCost, p.ownershipCost]);
+  const maxVal = Math.max(0, ...values);
+  const minVal = Math.min(0, ...values);
+  const valueSpan = maxVal - minVal || 1;
+
+  const xFor = (month) => padding.left + ((month - minMonth) / monthSpan) * plotW;
+  const yFor = (value) => padding.top + (1 - (value - minVal) / valueSpan) * plotH;
+
+  const el = (tag, attrs = {}) => {
+    const node = doc.createElementNS(SVG_NS, tag);
+    for (const [name, value] of Object.entries(attrs)) {
+      node.setAttribute(name, String(value));
+    }
+    return node;
+  };
+
+  const svg = el("svg", {
+    viewBox: `0 0 ${width} ${height}`,
+    class: "cost-chart-svg",
+    preserveAspectRatio: "xMidYMid meet",
+    "data-chart": "cost",
+    "aria-hidden": "true",
+    focusable: "false",
+  });
+
+  // Baseline (value = 0) and left axis for visual grounding.
+  const baselineY = yFor(0);
+  svg.appendChild(
+    el("line", {
+      class: "chart-axis",
+      x1: padding.left,
+      y1: baselineY,
+      x2: width - padding.right,
+      y2: baselineY,
+    })
+  );
+  svg.appendChild(
+    el("line", {
+      class: "chart-axis",
+      x1: padding.left,
+      y1: padding.top,
+      x2: padding.left,
+      y2: height - padding.bottom,
+    })
+  );
+
+  const points = (key) =>
+    series.map((p) => `${xFor(p.month).toFixed(1)},${yFor(p[key]).toFixed(1)}`).join(" ");
+
+  svg.appendChild(
+    el("polyline", {
+      "data-series": "subscription",
+      class: "chart-line chart-line-subscription",
+      fill: "none",
+      points: points("subscriptionCost"),
+    })
+  );
+  svg.appendChild(
+    el("polyline", {
+      "data-series": "ownership",
+      class: "chart-line chart-line-ownership",
+      fill: "none",
+      points: points("ownershipCost"),
+    })
+  );
+
+  if (breakEvenMonth !== null) {
+    const crossing = series.find((p) => p.month === breakEvenMonth) || series[0];
+    const bx = xFor(breakEvenMonth);
+    const group = el("g", { "data-breakeven-marker": "true" });
+    group.appendChild(
+      el("line", {
+        class: "chart-breakeven-line",
+        x1: bx,
+        y1: padding.top,
+        x2: bx,
+        y2: height - padding.bottom,
+      })
+    );
+    group.appendChild(
+      el("circle", {
+        class: "chart-breakeven-dot",
+        cx: bx,
+        cy: yFor(crossing.ownershipCost),
+        r: 4,
+      })
+    );
+    // Keep the label inside the plot near the crossing, nudging it left once the
+    // break-even lands in the right third so it never spills off the viewBox.
+    const anchor = bx > padding.left + plotW * 0.66 ? "end" : "start";
+    const labelX = anchor === "end" ? bx - 6 : bx + 6;
+    const label = el("text", {
+      "data-breakeven-label": "true",
+      class: "chart-breakeven-label",
+      x: labelX,
+      y: padding.top + 12,
+      "text-anchor": anchor,
+    });
+    label.textContent = `Break-even: ${formatBreakEven(breakEvenMonth)}`;
+    group.appendChild(label);
+    svg.appendChild(group);
+  }
+
+  return svg;
+}
+
+/**
+ * Render (or clear) the cumulative-cost chart inside `#cost-chart`, leaving the
+ * textual `.chart-hint` summary in place so the container always keeps its
+ * caption. An empty series removes any prior chart.
+ */
+function renderChart(doc, series, breakEvenMonth) {
+  const chart = doc.getElementById("cost-chart");
+  if (!chart) return;
+
+  const existing = doc.querySelector("#cost-chart svg[data-chart]");
+  if (existing) existing.remove();
+
+  if (!series.length) return;
+
+  const svg = buildChartSvg(doc, series, breakEvenMonth);
+  const hint = doc.querySelector("#cost-chart .chart-hint");
+  if (hint) {
+    chart.insertBefore(svg, hint);
+  } else {
+    chart.appendChild(svg);
+  }
+}
+
 function renderSeries(doc, series, breakEvenMonth) {
   const tbody = doc.querySelector("#cost-table tbody");
   if (!tbody) return;
@@ -315,6 +473,7 @@ function renderResults(doc, state, valid) {
     if (chartHint) {
       chartHint.textContent = "Fix the highlighted fields to see the chart.";
     }
+    renderChart(doc, []);
     renderSeries(doc, []);
     return;
   }
@@ -343,6 +502,7 @@ function renderResults(doc, state, valid) {
       : `Comparing against ${monthly}/mo from the selected subscriptions.`;
   }
 
+  renderChart(doc, result.series, result.breakEvenMonth);
   renderSeries(doc, result.series, result.breakEvenMonth);
 
   if (chartHint) {

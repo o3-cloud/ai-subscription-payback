@@ -38,7 +38,8 @@ Scenario: Comparison basis reflects the active subscription spend
 Scenario: Chart reflects the numbers
   Given a computed result
   When the chart renders
-  Then the crossover point on the chart matches the stated break-even month
+  Then the cumulative subscription and ownership lines are visible
+  And the break-even marker appears at the stated break-even month when one exists
 
 Scenario: Featured box comparison is shown
   Given multiple hardware profiles are available

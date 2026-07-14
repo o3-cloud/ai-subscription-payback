@@ -70,6 +70,14 @@ class StubNode {
     return node;
   }
 
+  insertBefore(node, reference) {
+    node.parentElement = this;
+    const idx = reference ? this.childNodes.indexOf(reference) : -1;
+    if (idx === -1) this.childNodes.push(node);
+    else this.childNodes.splice(idx, 0, node);
+    return node;
+  }
+
   remove() {
     const parent = this.parentElement;
     if (!parent) return;
@@ -105,6 +113,9 @@ class StubDocument extends StubNode {
     super("#document");
   }
   createElement(tag) {
+    return new StubNode(tag);
+  }
+  createElementNS(_ns, tag) {
     return new StubNode(tag);
   }
   createTextNode(text) {
@@ -204,6 +215,7 @@ const REQUIRED_IDS = [
   "featured-hardware",
   "featured-hardware-cards",
   "featured-hardware-status",
+  "cost-chart",
   "cost-table",
 ];
 
@@ -703,6 +715,46 @@ test("initCalculator renders the real results state for valid inputs", () => {
   assert.match(doc.querySelector('[data-metric="breakeven"]').textContent, /^(Not reached|Month \d+)$/);
   assert.match(doc.querySelector('[data-metric="payment"]').textContent, /^\$\d/);
   assert.match(doc.querySelector('[data-metric="savings"]').textContent, /^-?\$\d/);
+  assert.ok(
+    doc.querySelector('#cost-chart svg[data-chart="cost"]'),
+    "renders the cumulative-cost SVG chart"
+  );
+  assert.equal(
+    doc.querySelector('#cost-chart [data-breakeven-marker="true"]'),
+    null,
+    "does not show a break-even marker when break-even is not reached"
+  );
+});
+
+test("the cumulative-cost chart marks break-even when one exists", async () => {
+  const { doc } = boot();
+  const setValue = (id, value) => {
+    const el = doc.getElementById(id);
+    el.value = String(value);
+    return el;
+  };
+
+  setValue("box-price", 100);
+  setValue("down-payment", 0);
+  setValue("apr", 0);
+  setValue("term", 1);
+  setValue("electricity-rate", 0);
+  setValue("power-draw", 0);
+  setValue("hours-per-day", 0);
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  assert.ok(
+    doc.querySelector('#cost-chart [data-breakeven-marker="true"]'),
+    "renders a break-even marker"
+  );
+  assert.ok(
+    doc.querySelector('#cost-chart [data-breakeven-label="true"]'),
+    "labels the break-even month on the chart"
+  );
+  assert.match(
+    doc.querySelector('[data-metric="breakeven"]').textContent,
+    /^Month \d+$/
+  );
 });
 
 test("initCalculator hydrates state from the location query string", () => {

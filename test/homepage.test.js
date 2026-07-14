@@ -90,14 +90,14 @@ test("results metrics expose the data-metric hooks", () => {
   }
 });
 
-test("results area ships an accessible chart placeholder and data table", () => {
-  // The payback math is a documented stub, so the chart figure renders a
-  // labeled placeholder plus a table equivalent that the future logic fills in.
-  assert.ok(ids.has("cost-chart"), "chart placeholder mount point present");
+test("results area ships an accessible chart and data table", () => {
+  // The chart container is a labeled image region with a data-table equivalent
+  // underneath, so the visuals and accessible numbers stay in sync.
+  assert.ok(ids.has("cost-chart"), "chart mount point present");
   assert.match(
     html,
     /id="cost-chart"[^>]*role="img"[^>]*aria-label="[^"]+"/i,
-    "chart placeholder is an aria-labeled role=img"
+    "chart container is an aria-labeled role=img"
   );
   assert.ok(ids.has("cost-table"), "accessible data table present");
   for (const heading of ["Month", "Subscription cost", "Ownership cost"]) {
