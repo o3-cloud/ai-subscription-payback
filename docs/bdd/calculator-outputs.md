@@ -51,4 +51,11 @@ Scenario: Results update live
   Given a computed result is displayed
   When the visitor changes any input
   Then the displayed result and chart update to match
+
+Scenario: Capability caveat is shown with the results
+  Given the visitor views the calculator results area
+  When they read the results panel
+  Then a visible caveat states the comparison is cost-only
+  And it notes the result does not rate model quality or coding performance
+  And it notes the figures are not financial advice
 ```

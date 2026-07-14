@@ -119,13 +119,26 @@ test("results metrics expose the data-metric hooks", () => {
   }
 });
 
+test("results area includes the capability caveat and privacy note", () => {
+  assert.match(
+    html,
+    /<p class="results-caveat">[\s\S]*Cost estimates only\.[\s\S]*Not financial advice\.[\s\S]*<\/p>/i,
+    "results area states the comparison is cost-only"
+  );
+  assert.match(
+    html,
+    /<p class="share-note">[\s\S]*The link encodes your inputs in the URL itself[\s\S]*nothing is sent to[\s\S]*server\.[\s\S]*<\/p>/i,
+    "share area explains the privacy implications of shared links"
+  );
+});
+
 test("results area ships an accessible chart and data table", () => {
   // The chart container is a labeled image region with a data-table equivalent
   // underneath, so the visuals and accessible numbers stay in sync.
   assert.ok(ids.has("cost-chart"), "chart mount point present");
   assert.match(
     html,
-    /id="cost-chart"[^>]*role="img"[^>]*aria-label="[^"]+"/i,
+    /<div[^>]+id="cost-chart"[^>]+role="img"/i,
     "chart container is an aria-labeled role=img"
   );
   assert.ok(ids.has("cost-table"), "accessible data table present");

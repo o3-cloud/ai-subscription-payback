@@ -460,6 +460,12 @@ input[aria-invalid="true"] {
   font-weight: 600;
 }
 
+.results-caveat {
+  margin-top: 1rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
 .share {
   margin-top: 1.5rem;
   display: flex;
@@ -469,6 +475,12 @@ input[aria-invalid="true"] {
 }
 
 .share-status {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.share-note {
+  margin-top: 0.5rem;
   color: var(--color-muted);
   font-size: 0.875rem;
 }

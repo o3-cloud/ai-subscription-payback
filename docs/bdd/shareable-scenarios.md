@@ -25,6 +25,12 @@ Scenario: Share link is available
   Then a shareable link or copy button is visible
   And the share action mirrors the current calculator state in the address bar
 
+Scenario: Privacy note accompanies the share button
+  Given the visitor views the share button in the results area
+  When they read the copy next to it
+  Then a visible note explains the link encodes inputs in the URL itself
+  And it reassures that nothing is sent to a server
+
 Scenario: Invalid edits do not replace the last valid shareable scenario
   Given the address bar already reflects a valid calculator state
   When the visitor enters an invalid numeric value
