@@ -17,4 +17,11 @@ Scenario: Share link is available
   When the visitor views the results area
   Then a shareable link or copy button is visible
   And the share action mirrors the current calculator state in the address bar
+
+Scenario: Invalid edits do not replace the last valid shareable scenario
+  Given the address bar already reflects a valid calculator state
+  When the visitor enters an invalid numeric value
+  Then the results indicate the input needs attention
+  And the address bar keeps the last valid shareable scenario until the form is valid again
+  And sharing copies the last valid scenario instead of serializing the invalid input
 ```

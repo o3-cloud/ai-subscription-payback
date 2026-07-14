@@ -514,9 +514,14 @@ function renderResults(doc, state, valid) {
 }
 
 /**
- * Rewrite the address bar so the shareable link always mirrors the current
- * inputs. Uses the hash fragment and replaceState, so it never reloads the page
- * or adds history entries as the visitor edits.
+ * Rewrite the address bar so the shareable link mirrors the current inputs.
+ * Uses the hash fragment and replaceState, so it never reloads the page or adds
+ * history entries as the visitor edits.
+ *
+ * Only ever called with a valid form: an invalid non-empty numeric input reads
+ * back as NaN, which would serialize into the hash (e.g. `boxPrice=NaN`) and
+ * poison the shareable URL. Gating on validity keeps the last valid scenario in
+ * the address bar until the inputs are usable again.
  */
 function syncShareUrl(doc, win) {
   if (!win || !win.history || !win.history.replaceState) return;
@@ -529,7 +534,9 @@ function update(doc, win) {
   const state = readState(doc);
   renderResults(doc, state, valid);
   syncSpendPreset(doc);
-  if (win) syncShareUrl(doc, win);
+  // Only mirror a valid scenario into the address bar; an invalid edit must not
+  // replace the last valid shareable hash with NaN-poisoned params.
+  if (win && valid) syncShareUrl(doc, win);
   return state;
 }
 
@@ -955,7 +962,10 @@ function wireShare(doc, win, analytics) {
 
   button.addEventListener("click", async () => {
     if (analytics) analytics.trackShare();
-    const url = buildShareUrl(win.location, serializeState(readState(doc)));
+    // Copy the URL that already mirrors the last valid scenario (the address bar
+    // is kept in sync by update() on every edit) rather than rebuilding from the
+    // live inputs, which may be mid-edit/invalid and would serialize NaN.
+    const url = buildShareUrl(win.location, readShareParams(win.location));
 
     try {
       if (win.navigator && win.navigator.clipboard) {
@@ -967,8 +977,6 @@ function wireShare(doc, win, analytics) {
     } catch {
       if (status) status.textContent = "Copy failed — copy from the address bar.";
     }
-    // Reflect the scenario in the address bar without reloading.
-    syncShareUrl(doc, win);
   });
 }
 

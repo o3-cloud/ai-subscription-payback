@@ -331,7 +331,7 @@ function buildWindow(search = "", options = {}) {
   const clipboardWrites = [];
   const historyUrls = [];
   const plausibleCalls = [];
-  return {
+  const win = {
     location: {
       search,
       hash: options.hash || "",
@@ -353,6 +353,11 @@ function buildWindow(search = "", options = {}) {
     history: {
       replaceState: (_state, _title, url) => {
         historyUrls.push(url);
+        // Mirror real browsers: replaceState updates the visible URL, so keep
+        // win.location in step for anything (like the share button) that reads
+        // the current address-bar scenario back.
+        const hashIdx = url.indexOf("#");
+        win.location.hash = hashIdx === -1 ? "" : url.slice(hashIdx);
       },
     },
     plausible: (...args) => {
@@ -362,6 +367,7 @@ function buildWindow(search = "", options = {}) {
     _historyUrls: historyUrls,
     _plausibleCalls: plausibleCalls,
   };
+  return win;
 }
 
 function boot(search = "", options = {}) {
@@ -968,6 +974,72 @@ test("editing inputs keeps the shareable URL in sync", async () => {
   const params = new URLSearchParams(latest.hash.slice(1));
   assert.equal(params.get("boxPrice"), "4200");
   assert.equal(params.get("customSpend"), "80");
+});
+
+test("an invalid numeric edit does not replace the last valid shareable hash", async () => {
+  const { doc, win } = boot();
+
+  // Establish a fresh valid scenario so the last synced hash is unambiguous.
+  doc.getElementById("box-price").value = "4200";
+  await doc.getElementById("calculator-form").dispatch("input");
+  const lastValidUrl = win._historyUrls.at(-1);
+  const syncCountBeforeInvalid = win._historyUrls.length;
+  assert.ok(lastValidUrl.includes("boxPrice=4200"));
+
+  // Now type an invalid, non-empty value: readState() turns this into NaN, which
+  // must never be serialized into the address bar.
+  doc.getElementById("box-price").value = "abc";
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  // Results reflect the invalid state, but the shareable hash is untouched.
+  assert.equal(
+    doc.getElementById("results-status").textContent,
+    "Some inputs need attention — fix the highlighted fields to see results."
+  );
+  assert.equal(
+    win._historyUrls.length,
+    syncCountBeforeInvalid,
+    "an invalid edit writes no new address-bar URL"
+  );
+  assert.equal(
+    win._historyUrls.at(-1),
+    lastValidUrl,
+    "the last valid hash survives the invalid edit"
+  );
+  assert.ok(
+    !win.location.hash.includes("NaN"),
+    "the address bar is never poisoned with NaN"
+  );
+});
+
+test("sharing while an input is invalid copies the current valid URL", async () => {
+  const { doc, win } = boot();
+
+  // Move to a known-good scenario; this is the URL the address bar now holds.
+  doc.getElementById("box-price").value = "4200";
+  await doc.getElementById("calculator-form").dispatch("input");
+  const validUrl = win._historyUrls.at(-1);
+
+  // Break an input. The address bar must stay on the last valid scenario.
+  doc.getElementById("box-price").value = "abc";
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  assert.equal(win._clipboardWrites.length, 1, "copies exactly one URL");
+  assert.equal(
+    win._clipboardWrites[0],
+    validUrl,
+    "sharing copies the last valid URL, not the mid-edit inputs"
+  );
+  const copied = new URL(win._clipboardWrites[0]);
+  const params = new URLSearchParams(copied.hash.slice(1));
+  assert.equal(params.get("boxPrice"), "4200");
+  assert.ok(!win._clipboardWrites[0].includes("NaN"), "never copies a NaN-poisoned URL");
+  assert.equal(
+    doc.getElementById("share-status").textContent,
+    "Link copied to clipboard."
+  );
 });
 
 test("resetting the form restores inputs, subscriptions, results, and hash to defaults", async () => {
