@@ -117,6 +117,58 @@ test("default-selected subscriptions total $40/mo", async () => {
   assert.equal(total, 40);
 });
 
+test("subscriptions cover the Copilot, Cursor, and Zed editor-assistant tiers", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official plans pages named in the issue.
+  const expected = {
+    "copilot-free": { name: "GitHub Copilot", monthlyPrice: 0 },
+    "copilot-pro": { name: "GitHub Copilot", monthlyPrice: 10 },
+    "copilot-pro-plus": { name: "GitHub Copilot", monthlyPrice: 39 },
+    "copilot-max": { name: "GitHub Copilot", monthlyPrice: 100 },
+    "cursor-individual": { name: "Cursor", monthlyPrice: 20 },
+    "cursor-teams": { name: "Cursor", monthlyPrice: 40 },
+    "zed-pro": { name: "Zed", monthlyPrice: 10 },
+    "zed-business": { name: "Zed", monthlyPrice: 30 },
+  };
+  const sourceUrls = {
+    "GitHub Copilot": "https://github.com/features/copilot/plans",
+    Cursor: "https://cursor.com/pricing",
+    Zed: "https://zed.dev/pricing",
+  };
+  for (const [id, { name, monthlyPrice }] of Object.entries(expected)) {
+    assert.ok(byId.has(id), `missing subscription tier: ${id}`);
+    const sub = byId.get(id);
+    assert.equal(sub.name, name, `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.sourceUrl, sourceUrls[name], `${id} points at the official plans page`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    // These editor-assistant tiers are optional: none seed the default selection.
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+  }
+});
+
+test("usage-based tiers disclose their included-credit caveat", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Copilot AI Credits and Zed token credits are metered beyond the included
+  // allowance, so the included-value copy must name both the credit and the
+  // fact that overage is billed separately.
+  for (const id of ["copilot-pro", "copilot-pro-plus", "copilot-max"]) {
+    assert.match(byId.get(id).includedValue, /AI Credits/i, `${id} names GitHub AI Credits`);
+  }
+  assert.match(byId.get("zed-pro").includedValue, /token credits/i, "zed-pro names token credits");
+  for (const id of ["copilot-pro", "copilot-pro-plus", "copilot-max", "zed-pro"]) {
+    assert.match(
+      byId.get(id).includedValue,
+      /beyond the credits|metered/i,
+      `${id} discloses metered overage`
+    );
+  }
+});
+
 test("hardware features the Mac Studio, DGX Spark, and Strix Halo classes", async () => {
   const { hardware } = await import(new URL("data.js", jsDir));
   const names = hardware.map((h) => h.name).join(" | ");

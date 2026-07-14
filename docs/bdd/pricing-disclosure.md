@@ -14,7 +14,23 @@ Scenario: Supported subscription tiers are listed
   When the visitor views them
   Then the Codex individual plan is listed
   And the Claude Code tiers are listed: Pro monthly, Pro annual, Max 5×, Team standard seat (monthly and annual), and Team premium seat (monthly and annual)
+  And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
+  And the Cursor tiers are listed: Individual and Teams
+  And the Zed tiers are listed: Pro and Business
   And each tier is distinguishable by its plan name even when it shares a product name
+
+Scenario: Editor-assistant tiers are optional and unchecked by default
+  Given the subscriptions-to-compare list
+  When the calculator loads with its default selection
+  Then only the Codex and Claude Code Pro (monthly) tiers are checked
+  And the GitHub Copilot, Cursor, and Zed tiers are present but unchecked
+  And checking one adds its monthly price to the comparison without changing the defaults on reload
+
+Scenario: Usage-based tiers disclose their included-credit caveat
+  Given a usage-based tier such as GitHub Copilot Pro or Zed Pro
+  When the visitor views its included-value text
+  Then the included monthly credits are stated (GitHub AI Credits or Zed token credits)
+  And it is noted that usage beyond the included credits is billed separately
 
 Scenario: Billing cadence and included value are shown
   Given a subscription tier in the comparison or pricing section

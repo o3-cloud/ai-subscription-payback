@@ -375,11 +375,30 @@ input[aria-invalid="true"] {
   gap: 0.5rem;
 }
 
+/* The subscription list now spans Codex, Claude Code, Copilot, Cursor, and Zed
+   tiers, so it can run long. Cap its height and let it scroll on its own,
+   keeping the rest of the form (and the compute button) reachable without a
+   long scroll — this matters most on phones. The checkbox itself stays outside
+   the scroll region so its tap target is never clipped. */
+#subscription-options {
+  max-height: 15rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
 .checkbox {
   display: flex;
-  align-items: center;
+  /* Top-align so a plan label that wraps to a second line keeps its checkbox
+     next to the first line rather than floating to the vertical middle. */
+  align-items: flex-start;
   gap: 0.5rem;
   font-weight: 500;
+}
+
+.checkbox input[type="checkbox"] {
+  /* Nudge the box onto the text baseline now that the row is top-aligned. */
+  margin-top: 0.15rem;
+  flex: none;
 }
 
 .form-actions {

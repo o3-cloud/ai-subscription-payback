@@ -78,12 +78,16 @@ export const siteLastUpdated = "2026-07-12";
 /**
  * Public subscription tiers people run AI coding assistants on. Codex keeps its
  * single individual plan; Claude Code carries the full public ladder (Pro, Max,
- * and Team seats) so a visitor can compare their real tier.
+ * and Team seats) so a visitor can compare their real tier. GitHub Copilot,
+ * Cursor, and Zed round out the common IDE/editor assistant plans — they ship
+ * unchecked (no `defaultSelected`) so the default comparison basis stays Codex +
+ * Claude Code Pro and only expands when a visitor opts in.
  *
  * `monthlyPrice` is always the month-by-month comparison value — for annually
  * billed tiers it is the effective monthly cost (annual price ÷ 12), which keeps
  * the calculator's cumulative math cadence-agnostic. `billingCadence` and
- * `includedValue` document how the tier is actually billed and what it includes.
+ * `includedValue` document how the tier is actually billed and what it includes,
+ * including usage-based caveats (Copilot AI Credits, Zed token credits).
  *
  * @type {Subscription[]}
  */
@@ -185,6 +189,110 @@ export const subscriptions = [
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
     lastUpdated: "2026-07-01",
+  },
+  {
+    id: "copilot-free",
+    name: "GitHub Copilot",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "2,000 completions/month plus limited chat on lighter models (Haiku 4.5, GPT-5 mini) for a single developer at no cost.",
+    sourceUrl: "https://github.com/features/copilot/plans",
+    sourceLabel: "Official GitHub pricing",
+    verification: "official",
+    lastUpdated: "2026-07-14",
+  },
+  {
+    id: "copilot-pro",
+    name: "GitHub Copilot",
+    plan: "Pro",
+    monthlyPrice: 10,
+    billingCadence: "Billed monthly (or $100/yr)",
+    includedValue:
+      "Unlimited completions plus $15/mo of GitHub AI Credits toward premium models and 3rd-party agents like Claude Code and Codex; agent usage beyond the credits is metered.",
+    sourceUrl: "https://github.com/features/copilot/plans",
+    sourceLabel: "Official GitHub pricing",
+    verification: "official",
+    lastUpdated: "2026-07-14",
+  },
+  {
+    id: "copilot-pro-plus",
+    name: "GitHub Copilot",
+    plan: "Pro+",
+    monthlyPrice: 39,
+    billingCadence: "Billed monthly (or $390/yr)",
+    includedValue:
+      "Premium models including Opus, 4×+ the included usage of Pro, and $70/mo of GitHub AI Credits; usage beyond the credits is metered.",
+    sourceUrl: "https://github.com/features/copilot/plans",
+    sourceLabel: "Official GitHub pricing",
+    verification: "official",
+    lastUpdated: "2026-07-14",
+  },
+  {
+    id: "copilot-max",
+    name: "GitHub Copilot",
+    plan: "Max",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Top individual tier: priority model access, 2.9×+ the included usage of Pro+, and $200/mo of GitHub AI Credits; usage beyond the credits is metered.",
+    sourceUrl: "https://github.com/features/copilot/plans",
+    sourceLabel: "Official GitHub pricing",
+    verification: "official",
+    lastUpdated: "2026-07-14",
+  },
+  {
+    id: "cursor-individual",
+    name: "Cursor",
+    plan: "Individual",
+    monthlyPrice: 20,
+    billingCadence: "Billed monthly, per user",
+    includedValue:
+      "Individual (Pro) plan for one developer: extended agent limits and frontier-model access in the Cursor editor, with usage-based billing beyond the included allowances.",
+    sourceUrl: "https://cursor.com/pricing",
+    sourceLabel: "Official Cursor pricing",
+    verification: "official",
+    lastUpdated: "2026-07-14",
+  },
+  {
+    id: "cursor-teams",
+    name: "Cursor",
+    plan: "Teams",
+    monthlyPrice: 40,
+    billingCadence: "Billed monthly, per user",
+    includedValue:
+      "Everything in Individual plus centralized billing, admin controls, and SSO for a team seat.",
+    sourceUrl: "https://cursor.com/pricing",
+    sourceLabel: "Official Cursor pricing",
+    verification: "official",
+    lastUpdated: "2026-07-14",
+  },
+  {
+    id: "zed-pro",
+    name: "Zed",
+    plan: "Pro",
+    monthlyPrice: 10,
+    billingCadence: "Billed monthly — usage-based beyond credits",
+    includedValue:
+      "Unlimited edit predictions plus $5/mo of included token credits for Zed-hosted models; usage beyond the credits is billed at API list price +10%.",
+    sourceUrl: "https://zed.dev/pricing",
+    sourceLabel: "Official Zed pricing",
+    verification: "official",
+    lastUpdated: "2026-07-14",
+  },
+  {
+    id: "zed-business",
+    name: "Zed",
+    plan: "Business",
+    monthlyPrice: 30,
+    billingCadence: "Billed monthly, per seat",
+    includedValue:
+      "Per-seat Business plan adding org-wide model policies, data governance, and unified spend visibility; Zed-hosted model usage is billed at standard rates.",
+    sourceUrl: "https://zed.dev/pricing",
+    sourceLabel: "Official Zed pricing",
+    verification: "official",
+    lastUpdated: "2026-07-14",
   },
 ];
 

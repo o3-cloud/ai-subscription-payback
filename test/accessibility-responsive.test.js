@@ -94,3 +94,22 @@ test("number inputs are full-width for phone-friendly targets", () => {
   assert.ok(rule, "stylesheet has an input[type=number] rule");
   assert.match(rule, /width:\s*100%/i, "number inputs are width: 100%");
 });
+
+test("longer subscription list is capped to a scrollable region", () => {
+  // The subscription list spans Codex, Claude Code, Copilot, Cursor, and Zed
+  // tiers, so it can run long. On phones it must scroll within its own capped
+  // region instead of pushing the compute button off-screen.
+  const rule =
+    css.match(/#subscription-options\s*\{[\s\S]*?\}/i)?.[0] ?? "";
+  assert.ok(rule, "stylesheet caps #subscription-options");
+  assert.match(rule, /max-height:/i, "subscription list has a max-height");
+  assert.match(rule, /overflow-y:\s*auto/i, "subscription list scrolls on overflow");
+});
+
+test("checkbox rows keep a full tap target when labels wrap", () => {
+  // Longer plan labels can wrap to a second line; top-aligning the row keeps the
+  // checkbox next to the first line and its tap target intact.
+  const rule = css.match(/\.checkbox\s*\{[\s\S]*?\}/i)?.[0] ?? "";
+  assert.ok(rule, "stylesheet has a .checkbox rule");
+  assert.match(rule, /align-items:\s*flex-start/i, "checkbox rows are top-aligned");
+});

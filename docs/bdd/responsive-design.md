@@ -7,6 +7,13 @@ Scenario: Mobile layout
   Then inputs, results, and chart stack in a readable single-column layout
   And no horizontal scrolling is required
 
+Scenario: Long subscription list stays usable on mobile
+  Given the subscriptions-to-compare list with the full set of Codex, Claude Code, Copilot, Cursor, and Zed tiers
+  When the visitor views it on a phone-width viewport
+  Then the list is capped to a scrollable region so the compute button and other inputs stay reachable
+  And each checkbox keeps a full tap target even when its plan label wraps to a second line
+  And the comparison table scrolls horizontally within its own container rather than overflowing the page
+
 Scenario: Desktop layout
   Given a wide viewport
   When the visitor opens the site
