@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://o3-cloud.github.io/ai-subscription-payback/sitemap.xml
+Sitemap: https://www.othree.cloud/ai-subscription-payback/sitemap.xml

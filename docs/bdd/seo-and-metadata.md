@@ -35,6 +35,8 @@ Scenario: The calculator is described as structured data
 - The launch social card lives at `assets/img/og-card.png` for broad social
   platform compatibility. The editable SVG source is kept alongside it at
   `assets/img/og-card.svg`.
+- The canonical/share URL for the launch surface is the production custom domain:
+  `https://www.othree.cloud/ai-subscription-payback/`.
 - FAQ structured-data answers intentionally mirror the visible Methodology & FAQ
   copy, per search-engine rich-result guidelines that on-page and structured
   answers must match.

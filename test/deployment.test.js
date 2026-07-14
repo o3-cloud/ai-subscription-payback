@@ -18,7 +18,7 @@ const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
 const exists = (rel) => existsSync(fileURLToPath(new URL(rel, root)));
 
 // Must match the canonical URL the SEO surface (sitemap, robots, head) uses.
-const SITE_URL = "https://o3-cloud.github.io/ai-subscription-payback/";
+const SITE_URL = "https://www.othree.cloud/ai-subscription-payback/";
 const WORKFLOW = ".github/workflows/deploy.yml";
 
 test("a GitHub Pages deployment workflow exists", () => {

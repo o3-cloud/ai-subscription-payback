@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 # Publishes the static site from the repository root to GitHub Pages.
 # Runs on every push to main (and can be triggered by hand), so a merge to
 # main is the deploy. The site is served at
-# https://o3-cloud.github.io/ai-subscription-payback/.
+# https://www.othree.cloud/ai-subscription-payback/.
 on:
   push:
     branches: [main]

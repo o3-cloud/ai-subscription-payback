@@ -18,7 +18,7 @@ const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
 const exists = (rel) => existsSync(fileURLToPath(new URL(rel, root)));
 
 const html = read("index.html");
-const SITE_URL = "https://o3-cloud.github.io/ai-subscription-payback/";
+const SITE_URL = "https://www.othree.cloud/ai-subscription-payback/";
 
 /** Value of the first <meta> matching an attr=value selector, or "". */
 const metaContent = (attr, value) =>
@@ -57,10 +57,10 @@ test("Open Graph card is complete", () => {
     );
   }
   assert.equal(metaContent("property", "og:url"), SITE_URL);
-  assert.match(
+  assert.equal(
     metaContent("property", "og:image"),
-    /^https:\/\/.+\/assets\/img\/og-card\.png$/,
-    "og:image is an absolute URL to the card asset"
+    new URL("assets/img/og-card.png", SITE_URL).href,
+    "og:image uses the production site URL"
   );
 });
 
@@ -69,6 +69,11 @@ test("Twitter card carries its own title, description, and image", () => {
   for (const name of ["twitter:title", "twitter:description", "twitter:image", "twitter:image:alt"]) {
     assert.ok(metaContent("name", name).length > 0, `missing or empty ${name}`);
   }
+  assert.equal(
+    metaContent("name", "twitter:image"),
+    new URL("assets/img/og-card.png", SITE_URL).href,
+    "twitter:image uses the production site URL"
+  );
 });
 
 test("the social-card asset exists", () => {
