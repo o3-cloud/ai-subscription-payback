@@ -5,6 +5,6 @@
   "description": "Static payback calculator comparing AI coding subscriptions against a local inference box.",
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node scripts/run-tests.mjs"
   }
 }
