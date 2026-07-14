@@ -84,6 +84,35 @@ test("scaffold exposes the ids the scripts mount onto", () => {
   }
 });
 
+test("no orphaned featured-cards mount ships a dead fallback", () => {
+  // Only #featured-hardware-cards is wired up by calculator.js. An earlier
+  // #featured / #featured-cards block was never populated, so its fallback text
+  // shipped as a permanent placeholder. Guard against it (or a look-alike)
+  // coming back.
+  assert.ok(!ids.has("featured-cards"), "orphaned id=\"featured-cards\" removed");
+  assert.ok(!ids.has("featured"), "orphaned id=\"featured\" section removed");
+  assert.doesNotMatch(
+    html,
+    /Featured hardware cards load from pricing data\./i,
+    "dead featured-card fallback text removed"
+  );
+});
+
+test("primary nav Hardware link targets the wired-up featured section", () => {
+  // The nav must point at the section calculator.js actually populates, not the
+  // removed orphan anchor.
+  assert.match(
+    html,
+    /<a[^>]+href="#featured-hardware"[^>]*>\s*Hardware\s*<\/a>/i,
+    "Hardware nav link targets #featured-hardware"
+  );
+  assert.doesNotMatch(
+    html,
+    /href="#featured"/i,
+    "no link targets the removed #featured anchor"
+  );
+});
+
 test("results metrics expose the data-metric hooks", () => {
   for (const metric of ["breakeven", "payment", "savings"]) {
     assert.ok(metrics.has(metric), `missing data-metric="${metric}"`);
