@@ -512,6 +512,25 @@ thead th {
   font-size: 0.9rem;
 }
 
+/* The month-by-month table is long, so it ships collapsed inside a <details>
+   and is toggled open on demand. */
+.cost-table-details {
+  margin-top: 1rem;
+}
+
+.cost-table-details > summary {
+  color: var(--color-accent);
+  font-size: 0.9rem;
+}
+
+.cost-table-details[open] > summary {
+  margin-bottom: 0.25rem;
+}
+
+.cost-table-details .chart-data-table {
+  margin-top: 0.5rem;
+}
+
 /* Secondary plan lines in the comparison table: billing cadence and what a tier
    includes, kept muted so the monthly comparison price stays the headline. */
 .plan-detail {

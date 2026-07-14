@@ -151,6 +151,55 @@ test("results area ships an accessible chart and data table", () => {
   }
 });
 
+test("share controls sit above the long month-by-month table", () => {
+  // Issue #26: the copy/share CTA must be discoverable near the results summary
+  // rather than buried below the long table, so it appears first in the source.
+  const shareIdx = html.indexOf('id="share-button"');
+  const tableIdx = html.indexOf('id="cost-table"');
+  assert.ok(shareIdx !== -1, "share button is present");
+  assert.ok(tableIdx !== -1, "cost table is present");
+  assert.ok(
+    shareIdx < tableIdx,
+    "share controls appear before the month-by-month cost table"
+  );
+
+  // The results caveat separates the summary metrics from the share CTA, so the
+  // CTA reads as attached to the results, not the table.
+  const caveatIdx = html.indexOf('class="results-caveat"');
+  assert.ok(caveatIdx !== -1 && caveatIdx < shareIdx, "share CTA follows the results caveat");
+});
+
+test("the share button is a visible primary call to action", () => {
+  const shareButton =
+    html.match(/<button[^>]*id="share-button"[^>]*>/i)?.[0] ?? "";
+  assert.ok(shareButton, "share button is present");
+  assert.match(
+    shareButton,
+    /class="[^"]*\bbutton-primary\b[^"]*"/i,
+    "share button is styled as a primary CTA"
+  );
+});
+
+test("the long cost table is collapsed behind a toggle by default", () => {
+  // The month-by-month table ships inside a <details> that is closed by default
+  // (no `open` attribute) and toggled open on demand, while remaining in the DOM
+  // as the accessible equivalent of the chart.
+  const details =
+    html.match(/<details[^>]*id="cost-table-details"[^>]*>/i)?.[0] ?? "";
+  assert.ok(details, "cost table is wrapped in a <details> element");
+  assert.doesNotMatch(details, /\bopen\b/i, "the table is collapsed by default");
+  assert.match(
+    html,
+    /<details[^>]*id="cost-table-details"[^>]*>\s*<summary[^>]*>[\s\S]*?<\/summary>/i,
+    "the details exposes a summary toggle to show all months"
+  );
+  // The table itself still lives inside the details, so it is reachable via the
+  // toggle rather than dropped from the page.
+  const detailsBlock =
+    html.match(/<details[^>]*id="cost-table-details"[^>]*>([\s\S]*?)<\/details>/i)?.[1] ?? "";
+  assert.match(detailsBlock, /id="cost-table"/i, "the cost table is inside the collapsible details");
+});
+
 test("primary navigation targets exist as sections", () => {
   for (const id of ["calculator", "comparison", "pricing", "methodology"]) {
     assert.ok(ids.has(id), `missing section id="${id}"`);

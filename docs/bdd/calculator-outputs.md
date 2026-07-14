@@ -35,6 +35,13 @@ Scenario: Comparison basis reflects the active subscription spend
   Then the results identify which monthly subscription budget is being compared
   And the chart summary matches the selected comparison basis
 
+Scenario: Month-by-month table is collapsed by default
+  Given a computed result is displayed
+  When the visitor views the results area
+  Then the full month-by-month cost table is collapsed behind a toggle by default
+  And the toggle lets the visitor expand the table to show all months
+  And the table remains present as the accessible equivalent of the chart
+
 Scenario: Chart reflects the numbers
   Given a computed result
   When the chart renders

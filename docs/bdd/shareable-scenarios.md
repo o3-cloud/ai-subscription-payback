@@ -25,6 +25,13 @@ Scenario: Share link is available
   Then a shareable link or copy button is visible
   And the share action mirrors the current calculator state in the address bar
 
+Scenario: Share controls sit near the results summary
+  Given a computed result is displayed
+  When the visitor views the results area
+  Then the copy/share call to action appears above the long month-by-month cost table
+  And it sits directly beneath the results summary so it is discoverable without scrolling past the table
+  And the share action still mirrors the current calculator state exactly as before
+
 Scenario: Privacy note accompanies the share button
   Given the visitor views the share button in the results area
   When they read the copy next to it

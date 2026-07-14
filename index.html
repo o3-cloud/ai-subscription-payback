@@ -270,6 +270,18 @@
             models. Not financial advice.
           </p>
 
+          <!-- Share controls sit right under the results summary so the main
+               sharing workflow is discoverable without scrolling past the long
+               month-by-month table below. -->
+          <div class="share">
+            <button type="button" id="share-button" class="button button-primary">Copy shareable link</button>
+            <span id="share-status" class="share-status" role="status" aria-live="polite"></span>
+          </div>
+          <p class="share-note">
+            The link encodes your inputs in the URL itself — nothing is sent to
+            a server.
+          </p>
+
           <!-- Chart region with an accessible table equivalent -->
           <figure class="chart-figure">
             <figcaption>Cumulative cost over time</figcaption>
@@ -277,37 +289,35 @@
               id="cost-chart"
               class="chart-visual"
               role="img"
-              aria-label="Chart of cumulative subscription cost versus cumulative ownership cost over time. A data table with the same figures is provided below."
+              aria-label="Chart of cumulative subscription cost versus cumulative ownership cost over time. A data table with the same figures can be expanded below."
             >
               <span class="chart-hint">The cumulative cost chart renders here; the data table below has the same figures.</span>
             </div>
-            <table class="chart-data-table" id="cost-table">
-              <caption class="visually-hidden">
-                Cumulative subscription cost versus cumulative ownership cost by month
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Month</th>
-                  <th scope="col">Subscription cost</th>
-                  <th scope="col">Ownership cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="3">Cost breakdown appears here after calculation.</td>
-                </tr>
-              </tbody>
-            </table>
+            <!-- The full month-by-month table is long, so it is collapsed by
+                 default and toggled open on demand. The table stays in the DOM
+                 (and in the accessibility tree via the summary toggle), so the
+                 accessible chart equivalent is never dropped. -->
+            <details class="cost-table-details" id="cost-table-details">
+              <summary>Show the month-by-month cost table</summary>
+              <table class="chart-data-table" id="cost-table">
+                <caption class="visually-hidden">
+                  Cumulative subscription cost versus cumulative ownership cost by month
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Month</th>
+                    <th scope="col">Subscription cost</th>
+                    <th scope="col">Ownership cost</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="3">Cost breakdown appears here after calculation.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </details>
           </figure>
-
-          <div class="share">
-            <button type="button" id="share-button" class="button">Copy shareable link</button>
-            <span id="share-status" class="share-status" role="status" aria-live="polite"></span>
-          </div>
-          <p class="share-note">
-            The link encodes your inputs in the URL itself — nothing is sent to
-            a server.
-          </p>
         </div>
       </div>
     </section>
