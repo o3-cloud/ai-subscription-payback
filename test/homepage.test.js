@@ -244,6 +244,11 @@ test("pricing section carries its own pricing-freshness disclosure", () => {
   );
   assert.match(
     pricingSection,
+    /official, a retailer\/street price, or an estimate/i,
+    "pricing disclosure explains the verification status legend"
+  );
+  assert.match(
+    pricingSection,
     /<time[^>]+id="pricing-last-updated"[^>]+datetime="[^"]*"/i,
     "pricing stamp is a <time> with a datetime attribute"
   );

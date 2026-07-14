@@ -249,6 +249,31 @@ main > section {
   font-size: 0.8rem;
 }
 
+.source-status {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.source-status-official {
+  color: #2e7d32;
+}
+
+.source-status-retailer {
+  color: #8e5a00;
+}
+
+.source-status-estimate {
+  color: #6d4c41;
+}
+
+.source-updated {
+  white-space: nowrap;
+}
+
 .hardware-card-note {
   margin: 0;
   color: var(--color-muted);

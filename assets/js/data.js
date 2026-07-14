@@ -9,7 +9,8 @@
  *
  *  1. PRICING DATA — `subscriptions` and `hardware`. Each entry carries a
  *     price (or price range), a human `priceNote`, a `sourceUrl` for the quote,
- *     and its own `lastUpdated` date. Pricing entries never carry affiliate
+ *     a `verification` status (official / retailer / estimate), and its own
+ *     `lastUpdated` (last-verified) date. Pricing entries never carry affiliate
  *     links.
  *  2. AFFILIATE METADATA — `affiliates`, keyed by the pricing entry's `id`.
  *     Reseller / affiliate URLs, vendor names, and disclosure labels live here,
@@ -33,7 +34,10 @@
  * @property {string} includedValue - what a seat/plan at this tier includes
  * @property {string} sourceUrl - where the price was quoted from
  * @property {string} sourceLabel - short provenance for the number (official vendor pricing, …)
- * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was curated
+ * @property {("official"|"retailer"|"estimate")} verification - how the number is
+ *   substantiated: an "official" vendor price, a "retailer" / street price, or a
+ *   class "estimate". Surfaced as a status badge next to the last-verified date.
+ * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was last verified
  * @property {boolean} [defaultSelected]
  */
 
@@ -47,7 +51,10 @@
  * @property {string} priceNote - context for the range (config, estimate, etc.)
  * @property {string} sourceUrl - where the price was quoted from
  * @property {string} sourceLabel - short provenance for the number (official vendor pricing, retail street price, class estimate, …)
- * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was curated
+ * @property {("official"|"retailer"|"estimate")} verification - how the number is
+ *   substantiated: an "official" vendor price, a "retailer" / street price, or a
+ *   class "estimate". Surfaced as a status badge next to the last-verified date.
+ * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was last verified
  * @property {number} [defaultBoxPrice] - price used when this box seeds the form
  * @property {number} [powerDraw] - representative power draw under load (W)
  */
@@ -88,8 +95,9 @@ export const subscriptions = [
     monthlyPrice: 20,
     billingCadence: "Billed monthly",
     includedValue: "Individual Codex plan for a single developer.",
-    sourceUrl: "https://openai.com/",
+    sourceUrl: "https://openai.com/chatgpt/pricing/",
     sourceLabel: "Official OpenAI pricing",
+    verification: "official",
     lastUpdated: "2026-07-01",
     defaultSelected: true,
   },
@@ -102,6 +110,7 @@ export const subscriptions = [
     includedValue: "Individual Pro plan: Claude Code plus web and desktop chat for one person.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
+    verification: "official",
     lastUpdated: "2026-07-01",
     defaultSelected: true,
   },
@@ -114,6 +123,7 @@ export const subscriptions = [
     includedValue: "The Pro plan prepaid for a year at a lower effective monthly rate.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
+    verification: "official",
     lastUpdated: "2026-07-01",
   },
   {
@@ -125,6 +135,7 @@ export const subscriptions = [
     includedValue: "Roughly 5× the Pro usage limits for heavier Claude Code sessions.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
+    verification: "official",
     lastUpdated: "2026-07-01",
   },
   {
@@ -136,6 +147,7 @@ export const subscriptions = [
     includedValue: "Per-seat Team plan with collaboration and central billing at standard usage.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
+    verification: "official",
     lastUpdated: "2026-07-01",
   },
   {
@@ -147,6 +159,7 @@ export const subscriptions = [
     includedValue: "The standard Team seat prepaid annually at a lower effective monthly rate.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
+    verification: "official",
     lastUpdated: "2026-07-01",
   },
   {
@@ -158,6 +171,7 @@ export const subscriptions = [
     includedValue: "Premium Team seat bundling higher Claude Code usage with Team collaboration.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
+    verification: "official",
     lastUpdated: "2026-07-01",
   },
   {
@@ -169,6 +183,7 @@ export const subscriptions = [
     includedValue: "The premium Team seat prepaid annually at a lower effective monthly rate.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
+    verification: "official",
     lastUpdated: "2026-07-01",
   },
 ];
@@ -191,6 +206,7 @@ export const hardware = [
       "Configurable range from the base M4 Max to a fully specced M3 Ultra; unified memory drives most of the price.",
     sourceUrl: "https://www.apple.com/shop/buy-mac/mac-studio",
     sourceLabel: "Official Apple configurable pricing",
+    verification: "official",
     lastUpdated: "2026-07-14",
     defaultBoxPrice: 2499,
     powerDraw: 270,
@@ -205,6 +221,7 @@ export const hardware = [
       "Estimated street price for the desktop unit; availability and bundling vary by reseller.",
     sourceUrl: "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
     sourceLabel: "Estimated retail / street price",
+    verification: "retailer",
     lastUpdated: "2026-07-01",
     defaultBoxPrice: 3999,
     powerDraw: 240,
@@ -220,6 +237,7 @@ export const hardware = [
     sourceUrl:
       "https://www.amd.com/en/products/processors/laptop/ryzen/ai-max.html",
     sourceLabel: "Class estimate (multiple SKUs)",
+    verification: "estimate",
     lastUpdated: "2026-07-01",
     defaultBoxPrice: 1999,
     powerDraw: 140,

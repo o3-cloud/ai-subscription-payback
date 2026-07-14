@@ -5,6 +5,8 @@ Scenario: Subscription prices and sources are disclosed
   Given the pricing section
   When the visitor views it
   Then each subscription's price, plan, source label, and source link are listed
+  And each subscription row shows whether the source is official, a retailer, or an estimate
+  And each subscription row shows when the source was last verified
   And each entry shows when the price was last curated
 
 Scenario: Supported subscription tiers are listed
@@ -39,6 +41,8 @@ Scenario: Hardware prices and sources are disclosed
   When the visitor views it
   Then each featured hardware option shows a visible price or price range
   And the source of the hardware price is listed
+  And the source status shows whether the number is official, retailer, or estimate
+  And the source status includes the last verified date
 
 Scenario: Mac Studio pricing uses the official buy-page range
   Given the hardware comparison section

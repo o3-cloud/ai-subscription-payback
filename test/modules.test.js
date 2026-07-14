@@ -54,6 +54,10 @@ test("every pricing entry carries a source URL and a last-updated date", async (
     assert.ok(sub.includedValue.length > 0, `${sub.id} included-value is empty`);
     assert.equal(typeof sub.sourceLabel, "string");
     assert.match(sub.sourceUrl, /^https?:\/\//, `${sub.id} needs a source URL`);
+    assert.ok(
+      ["official", "retailer", "estimate"].includes(sub.verification),
+      `${sub.id} needs a verification status`
+    );
     assert.match(sub.lastUpdated, ISO_DATE, `${sub.id} needs a last-updated date`);
   }
 
@@ -67,6 +71,10 @@ test("every pricing entry carries a source URL and a last-updated date", async (
     assert.equal(typeof box.priceNote, "string");
     assert.equal(typeof box.sourceLabel, "string");
     assert.match(box.sourceUrl, /^https?:\/\//, `${box.id} needs a source URL`);
+    assert.ok(
+      ["official", "retailer", "estimate"].includes(box.verification),
+      `${box.id} needs a verification status`
+    );
     assert.match(box.lastUpdated, ISO_DATE, `${box.id} needs a last-updated date`);
   }
 });
@@ -130,8 +138,17 @@ test("Mac Studio matches Apple's official buy-page structured data", async () =>
     macStudio.sourceUrl,
     "https://www.apple.com/shop/buy-mac/mac-studio"
   );
+  assert.equal(macStudio.verification, "official");
   // The featured preload defaults to the low end of the configurable range.
   assert.equal(macStudio.defaultBoxPrice, macStudio.priceLow);
+});
+
+test("Codex points at a specific OpenAI pricing page and is marked official", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const codex = subscriptions.find((s) => s.id === "codex");
+  assert.ok(codex, "missing codex subscription entry");
+  assert.equal(codex.sourceUrl, "https://openai.com/chatgpt/pricing/");
+  assert.equal(codex.verification, "official");
 });
 
 test("affiliate metadata is stored separately from pricing data", async () => {

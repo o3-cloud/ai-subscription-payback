@@ -627,10 +627,42 @@ function externalLink(doc, href, text, affiliate) {
   return a;
 }
 
-/** Append a machine-readable last-updated stamp for a pricing entry. */
+/**
+ * Human labels for a pricing entry's verification status. The `verification`
+ * value is the machine-readable classification; this maps it to the short chip
+ * text shown to the visitor.
+ */
+const VERIFICATION_LABELS = {
+  official: "Official",
+  retailer: "Retailer",
+  estimate: "Estimate",
+};
+
+/**
+ * Append a verification status chip for a pricing entry: a small, categorical
+ * badge distinguishing an official vendor price from a retailer/street price or
+ * a class estimate. The chip carries the last-verified date in its tooltip so
+ * the status and its freshness travel together.
+ */
+function appendVerificationStatus(doc, parent, entry) {
+  const status = entry.verification;
+  if (!status) return;
+  const badge = doc.createElement("span");
+  badge.className = `source-status source-status-${status}`;
+  badge.setAttribute("data-verification", status);
+  const label = VERIFICATION_LABELS[status] || status;
+  badge.textContent = label;
+  if (entry.lastUpdated) {
+    badge.setAttribute("title", `${label} price · last verified ${entry.lastUpdated}`);
+  }
+  parent.appendChild(badge);
+  parent.appendChild(doc.createTextNode(" · "));
+}
+
+/** Append a machine-readable last-verified stamp for a pricing entry. */
 function appendFreshness(doc, parent, lastUpdated) {
   if (!lastUpdated) return;
-  parent.appendChild(doc.createTextNode(" · updated "));
+  parent.appendChild(doc.createTextNode(" · verified "));
   const time = doc.createElement("time");
   time.className = "source-updated";
   time.setAttribute("datetime", lastUpdated);
@@ -648,6 +680,7 @@ function appendFreshness(doc, parent, lastUpdated) {
  * `appendAffiliateLink`, keeping the two concerns visibly and structurally apart.
  */
 function appendSourceProvenance(doc, parent, entry) {
+  appendVerificationStatus(doc, parent, entry);
   if (entry.sourceLabel) {
     const label = doc.createElement("span");
     label.className = "source-label";

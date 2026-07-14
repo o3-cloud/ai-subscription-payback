@@ -501,6 +501,11 @@ test("initCalculator boots the form from static data and defaults", () => {
     "pricing list exposes source labels"
   );
   assert.equal(
+    doc.querySelectorAll("#pricing-list .source-status").length,
+    subscriptions.length + hardware.length,
+    "pricing list exposes verification status badges"
+  );
+  assert.equal(
     doc.querySelectorAll("#pricing-list time.source-updated").length,
     subscriptions.length + hardware.length,
     "pricing list exposes freshness dates"
@@ -509,6 +514,11 @@ test("initCalculator boots the form from static data and defaults", () => {
     doc.querySelectorAll("#comparison-body .source-label").length,
     subscriptions.length + hardware.length,
     "comparison table exposes source labels"
+  );
+  assert.equal(
+    doc.querySelectorAll("#comparison-body .source-status").length,
+    subscriptions.length + hardware.length,
+    "comparison table exposes verification status badges"
   );
   assert.equal(
     doc.querySelectorAll("#featured-hardware-cards .hardware-card").length,
