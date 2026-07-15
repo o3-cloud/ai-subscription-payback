@@ -195,6 +195,23 @@ test("Mac Studio matches Apple's official buy-page structured data", async () =>
   assert.equal(macStudio.defaultBoxPrice, macStudio.priceLow);
 });
 
+test("Strix Halo points at a current official AMD product page", async () => {
+  const { hardware } = await import(new URL("data.js", jsDir));
+  const strixHalo = hardware.find((h) => h.id === "strix-halo");
+  assert.ok(strixHalo, "missing strix-halo hardware entry");
+
+  assert.equal(
+    strixHalo.sourceUrl,
+    "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html"
+  );
+  assert.equal(strixHalo.verification, "estimate");
+  assert.match(strixHalo.lastUpdated, /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(
+    !strixHalo.sourceUrl.includes("/en/products/processors/laptop/ryzen/ai-max.html"),
+    "must not point at the retired AMD 404 URL"
+  );
+});
+
 test("Codex points at a specific OpenAI pricing page and is marked official", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const codex = subscriptions.find((s) => s.id === "codex");

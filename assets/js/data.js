@@ -71,7 +71,7 @@
 export const pricingLastUpdated = "2026-07-01";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-14";
+export const siteLastUpdated = "2026-07-15";
 
 /* ----------------------------- pricing data ----------------------------- */
 
@@ -343,10 +343,10 @@ export const hardware = [
     priceNote:
       "Class estimate across Ryzen AI Max+ 395 mini-PCs and small-form-factor desktops; not a single SKU.",
     sourceUrl:
-      "https://www.amd.com/en/products/processors/laptop/ryzen/ai-max.html",
+      "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html",
     sourceLabel: "Class estimate (multiple SKUs)",
     verification: "estimate",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-07-15",
     defaultBoxPrice: 1999,
     powerDraw: 140,
   },
