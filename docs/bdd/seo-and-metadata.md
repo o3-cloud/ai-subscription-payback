@@ -28,6 +28,13 @@ Scenario: The calculator is described as structured data
   Then the app is described as a free WebApplication
   And the on-page methodology questions are exposed as a FAQPage
   And each FAQ answer matches the answer copy shown on the page
+
+Scenario: The custom domain is the single source of truth for SEO origins
+  Given the site is served from the custom domain
+  And it was previously served from the project GitHub Pages origin
+  When a crawler reads any indexable artifact (index.html, robots.txt, sitemap.xml, or a generated guide)
+  Then every canonical, sitemap, and social origin uses the custom domain
+  And no legacy `*.github.io` origin appears in any of those artifacts
 ```
 
 ## Notes
@@ -36,7 +43,10 @@ Scenario: The calculator is described as structured data
   platform compatibility. The editable SVG source is kept alongside it at
   `assets/img/og-card.svg`.
 - The canonical/share URL for the launch surface is the production custom domain:
-  `https://www.othree.cloud/ai-subscription-payback/`.
+  `https://www.othree.cloud/ai-subscription-payback/`. This custom domain is the
+  single source of truth for every SEO origin; the legacy project GitHub Pages
+  origin (`o3-cloud.github.io`) must never appear in an indexable artifact, so
+  it cannot compete with the custom domain for canonical or ranking signals.
 - FAQ structured-data answers intentionally mirror the visible Methodology & FAQ
   copy, per search-engine rich-result guidelines that on-page and structured
   answers must match.

@@ -10,7 +10,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const root = new URL("../", import.meta.url);
@@ -19,6 +19,13 @@ const exists = (rel) => existsSync(fileURLToPath(new URL(rel, root)));
 
 const html = read("index.html");
 const SITE_URL = "https://www.othree.cloud/ai-subscription-payback/";
+
+// The production custom domain is the single source of truth for every
+// SEO-relevant origin. The site previously shipped from the project GitHub
+// Pages URL (`o3-cloud.github.io`); leaving any `*.github.io` origin in an
+// indexable artifact splits canonical signals and lets the legacy origin
+// compete in search. Guard every crawler-facing surface against it.
+const LEGACY_PAGES_HOST = "github.io";
 
 /** Value of the first <meta> matching an attr=value selector, or "". */
 const metaContent = (attr, value) =>
@@ -168,4 +175,31 @@ test("sitemap.xml is well-formed and lists the canonical URL", () => {
     "lists the canonical landing-page URL"
   );
   assert.match(sitemap, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, "carries an ISO lastmod");
+});
+
+test("the custom domain is the sole SEO origin — no legacy GitHub Pages URL leaks", () => {
+  // Every artifact a crawler or social scraper reads. If any of these carries
+  // the old project Pages origin, the custom domain is no longer the single
+  // source of truth for canonical/sitemap/social signals.
+  const guides = readdirSync(fileURLToPath(new URL("guides/", root)))
+    .filter((name) => name.endsWith(".html"))
+    .map((name) => `guides/${name}`);
+  const artifacts = ["index.html", "robots.txt", "sitemap.xml", ...guides];
+  assert.ok(guides.length > 0, "expected at least one generated guide to check");
+
+  for (const rel of artifacts) {
+    const contents = read(rel);
+    assert.ok(
+      !contents.includes(LEGACY_PAGES_HOST),
+      `${rel} references the legacy GitHub Pages origin (${LEGACY_PAGES_HOST}); ` +
+        `use the custom domain ${SITE_URL} instead`
+    );
+    // And the canonical origin, where present, must be the custom domain.
+    if (contents.includes("ai-subscription-payback/")) {
+      assert.ok(
+        contents.includes(SITE_URL),
+        `${rel} should express its site origin as ${SITE_URL}`
+      );
+    }
+  }
 });
