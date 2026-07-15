@@ -63,6 +63,7 @@ Scenario: Capability caveat is shown with the results
   Given the visitor views the calculator results area
   When they read the results panel
   Then a visible caveat states the comparison is cost-only
-  And it notes the result does not rate model quality or coding performance
+  And it notes local hardware may not replace hosted agents, frontier model quality, or managed workflows
+  And it notes the result does not rate capability or coding performance
   And it notes the figures are not financial advice
 ```

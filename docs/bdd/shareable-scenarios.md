@@ -37,8 +37,9 @@ Scenario: Share controls sit near the results summary
 Scenario: Privacy note accompanies the share button
   Given the visitor views the share button in the results area
   When they read the copy next to it
-  Then a visible note explains the link encodes inputs in the URL itself
+  Then a visible note explains the shared link includes inputs in the URL hash
   And it reassures that nothing is sent to a server
+  And it warns against sharing sensitive scenarios
 
 Scenario: Invalid edits do not replace the last valid shareable scenario
   Given the address bar already reflects a valid calculator state

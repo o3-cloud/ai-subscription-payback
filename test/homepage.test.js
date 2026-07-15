@@ -122,12 +122,12 @@ test("results metrics expose the data-metric hooks", () => {
 test("results area includes the capability caveat and privacy note", () => {
   assert.match(
     html,
-    /<p class="results-caveat">[\s\S]*Cost estimates only\.[\s\S]*Not financial advice\.[\s\S]*<\/p>/i,
-    "results area states the comparison is cost-only"
+    /<p class="results-caveat">[\s\S]*Cost comparison only[\s\S]*may not replace hosted[\s\S]*frontier model quality[\s\S]*managed workflows[\s\S]*Not financial advice\.[\s\S]*<\/p>/i,
+    "results area states the comparison is cost-only and may not match capability"
   );
   assert.match(
     html,
-    /<p class="share-note">[\s\S]*The link encodes your inputs in the URL itself[\s\S]*nothing is sent to[\s\S]*server\.[\s\S]*<\/p>/i,
+    /<p class="share-note">[\s\S]*Shared links include your inputs in the URL hash[\s\S]*Don't share sensitive scenarios\.[\s\S]*<\/p>/i,
     "share area explains the privacy implications of shared links"
   );
 });
