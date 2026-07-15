@@ -15,7 +15,7 @@ Scenario: Supported subscription tiers are listed
   Then the Codex individual plan is listed
   And the Claude Code tiers are listed: Pro monthly, Pro annual, Max 5×, Team standard seat (monthly and annual), and Team premium seat (monthly and annual)
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
-  And the Cursor tiers are listed: Individual and Teams
+  And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
   And the Zed tiers are listed: Pro and Business
   And each tier is distinguishable by its plan name even when it shares a product name
 

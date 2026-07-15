@@ -68,7 +68,7 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-01";
+export const pricingLastUpdated = "2026-07-15";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
 export const siteLastUpdated = "2026-07-15";
@@ -256,6 +256,32 @@ export const subscriptions = [
     lastUpdated: "2026-07-14",
   },
   {
+    id: "cursor-pro-plus",
+    name: "Cursor",
+    plan: "Pro+",
+    monthlyPrice: 60,
+    billingCadence: "Billed monthly, per user",
+    includedValue:
+      "Individual Pro+ plan for heavier agent use: roughly 3× the Pro agent limits plus frontier-model access, with usage-based billing beyond the included allowances.",
+    sourceUrl: "https://cursor.com/pricing",
+    sourceLabel: "Official Cursor pricing",
+    verification: "official",
+    lastUpdated: "2026-07-15",
+  },
+  {
+    id: "cursor-ultra",
+    name: "Cursor",
+    plan: "Ultra",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly, per user",
+    includedValue:
+      "Individual Ultra plan for power users: roughly 20× the Pro agent limits and priority access to frontier models, with usage-based billing beyond the included allowances.",
+    sourceUrl: "https://cursor.com/pricing",
+    sourceLabel: "Official Cursor pricing",
+    verification: "official",
+    lastUpdated: "2026-07-15",
+  },
+  {
     id: "cursor-teams",
     name: "Cursor",
     plan: "Teams",
@@ -267,6 +293,19 @@ export const subscriptions = [
     sourceLabel: "Official Cursor pricing",
     verification: "official",
     lastUpdated: "2026-07-14",
+  },
+  {
+    id: "cursor-teams-premium",
+    name: "Cursor",
+    plan: "Teams Premium",
+    monthlyPrice: 120,
+    billingCadence: "Billed monthly, per user",
+    includedValue:
+      "Premium team seat with roughly 5× the Standard team agent limits on top of the Teams admin controls and SSO, with usage-based billing beyond the included allowances.",
+    sourceUrl: "https://cursor.com/pricing",
+    sourceLabel: "Official Cursor pricing",
+    verification: "official",
+    lastUpdated: "2026-07-15",
   },
   {
     id: "zed-pro",
