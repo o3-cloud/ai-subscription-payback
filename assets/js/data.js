@@ -71,7 +71,7 @@
 export const pricingLastUpdated = "2026-07-01";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-12";
+export const siteLastUpdated = "2026-07-14";
 
 /* ----------------------------- pricing data ----------------------------- */
 
