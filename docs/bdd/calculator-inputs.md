@@ -5,6 +5,7 @@ Scenario: Default inputs produce a result on load
   Given the visitor has not changed any input
   When the page loads
   Then default values are populated for subscriptions and hardware profiles
+  And the default comparison basis is the $200/mo power-user preset
   And a break-even result is shown immediately
 
 Scenario: Select subscriptions to compare

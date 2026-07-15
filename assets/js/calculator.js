@@ -95,6 +95,23 @@ function monthlySubscriptionCost(state) {
     : selectedSubscriptionMonthlyCost(state);
 }
 
+/**
+ * The spend preset whose value equals the active custom spend, if any. Used to
+ * label the comparison basis as a named preset (including the default one)
+ * rather than as a figure the visitor typed. Returns null when the custom spend
+ * is blank or does not line up with a preset.
+ */
+function matchingSpendPreset(state) {
+  if (!hasCustomSpend(state)) return null;
+  const value = Number(state.customSpend);
+  return spendPresets.find((preset) => preset.value === value) || null;
+}
+
+/** The short, human name of a preset ("Power user" from "Power user — $200/mo"). */
+function spendPresetName(preset) {
+  return preset.label.split("—")[0].trim();
+}
+
 function monthlyElectricityCost(state) {
   return (
     (clamp(toNumber(state.powerDraw)) / 1000) *
@@ -497,9 +514,17 @@ function renderResults(doc, state, valid) {
   }
   if (spendBasis) {
     const monthly = formatCurrency(monthlySubscriptionCost(state));
-    spendBasis.textContent = hasCustomSpend(state)
-      ? `Comparing against your custom ${monthly}/mo subscription spend.`
-      : `Comparing against ${monthly}/mo from the selected subscriptions.`;
+    if (hasCustomSpend(state)) {
+      // A custom spend that matches a preset (including the default power-user
+      // basis) is labelled as the preset, so a default or one-click selection
+      // is never mislabelled as a figure the visitor typed themselves.
+      const preset = matchingSpendPreset(state);
+      spendBasis.textContent = preset
+        ? `Comparing against the ${spendPresetName(preset)} preset (${monthly}/mo).`
+        : `Comparing against your custom ${monthly}/mo subscription spend.`;
+    } else {
+      spendBasis.textContent = `Comparing against ${monthly}/mo from the selected subscriptions.`;
+    }
   }
 
   renderChart(doc, result.series, result.breakEvenMonth);

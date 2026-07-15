@@ -78,10 +78,7 @@ export function serializeState(state) {
   for (const key of BOOLEAN_FIELDS) {
     if (state[key]) params.set(key, "1");
   }
-  if (
-    state[CUSTOM_SPEND_FIELD] !== undefined &&
-    state[CUSTOM_SPEND_FIELD] !== ""
-  ) {
+  if (state[CUSTOM_SPEND_FIELD] !== undefined) {
     params.set(CUSTOM_SPEND_FIELD, String(state[CUSTOM_SPEND_FIELD]));
   }
   if (Array.isArray(state.subscriptions)) {
@@ -141,8 +138,13 @@ export function parseState(search, defaults = {}) {
     if (params.has(key)) state[key] = params.get(key) === "1";
   }
   if (params.has(CUSTOM_SPEND_FIELD)) {
-    const num = Number(params.get(CUSTOM_SPEND_FIELD));
-    if (Number.isFinite(num)) state[CUSTOM_SPEND_FIELD] = num;
+    const raw = params.get(CUSTOM_SPEND_FIELD);
+    if (raw === "") {
+      state[CUSTOM_SPEND_FIELD] = "";
+    } else {
+      const num = Number(raw);
+      if (Number.isFinite(num)) state[CUSTOM_SPEND_FIELD] = num;
+    }
   }
   if (params.has("subs")) {
     state.subscriptions = params.get("subs").split(",").filter(Boolean);

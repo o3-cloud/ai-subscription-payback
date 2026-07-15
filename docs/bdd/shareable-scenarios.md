@@ -14,8 +14,10 @@ Scenario: Shared URL restores the scenario
 
 Scenario: An empty subscription selection round-trips
   Given the visitor has deselected every subscription plan
+  And cleared the custom spend field
   When the visitor copies the page URL
   Then the shared URL keeps an explicit empty subscription selection
+  And the shared URL keeps an explicit blank custom spend
   And reloading the URL leaves no subscription plans selected
   And the calculator compares against $0/mo from the selected subscriptions
 

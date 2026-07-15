@@ -474,11 +474,11 @@ test("initCalculator boots the form from static data and defaults", () => {
     checkedValues,
     subscriptions.filter((s) => s.defaultSelected).map((s) => s.id)
   );
-  assert.equal(doc.getElementById("custom-spend").value, "");
+  assert.equal(doc.getElementById("custom-spend").value, 200);
   assert.equal(doc.getElementById("spend-preset").value, "");
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against $40/mo from the selected subscriptions."
+    "Comparing against the Power user preset ($200/mo)."
   );
 
   // Default numeric inputs hydrated from data.js defaults.
@@ -595,16 +595,17 @@ test("pricing list discloses billing cadence for every tier", () => {
   }
 });
 
-test("default selected subscriptions compare against $40/mo", () => {
+test("default selected subscriptions stay preselected under the power-user preset", () => {
   const { doc } = boot();
-  // Codex + Claude Code Pro (monthly) are preselected and total $40/mo.
+  // Codex + Claude Code Pro (monthly) are still the preselected subscriptions,
+  // but the default spend basis is now the power-user preset.
   const checked = doc
     .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
     .map((el) => el.value);
   assert.deepEqual(checked, ["codex", "claude-code"]);
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against $40/mo from the selected subscriptions."
+    "Comparing against the Power user preset ($200/mo)."
   );
 });
 
@@ -621,7 +622,7 @@ test("preset spend selector fills the custom spend input", async () => {
   assert.equal(select.value, String(spendPresets.at(-1).value));
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against your custom $200/mo subscription spend."
+    "Comparing against the Power user preset ($200/mo)."
   );
 });
 
@@ -726,19 +727,26 @@ test("initCalculator renders the real results state for valid inputs", () => {
   const { doc } = boot();
   assert.equal(
     doc.getElementById("results-status").textContent,
-    "Break-even not reached within 60 months."
+    "Break-even reached in Month 8."
   );
-  assert.match(doc.querySelector('[data-metric="breakeven"]').textContent, /^(Not reached|Month \d+)$/);
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against the Power user preset ($200/mo)."
+  );
+  assert.equal(doc.querySelector('[data-metric="breakeven"]').textContent, "Month 8");
   assert.match(doc.querySelector('[data-metric="payment"]').textContent, /^\$\d/);
   assert.match(doc.querySelector('[data-metric="savings"]').textContent, /^-?\$\d/);
   assert.ok(
     doc.querySelector('#cost-chart svg[data-chart="cost"]'),
     "renders the cumulative-cost SVG chart"
   );
-  assert.equal(
+  assert.ok(
     doc.querySelector('#cost-chart [data-breakeven-marker="true"]'),
-    null,
-    "does not show a break-even marker when break-even is not reached"
+    "renders a break-even marker for the default payback scenario"
+  );
+  assert.ok(
+    doc.querySelector('#cost-chart [data-breakeven-label="true"]'),
+    "labels the default break-even month on the chart"
   );
 });
 
@@ -798,8 +806,9 @@ test("a live edit re-validates and updates the results status", async () => {
   const apr = doc.getElementById("apr");
   const chartHint = doc.querySelector("#cost-chart .chart-hint");
 
-  // The valid default state leaves a "no break-even" summary in the chart hint.
-  assert.equal(chartHint.textContent, "No break-even within 60 months.");
+  // The valid default state now lands on the power-user preset and shows a
+  // break-even summary in the chart hint.
+  assert.equal(chartHint.textContent, "Break-even reached in Month 8.");
 
   // Invalid: clear a required numeric field, then fire the input listener.
   apr.value = "";
@@ -830,10 +839,10 @@ test("a live edit re-validates and updates the results status", async () => {
   assert.equal(doc.getElementById("apr-error"), null, "removes the field error");
   assert.equal(
     doc.getElementById("results-status").textContent,
-    "Break-even not reached within 60 months."
+    "Break-even reached in Month 7."
   );
   // Recovery restores the break-even summary in the chart hint.
-  assert.equal(chartHint.textContent, "No break-even within 60 months.");
+  assert.equal(chartHint.textContent, "Break-even reached in Month 7.");
 });
 
 test("custom spend validates like the other numeric inputs", async () => {
@@ -977,12 +986,14 @@ test("an explicitly empty subscription selection survives share and reload", asy
   for (const el of checkboxes) {
     el.checked = false;
   }
+  doc.getElementById("custom-spend").value = "";
 
   await doc.getElementById("calculator-form").dispatch("input");
 
   const shared = new URL(win._historyUrls.at(-1));
   const params = new URLSearchParams(shared.hash.slice(1));
   assert.equal(params.get("subs"), "", "the shared URL keeps an explicit empty selection");
+  assert.equal(params.get("customSpend"), "", "the shared URL keeps a blank custom spend");
   assert.equal(
     doc.getElementById("spend-basis").textContent,
     "Comparing against $0/mo from the selected subscriptions."
@@ -1121,17 +1132,17 @@ test("resetting the form restores inputs, subscriptions, results, and hash to de
   assert.equal(doc.getElementById("apr").value, defaults.apr);
   assert.equal(doc.getElementById("term").value, defaults.term);
   assert.equal(doc.getElementById("opt-maintenance").checked, defaults.maintenance);
-  assert.equal(doc.getElementById("custom-spend").value, "");
+  assert.equal(doc.getElementById("custom-spend").value, 200);
   assert.equal(doc.getElementById("spend-preset").value, "");
 
   // The default subscriptions are re-selected.
   assert.deepEqual(subscriptionSelection(), defaultSubs);
-
   // Results are recomputed from the defaults.
   assert.equal(doc.getElementById("results-status").textContent, defaultStatus);
+
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against $40/mo from the selected subscriptions."
+    "Comparing against the Power user preset ($200/mo)."
   );
 
   // The shareable hash is back to the default scenario.

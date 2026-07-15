@@ -275,6 +275,24 @@ test("state.js round-trips calculator state through the URL helpers", async () =
     [],
     "parses an empty subscription selection back to []"
   );
+
+  const blankSpendSerialized = state.serializeState({
+    ...input,
+    customSpend: "",
+    subscriptions: [],
+  });
+  const blankSpendParams = new URLSearchParams(blankSpendSerialized);
+  assert.equal(
+    blankSpendParams.get("customSpend"),
+    "",
+    "explicitly serializes a blank custom spend"
+  );
+
+  const blankSpendParsed = state.parseState(blankSpendSerialized, {
+    subscriptions: ["codex"],
+    customSpend: 200,
+  });
+  assert.equal(blankSpendParsed.customSpend, "");
 });
 
 test("state.js validates optional custom spend correctly", async () => {

@@ -408,9 +408,15 @@ export const defaults = {
   electricityRate: 0.17,
   powerDraw: 450,
   hoursPerDay: 8,
-  // Empty by default: with no custom spend the calculator totals the checked
-  // subscriptions. A provided value overrides that total (see calculator.js).
-  customSpend: "",
+  // Default the comparison basis to the heaviest common-spend preset so a
+  // first-time visitor lands on a realistic power-user scenario where the box
+  // actually pays for itself, instead of the conservative two-plan ($40/mo)
+  // total that never breaks even against a financed box. The custom-spend
+  // field starts filled so the hero shows the stronger comparison immediately;
+  // clearing it falls back to totalling the checked subscriptions (see
+  // calculator.js). Keep this value in step with a `spendPresets` entry so the
+  // preset label logic can recognize the default.
+  customSpend: 200,
   maintenance: false,
   resale: false,
   taxes: false,
