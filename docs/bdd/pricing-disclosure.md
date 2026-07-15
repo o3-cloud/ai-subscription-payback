@@ -17,14 +17,22 @@ Scenario: Supported subscription tiers are listed
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
   And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
   And the Zed tiers are listed: Pro and Business
+  And the Google AI tiers are listed: Plus, Pro, and Ultra
   And each tier is distinguishable by its plan name even when it shares a product name
 
 Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, and Zed tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, and Google AI tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
+
+Scenario: Google AI tiers describe their coding-agent benefit
+  Given the Google AI Plus, Pro, and Ultra tiers
+  When the visitor views their included-value text
+  Then each is described as a broad Google AI subscription
+  And the Pro and Ultra tiers note the included coding-agent access to Jules and Google Antigravity
+  And all three are optional and unchecked in the default selection
 
 Scenario: Usage-based tiers disclose their included-credit caveat
   Given a usage-based tier such as GitHub Copilot Pro or Zed Pro

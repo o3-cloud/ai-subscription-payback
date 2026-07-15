@@ -117,7 +117,7 @@ test("default-selected subscriptions total $40/mo", async () => {
   assert.equal(total, 40);
 });
 
-test("subscriptions cover the Copilot, Cursor, and Zed editor-assistant tiers", async () => {
+test("subscriptions cover the Copilot, Cursor, Zed, and Google AI editor-assistant tiers", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
@@ -134,11 +134,15 @@ test("subscriptions cover the Copilot, Cursor, and Zed editor-assistant tiers", 
     "cursor-teams-premium": { name: "Cursor", monthlyPrice: 120 },
     "zed-pro": { name: "Zed", monthlyPrice: 10 },
     "zed-business": { name: "Zed", monthlyPrice: 30 },
+    "google-ai-plus": { name: "Google AI", monthlyPrice: 4.99 },
+    "google-ai-pro": { name: "Google AI", monthlyPrice: 19.99 },
+    "google-ai-ultra": { name: "Google AI", monthlyPrice: 99.99 },
   };
   const sourceUrls = {
     "GitHub Copilot": "https://github.com/features/copilot/plans",
     Cursor: "https://cursor.com/pricing",
     Zed: "https://zed.dev/pricing",
+    "Google AI": "https://gemini.google/subscriptions/",
   };
   for (const [id, { name, monthlyPrice }] of Object.entries(expected)) {
     assert.ok(byId.has(id), `missing subscription tier: ${id}`);
@@ -169,6 +173,28 @@ test("usage-based tiers disclose their included-credit caveat", async () => {
       /beyond the credits|metered/i,
       `${id} discloses metered overage`
     );
+  }
+});
+
+test("Google AI tiers describe the Jules / Antigravity coding-agent benefit", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // All three tiers are broad Google AI subscriptions marked official.
+  for (const id of ["google-ai-plus", "google-ai-pro", "google-ai-ultra"]) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceUrl, "https://gemini.google/subscriptions/", `${id} points at the official Gemini subscriptions page`);
+    assert.match(sub.includedValue, /Google AI/, `${id} names the broad Google AI subscription`);
+    // Optional: none seed the default selection.
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+  }
+
+  // Only Pro and Ultra bundle the Jules / Google Antigravity coding agents.
+  for (const id of ["google-ai-pro", "google-ai-ultra"]) {
+    assert.match(byId.get(id).includedValue, /Jules/, `${id} names Jules`);
+    assert.match(byId.get(id).includedValue, /Antigravity/, `${id} names Google Antigravity`);
   }
 });
 

@@ -79,9 +79,11 @@ export const siteLastUpdated = "2026-07-15";
  * Public subscription tiers people run AI coding assistants on. Codex keeps its
  * single individual plan; Claude Code carries the full public ladder (Pro, Max,
  * and Team seats) so a visitor can compare their real tier. GitHub Copilot,
- * Cursor, and Zed round out the common IDE/editor assistant plans — they ship
- * unchecked (no `defaultSelected`) so the default comparison basis stays Codex +
- * Claude Code Pro and only expands when a visitor opts in.
+ * Cursor, and Zed round out the common IDE/editor assistant plans, and the
+ * Google AI tiers (Plus, Pro, Ultra) cover the broad Gemini subscriptions whose
+ * Pro/Ultra tiers bundle the Jules and Google Antigravity coding agents — all of
+ * these ship unchecked (no `defaultSelected`) so the default comparison basis
+ * stays Codex + Claude Code Pro and only expands when a visitor opts in.
  *
  * `monthlyPrice` is always the month-by-month comparison value — for annually
  * billed tiers it is the effective monthly cost (annual price ÷ 12), which keeps
@@ -332,6 +334,45 @@ export const subscriptions = [
     sourceLabel: "Official Zed pricing",
     verification: "official",
     lastUpdated: "2026-07-14",
+  },
+  {
+    id: "google-ai-plus",
+    name: "Google AI",
+    plan: "Plus",
+    monthlyPrice: 4.99,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Broad Google AI subscription for one person: higher Gemini app limits and expanded AI access across Google apps. Does not include the Jules or Google Antigravity coding-agent benefits.",
+    sourceUrl: "https://gemini.google/subscriptions/",
+    sourceLabel: "Official Google pricing",
+    verification: "official",
+    lastUpdated: "2026-07-15",
+  },
+  {
+    id: "google-ai-pro",
+    name: "Google AI",
+    plan: "Pro",
+    monthlyPrice: 19.99,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Broad Google AI subscription with higher Gemini limits across Google apps, plus coding-agent access to Jules and Google Antigravity for one developer.",
+    sourceUrl: "https://gemini.google/subscriptions/",
+    sourceLabel: "Official Google pricing",
+    verification: "official",
+    lastUpdated: "2026-07-15",
+  },
+  {
+    id: "google-ai-ultra",
+    name: "Google AI",
+    plan: "Ultra",
+    monthlyPrice: 99.99,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Top Google AI subscription with the highest Gemini limits across Google apps, plus the largest coding-agent allowances for Jules and Google Antigravity.",
+    sourceUrl: "https://gemini.google/subscriptions/",
+    sourceLabel: "Official Google pricing",
+    verification: "official",
+    lastUpdated: "2026-07-15",
   },
 ];
 
