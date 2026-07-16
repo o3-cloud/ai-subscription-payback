@@ -79,6 +79,29 @@ test("every pricing entry carries a source URL and a last-updated date", async (
   }
 });
 
+test("the site- and pricing-wide dates stay at least as fresh as every entry", async () => {
+  // `siteLastUpdated`/`pricingLastUpdated` are what visitors and crawlers read
+  // as the freshness of the whole site. Individual entries carry their own
+  // `lastUpdated`; when a newer entry lands but these roll-up dates aren't
+  // bumped, the site advertises a stale "last updated" older than its content.
+  // ISO dates compare correctly as strings, so a lexical max is the newest.
+  const { subscriptions, hardware, pricingLastUpdated, siteLastUpdated } =
+    await import(new URL("data.js", jsDir));
+
+  const newestEntry = [...subscriptions, ...hardware]
+    .map((entry) => entry.lastUpdated)
+    .reduce((newest, date) => (date > newest ? date : newest), "0000-00-00");
+
+  assert.ok(
+    pricingLastUpdated >= newestEntry,
+    `pricingLastUpdated (${pricingLastUpdated}) is older than the newest entry (${newestEntry})`
+  );
+  assert.ok(
+    siteLastUpdated >= newestEntry,
+    `siteLastUpdated (${siteLastUpdated}) is older than the newest entry (${newestEntry})`
+  );
+});
+
 test("subscriptions cover the Codex and Claude Code public tiers", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));

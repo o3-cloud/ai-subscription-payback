@@ -68,10 +68,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-15";
+export const pricingLastUpdated = "2026-07-16";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-15";
+export const siteLastUpdated = "2026-07-16";
 
 /* ----------------------------- pricing data ----------------------------- */
 
