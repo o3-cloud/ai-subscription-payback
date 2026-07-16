@@ -452,7 +452,7 @@ export const hardware = [
     priceNote:
       "Named Ryzen AI Max+ 395 SKU at the lower-memory end of the Strix Halo class; exact GMKtec list price for the 64 GB / 1 TB configuration.",
     sourceUrl:
-      "https://www.gmktec.com/products/amd-ryzen-ai-max-395-evo-x2-ai-mini-pc",
+      "https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc",
     sourceLabel: "Official GMKtec product page",
     verification: "official",
     lastUpdated: "2026-07-16",
@@ -469,7 +469,7 @@ export const hardware = [
     priceNote:
       "Named Ryzen AI Max+ 395 SKU at the top of the Strix Halo class; exact GMKtec list price for the 128 GB / 2 TB configuration.",
     sourceUrl:
-      "https://www.gmktec.com/products/amd-ryzen-ai-max-395-evo-x3-ai-mini-pc",
+      "https://www.gmktec.com/products/gmktec-evo-x3-ai-mini-pc-amd-ryzen-ai-max-395",
     sourceLabel: "Official GMKtec product page",
     verification: "official",
     lastUpdated: "2026-07-16",

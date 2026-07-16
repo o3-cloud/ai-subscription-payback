@@ -256,11 +256,21 @@ test("GMKtec Strix Halo examples are modeled as official purchasable SKUs", asyn
   const { hardware, getAffiliate } = await import(new URL("data.js", jsDir));
   const byId = new Map(hardware.map((h) => [h.id, h]));
   const examples = [
-    ["gmktec-evo-x2", 1999.99, "64 GB RAM + 1 TB SSD"],
-    ["gmktec-evo-x3", 3799.99, "128 GB RAM + 2 TB SSD"],
+    [
+      "gmktec-evo-x2",
+      1999.99,
+      "64 GB RAM + 1 TB SSD",
+      "https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc",
+    ],
+    [
+      "gmktec-evo-x3",
+      3799.99,
+      "128 GB RAM + 2 TB SSD",
+      "https://www.gmktec.com/products/gmktec-evo-x3-ai-mini-pc-amd-ryzen-ai-max-395",
+    ],
   ];
 
-  for (const [id, price, memoryStorage] of examples) {
+  for (const [id, price, memoryStorage, sourceUrl] of examples) {
     const box = byId.get(id);
     assert.ok(box, `missing ${id} hardware entry`);
     assert.equal(box.name.startsWith("GMKtec EVO-"), true, `${id} uses the GMKtec product name`);
@@ -269,6 +279,8 @@ test("GMKtec Strix Halo examples are modeled as official purchasable SKUs", asyn
     assert.equal(box.spec, `Ryzen AI Max+ 395, ${memoryStorage}`, `${id} spec names the memory/storage config`);
     assert.equal(box.verification, "official", `${id} is an official listing`);
     assert.match(box.sourceUrl, /^https:\/\/www\.gmktec\.com\/products\//, `${id} points at the official GMKtec product page`);
+    // Pins the live product URLs so the #35 404 regression cannot recur silently.
+    assert.equal(box.sourceUrl, sourceUrl, `${id} points at the current live GMKtec product page`);
     assert.equal(getAffiliate(id)?.vendor, "GMKtec", `${id} has GMKtec affiliate metadata`);
     assert.equal(box.exampleOf, "strix-halo", `${id} is tagged as a Strix Halo example`);
   }
