@@ -21,6 +21,13 @@ Scenario: An empty subscription selection round-trips
   And reloading the URL leaves no subscription plans selected
   And the calculator compares against $0/mo from the selected subscriptions
 
+Scenario: A shared query-string URL keeps an explicit blank custom spend
+  Given a visitor opens an older "?"-style link such as "?subs=&customSpend="
+  When the page loads
+  Then the blank custom spend survives the query-string round trip
+  And no subscription plans are selected
+  And the calculator compares against $0/mo from the selected subscriptions
+
 Scenario: Share link is available
   Given a computed result is displayed
   When the visitor views the results area

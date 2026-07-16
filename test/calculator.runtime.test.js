@@ -1010,6 +1010,23 @@ test("an explicitly empty subscription selection survives share and reload", asy
   );
 });
 
+test("a shared query-string URL with a blank custom spend falls back to $0/mo", () => {
+  // Older "?"-style links round-trip an explicit blank custom spend: the field
+  // stays empty instead of reading as 0, and with no subscriptions selected the
+  // comparison basis falls back to $0/mo from the selected subscriptions.
+  const { doc } = boot("?subs=&customSpend=");
+
+  assert.equal(doc.getElementById("custom-spend").value, "");
+  const checked = doc
+    .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+    .map((el) => el.value);
+  assert.deepEqual(checked, [], "no subscription plans are selected");
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against $0/mo from the selected subscriptions."
+  );
+});
+
 test("editing inputs keeps the shareable URL in sync", async () => {
   const { doc, win } = boot();
   const boxPrice = doc.getElementById("box-price");
