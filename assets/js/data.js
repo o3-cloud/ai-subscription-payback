@@ -431,17 +431,51 @@ export const hardware = [
     id: "strix-halo",
     name: "AMD Strix Halo workstation",
     spec: "Ryzen AI Max+ 395 mini-PC, up to 128 GB unified memory",
-    priceLow: 1599,
-    priceHigh: 2499,
+    priceLow: 1999.99,
+    priceHigh: 3799.99,
     priceNote:
-      "Class estimate across Ryzen AI Max+ 395 mini-PCs and small-form-factor desktops; not a single SKU.",
+      "Representative range derived from the named GMKtec EVO-X2 and EVO-X3 configurations below; the class spans lower- and higher-memory configs, so confirm the exact spec before buying.",
     sourceUrl:
       "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html",
-    sourceLabel: "Class estimate (multiple SKUs)",
+    sourceLabel: "Derived range from named SKUs",
     verification: "estimate",
-    lastUpdated: "2026-07-15",
-    defaultBoxPrice: 1999,
+    lastUpdated: "2026-07-16",
+    defaultBoxPrice: 1999.99,
     powerDraw: 140,
+  },
+  {
+    id: "gmktec-evo-x2",
+    name: "GMKtec EVO-X2 AI Mini PC",
+    spec: "Ryzen AI Max+ 395, 64 GB RAM + 1 TB SSD",
+    priceLow: 1999.99,
+    priceHigh: 1999.99,
+    priceNote:
+      "Named Ryzen AI Max+ 395 SKU at the lower-memory end of the Strix Halo class; exact GMKtec list price for the 64 GB / 1 TB configuration.",
+    sourceUrl:
+      "https://www.gmktec.com/products/amd-ryzen-ai-max-395-evo-x2-ai-mini-pc",
+    sourceLabel: "Official GMKtec product page",
+    verification: "official",
+    lastUpdated: "2026-07-16",
+    defaultBoxPrice: 1999.99,
+    powerDraw: 140,
+    exampleOf: "strix-halo",
+  },
+  {
+    id: "gmktec-evo-x3",
+    name: "GMKtec EVO-X3 AI Mini PC",
+    spec: "Ryzen AI Max+ 395, 128 GB RAM + 2 TB SSD",
+    priceLow: 3799.99,
+    priceHigh: 3799.99,
+    priceNote:
+      "Named Ryzen AI Max+ 395 SKU at the top of the Strix Halo class; exact GMKtec list price for the 128 GB / 2 TB configuration.",
+    sourceUrl:
+      "https://www.gmktec.com/products/amd-ryzen-ai-max-395-evo-x3-ai-mini-pc",
+    sourceLabel: "Official GMKtec product page",
+    verification: "official",
+    lastUpdated: "2026-07-16",
+    defaultBoxPrice: 3799.99,
+    powerDraw: 140,
+    exampleOf: "strix-halo",
   },
 ];
 
@@ -475,6 +509,18 @@ export const affiliates = {
     vendor: "AMD",
     url: "https://www.amd.com/en/where-to-buy/ryzen-ai-max.html",
     label: "Find a Strix Halo system",
+    affiliate: true,
+  },
+  "gmktec-evo-x2": {
+    vendor: "GMKtec",
+    url: "https://www.gmktec.com/collections/all",
+    label: "Browse GMKtec listings",
+    affiliate: true,
+  },
+  "gmktec-evo-x3": {
+    vendor: "GMKtec",
+    url: "https://www.gmktec.com/collections/all",
+    label: "Browse GMKtec listings",
     affiliate: true,
   },
 };

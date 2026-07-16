@@ -255,6 +255,59 @@ function subscriptionRowsHtml(subs) {
     .join("\n");
 }
 
+function hardwareExampleRowsHtml(examples) {
+  return examples
+    .map((example) => {
+      const affiliate = getAffiliate(example.id);
+      const affiliateCta = affiliate
+        ? ` ${externalLinkHtml(affiliate.url, affiliate.label, affiliate.affiliate)}`
+        : "";
+      return (
+        `            <tr>\n` +
+        `              <td>${esc(example.name)}</td>\n` +
+        `              <td>${esc(affiliate?.vendor || "GMKtec")}</td>\n` +
+        `              <td>${esc(example.spec)}</td>\n` +
+        `              <td>${esc(priceRange(example.priceLow, example.priceHigh))}</td>\n` +
+        `              <td>${sourceProvenanceHtml(example)}${affiliateCta}</td>\n` +
+        `            </tr>`
+      );
+    })
+    .join("\n");
+}
+
+function hardwareExampleSectionHtml(guide) {
+  if (guide.hardwareId !== "strix-halo") return "";
+  const examples = hardware.filter((h) => h.exampleOf === guide.hardwareId);
+  if (!examples.length) return "";
+
+  return `
+    <!-- ===================== PURCHASEABLE EXAMPLES ===================== -->
+    <section class="comparison" aria-labelledby="examples-title">
+      <h2 id="examples-title">Concrete Strix Halo SKU examples</h2>
+      <p class="section-intro">
+        The named GMKtec systems below bound the class estimate above, so the
+        Strix Halo range is backed by specific purchasable configurations rather
+        than a generic class guess.
+      </p>
+      <div class="table-scroll" role="region" aria-labelledby="examples-title" tabindex="0">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th scope="col">Option</th>
+              <th scope="col">Vendor</th>
+              <th scope="col">Memory / storage</th>
+              <th scope="col">Price</th>
+              <th scope="col">Source</th>
+            </tr>
+          </thead>
+          <tbody>
+${hardwareExampleRowsHtml(examples)}
+          </tbody>
+        </table>
+      </div>
+    </section>`;
+}
+
 function caveatsHtml(caveats) {
   return caveats
     .map((c) => `        <li>${esc(c)}</li>`)
@@ -426,6 +479,7 @@ ${subscriptionRowsHtml(subs)}
       </div>
       <p class="disclosure">${esc(box.name)}: ${esc(box.priceNote)}</p>
     </section>
+${hardwareExampleSectionHtml(guide)}
 
     <!-- ===================== SAMPLE SCENARIO ===================== -->
     <section class="calculator" aria-labelledby="scenario-title">

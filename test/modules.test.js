@@ -236,10 +236,42 @@ test("Strix Halo points at a current official AMD product page", async () => {
   );
   assert.equal(strixHalo.verification, "estimate");
   assert.match(strixHalo.lastUpdated, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(
+    strixHalo.priceNote,
+    /GMKtec EVO-X2 and EVO-X3/i,
+    "class estimate names the purchasable Strix Halo examples it derives from"
+  );
+  assert.match(
+    strixHalo.sourceLabel,
+    /derived range from named SKUs/i,
+    "class estimate is labeled as a derived range"
+  );
   assert.ok(
     !strixHalo.sourceUrl.includes("/en/products/processors/laptop/ryzen/ai-max.html"),
     "must not point at the retired AMD 404 URL"
   );
+});
+
+test("GMKtec Strix Halo examples are modeled as official purchasable SKUs", async () => {
+  const { hardware, getAffiliate } = await import(new URL("data.js", jsDir));
+  const byId = new Map(hardware.map((h) => [h.id, h]));
+  const examples = [
+    ["gmktec-evo-x2", 1999.99, "64 GB RAM + 1 TB SSD"],
+    ["gmktec-evo-x3", 3799.99, "128 GB RAM + 2 TB SSD"],
+  ];
+
+  for (const [id, price, memoryStorage] of examples) {
+    const box = byId.get(id);
+    assert.ok(box, `missing ${id} hardware entry`);
+    assert.equal(box.name.startsWith("GMKtec EVO-"), true, `${id} uses the GMKtec product name`);
+    assert.equal(box.priceLow, price, `${id} priceLow`);
+    assert.equal(box.priceHigh, price, `${id} priceHigh`);
+    assert.equal(box.spec, `Ryzen AI Max+ 395, ${memoryStorage}`, `${id} spec names the memory/storage config`);
+    assert.equal(box.verification, "official", `${id} is an official listing`);
+    assert.match(box.sourceUrl, /^https:\/\/www\.gmktec\.com\/products\//, `${id} points at the official GMKtec product page`);
+    assert.equal(getAffiliate(id)?.vendor, "GMKtec", `${id} has GMKtec affiliate metadata`);
+    assert.equal(box.exampleOf, "strix-halo", `${id} is tagged as a Strix Halo example`);
+  }
 });
 
 test("Codex points at a specific OpenAI pricing page and is marked official", async () => {
