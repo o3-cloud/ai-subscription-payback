@@ -407,6 +407,15 @@ test("state.js round-trips calculator state through the URL helpers", async () =
     customSpend: 200,
   });
   assert.equal(blankSpendParsed.customSpend, "");
+
+  const blankNumericParsed = state.parseState("boxPrice=", {
+    boxPrice: 3000,
+  });
+  assert.equal(
+    blankNumericParsed.boxPrice,
+    3000,
+    "treats a present-but-empty numeric param as absent, preserving the default"
+  );
 });
 
 test("state.js validates optional custom spend correctly", async () => {

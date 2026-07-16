@@ -130,8 +130,13 @@ export function parseState(search, defaults = {}) {
 
   for (const key of Object.keys(NUMERIC_FIELDS)) {
     if (params.has(key)) {
-      const num = Number(params.get(key));
-      if (Number.isFinite(num)) state[key] = num;
+      const raw = params.get(key);
+      // Present-but-empty (e.g. "boxPrice=") is treated as absent so the
+      // default survives, matching the blank customSpend behavior below.
+      if (raw !== "") {
+        const num = Number(raw);
+        if (Number.isFinite(num)) state[key] = num;
+      }
     }
   }
   for (const key of BOOLEAN_FIELDS) {
