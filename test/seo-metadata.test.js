@@ -45,6 +45,18 @@ test("head declares indexing directives and a canonical URL", () => {
     "canonical link points at the site URL"
   );
   assert.ok(metaContent("name", "description").length > 50, "meta description present");
+  assert.match(
+    metaContent("name", "description"),
+    /Google AI|Gemini|Jules|Antigravity/i,
+    "meta description names the Google AI coding-agent tiers"
+  );
+  // Keywords should surface the Google AI coding-agent tiers now that they are
+  // modeled, so searchers with that intent can find the calculator.
+  assert.match(
+    metaContent("name", "keywords"),
+    /Google AI|Gemini|Jules|Antigravity/i,
+    "keywords name the Google AI coding-agent tiers"
+  );
 });
 
 test("Open Graph card is complete", () => {
@@ -64,6 +76,11 @@ test("Open Graph card is complete", () => {
     );
   }
   assert.equal(metaContent("property", "og:url"), SITE_URL);
+  assert.match(
+    metaContent("property", "og:description"),
+    /Google AI/i,
+    "og:description mentions Google AI tiers"
+  );
   assert.equal(
     metaContent("property", "og:image"),
     new URL("assets/img/og-card.png", SITE_URL).href,
@@ -76,6 +93,11 @@ test("Twitter card carries its own title, description, and image", () => {
   for (const name of ["twitter:title", "twitter:description", "twitter:image", "twitter:image:alt"]) {
     assert.ok(metaContent("name", name).length > 0, `missing or empty ${name}`);
   }
+  assert.match(
+    metaContent("name", "twitter:description"),
+    /Google AI/i,
+    "twitter:description mentions Google AI tiers"
+  );
   assert.equal(
     metaContent("name", "twitter:image"),
     new URL("assets/img/og-card.png", SITE_URL).href,

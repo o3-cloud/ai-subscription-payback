@@ -206,6 +206,25 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
+test("subscription helper copy names the Google AI coding-agent tiers", () => {
+  // The checklist covers Google AI (Gemini / Jules / Antigravity) alongside the
+  // other plans, so the helper text and pricing copy must surface them too.
+  const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
+  assert.ok(help, "index.html has a subscription field-help paragraph");
+  assert.match(help, /Google AI/i, "helper copy names Google AI");
+  assert.match(help, /Gemini/i, "helper copy names Gemini");
+  assert.match(help, /Jules/i, "helper copy names Jules");
+  assert.match(help, /Antigravity/i, "helper copy names Antigravity");
+
+  const pricing =
+    html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
+  assert.match(
+    pricing,
+    /Google AI Pro and Ultra[\s\S]*?Jules[\s\S]*?Antigravity/i,
+    "pricing copy explains Google AI Pro/Ultra bundle Jules and Antigravity"
+  );
+});
+
 /** Inner HTML of the first <tag>...</tag> block, or "" if absent. */
 const blockOf = (tag) =>
   html.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"))?.[1] ?? "";
