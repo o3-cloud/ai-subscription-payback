@@ -1,6 +1,6 @@
 # BDD — Behavior Index
 
-This directory contains one behavior-focused BDD file per feature area for the static GitHub Pages site.
+This directory contains one behavior-focused BDD file per feature area for the static GitHub Pages site. The repo-root `BDD.md` mirrors this index; keep both lists in sync when editing feature coverage.
 
 ## Files
 - [MVP Scope and Commercial Model](./mvp-scope.md)

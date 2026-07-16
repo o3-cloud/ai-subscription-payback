@@ -1,6 +1,6 @@
 # BDD — Behavior Index
 
-The behavior specifications now live in `docs/bdd/` as one file per feature area.
+The behavior specifications now live in `docs/bdd/` as one file per feature area. This file mirrors `docs/bdd/README.md`; keep the two indices in sync when adding, removing, or renaming a BDD.
 
 ## Files
 - [MVP Scope and Commercial Model](docs/bdd/mvp-scope.md)
