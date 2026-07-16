@@ -20,6 +20,14 @@ const exists = (rel) => existsSync(fileURLToPath(new URL(rel, root)));
 const html = read("index.html");
 const SITE_URL = "https://www.othree.cloud/ai-subscription-payback/";
 
+// `siteLastUpdated` in the data module is the single source of truth for the
+// site-wide last-updated date. The sitemap's <lastmod> and the no-JS footer
+// fallback are baked into static files, so they can drift; assert they track
+// the canonical value exactly rather than merely being a well-formed date.
+const { siteLastUpdated } = await import(
+  new URL("../assets/js/data.js", import.meta.url)
+);
+
 // The production custom domain is the single source of truth for every
 // SEO-relevant origin. The site previously shipped from the project GitHub
 // Pages URL (`o3-cloud.github.io`); leaving any `*.github.io` origin in an
@@ -196,7 +204,38 @@ test("sitemap.xml is well-formed and lists the canonical URL", () => {
     new RegExp(`<loc>${SITE_URL}</loc>`),
     "lists the canonical landing-page URL"
   );
-  assert.match(sitemap, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, "carries an ISO lastmod");
+  const lastmods = [...sitemap.matchAll(/<lastmod>([^<]*)<\/lastmod>/g)].map(
+    (m) => m[1]
+  );
+  assert.ok(lastmods.length > 0, "carries at least one lastmod");
+  for (const value of lastmods) {
+    assert.equal(
+      value,
+      siteLastUpdated,
+      `sitemap <lastmod> (${value}) must match siteLastUpdated (${siteLastUpdated})`
+    );
+  }
+});
+
+test("the no-JS footer fallback tracks siteLastUpdated exactly", () => {
+  // Client-side JS rewrites #site-last-updated, but crawlers and no-JS visitors
+  // see the baked-in fallback; it must equal the canonical date, not just any
+  // ISO date, or the static surface silently drifts from the data module.
+  const fallback = html.match(
+    /<time[^>]+id="site-last-updated"[^>]*>([\s\S]*?)<\/time>/i
+  );
+  assert.ok(fallback, "index.html has a #site-last-updated time element");
+  const datetime = fallback[0].match(/datetime="([^"]*)"/i)?.[1];
+  assert.equal(
+    datetime,
+    siteLastUpdated,
+    `footer datetime (${datetime}) must match siteLastUpdated (${siteLastUpdated})`
+  );
+  assert.equal(
+    fallback[1].trim(),
+    siteLastUpdated,
+    `footer text (${fallback[1].trim()}) must match siteLastUpdated (${siteLastUpdated})`
+  );
 });
 
 test("the custom domain is the sole SEO origin — no legacy GitHub Pages URL leaks", () => {
