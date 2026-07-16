@@ -310,6 +310,19 @@ export const subscriptions = [
     lastUpdated: "2026-07-15",
   },
   {
+    id: "zed-personal",
+    name: "Zed",
+    plan: "Personal",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "2,000 accepted edit predictions per month, plus unlimited use with your own API keys or external agents (Claude Agent, Codex CLI) at no cost.",
+    sourceUrl: "https://zed.dev/pricing",
+    sourceLabel: "Official Zed pricing",
+    verification: "official",
+    lastUpdated: "2026-07-16",
+  },
+  {
     id: "zed-pro",
     name: "Zed",
     plan: "Pro",

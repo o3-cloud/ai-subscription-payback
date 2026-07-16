@@ -132,6 +132,7 @@ test("subscriptions cover the Copilot, Cursor, Zed, and Google AI editor-assista
     "cursor-ultra": { name: "Cursor", monthlyPrice: 200 },
     "cursor-teams": { name: "Cursor", monthlyPrice: 40 },
     "cursor-teams-premium": { name: "Cursor", monthlyPrice: 120 },
+    "zed-personal": { name: "Zed", monthlyPrice: 0 },
     "zed-pro": { name: "Zed", monthlyPrice: 10 },
     "zed-business": { name: "Zed", monthlyPrice: 30 },
     "google-ai-plus": { name: "Google AI", monthlyPrice: 4.99 },
