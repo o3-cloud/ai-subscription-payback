@@ -870,6 +870,43 @@ test("custom spend validates like the other numeric inputs", async () => {
   );
 });
 
+test("whitespace-only custom spend falls back to the selected subscriptions", async () => {
+  const { doc, win } = boot();
+  const customSpend = doc.getElementById("custom-spend");
+  customSpend.value = "   ";
+
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  assert.equal(customSpend.getAttribute("aria-invalid"), "false");
+  assert.equal(doc.getElementById("custom-spend-error"), null);
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against $40/mo from the selected subscriptions."
+  );
+  const params = new URLSearchParams(win._historyUrls.at(-1).split("#")[1]);
+  assert.equal(params.get("customSpend"), "");
+});
+
+test("whitespace-only required numeric inputs are invalid and never read as zero", async () => {
+  const { doc, win } = boot();
+  const boxPrice = doc.getElementById("box-price");
+  boxPrice.value = "4200";
+  await doc.getElementById("calculator-form").dispatch("input");
+  const validUrl = win._historyUrls.at(-1);
+
+  boxPrice.value = "   ";
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  assert.equal(boxPrice.getAttribute("aria-invalid"), "true");
+  assert.equal(doc.getElementById("box-price-error")?.textContent, "Enter a value.");
+  assert.equal(
+    doc.getElementById("results-status").textContent,
+    "Some inputs need attention — fix the highlighted fields to see results."
+  );
+  assert.equal(win._historyUrls.at(-1), validUrl, "whitespace should not serialize as boxPrice=0");
+  assert.ok(!win._historyUrls.at(-1).includes("boxPrice=0"));
+});
+
 test("analytics wiring records pageviews, calculator interaction, share, and outbound clicks", async () => {
   const { doc, win } = boot();
 

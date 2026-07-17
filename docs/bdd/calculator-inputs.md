@@ -61,6 +61,13 @@ Scenario: Invalid input is handled
   And the chart summary does not keep any stale break-even text
   And the chart region shows a validation-specific hint instead
 
+Scenario: Whitespace-only input is treated as empty
+  Given a calculator input field
+  When the visitor enters only whitespace
+  Then the value is treated as absent rather than read as 0
+  And a required numeric field shows the "enter a value" validation message
+  And a whitespace-only custom spend falls back to the selected subscriptions
+
 Scenario: Fixing an invalid input restores the result
   Given a numeric input field showing a validation message
   When the visitor corrects the value so all inputs are valid

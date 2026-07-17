@@ -411,7 +411,11 @@ function readState(doc) {
     if (el.type === "checkbox") {
       state[key] = el.checked;
     } else {
-      state[key] = el.value === "" ? "" : Number(el.value);
+      // Trim first so a whitespace-only entry reads as empty (absent/default)
+      // rather than Number("  ") === 0, matching the share-param parsing.
+      const raw = typeof el.value === "string" ? el.value : String(el.value ?? "");
+      const trimmed = raw.trim();
+      state[key] = trimmed === "" ? "" : Number(trimmed);
     }
   }
 

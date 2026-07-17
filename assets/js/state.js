@@ -34,10 +34,13 @@ export const CUSTOM_SPEND_FIELD = "customSpend";
  * @returns {{ valid: boolean, message: string }}
  */
 export function validateCustomSpend(value) {
-  if (value === "" || value === null || value === undefined) {
+  // Whitespace-only entries collapse to blank so they fall back to the checked
+  // subscriptions rather than validating as (and computing from) 0.
+  const normalized = typeof value === "string" ? value.trim() : value;
+  if (normalized === "" || normalized === null || normalized === undefined) {
     return { valid: true, message: "" };
   }
-  return validateNumber(value, { min: 0 });
+  return validateNumber(normalized, { min: 0 });
 }
 
 /**
@@ -47,10 +50,13 @@ export function validateCustomSpend(value) {
  * @returns {{ valid: boolean, message: string }}
  */
 export function validateNumber(value, bounds = {}) {
-  if (value === "" || value === null || value === undefined) {
+  // A whitespace-only value is treated as absent, mirroring the share-param
+  // parsing, so a required field flags "Enter a value." instead of reading as 0.
+  const normalized = typeof value === "string" ? value.trim() : value;
+  if (normalized === "" || normalized === null || normalized === undefined) {
     return { valid: false, message: "Enter a value." };
   }
-  const num = Number(value);
+  const num = Number(normalized);
   if (!Number.isFinite(num)) {
     return { valid: false, message: "Enter a number." };
   }

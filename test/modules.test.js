@@ -437,6 +437,7 @@ test("state.js validates optional custom spend correctly", async () => {
   const state = await import(new URL("state.js", jsDir));
   assert.equal(state.validateCustomSpend("").valid, true);
   assert.equal(state.validateCustomSpend(null).valid, true);
+  assert.equal(state.validateCustomSpend("   ").valid, true);
   assert.equal(state.validateCustomSpend(100).valid, true);
   assert.equal(state.validateCustomSpend(-1).valid, false);
   assert.equal(state.validateCustomSpend("abc").valid, false);
@@ -491,8 +492,11 @@ test("analytics.js emits aggregate events and honors Do Not Track", async () => 
 test("state.js validation and formatting behave", async () => {
   const state = await import(new URL("state.js", jsDir));
   assert.equal(state.validateNumber("5", { min: 0, max: 10 }).valid, true);
+  assert.equal(state.validateNumber(" 5 ", { min: 0, max: 10 }).valid, true);
   assert.equal(state.validateNumber("-1", { min: 0 }).valid, false);
   assert.equal(state.validateNumber("", {}).valid, false);
+  assert.equal(state.validateNumber("   ", {}).valid, false);
+  assert.equal(state.validateNumber("   ", {}).message, "Enter a value.");
   assert.equal(state.formatCurrency(3000), "$3,000");
   assert.equal(state.formatBreakEven(null), "Not reached");
   assert.equal(state.formatBreakEven(12), "Month 12");
