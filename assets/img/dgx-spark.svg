@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200" viewBox="0 0 320 200" role="img" aria-label="NVIDIA DGX Spark: a small gold-mesh Grace Blackwell desktop unit.">
+  <rect width="320" height="200" rx="12" fill="#1a1d22" />
+  <!-- Small gold-mesh desktop unit -->
+  <g>
+    <rect x="100" y="58" width="120" height="100" rx="12" fill="#caa14a" stroke="#8a6d28" stroke-width="2" />
+    <rect x="100" y="58" width="120" height="100" rx="12" fill="url(#sparkGrad)" />
+    <!-- Mesh texture -->
+    <g stroke="#8a6d28" stroke-width="1.2" opacity="0.55">
+      <line x1="112" y1="70" x2="112" y2="146" />
+      <line x1="128" y1="70" x2="128" y2="146" />
+      <line x1="144" y1="70" x2="144" y2="146" />
+      <line x1="160" y1="70" x2="160" y2="146" />
+      <line x1="176" y1="70" x2="176" y2="146" />
+      <line x1="192" y1="70" x2="192" y2="146" />
+      <line x1="208" y1="70" x2="208" y2="146" />
+      <line x1="104" y1="82" x2="216" y2="82" />
+      <line x1="104" y1="98" x2="216" y2="98" />
+      <line x1="104" y1="114" x2="216" y2="114" />
+      <line x1="104" y1="130" x2="216" y2="130" />
+    </g>
+    <!-- Power indicator -->
+    <circle cx="160" cy="150" r="3" fill="#8fd694" />
+  </g>
+  <defs>
+    <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0c274" />
+      <stop offset="1" stop-color="#b78e38" />
+    </linearGradient>
+  </defs>
+</svg>

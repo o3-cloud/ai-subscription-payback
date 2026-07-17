@@ -57,6 +57,13 @@
  * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was last verified
  * @property {number} [defaultBoxPrice] - price used when this box seeds the form
  * @property {number} [powerDraw] - representative power draw under load (W)
+ * @property {HardwareImage} [image] - product illustration shown on the featured card
+ */
+
+/**
+ * @typedef {Object} HardwareImage
+ * @property {string} src - path to a local, self-contained SVG under assets/img/
+ * @property {string} alt - descriptive alt text for the product illustration
  */
 
 /**
@@ -496,6 +503,10 @@ export const hardware = [
     lastUpdated: "2026-07-14",
     defaultBoxPrice: 2499,
     powerDraw: 270,
+    image: {
+      src: "assets/img/mac-studio.svg",
+      alt: "Illustration of a Mac Studio: a compact square aluminum desktop computer.",
+    },
   },
   {
     id: "dgx-spark",
@@ -511,6 +522,10 @@ export const hardware = [
     lastUpdated: "2026-07-01",
     defaultBoxPrice: 3999,
     powerDraw: 240,
+    image: {
+      src: "assets/img/dgx-spark.svg",
+      alt: "Illustration of an NVIDIA DGX Spark: a small gold-mesh Grace Blackwell desktop unit.",
+    },
   },
   {
     id: "strix-halo",
@@ -527,6 +542,10 @@ export const hardware = [
     lastUpdated: "2026-07-17",
     defaultBoxPrice: 1099,
     powerDraw: 140,
+    image: {
+      src: "assets/img/strix-halo.svg",
+      alt: "Illustration of an AMD Strix Halo workstation: a compact Ryzen AI Max mini-PC.",
+    },
   },
   {
     id: "framework-desktop-ai-max-385-32gb",

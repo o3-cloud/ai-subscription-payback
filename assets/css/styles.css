@@ -227,6 +227,20 @@ main > section {
   box-shadow: 0 0 0 1px var(--color-accent);
 }
 
+/* Product illustration at the top of each featured card. The SVGs carry their
+   own background, so a fixed aspect ratio keeps the grid tidy while the image
+   scales down responsively. */
+.hardware-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
 .hardware-card-title {
   margin: 0;
   font-size: 1.2rem;

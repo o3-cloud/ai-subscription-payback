@@ -865,6 +865,19 @@ function renderFeaturedHardware(doc, win, analytics) {
     const card = doc.createElement("article");
     card.className = "hardware-card";
 
+    // A product illustration sits at the top of each card. It is decorative
+    // support for the title/spec that follow, but still carries descriptive alt
+    // text so it is not announced as an unlabeled image.
+    if (box.image) {
+      const img = doc.createElement("img");
+      img.className = "hardware-card-image";
+      img.setAttribute("src", box.image.src);
+      img.setAttribute("alt", box.image.alt);
+      img.setAttribute("loading", "lazy");
+      img.setAttribute("decoding", "async");
+      card.appendChild(img);
+    }
+
     const title = doc.createElement("h3");
     title.className = "hardware-card-title";
     title.textContent = box.name;

@@ -534,6 +534,11 @@ test("initCalculator boots the form from static data and defaults", () => {
     "renders one preload button per featured hardware card"
   );
   assert.equal(
+    doc.querySelectorAll("#featured-hardware-cards .hardware-card-image").length,
+    featuredHardware.length,
+    "renders one product image per featured hardware card"
+  );
+  assert.equal(
     doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select").length,
     featuredHardware.filter((box) => hardwareTrims(box).length > 1).length,
     "renders a trim selector for each ranged featured card"
@@ -651,6 +656,22 @@ test("featured hardware renders affiliate CTAs from the separate affiliate metad
     assert.ok(cta, `missing affiliate CTA for ${box.id}`);
     assert.match(cta.textContent, /\(affiliate\)/);
     assert.match(cta.getAttribute("rel"), /sponsored/);
+  }
+});
+
+test("featured hardware cards render the documented product images", () => {
+  const { doc } = boot();
+  const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  const images = doc.querySelectorAll("#featured-hardware-cards .hardware-card-image");
+
+  assert.equal(images.length, featuredHardware.length, "one image per featured card");
+
+  for (let i = 0; i < featuredHardware.length; i += 1) {
+    const box = featuredHardware[i];
+    const image = images[i];
+    assert.ok(image, `expected an image for ${box.id}`);
+    assert.equal(image.getAttribute("src"), box.image?.src, `${box.id} image source`);
+    assert.equal(image.getAttribute("alt"), box.image?.alt, `${box.id} image alt text`);
   }
 });
 
