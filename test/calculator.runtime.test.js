@@ -675,6 +675,27 @@ test("featured hardware cards render the documented product images", () => {
   }
 });
 
+test("featured hardware product image sits at the top of each card", () => {
+  // BDD contract: the product illustration leads the card, above the title and
+  // spec content. Guards against the image being reordered below the text, which
+  // the src/alt assertions above would not catch.
+  const { doc } = boot();
+  const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+
+  assert.equal(cards.length, featuredHardware.length, "one card per featured box");
+
+  for (let i = 0; i < cards.length; i += 1) {
+    const box = featuredHardware[i];
+    const first = cards[i].children[0];
+    assert.ok(first, `expected content in the card for ${box.id}`);
+    assert.match(
+      first.className,
+      /\bhardware-card-image\b/,
+      `product image must be the first element in the card for ${box.id}`
+    );
+  }
+});
+
 test("featured hardware preload button loads the calculator scenario", async () => {
   const { doc, win } = boot();
   const loadButton = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[0];
