@@ -258,6 +258,43 @@ test("pricing disclosure spells out the Devin Teams base-fee plus seat math", ()
   );
 });
 
+test("a prominent affiliate disclosure sits above the featured-hardware section", () => {
+  // The disclosure must be visible near the hero/top so affiliate links are
+  // disclosed before the visitor reaches the featured hardware cards, while the
+  // detailed #affiliate section stays lower on the page.
+  const disclosure =
+    html.match(/<p class="disclosure"[^>]*id="affiliate-disclosure"[^>]*>([\s\S]*?)<\/p>/i)?.[1] ?? "";
+  assert.ok(disclosure, "prominent affiliate disclosure is present with the .disclosure class");
+
+  const disclosureIdx = html.indexOf('id="affiliate-disclosure"');
+  const featuredIdx = html.indexOf('id="featured-hardware"');
+  assert.ok(featuredIdx !== -1, "featured-hardware section is present");
+  assert.ok(
+    disclosureIdx !== -1 && disclosureIdx < featuredIdx,
+    "affiliate disclosure appears before the featured-hardware section"
+  );
+
+  // It must state that affiliate relationships don't affect the calculator math
+  // or results.
+  assert.match(
+    disclosure,
+    /affiliate/i,
+    "prominent disclosure names the affiliate relationship"
+  );
+  assert.match(
+    disclosure,
+    /never change the\s+calculator's math or results/i,
+    "prominent disclosure states affiliate ties don't affect the calculator math or results"
+  );
+
+  // The detailed affiliate section stays lower on the page.
+  const detailedIdx = html.indexOf('id="affiliate-title"');
+  assert.ok(
+    detailedIdx !== -1 && detailedIdx > disclosureIdx,
+    "the detailed affiliate disclosure section remains lower on the page"
+  );
+});
+
 /** Inner HTML of the first <tag>...</tag> block, or "" if absent. */
 const blockOf = (tag) =>
   html.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"))?.[1] ?? "";

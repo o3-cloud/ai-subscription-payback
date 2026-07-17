@@ -6,6 +6,13 @@ Scenario: Affiliate relationship is disclosed
   When the visitor views the page
   Then a clear affiliate disclosure statement is present
 
+Scenario: Affiliate disclosure is prominent near the top of the page
+  Given the visitor lands on the homepage
+  When the page loads
+  Then a prominent affiliate disclosure appears near the hero, above the featured hardware
+  And it states that affiliate relationships do not affect the calculator's math or results
+  And a detailed affiliate disclosure section remains lower on the page
+
 Scenario: Affiliate links are identifiable
   Given an affiliate link
   When the visitor inspects or hovers it
