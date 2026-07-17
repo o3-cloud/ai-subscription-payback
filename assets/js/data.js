@@ -68,10 +68,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-16";
+export const pricingLastUpdated = "2026-07-17";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-16";
+export const siteLastUpdated = "2026-07-17";
 
 /* ----------------------------- pricing data ----------------------------- */
 
@@ -430,18 +430,34 @@ export const hardware = [
   {
     id: "strix-halo",
     name: "AMD Strix Halo workstation",
-    spec: "Ryzen AI Max+ 395 mini-PC, up to 128 GB unified memory",
-    priceLow: 1999.99,
+    spec: "Ryzen AI Max 300-series mini-PC, up to 128 GB unified memory",
+    priceLow: 1099,
     priceHigh: 3799.99,
     priceNote:
-      "Representative range derived from the named GMKtec EVO-X2 and EVO-X3 configurations below; the class spans lower- and higher-memory configs, so confirm the exact spec before buying.",
+      "Representative range derived from the named Framework Desktop 32 GB configuration plus the GMKtec EVO-X2 and EVO-X3 configurations below; the class spans lower- and higher-memory configs, so confirm the exact spec before buying.",
     sourceUrl:
       "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html",
     sourceLabel: "Derived range from named SKUs",
     verification: "estimate",
-    lastUpdated: "2026-07-16",
-    defaultBoxPrice: 1999.99,
+    lastUpdated: "2026-07-17",
+    defaultBoxPrice: 1099,
     powerDraw: 140,
+  },
+  {
+    id: "framework-desktop-ai-max-385-32gb",
+    name: "Framework Desktop AI Max 385",
+    spec: "Ryzen AI Max 385, 32 GB RAM",
+    priceLow: 1099,
+    priceHigh: 1099,
+    priceNote:
+      "Framework Desktop base AI Max 385 configuration; pricing comes from the official product page, and storage / operating system details may vary by DIY or bundle choice.",
+    sourceUrl: "https://frame.work/products/desktop-amd-ai-max-300-series",
+    sourceLabel: "Official Framework product page",
+    verification: "official",
+    lastUpdated: "2026-07-17",
+    defaultBoxPrice: 1099,
+    powerDraw: 140,
+    exampleOf: "strix-halo",
   },
   {
     id: "gmktec-evo-x2",
@@ -509,6 +525,12 @@ export const affiliates = {
     vendor: "AMD",
     url: "https://www.amd.com/en/where-to-buy/ryzen-ai-max.html",
     label: "Find a Strix Halo system",
+    affiliate: true,
+  },
+  "framework-desktop-ai-max-385-32gb": {
+    vendor: "Framework",
+    url: "https://frame.work/desktop",
+    label: "Explore Framework Desktop",
     affiliate: true,
   },
   "gmktec-evo-x2": {

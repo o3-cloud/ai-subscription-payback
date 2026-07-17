@@ -81,6 +81,7 @@ Scenario: Strix Halo pricing uses a current official AMD product page
   Then the source link points to a current official AMD Ryzen AI Max+ product page
   And the source link does not point to the retired AMD URL that returns 404
   And the featured guide mirrors the same source link in its price snapshot
+  And the Strix Halo examples section includes a Framework Desktop option alongside the GMKtec systems
 
 Scenario: Affiliate links are separate from price sources
   Given a featured hardware option with a reseller or affiliate CTA

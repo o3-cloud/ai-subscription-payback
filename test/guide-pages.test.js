@@ -85,7 +85,7 @@ test("each mini-guide carries the required SEO and content structure", () => {
   }
 });
 
-test("Strix Halo guides expose the named GMKtec purchasable examples", () => {
+test("Strix Halo guides expose the named Framework Desktop and GMKtec purchasable examples", () => {
   for (const slug of [
     "claude-code-vs-local-ai-box-cost",
     "codex-vs-local-ai-box-cost",
@@ -93,6 +93,7 @@ test("Strix Halo guides expose the named GMKtec purchasable examples", () => {
   ]) {
     const html = read(`guides/${slug}.html`);
     assert.match(html, /Concrete Strix Halo SKU examples/i, `${slug} includes the Strix Halo examples section`);
+    assert.match(html, /Framework Desktop AI Max 385/i, `${slug} lists Framework Desktop`);
     assert.match(html, /GMKtec EVO-X2 AI Mini PC/i, `${slug} lists EVO-X2`);
     assert.match(html, /GMKtec EVO-X3 AI Mini PC/i, `${slug} lists EVO-X3`);
     assert.match(html, /64 GB RAM \+ 1 TB SSD/i, `${slug} names the EVO-X2 memory/storage config`);

@@ -222,10 +222,10 @@ test("Google AI tiers describe the Jules / Antigravity coding-agent benefit", as
   }
 });
 
-test("hardware features the Mac Studio, DGX Spark, and Strix Halo classes", async () => {
+test("hardware features the Mac Studio, DGX Spark, Strix Halo, and Framework Desktop classes", async () => {
   const { hardware } = await import(new URL("data.js", jsDir));
   const names = hardware.map((h) => h.name).join(" | ");
-  for (const product of ["Mac Studio", "DGX Spark", "Strix Halo"]) {
+  for (const product of ["Mac Studio", "DGX Spark", "Strix Halo", "Framework Desktop"]) {
     assert.match(names, new RegExp(product), `missing ${product}`);
   }
 });
@@ -275,36 +275,55 @@ test("Strix Halo points at a current official AMD product page", async () => {
   );
 });
 
-test("GMKtec Strix Halo examples are modeled as official purchasable SKUs", async () => {
+test("Strix Halo examples are modeled as official purchasable SKUs", async () => {
   const { hardware, getAffiliate } = await import(new URL("data.js", jsDir));
   const byId = new Map(hardware.map((h) => [h.id, h]));
   const examples = [
+    [
+      "framework-desktop-ai-max-385-32gb",
+      1099,
+      "32 GB RAM",
+      "https://frame.work/products/desktop-amd-ai-max-300-series",
+      "https://frame.work/desktop",
+      "Framework",
+      "Framework Desktop AI Max 385",
+    ],
     [
       "gmktec-evo-x2",
       1999.99,
       "64 GB RAM + 1 TB SSD",
       "https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc",
+      "https://www.gmktec.com/collections/all",
+      "GMKtec",
+      "GMKtec EVO-X2 AI Mini PC",
     ],
     [
       "gmktec-evo-x3",
       3799.99,
       "128 GB RAM + 2 TB SSD",
       "https://www.gmktec.com/products/gmktec-evo-x3-ai-mini-pc-amd-ryzen-ai-max-395",
+      "https://www.gmktec.com/collections/all",
+      "GMKtec",
+      "GMKtec EVO-X3 AI Mini PC",
     ],
   ];
 
-  for (const [id, price, memoryStorage, sourceUrl] of examples) {
+  for (const [id, price, memoryStorage, sourceUrl, affiliateUrl, vendor, name] of examples) {
     const box = byId.get(id);
     assert.ok(box, `missing ${id} hardware entry`);
-    assert.equal(box.name.startsWith("GMKtec EVO-"), true, `${id} uses the GMKtec product name`);
+    assert.equal(box.name, name, `${id} uses the expected product name`);
     assert.equal(box.priceLow, price, `${id} priceLow`);
     assert.equal(box.priceHigh, price, `${id} priceHigh`);
-    assert.equal(box.spec, `Ryzen AI Max+ 395, ${memoryStorage}`, `${id} spec names the memory/storage config`);
+    const expectedSpec = id.startsWith("framework-")
+      ? `Ryzen AI Max 385, ${memoryStorage}`
+      : `Ryzen AI Max+ 395, ${memoryStorage}`;
+    assert.equal(box.spec, expectedSpec, `${id} spec names the memory/storage config`);
     assert.equal(box.verification, "official", `${id} is an official listing`);
-    assert.match(box.sourceUrl, /^https:\/\/www\.gmktec\.com\/products\//, `${id} points at the official GMKtec product page`);
+    assert.match(box.sourceUrl, /^https:\/\/(frame\.work|www\.gmktec\.com)\//, `${id} points at the official product page`);
     // Pins the live product URLs so the #35 404 regression cannot recur silently.
     assert.equal(box.sourceUrl, sourceUrl, `${id} points at the current live GMKtec product page`);
-    assert.equal(getAffiliate(id)?.vendor, "GMKtec", `${id} has GMKtec affiliate metadata`);
+    assert.equal(getAffiliate(id)?.vendor, vendor, `${id} has ${vendor} affiliate metadata`);
+    assert.equal(getAffiliate(id)?.url, affiliateUrl, `${id} affiliate CTA points at the expected destination`);
     assert.equal(box.exampleOf, "strix-halo", `${id} is tagged as a Strix Halo example`);
   }
 });

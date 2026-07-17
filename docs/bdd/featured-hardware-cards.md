@@ -29,7 +29,7 @@ Scenario: Featured hardware cards show a source label
 Scenario: Strix Halo cards are backed by named purchasable SKUs
   Given the Strix Halo class card on the homepage
   When the visitor opens the detailed Strix Halo guide
-  Then the guide lists concrete GMKtec EVO-X2 and EVO-X3 examples
+  Then the guide lists concrete Framework Desktop, GMKtec EVO-X2, and GMKtec EVO-X3 examples
   And each example includes vendor, memory or storage, source, price, and last-verified date
   And the generic Strix Halo class estimate is described as a range derived from those named SKUs
 ```
