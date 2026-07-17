@@ -140,7 +140,7 @@ test("default-selected subscriptions total $40/mo", async () => {
   assert.equal(total, 40);
 });
 
-test("subscriptions cover the Copilot, Cursor, Zed, and Google AI editor-assistant tiers", async () => {
+test("subscriptions cover the Copilot, Cursor, Zed, Google AI, and Amazon Q Developer editor-assistant tiers", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
@@ -161,12 +161,15 @@ test("subscriptions cover the Copilot, Cursor, Zed, and Google AI editor-assista
     "google-ai-plus": { name: "Google AI", monthlyPrice: 4.99 },
     "google-ai-pro": { name: "Google AI", monthlyPrice: 19.99 },
     "google-ai-ultra": { name: "Google AI", monthlyPrice: 99.99 },
+    "amazon-q-developer-free": { name: "Amazon Q Developer", monthlyPrice: 0 },
+    "amazon-q-developer-pro": { name: "Amazon Q Developer", monthlyPrice: 19 },
   };
   const sourceUrls = {
     "GitHub Copilot": "https://github.com/features/copilot/plans",
     Cursor: "https://cursor.com/pricing",
     Zed: "https://zed.dev/pricing",
     "Google AI": "https://gemini.google/subscriptions/",
+    "Amazon Q Developer": "https://aws.amazon.com/q/developer/pricing/",
   };
   for (const [id, { name, monthlyPrice }] of Object.entries(expected)) {
     assert.ok(byId.has(id), `missing subscription tier: ${id}`);
@@ -219,6 +222,36 @@ test("Google AI tiers describe the Jules / Antigravity coding-agent benefit", as
   for (const id of ["google-ai-pro", "google-ai-ultra"]) {
     assert.match(byId.get(id).includedValue, /Jules/, `${id} names Jules`);
     assert.match(byId.get(id).includedValue, /Antigravity/, `${id} names Google Antigravity`);
+  }
+});
+
+test("Amazon Q Developer tiers disclose their agentic / Java-transformation quota caveat", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Free ($0) and Pro ($19/user) both come from the official AWS pricing page,
+  // ship optional (unchecked), and must surface the quota-limited caveat.
+  const expected = {
+    "amazon-q-developer-free": 0,
+    "amazon-q-developer-pro": 19,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Amazon Q Developer", `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(
+      sub.sourceUrl,
+      "https://aws.amazon.com/q/developer/pricing/",
+      `${id} points at the official AWS Q Developer pricing page`
+    );
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+    // The billing/limits caveat: agentic requests and Java code-transformation
+    // lines of code are quota-limited.
+    assert.match(sub.includedValue, /agentic requests/i, `${id} names agentic requests`);
+    assert.match(sub.includedValue, /Java code transformation/i, `${id} names Java code transformation`);
+    assert.match(sub.includedValue, /quota/i, `${id} discloses the quota limit`);
   }
 });
 

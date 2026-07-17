@@ -81,7 +81,9 @@ export const siteLastUpdated = "2026-07-17";
  * and Team seats) so a visitor can compare their real tier. GitHub Copilot,
  * Cursor, and Zed round out the common IDE/editor assistant plans, and the
  * Google AI tiers (Plus, Pro, Ultra) cover the broad Gemini subscriptions whose
- * Pro/Ultra tiers bundle the Jules and Google Antigravity coding agents — all of
+ * Pro/Ultra tiers bundle the Jules and Google Antigravity coding agents, and the
+ * Amazon Q Developer tiers (Free, Pro) cover AWS's assistant whose agentic
+ * requests and Java code-transformation allowance are quota-limited — all of
  * these ship unchecked (no `defaultSelected`) so the default comparison basis
  * stays Codex + Claude Code Pro and only expands when a visitor opts in.
  *
@@ -386,6 +388,32 @@ export const subscriptions = [
     sourceLabel: "Official Google pricing",
     verification: "official",
     lastUpdated: "2026-07-15",
+  },
+  {
+    id: "amazon-q-developer-free",
+    name: "Amazon Q Developer",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free tier for one developer with in-IDE chat and inline suggestions at no cost; agentic requests and Java code transformation (lines of code) are capped by a monthly quota.",
+    sourceUrl: "https://aws.amazon.com/q/developer/pricing/",
+    sourceLabel: "Official AWS pricing",
+    verification: "official",
+    lastUpdated: "2026-07-17",
+  },
+  {
+    id: "amazon-q-developer-pro",
+    name: "Amazon Q Developer",
+    plan: "Pro",
+    monthlyPrice: 19,
+    billingCadence: "Billed monthly, per user",
+    includedValue:
+      "Per-user Pro plan raising the monthly limits and adding admin controls; agentic requests and Java code transformation (lines of code) stay quota-limited and are metered beyond the included allowance.",
+    sourceUrl: "https://aws.amazon.com/q/developer/pricing/",
+    sourceLabel: "Official AWS pricing",
+    verification: "official",
+    lastUpdated: "2026-07-17",
   },
 ];
 

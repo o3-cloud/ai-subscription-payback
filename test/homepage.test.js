@@ -215,6 +215,7 @@ test("subscription helper copy names the Google AI coding-agent tiers", () => {
   assert.match(help, /Gemini/i, "helper copy names Gemini");
   assert.match(help, /Jules/i, "helper copy names Jules");
   assert.match(help, /Antigravity/i, "helper copy names Antigravity");
+  assert.match(help, /Amazon Q Developer/i, "helper copy names Amazon Q Developer");
 
   const pricing =
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";

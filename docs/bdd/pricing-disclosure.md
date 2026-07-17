@@ -18,13 +18,14 @@ Scenario: Supported subscription tiers are listed
   And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
   And the Zed tiers are listed: Personal, Pro, and Business
   And the Google AI tiers are listed: Plus, Pro, and Ultra
+  And the Amazon Q Developer tiers are listed: Free and Pro
   And each tier is distinguishable by its plan name even when it shares a product name
 
 Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, and Google AI tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, and Amazon Q Developer tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
@@ -33,6 +34,14 @@ Scenario: Google AI tiers describe their coding-agent benefit
   Then each is described as a broad Google AI subscription
   And the Pro and Ultra tiers note the included coding-agent access to Jules and Google Antigravity
   And all three are optional and unchecked in the default selection
+
+Scenario: Amazon Q Developer tiers disclose their quota caveat
+  Given the Amazon Q Developer Free and Pro tiers
+  When the visitor views their included-value text
+  Then each notes that agentic requests and Java code transformation (lines of code) are quota-limited
+  And the Free tier is priced at $0/mo and the Pro tier at $19/mo per user
+  And both point at the official AWS Q Developer pricing page
+  And both are optional and unchecked in the default selection
 
 Scenario: Usage-based tiers disclose their included-credit caveat
   Given a usage-based tier such as GitHub Copilot Pro or Zed Pro
