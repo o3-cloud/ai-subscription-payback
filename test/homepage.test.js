@@ -132,6 +132,17 @@ test("results area includes the capability caveat and privacy note", () => {
   );
 });
 
+test("results note distinguishes monthly net savings from break-even month", () => {
+  // Issue #39: net savings is the current cash-flow delta during financing,
+  // while break-even is a cumulative-cost crossover over time — the note keeps
+  // visitors from conflating the two metrics.
+  assert.match(
+    html,
+    /<p class="results-note">[\s\S]*Monthly net savings[\s\S]*current monthly[\s\S]*cash-flow delta[\s\S]*financed[\s\S]*Break-even month[\s\S]*cumulative cost[\s\S]*crossover over time[\s\S]*<\/p>/i,
+    "results note explains net savings is a monthly cash-flow delta and break-even is a cumulative crossover"
+  );
+});
+
 test("results area ships an accessible chart and data table", () => {
   // The chart container is a labeled image region with a data-table equivalent
   // underneath, so the visuals and accessible numbers stay in sync.

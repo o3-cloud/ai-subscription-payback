@@ -431,6 +431,12 @@ input[aria-invalid="true"] {
   font-weight: 700;
 }
 
+.results-note {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0.75rem 0 0;
+}
+
 .results-status {
   color: var(--color-muted);
   margin-bottom: 0;

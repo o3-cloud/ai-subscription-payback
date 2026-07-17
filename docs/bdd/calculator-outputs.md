@@ -29,6 +29,12 @@ Scenario: Net savings or overage is shown
   Then the site shows whether the hardware option is cheaper each month
   And the result includes monthly net savings or extra cost
 
+Scenario: Net savings and break-even are distinguished
+  Given the visitor views the calculator results panel
+  When they read the results
+  Then a note clarifies that monthly net savings is the current monthly cash-flow delta while the box is being financed
+  And it clarifies that the break-even month is based on cumulative cost crossover over time
+
 Scenario: Comparison basis reflects the active subscription spend
   Given the visitor uses checked subscriptions, a preset spend, or a custom spend
   When the calculation runs
