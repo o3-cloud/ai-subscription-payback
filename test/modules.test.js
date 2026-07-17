@@ -416,6 +416,21 @@ test("state.js round-trips calculator state through the URL helpers", async () =
     3000,
     "treats a present-but-empty numeric param as absent, preserving the default"
   );
+
+  const whitespaceNumericParsed = state.parseState("boxPrice=%20&customSpend=%20", {
+    boxPrice: 3000,
+    customSpend: 200,
+  });
+  assert.equal(
+    whitespaceNumericParsed.boxPrice,
+    3000,
+    "treats a whitespace-only numeric param as absent, preserving the default"
+  );
+  assert.equal(
+    whitespaceNumericParsed.customSpend,
+    "",
+    "treats a whitespace-only custom spend as blank rather than 0"
+  );
 });
 
 test("state.js validates optional custom spend correctly", async () => {

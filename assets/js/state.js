@@ -130,11 +130,13 @@ export function parseState(search, defaults = {}) {
 
   for (const key of Object.keys(NUMERIC_FIELDS)) {
     if (params.has(key)) {
-      const raw = params.get(key);
-      // Present-but-empty (e.g. "boxPrice=") is treated as absent so the
-      // default survives, matching the blank customSpend behavior below.
-      if (raw !== "") {
-        const num = Number(raw);
+      const raw = params.get(key) ?? "";
+      const normalized = raw.trim();
+      // Present-but-empty (e.g. "boxPrice=" or "boxPrice=%20") is treated as
+      // absent so the default survives, matching the blank customSpend
+      // behavior below.
+      if (normalized !== "") {
+        const num = Number(normalized);
         if (Number.isFinite(num)) state[key] = num;
       }
     }
@@ -143,11 +145,12 @@ export function parseState(search, defaults = {}) {
     if (params.has(key)) state[key] = params.get(key) === "1";
   }
   if (params.has(CUSTOM_SPEND_FIELD)) {
-    const raw = params.get(CUSTOM_SPEND_FIELD);
-    if (raw === "") {
+    const raw = params.get(CUSTOM_SPEND_FIELD) ?? "";
+    const normalized = raw.trim();
+    if (normalized === "") {
       state[CUSTOM_SPEND_FIELD] = "";
     } else {
-      const num = Number(raw);
+      const num = Number(normalized);
       if (Number.isFinite(num)) state[CUSTOM_SPEND_FIELD] = num;
     }
   }

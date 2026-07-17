@@ -48,10 +48,10 @@ Scenario: Privacy note accompanies the share button
   And it reassures that nothing is sent to a server
   And it warns against sharing sensitive scenarios
 
-Scenario: A present-but-empty numeric param falls back to its default
-  Given a shared URL carries a numeric param with no value, such as "boxPrice="
+Scenario: A present-or-whitespace numeric param falls back to its default
+  Given a shared URL carries a numeric param with no value or only whitespace, such as "boxPrice=" or "boxPrice=%20"
   When the page loads
-  Then the empty numeric param is treated as absent
+  Then the empty or whitespace-only numeric param is treated as absent
   And the calculator keeps the provided default instead of reading it as 0
 
 Scenario: Invalid edits do not replace the last valid shareable scenario

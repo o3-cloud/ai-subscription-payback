@@ -1027,6 +1027,17 @@ test("a shared query-string URL with a blank custom spend falls back to $0/mo", 
   );
 });
 
+test("a shared query-string URL treats whitespace-only numeric params as absent", () => {
+  const { doc } = boot("?boxPrice=%20&customSpend=%20");
+
+  assert.equal(doc.getElementById("box-price").value, defaults.boxPrice);
+  assert.equal(doc.getElementById("custom-spend").value, "");
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Comparing against $40/mo from the selected subscriptions."
+  );
+});
+
 test("editing inputs keeps the shareable URL in sync", async () => {
   const { doc, win } = boot();
   const boxPrice = doc.getElementById("box-price");
