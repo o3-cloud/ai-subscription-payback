@@ -17,6 +17,9 @@ import { computeResult, initCalculator } from "../assets/js/calculator.js";
 import {
   subscriptions,
   hardware,
+  featuredHardware,
+  hardwareTrims,
+  defaultHardwareTrim,
   getAffiliate,
   defaults,
   assumptions,
@@ -522,13 +525,18 @@ test("initCalculator boots the form from static data and defaults", () => {
   );
   assert.equal(
     doc.querySelectorAll("#featured-hardware-cards .hardware-card").length,
-    hardware.length,
+    featuredHardware.length,
     "renders one featured hardware card per box"
   );
   assert.equal(
     doc.querySelectorAll("#featured-hardware-cards .hardware-card-use").length,
-    hardware.length,
+    featuredHardware.length,
     "renders one preload button per featured hardware card"
+  );
+  assert.equal(
+    doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select").length,
+    featuredHardware.filter((box) => hardwareTrims(box).length > 1).length,
+    "renders a trim selector for each ranged featured card"
   );
   assert.equal(
     doc.getElementById("assumptions-list").children.length,
@@ -672,6 +680,62 @@ test("featured hardware preload button loads the calculator scenario", async () 
     doc.getElementById("results-status").textContent,
     /Break-even/,
     "the calculator recomputes after loading a hardware preset"
+  );
+});
+
+test("featured hardware trim selectors default to the documented preload", () => {
+  const { doc } = boot();
+  const selects = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select");
+
+  assert.equal(selects.length, featuredHardware.filter((box) => hardwareTrims(box).length > 1).length);
+
+  for (let i = 0; i < featuredHardware.length; i += 1) {
+    const box = featuredHardware[i];
+    const trims = hardwareTrims(box);
+    const defaultTrim = defaultHardwareTrim(box);
+    const select = selects[i] || null;
+
+    if (trims.length > 1) {
+      assert.ok(select, `expected a trim selector for ${box.id}`);
+      assert.equal(select.children.length, trims.length, `${box.id} trim count`);
+      assert.equal(select.value, defaultTrim.id, `${box.id} default trim is selected`);
+      assert.deepEqual(
+        select.children.map((option) => option.value),
+        trims.map((trim) => trim.id),
+        `${box.id} selector options follow the trim data`
+      );
+    } else {
+      assert.equal(select, null, `${box.id} should not render a selector`);
+    }
+  }
+});
+
+test("choosing a featured trim loads that trim's price and power draw", async () => {
+  const { doc, win } = boot();
+  const strixHaloIndex = featuredHardware.findIndex((box) => box.id === "strix-halo");
+  const strixHalo = featuredHardware[strixHaloIndex];
+  const selects = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select");
+  const buttons = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use");
+  const select = selects[strixHaloIndex];
+  const trims = hardwareTrims(strixHalo);
+  const chosenTrim = trims.at(-1);
+
+  assert.ok(select, "expected the Strix Halo card to render a trim selector");
+  assert.ok(chosenTrim, "expected at least one selectable trim");
+
+  select.value = chosenTrim.id;
+  await buttons[strixHaloIndex].dispatch("click");
+
+  assert.equal(doc.getElementById("box-price").value, String(chosenTrim.boxPrice));
+  assert.equal(doc.getElementById("power-draw").value, String(chosenTrim.powerDraw));
+  assert.match(
+    doc.getElementById("featured-hardware-status").textContent,
+    new RegExp(chosenTrim.name)
+  );
+  assert.equal(select.value, chosenTrim.id, "the selector stays synced to the loaded trim");
+  assert.ok(
+    win._plausibleCalls.some(([name]) => name === "Calculator: Interact"),
+    "loading a chosen trim counts as calculator interaction"
   );
 });
 

@@ -580,6 +580,84 @@ export const hardware = [
   },
 ];
 
+/**
+ * The top-level boxes shown as cards in the "Featured hardware to compare"
+ * grid. Named example SKUs (`exampleOf`) are not standalone cards — they are the
+ * selectable trim levels of their parent class card (see `hardwareTrims`). The
+ * full `hardware` array still backs the comparison table and pricing list, so
+ * every SKU keeps its own source and affiliate provenance there.
+ *
+ * @type {Hardware[]}
+ */
+export const featuredHardware = hardware.filter((box) => !box.exampleOf);
+
+/**
+ * @typedef {Object} HardwareTrim
+ * @property {string} id - a stable id (a named SKU's id, or `${box.id}-low|-high`)
+ * @property {string} name - short trim name for the option label and status copy
+ * @property {number} boxPrice - the price loaded into the calculator for this trim
+ * @property {number} powerDraw - the power draw loaded for this trim
+ */
+
+/**
+ * The selectable trim levels for a featured box, used to build the per-card
+ * configuration drop-down:
+ *
+ *  - If the box has named example SKUs (`exampleOf === box.id`), each SKU is a
+ *    trim carrying its own price and power draw.
+ *  - Otherwise, if the box's price is a range, it yields a low-end and a
+ *    high-end trim from the range endpoints (power draw is shared — the range
+ *    reflects configuration/street-price spread, not a distinct power figure).
+ *  - A single-price box with no SKUs yields exactly one trim (itself), so the
+ *    card renders no drop-down and keeps its existing single-button behavior.
+ *
+ * @param {Hardware} box
+ * @returns {HardwareTrim[]}
+ */
+export function hardwareTrims(box) {
+  const children = hardware.filter((entry) => entry.exampleOf === box.id);
+  if (children.length > 0) {
+    return children.map((child) => ({
+      id: child.id,
+      name: child.name,
+      boxPrice: child.defaultBoxPrice ?? child.priceLow,
+      powerDraw: child.powerDraw ?? box.powerDraw ?? defaults.powerDraw,
+    }));
+  }
+
+  const powerDraw = box.powerDraw ?? defaults.powerDraw;
+  if (box.priceLow !== box.priceHigh) {
+    return [
+      { id: `${box.id}-low`, name: "Low-end", boxPrice: box.priceLow, powerDraw },
+      { id: `${box.id}-high`, name: "High-end", boxPrice: box.priceHigh, powerDraw },
+    ];
+  }
+
+  return [
+    {
+      id: box.id,
+      name: box.name,
+      boxPrice: box.defaultBoxPrice ?? box.priceLow,
+      powerDraw,
+    },
+  ];
+}
+
+/**
+ * The trim that seeds a card by default — the one whose price matches the box's
+ * `defaultBoxPrice` (falling back to `priceLow`). This preserves each box's
+ * existing default preload: Mac Studio and Strix Halo default to their low-end
+ * configuration, while DGX Spark keeps its documented high-end default.
+ *
+ * @param {Hardware} box
+ * @returns {HardwareTrim}
+ */
+export function defaultHardwareTrim(box) {
+  const target = box.defaultBoxPrice ?? box.priceLow;
+  const trims = hardwareTrims(box);
+  return trims.find((trim) => trim.boxPrice === target) ?? trims[0];
+}
+
 /* --------------------------- affiliate metadata --------------------------- */
 
 /**

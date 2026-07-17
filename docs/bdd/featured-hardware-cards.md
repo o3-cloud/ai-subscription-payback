@@ -7,6 +7,13 @@ Scenario: Featured hardware cards are visible on the home page
   Then Mac Studio, DGX Spark, and Strix Halo class cards are visible
   And each card includes a current price or price range
 
+Scenario: Range-based featured hardware cards expose a trim selector
+  Given a featured hardware card whose price is a range
+  When the visitor views the card
+  Then the card includes a trim drop-down before the preload button
+  And the default trim matches the card's documented preload
+  And selecting a different trim changes which price and power draw are loaded
+
 Scenario: Featured hardware cards include affiliate calls to action
   Given a featured hardware card
   When the visitor views the card

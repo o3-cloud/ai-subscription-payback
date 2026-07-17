@@ -14,6 +14,9 @@
 import {
   subscriptions,
   hardware,
+  featuredHardware,
+  hardwareTrims,
+  defaultHardwareTrim,
   getAffiliate,
   defaults,
   spendPresets,
@@ -809,16 +812,20 @@ function setInputValue(doc, id, value) {
 }
 
 /**
- * Mark the card for `boxId` as the loaded system and clear the highlight from
- * every other card, so the featured grid always shows exactly one active box.
- * Pass `null` to clear all highlights.
- * @param {Array<{ id: string, card: object }>} cards
- * @param {string|null} boxId
+ * Mark the card for `match.boxId` as the loaded system and clear the highlight
+ * from every other card, so the featured grid always shows exactly one active
+ * box. When the match names a trim, the card's configuration selector is synced
+ * to it so the drop-down reflects what is actually loaded. Pass `null` to clear
+ * all highlights.
+ * @param {Array<{ id: string, card: object, select: object|null }>} cards
+ * @param {{ boxId: string, trimId: string }|null} match
  */
-function setActiveHardwareCard(cards, boxId) {
-  for (const { id, card } of cards) {
-    if (id === boxId) {
+function setActiveHardwareCard(cards, match) {
+  const activeId = match ? match.boxId : null;
+  for (const { id, card, select } of cards) {
+    if (id === activeId) {
       card.setAttribute("data-active", "true");
+      if (select && match.trimId) select.value = match.trimId;
     } else {
       card.removeAttribute("data-active");
     }
@@ -826,21 +833,23 @@ function setActiveHardwareCard(cards, boxId) {
 }
 
 /**
- * Identify which featured hardware box, if any, the current inputs match. A box
- * is considered "loaded" only when both its price and power draw match, which
- * disambiguates boxes that share a default price.
+ * Identify which featured hardware box and trim, if any, the current inputs
+ * match. A trim is considered "loaded" only when both its price and power draw
+ * match, which disambiguates trims and boxes that share one of the two values.
  * @param {object} doc
- * @returns {string|null} the matching hardware id, or null
+ * @returns {{ boxId: string, trimId: string }|null} the matching box + trim, or null
  */
 function matchLoadedHardware(doc) {
   const boxPrice = toNumber(doc.getElementById(FIELD_IDS.boxPrice)?.value);
   const powerDraw = toNumber(doc.getElementById(FIELD_IDS.powerDraw)?.value);
-  const match = hardware.find(
-    (box) =>
-      (box.defaultBoxPrice ?? box.priceLow) === boxPrice &&
-      (box.powerDraw ?? defaults.powerDraw) === powerDraw
-  );
-  return match ? match.id : null;
+  for (const box of featuredHardware) {
+    for (const trim of hardwareTrims(box)) {
+      if (trim.boxPrice === boxPrice && trim.powerDraw === powerDraw) {
+        return { boxId: box.id, trimId: trim.id };
+      }
+    }
+  }
+  return null;
 }
 
 function renderFeaturedHardware(doc, win, analytics) {
@@ -852,10 +861,9 @@ function renderFeaturedHardware(doc, win, analytics) {
 
   const cards = [];
 
-  for (const box of hardware) {
+  for (const box of featuredHardware) {
     const card = doc.createElement("article");
     card.className = "hardware-card";
-    cards.push({ id: box.id, card });
 
     const title = doc.createElement("h3");
     title.className = "hardware-card-title";
@@ -884,6 +892,34 @@ function renderFeaturedHardware(doc, win, analytics) {
     note.textContent = box.priceNote;
     card.appendChild(note);
 
+    // A range card lets the visitor pick a trim before loading; a single-price
+    // card has one trim and renders no selector (keeping its prior behavior).
+    const trims = hardwareTrims(box);
+    const defaultTrim = defaultHardwareTrim(box);
+    let select = null;
+    if (trims.length > 1) {
+      const field = doc.createElement("div");
+      field.className = "field hardware-card-trim";
+      const selectId = `hardware-trim-${box.id}`;
+      const label = doc.createElement("label");
+      label.setAttribute("for", selectId);
+      label.textContent = "Choose a configuration";
+      field.appendChild(label);
+
+      select = doc.createElement("select");
+      select.id = selectId;
+      select.className = "hardware-card-trim-select";
+      for (const trim of trims) {
+        const option = doc.createElement("option");
+        option.value = trim.id;
+        option.textContent = `${trim.name} — ${formatCurrency(trim.boxPrice)}`;
+        select.appendChild(option);
+      }
+      select.value = defaultTrim.id;
+      field.appendChild(select);
+      card.appendChild(field);
+    }
+
     const actions = doc.createElement("div");
     actions.className = "hardware-card-actions";
 
@@ -893,8 +929,10 @@ function renderFeaturedHardware(doc, win, analytics) {
     useButton.textContent = "Use this system";
     useButton.addEventListener("click", () => {
       if (analytics) analytics.trackInteraction();
-      const boxPrice = box.defaultBoxPrice ?? box.priceLow;
-      const powerDraw = box.powerDraw ?? defaults.powerDraw;
+      const trim =
+        (select && trims.find((t) => t.id === select.value)) || defaultTrim;
+      const boxPrice = trim.boxPrice;
+      const powerDraw = trim.powerDraw;
       setInputValue(doc, FIELD_IDS.boxPrice, boxPrice);
       setInputValue(doc, FIELD_IDS.powerDraw, powerDraw);
       setInputValue(
@@ -906,9 +944,10 @@ function renderFeaturedHardware(doc, win, analytics) {
         )
       );
       if (status) {
-        status.textContent = `${box.name} loaded into the calculator.`;
+        const suffix = trims.length > 1 ? ` — ${trim.name}` : "";
+        status.textContent = `${box.name}${suffix} loaded into the calculator.`;
       }
-      setActiveHardwareCard(cards, box.id);
+      setActiveHardwareCard(cards, { boxId: box.id, trimId: trim.id });
       update(doc, win);
     });
     actions.appendChild(useButton);
@@ -922,6 +961,7 @@ function renderFeaturedHardware(doc, win, analytics) {
 
     card.appendChild(actions);
     container.appendChild(card);
+    cards.push({ id: box.id, card, select });
   }
 
   if (status && !status.textContent.trim()) {

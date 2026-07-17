@@ -32,8 +32,9 @@ Scenario: A shared link that matches a featured profile loads it active
 
 Scenario: Select a featured hardware profile
   Given the calculator is visible
-  When the visitor clicks "Use this system" on Mac Studio, DGX Spark, or Strix Halo
+  When the visitor chooses a trim from a range-based featured card and clicks "Use this system"
   Then the corresponding hardware assumptions load into the form
+  And the loaded price and power draw match the chosen trim
   And the selected profile updates the payoff calculation
   And the selected hardware card is visibly marked as active
   And any previously active hardware card is no longer marked active

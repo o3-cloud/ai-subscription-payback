@@ -90,6 +90,7 @@ Scenario: Mac Studio pricing uses the official buy-page range
   When the visitor views the Mac Studio card
   Then the displayed price range comes from Apple's buy/configuration page
   And the source link points to the direct buy page for Mac Studio
+  And the card offers a trim selector for alternative configurations
   And the featured preload uses the low end of the configurable range
 
 Scenario: Strix Halo pricing uses a current official AMD product page

@@ -280,6 +280,23 @@ main > section {
   font-size: 0.85rem;
 }
 
+/* Per-card configuration/trim picker for boxes sold across a price range. */
+.hardware-card-trim {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.hardware-card-trim label {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.hardware-card-trim-select {
+  width: 100%;
+}
+
 .hardware-card-actions {
   margin-top: auto;
   display: flex;
