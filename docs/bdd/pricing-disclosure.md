@@ -22,6 +22,12 @@ Scenario: Supported subscription tiers are listed
   And the Devin tiers are listed: Free, Pro, Max, and Teams (base + 1 seat)
   And each tier is distinguishable by its plan name even when it shares a product name
 
+Scenario: Devin Teams pricing preserves the base-fee plus seat math
+  Given the Devin Teams tier
+  When the visitor views the pricing copy
+  Then it states the team plan is billed as an $80/mo base fee plus $40/mo per full dev seat
+  And it clarifies that the $120/mo shown is the real cost of the base plus one seat
+
 Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection

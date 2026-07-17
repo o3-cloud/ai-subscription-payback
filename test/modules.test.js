@@ -11,10 +11,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const jsDir = new URL("../assets/js/", import.meta.url);
+const rootDir = new URL("../", import.meta.url);
+const read = (rel) => readFileSync(fileURLToPath(new URL(rel, rootDir)), "utf8");
 const modules = ["main.js", "calculator.js", "analytics.js", "state.js", "data.js"];
 
 for (const name of modules) {
@@ -197,6 +199,13 @@ test("Devin Teams pricing preserves the base fee plus seat math", async () => {
   assert.match(teams.billingCadence, /\$40/i, "billing cadence names the $40 per-seat charge");
   assert.match(teams.includedValue, /base fee/i, "included value explains the base fee");
   assert.match(teams.includedValue, /each additional full dev seat adds \$40/i, "included value preserves the seat math");
+});
+
+test("the pricing-disclosure BDD explicitly documents Devin Teams base-fee math", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Devin Teams pricing preserves the base-fee plus seat math/i);
+  assert.match(bdd, /\$80\/mo base fee plus \$40\/mo per full dev seat/i);
+  assert.match(bdd, /\$120\/mo shown is the real cost of the base plus one seat/i);
 });
 
 test("usage-based tiers disclose their included-credit caveat", async () => {
