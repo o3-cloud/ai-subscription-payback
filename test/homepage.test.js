@@ -228,6 +228,25 @@ test("subscription helper copy names the Google AI and Devin coding-agent tiers"
   assert.match(pricing, /Devin/i, "pricing disclosure mentions Devin tiers");
 });
 
+test("pricing disclosure spells out the Devin Teams base-fee plus seat math", () => {
+  // The Teams headline ($120/mo) is a blended base-plus-one-seat figure, so the
+  // visible disclosure copy must state the underlying $80 base + $40 per-seat
+  // math rather than leaving it to the data-driven pricing list alone.
+  const pricing =
+    html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
+  assert.ok(pricing, "index.html has a #pricing section");
+  assert.match(
+    pricing,
+    /\$80\/mo base fee plus \$40\/mo per full\s+dev seat/i,
+    "disclosure states the $80 base fee plus $40 per-seat math"
+  );
+  assert.match(
+    pricing,
+    /\$120\/mo shown is the real cost of the base plus one seat/i,
+    "disclosure clarifies the $120 base-plus-one-seat total"
+  );
+});
+
 /** Inner HTML of the first <tag>...</tag> block, or "" if absent. */
 const blockOf = (tag) =>
   html.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"))?.[1] ?? "";

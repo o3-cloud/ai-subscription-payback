@@ -27,6 +27,7 @@ Scenario: Devin Teams pricing preserves the base-fee plus seat math
   When the visitor views the pricing copy
   Then it states the team plan is billed as an $80/mo base fee plus $40/mo per full dev seat
   And it clarifies that the $120/mo shown is the real cost of the base plus one seat
+  And the pricing disclosure paragraph spells out this base-fee plus seat math in visible copy
 
 Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
