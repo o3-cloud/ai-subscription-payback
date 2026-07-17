@@ -62,8 +62,8 @@ test("head declares indexing directives and a canonical URL", () => {
   // modeled, so searchers with that intent can find the calculator.
   assert.match(
     metaContent("name", "keywords"),
-    /Google AI|Gemini|Jules|Antigravity/i,
-    "keywords name the Google AI coding-agent tiers"
+    /Google AI|Gemini|Jules|Antigravity|Devin/i,
+    "keywords name the Google AI and Devin coding-agent tiers"
   );
 });
 

@@ -83,9 +83,14 @@ export const siteLastUpdated = "2026-07-17";
  * Google AI tiers (Plus, Pro, Ultra) cover the broad Gemini subscriptions whose
  * Pro/Ultra tiers bundle the Jules and Google Antigravity coding agents, and the
  * Amazon Q Developer tiers (Free, Pro) cover AWS's assistant whose agentic
- * requests and Java code-transformation allowance are quota-limited — all of
- * these ship unchecked (no `defaultSelected`) so the default comparison basis
- * stays Codex + Claude Code Pro and only expands when a visitor opts in.
+ * requests and Java code-transformation allowance are quota-limited, and the
+ * Devin tiers (Free, Pro, Max, and a Teams plan) cover Cognition's autonomous
+ * coding agent — its Teams plan is a `$80/mo team base + $40/mo per full dev
+ * seat` formula, so it is modeled as the real cost of the first seat ($120/mo)
+ * rather than a misleading single-seat number, with the base-plus-seat formula
+ * spelled out in its `billingCadence`/`includedValue`. All of these ship
+ * unchecked (no `defaultSelected`) so the default comparison basis stays
+ * Codex + Claude Code Pro and only expands when a visitor opts in.
  *
  * `monthlyPrice` is always the month-by-month comparison value — for annually
  * billed tiers it is the effective monthly cost (annual price ÷ 12), which keeps
@@ -412,6 +417,58 @@ export const subscriptions = [
       "Per-user Pro plan raising the monthly limits and adding admin controls; agentic requests and Java code transformation (lines of code) stay quota-limited and are metered beyond the included allowance.",
     sourceUrl: "https://aws.amazon.com/q/developer/pricing/",
     sourceLabel: "Official AWS pricing",
+    verification: "official",
+    lastUpdated: "2026-07-17",
+  },
+  {
+    id: "devin-free",
+    name: "Devin",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free tier for one developer: a light monthly quota to code with the Devin agent, plus unlimited inline edits and tab completions at no cost.",
+    sourceUrl: "https://devin.ai/pricing",
+    sourceLabel: "Official Devin pricing",
+    verification: "official",
+    lastUpdated: "2026-07-17",
+  },
+  {
+    id: "devin-pro",
+    name: "Devin",
+    plan: "Pro",
+    monthlyPrice: 20,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Individual Pro plan for one developer: increased agent quotas plus access to frontier models from OpenAI, Anthropic (Claude), and Google (Gemini).",
+    sourceUrl: "https://devin.ai/pricing",
+    sourceLabel: "Official Devin pricing",
+    verification: "official",
+    lastUpdated: "2026-07-17",
+  },
+  {
+    id: "devin-max",
+    name: "Devin",
+    plan: "Max",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Top individual plan for power users: significantly higher agent quotas than Pro for heavier autonomous coding sessions.",
+    sourceUrl: "https://devin.ai/pricing",
+    sourceLabel: "Official Devin pricing",
+    verification: "official",
+    lastUpdated: "2026-07-17",
+  },
+  {
+    id: "devin-teams",
+    name: "Devin",
+    plan: "Teams (base + 1 seat)",
+    monthlyPrice: 120,
+    billingCadence: "Billed monthly — $80 team base + $40 per full dev seat ($120 for the first seat)",
+    includedValue:
+      "Team plan billed as an $80/mo base fee plus $40/mo per full dev seat; the $120/mo shown is the real cost of the base plus one seat, and each additional full dev seat adds $40/mo.",
+    sourceUrl: "https://devin.ai/pricing",
+    sourceLabel: "Official Devin pricing",
     verification: "official",
     lastUpdated: "2026-07-17",
   },

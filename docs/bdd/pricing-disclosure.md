@@ -19,6 +19,7 @@ Scenario: Supported subscription tiers are listed
   And the Zed tiers are listed: Personal, Pro, and Business
   And the Google AI tiers are listed: Plus, Pro, and Ultra
   And the Amazon Q Developer tiers are listed: Free and Pro
+  And the Devin tiers are listed: Free, Pro, Max, and Teams (base + 1 seat)
   And each tier is distinguishable by its plan name even when it shares a product name
 
 Scenario: Editor-assistant tiers are optional and unchecked by default

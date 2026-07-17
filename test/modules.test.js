@@ -140,7 +140,7 @@ test("default-selected subscriptions total $40/mo", async () => {
   assert.equal(total, 40);
 });
 
-test("subscriptions cover the Copilot, Cursor, Zed, Google AI, and Amazon Q Developer editor-assistant tiers", async () => {
+test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Developer, and Devin editor-assistant tiers", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
@@ -163,6 +163,10 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, and Amazon Q Deve
     "google-ai-ultra": { name: "Google AI", monthlyPrice: 99.99 },
     "amazon-q-developer-free": { name: "Amazon Q Developer", monthlyPrice: 0 },
     "amazon-q-developer-pro": { name: "Amazon Q Developer", monthlyPrice: 19 },
+    "devin-free": { name: "Devin", monthlyPrice: 0 },
+    "devin-pro": { name: "Devin", monthlyPrice: 20 },
+    "devin-max": { name: "Devin", monthlyPrice: 200 },
+    "devin-teams": { name: "Devin", monthlyPrice: 120 },
   };
   const sourceUrls = {
     "GitHub Copilot": "https://github.com/features/copilot/plans",
@@ -170,6 +174,7 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, and Amazon Q Deve
     Zed: "https://zed.dev/pricing",
     "Google AI": "https://gemini.google/subscriptions/",
     "Amazon Q Developer": "https://aws.amazon.com/q/developer/pricing/",
+    Devin: "https://devin.ai/pricing",
   };
   for (const [id, { name, monthlyPrice }] of Object.entries(expected)) {
     assert.ok(byId.has(id), `missing subscription tier: ${id}`);
@@ -181,6 +186,17 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, and Amazon Q Deve
     // These editor-assistant tiers are optional: none seed the default selection.
     assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
   }
+});
+
+test("Devin Teams pricing preserves the base fee plus seat math", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const teams = subscriptions.find((s) => s.id === "devin-teams");
+  assert.ok(teams, "missing Devin Teams subscription tier");
+  assert.equal(teams.monthlyPrice, 120, "first full-dev seat costs the $80 base plus $40 seat");
+  assert.match(teams.billingCadence, /\$80/i, "billing cadence names the $80 team base");
+  assert.match(teams.billingCadence, /\$40/i, "billing cadence names the $40 per-seat charge");
+  assert.match(teams.includedValue, /base fee/i, "included value explains the base fee");
+  assert.match(teams.includedValue, /each additional full dev seat adds \$40/i, "included value preserves the seat math");
 });
 
 test("usage-based tiers disclose their included-credit caveat", async () => {
