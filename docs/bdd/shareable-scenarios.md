@@ -66,4 +66,11 @@ Scenario: Invalid edits do not replace the last valid shareable scenario
   Then the results indicate the input needs attention
   And the address bar keeps the last valid shareable scenario until the form is valid again
   And sharing copies the last valid scenario instead of serializing the invalid input
+
+Scenario: An in-page anchor does not disturb the share link
+  Given the address bar reflects a valid calculator state
+  When the visitor clicks an in-page fragment link such as "#calculator"
+  And then clicks the Share button
+  Then the copied URL still includes the current calculator state
+  And the address bar is restored to that share URL instead of the bare anchor
 ```

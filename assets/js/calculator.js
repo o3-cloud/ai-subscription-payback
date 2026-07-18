@@ -546,9 +546,17 @@ function renderResults(doc, state, valid) {
 }
 
 /**
+ * The most recent address-bar URL built from a fully valid form. The Share
+ * button falls back to this when the live inputs are invalid, and it also lets
+ * Share recover the scenario if an in-page anchor (e.g. clicking `#calculator`)
+ * has clobbered the hash out of the address bar since the last valid edit.
+ */
+let lastValidShareUrl = null;
+
+/**
  * Rewrite the address bar so the shareable link mirrors the current inputs.
  * Uses the hash fragment and replaceState, so it never reloads the page or adds
- * history entries as the visitor edits.
+ * history entries as the visitor edits. Returns the URL it wrote.
  *
  * Only ever called with a valid form: an invalid non-empty numeric input reads
  * back as NaN, which would serialize into the hash (e.g. `boxPrice=NaN`) and
@@ -556,9 +564,11 @@ function renderResults(doc, state, valid) {
  * the address bar until the inputs are usable again.
  */
 function syncShareUrl(doc, win) {
-  if (!win || !win.history || !win.history.replaceState) return;
   const url = buildShareUrl(win.location, serializeState(readState(doc)));
-  win.history.replaceState(null, "", url);
+  if (win.history && win.history.replaceState) {
+    win.history.replaceState(null, "", url);
+  }
+  return url;
 }
 
 function update(doc, win) {
@@ -567,8 +577,10 @@ function update(doc, win) {
   renderResults(doc, state, valid);
   syncSpendPreset(doc);
   // Only mirror a valid scenario into the address bar; an invalid edit must not
-  // replace the last valid shareable hash with NaN-poisoned params.
-  if (win && valid) syncShareUrl(doc, win);
+  // replace the last valid shareable hash with NaN-poisoned params. Remember the
+  // URL so Share can fall back to it (or restore it) when the address bar hash
+  // is later invalid or clobbered by an in-page anchor.
+  if (win && valid) lastValidShareUrl = syncShareUrl(doc, win);
   return state;
 }
 
@@ -1077,10 +1089,23 @@ function wireShare(doc, win, analytics) {
 
   button.addEventListener("click", async () => {
     if (analytics) analytics.trackShare();
-    // Copy the URL that already mirrors the last valid scenario (the address bar
-    // is kept in sync by update() on every edit) rather than rebuilding from the
-    // live inputs, which may be mid-edit/invalid and would serialize NaN.
-    const url = buildShareUrl(win.location, readShareParams(win.location));
+    // Prefer the live inputs when they are valid: an in-page anchor (e.g.
+    // clicking a "#calculator" link) can clobber the scenario out of the address
+    // bar hash without firing an input event, so rebuild from current state and
+    // restore the address bar rather than trusting whatever the hash now holds.
+    // When the inputs are mid-edit/invalid, fall back to the last valid share URL
+    // so Share never copies a bare URL or serializes NaN.
+    const valid = validateForm(doc);
+    const url = valid
+      ? buildShareUrl(win.location, serializeState(readState(doc)))
+      : lastValidShareUrl ||
+        buildShareUrl(win.location, readShareParams(win.location));
+
+    // Restore the address bar to the shared scenario in case an in-page anchor
+    // left a bare "#calculator"-style hash there.
+    if (win.history && win.history.replaceState) {
+      win.history.replaceState(null, "", url);
+    }
 
     try {
       if (win.navigator && win.navigator.clipboard) {
@@ -1101,6 +1126,9 @@ function wireShare(doc, win, analytics) {
  * @param {Window} win
  */
 export function initCalculator(doc, win) {
+  // Fresh boot: forget any share URL remembered from a prior initialization so a
+  // stale scenario never leaks across calculator instances.
+  lastValidShareUrl = null;
   const analytics = createAnalytics(win);
   const initialState = parseState(
     readShareParams(win.location ? win.location : {}),

@@ -1350,6 +1350,41 @@ test("sharing while an input is invalid copies the current valid URL", async () 
   );
 });
 
+test("an in-page anchor clobbering the hash does not lose the share scenario", async () => {
+  const { doc, win } = boot();
+
+  // Establish a valid, non-default scenario so the current state is unambiguous.
+  doc.getElementById("box-price").value = "4200";
+  await doc.getElementById("calculator-form").dispatch("input");
+  const validUrl = win._historyUrls.at(-1);
+  const validParams = new URLSearchParams(new URL(validUrl).hash.slice(1));
+  assert.equal(validParams.get("boxPrice"), "4200");
+  const expectedSubs = validParams.get("subs");
+
+  // An in-page anchor (e.g. a "#calculator" nav link) clobbers the address-bar
+  // hash without firing an input event, so the scenario is no longer in the hash.
+  win.location.hash = "#calculator";
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  // The copied URL still carries the current boxPrice/subs, not a bare URL.
+  assert.equal(win._clipboardWrites.length, 1, "copies exactly one URL");
+  const copied = new URL(win._clipboardWrites[0]);
+  assert.equal(copied.hash.startsWith("#"), true, "share URL keeps the scenario hash");
+  const copiedParams = new URLSearchParams(copied.hash.slice(1));
+  assert.equal(copiedParams.get("boxPrice"), "4200", "share keeps the current box price");
+  assert.equal(copiedParams.get("subs"), expectedSubs, "share keeps the current subscriptions");
+  assert.ok(!win._clipboardWrites[0].includes("#calculator"), "never copies the anchor hash");
+
+  // The address bar is restored to the share URL, undoing the anchor clobber.
+  assert.equal(win._historyUrls.at(-1), win._clipboardWrites[0]);
+  assert.equal(win.location.hash, copied.hash, "address bar is restored to the share scenario");
+  assert.equal(
+    doc.getElementById("share-status").textContent,
+    "Link copied to clipboard."
+  );
+});
+
 test("resetting the form restores inputs, subscriptions, results, and hash to defaults", async () => {
   const { doc, win } = boot();
 
