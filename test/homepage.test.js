@@ -98,6 +98,40 @@ test("no orphaned featured-cards mount ships a dead fallback", () => {
   );
 });
 
+test("client-rendered sections ship a helpful, non-generic no-JS fallback", () => {
+  // The #featured-hardware-cards and #subscription-options mounts are populated
+  // by JavaScript on load. Their static .data-fallback copy is what a no-JS
+  // visitor sees, so it must explain the situation rather than reverting to the
+  // bare "load here." placeholder (which reads like an unfinished stub).
+  assert.doesNotMatch(
+    html,
+    /Featured hardware cards load here\./i,
+    "generic featured-cards placeholder copy removed"
+  );
+  assert.doesNotMatch(
+    html,
+    /Subscription options load here\./i,
+    "generic subscription-options placeholder copy removed"
+  );
+
+  // Both mounts keep a .data-fallback paragraph that names JavaScript, so the
+  // no-JS case is explained instead of appearing broken.
+  const cardsBlock =
+    html.match(/id="featured-hardware-cards"[^>]*>([\s\S]*?)<\/div>/i)?.[1] ?? "";
+  assert.match(
+    cardsBlock,
+    /<p class="data-fallback">[\s\S]*JavaScript[\s\S]*<\/p>/i,
+    "featured-cards fallback explains JavaScript populates the section"
+  );
+  const optionsBlock =
+    html.match(/id="subscription-options"[^>]*>([\s\S]*?)<\/div>/i)?.[1] ?? "";
+  assert.match(
+    optionsBlock,
+    /<p class="data-fallback">[\s\S]*JavaScript[\s\S]*<\/p>/i,
+    "subscription-options fallback explains JavaScript populates the section"
+  );
+});
+
 test("primary nav Hardware link targets the wired-up featured section", () => {
   // The nav must point at the section calculator.js actually populates, not the
   // removed orphan anchor.

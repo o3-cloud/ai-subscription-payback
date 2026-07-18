@@ -28,6 +28,15 @@ Scenario: Unknown paths land on a friendly 404 fallback
   And its asset and link references are base-qualified absolute paths so they
     resolve regardless of how deep the missing URL was
 
+Scenario: Client-rendered sections explain their JavaScript dependency
+  Given the featured hardware cards and subscription options are populated by
+    JavaScript on load
+  When a visitor opens the page without JavaScript available
+  Then each mount shows a clear fallback message that names JavaScript and
+    explains the section is populated when the page loads
+  And the message tells the visitor to enable JavaScript to use the section
+  And no generic "load here" placeholder copy is shown
+
 Scenario: Site-wide last-updated disclosure is visible in the footer
   Given the site content has a siteLastUpdated date
   When the visitor views the footer
