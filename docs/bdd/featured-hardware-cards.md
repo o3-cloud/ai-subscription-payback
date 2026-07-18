@@ -13,7 +13,8 @@ Scenario: Range-based featured hardware cards expose a trim selector
   When the visitor views the card
   Then the card includes a trim drop-down before the preload button
   And the default trim matches the card's documented preload
-  And selecting a different trim changes which price and power draw are loaded
+  And selecting a different trim changes which box price is loaded
+  And a range-based card shares one power draw across its trims, while SKU-backed trims each carry their own
 
 Scenario: Featured hardware cards include affiliate calls to action
   Given a featured hardware card

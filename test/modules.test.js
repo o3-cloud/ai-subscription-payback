@@ -321,6 +321,61 @@ test("featured hardware cards use real product-photo assets instead of SVG illus
   }
 });
 
+test("featured hardware trims seed the documented default preload", async () => {
+  const { hardware, featuredHardware, hardwareTrims, defaultHardwareTrim } = await import(
+    new URL("data.js", jsDir)
+  );
+
+  // Only the top-level class cards are featured; named SKUs are trims, not cards.
+  const featuredIds = featuredHardware.map((box) => box.id);
+  assert.deepEqual(featuredIds, ["mac-studio", "dgx-spark", "strix-halo"]);
+  assert.ok(
+    featuredHardware.every((box) => !box.exampleOf),
+    "featured cards never include example SKUs"
+  );
+
+  for (const box of featuredHardware) {
+    const trims = hardwareTrims(box);
+    assert.ok(trims.length >= 1, `${box.id} exposes at least one trim`);
+
+    // The default trim honors each card's documented preload: Mac Studio and
+    // Strix Halo default to their low-end config, DGX Spark to its high-end one.
+    const def = defaultHardwareTrim(box);
+    assert.equal(
+      def.boxPrice,
+      box.defaultBoxPrice ?? box.priceLow,
+      `${box.id} default trim matches its documented preload`
+    );
+
+    // A range-based card shares one power draw across trims; the range reflects
+    // configuration/street-price spread, not a distinct power figure.
+    if (!hardware.some((entry) => entry.exampleOf === box.id) && box.priceLow !== box.priceHigh) {
+      const draws = new Set(trims.map((trim) => trim.powerDraw));
+      assert.equal(draws.size, 1, `${box.id} range trims share one power draw`);
+      const prices = trims.map((trim) => trim.boxPrice);
+      assert.deepEqual(
+        prices,
+        [box.priceLow, box.priceHigh],
+        `${box.id} range trims change which box price is loaded`
+      );
+    }
+  }
+
+  // DGX Spark's high-end default is the one non-obvious preload, so pin it.
+  const dgx = featuredHardware.find((box) => box.id === "dgx-spark");
+  assert.equal(defaultHardwareTrim(dgx).boxPrice, dgx.priceHigh, "DGX Spark defaults to its high-end trim");
+
+  // Strix Halo's trims are its named purchasable SKUs, defaulting to Framework.
+  const strix = featuredHardware.find((box) => box.id === "strix-halo");
+  const strixTrims = hardwareTrims(strix);
+  assert.deepEqual(
+    strixTrims.map((trim) => trim.id),
+    ["framework-desktop-ai-max-385-32gb", "gmktec-evo-x2", "gmktec-evo-x3"],
+    "Strix Halo trims are its named SKUs"
+  );
+  assert.equal(defaultHardwareTrim(strix).id, "framework-desktop-ai-max-385-32gb");
+});
+
 test("Strix Halo points at a current official AMD product page", async () => {
   const { hardware } = await import(new URL("data.js", jsDir));
   const strixHalo = hardware.find((h) => h.id === "strix-halo");
