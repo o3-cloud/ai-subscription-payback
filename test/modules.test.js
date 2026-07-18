@@ -356,7 +356,7 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "framework-desktop-ai-max-385-32gb",
       1099,
       "32 GB RAM",
-      "https://frame.work/products/desktop-amd-ai-max-300-series",
+      "https://frame.work/products/desktop-diy-amd-aimax300",
       "https://frame.work/desktop",
       "Framework",
       "Framework Desktop AI Max 385",
@@ -393,8 +393,8 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
     assert.equal(box.spec, expectedSpec, `${id} spec names the memory/storage config`);
     assert.equal(box.verification, "official", `${id} is an official listing`);
     assert.match(box.sourceUrl, /^https:\/\/(frame\.work|www\.gmktec\.com)\//, `${id} points at the official product page`);
-    // Pins the live product URLs so the #35 404 regression cannot recur silently.
-    assert.equal(box.sourceUrl, sourceUrl, `${id} points at the current live GMKtec product page`);
+    // Pins the live product URLs so stale source links cannot recur silently.
+    assert.equal(box.sourceUrl, sourceUrl, `${id} points at the current live product page`);
     assert.equal(getAffiliate(id)?.vendor, vendor, `${id} has ${vendor} affiliate metadata`);
     assert.equal(getAffiliate(id)?.url, affiliateUrl, `${id} affiliate CTA points at the expected destination`);
     assert.equal(box.exampleOf, "strix-halo", `${id} is tagged as a Strix Halo example`);
