@@ -1149,5 +1149,5 @@ export function initCalculator(doc, win) {
 
   wireShare(doc, win, analytics);
   analytics.trackPageview();
-  update(doc);
+  update(doc, win);
 }

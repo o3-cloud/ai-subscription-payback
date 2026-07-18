@@ -463,7 +463,20 @@ test("initCalculator wires up every DOM hook the UI depends on", () => {
 });
 
 test("initCalculator boots the form from static data and defaults", () => {
-  const { doc } = boot();
+  const { doc, win } = boot();
+
+  // The initial render syncs the canonical share hash: boot() must record at
+  // least one replaceState, and the latest address-bar URL carries the default
+  // scenario as a hash fragment (boxPrice + subs), not as query params.
+  assert.ok(
+    win._historyUrls.length >= 1,
+    "initial load records at least one history.replaceState call"
+  );
+  const initialHash = win._historyUrls.at(-1).split("#")[1];
+  assert.ok(initialHash, "the latest history URL carries a hash fragment");
+  const initialParams = new URLSearchParams(initialHash);
+  assert.ok(initialParams.has("boxPrice"), "initial share hash includes boxPrice");
+  assert.ok(initialParams.has("subs"), "initial share hash includes subs");
 
   // Subscription checkboxes rendered one-per-subscription, defaults preselected.
   const options = doc.querySelectorAll(
