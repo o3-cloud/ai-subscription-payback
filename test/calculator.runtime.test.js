@@ -985,6 +985,34 @@ test("initCalculator hydrates state from the location query string", () => {
   assert.deepEqual(checked, ["codex"]);
 });
 
+test("opening a query-string share link canonicalizes the address bar to a hash URL", () => {
+  // BDD: "The initial render canonicalizes the share URL" covers a scenario
+  // opened in the query string OR the hash fragment. Opening an older "?"-style
+  // link must rewrite the address bar to the canonical hash form and drop the
+  // query string, so copying from the address bar yields the hash-based link and
+  // static hosts that ignore unknown query params keep serving the scenario.
+  const { doc, win } = boot("?boxPrice=4200&subs=codex");
+
+  const canonical = win._historyUrls.at(-1);
+  assert.ok(canonical, "the initial load records a canonicalizing replaceState");
+  const url = new URL(canonical);
+  assert.equal(url.search, "", "the query string is dropped from the canonical URL");
+  assert.equal(url.hash.startsWith("#"), true, "the scenario moves into the hash fragment");
+  const params = new URLSearchParams(url.hash.slice(1));
+  assert.equal(params.get("boxPrice"), "4200", "the box price survives in the hash");
+  assert.equal(params.get("subs"), "codex", "the subscription selection survives in the hash");
+  assert.equal(win.location.hash, url.hash, "the address bar reflects the canonical hash");
+
+  // And the visible calculator state is unchanged by the canonicalization.
+  assert.equal(doc.getElementById("box-price").value, 4200);
+  assert.deepEqual(
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+      .map((el) => el.value),
+    ["codex"]
+  );
+});
+
 test("initCalculator hydrates state from a hash-based share link", () => {
   const { doc } = boot("", { hash: "#boxPrice=4200&subs=codex" });
 
