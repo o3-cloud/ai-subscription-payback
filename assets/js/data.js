@@ -556,7 +556,7 @@ export const hardware = [
     priceHigh: 1099,
     priceNote:
       "Framework Desktop base AI Max 385 configuration; pricing comes from the official product page, and storage / operating system details may vary by DIY or bundle choice.",
-    sourceUrl: "https://frame.work/products/desktop-diy-amd-aimax300",
+    sourceUrl: "https://frame.work/products/desktop-diy-amd-aimax300/configuration/new",
     sourceLabel: "Official Framework product page",
     verification: "official",
     lastUpdated: "2026-07-17",

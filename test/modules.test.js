@@ -356,7 +356,7 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "framework-desktop-ai-max-385-32gb",
       1099,
       "32 GB RAM",
-      "https://frame.work/products/desktop-diy-amd-aimax300",
+      "https://frame.work/products/desktop-diy-amd-aimax300/configuration/new",
       "https://frame.work/desktop",
       "Framework",
       "Framework Desktop AI Max 385",

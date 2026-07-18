@@ -100,6 +100,7 @@ Scenario: Strix Halo pricing uses a current official AMD product page
   And the source link does not point to the retired AMD URL that returns 404
   And the featured guide mirrors the same source link in its price snapshot
   And the Strix Halo examples section includes a Framework Desktop option alongside the GMKtec systems
+  And the Framework Desktop source link points to the canonical live Framework configuration page rather than the redirecting landing URL
 
 Scenario: Affiliate links are separate from price sources
   Given a featured hardware option with a reseller or affiliate CTA
