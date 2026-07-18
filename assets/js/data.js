@@ -705,7 +705,7 @@ export const affiliates = {
   },
   "strix-halo": {
     vendor: "AMD",
-    url: "https://www.amd.com/en/where-to-buy/ryzen-ai-max.html",
+    url: "https://www.gmktec.com/collections/all",
     label: "Find a Strix Halo system",
     affiliate: true,
   },
