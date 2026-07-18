@@ -659,6 +659,80 @@ test("featured hardware renders affiliate CTAs from the separate affiliate metad
   }
 });
 
+test("each featured hardware card renders a source provenance block", () => {
+  // BDD contract: every featured card shows where its price came from and
+  // whether that number is official, retail, or an estimate. The card reuses the
+  // shared source-label / source-status provenance markup, scoped to its own
+  // .hardware-card-source line.
+  const { doc } = boot();
+  const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  assert.equal(cards.length, featuredHardware.length, "one card per featured box");
+
+  const labels = doc
+    .querySelectorAll("#featured-hardware-cards .hardware-card-source .source-label")
+    .map((el) => el.textContent);
+  const statuses = doc
+    .querySelectorAll("#featured-hardware-cards .hardware-card-source .source-status")
+    .map((el) => el.getAttribute("data-verification"));
+
+  assert.equal(labels.length, featuredHardware.length, "each card shows a source label");
+  assert.equal(
+    statuses.length,
+    featuredHardware.length,
+    "each card flags whether the price is official, retail, or an estimate"
+  );
+
+  for (let i = 0; i < featuredHardware.length; i += 1) {
+    const box = featuredHardware[i];
+    assert.equal(labels[i], box.sourceLabel, `${box.id} source label`);
+    assert.equal(statuses[i], box.verification, `${box.id} verification status`);
+  }
+});
+
+test("each featured hardware card renders a labeled affiliate CTA and keeps provenance first", () => {
+  // BDD contract: every card with affiliate metadata surfaces a clearly labeled
+  // affiliate/reseller button carrying the sponsored rel marker, and that CTA
+  // stays below the price-provenance line so a commissioned link is never
+  // conflated with the "where this price came from" trail.
+  const { doc } = boot();
+  const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  const ctas = doc.querySelectorAll("#featured-hardware-cards .hardware-card-cta");
+  const withAffiliate = featuredHardware.filter((box) => getAffiliate(box.id));
+
+  assert.equal(cards.length, featuredHardware.length, "one card per featured box");
+  assert.equal(ctas.length, withAffiliate.length, "one CTA per card with affiliate metadata");
+
+  for (let i = 0; i < featuredHardware.length; i += 1) {
+    const box = featuredHardware[i];
+    const affiliate = getAffiliate(box.id);
+    if (!affiliate) continue;
+
+    const cta = ctas.find((a) => a.getAttribute("href") === affiliate.url);
+    assert.ok(cta, `missing affiliate CTA for ${box.id}`);
+    assert.ok(
+      cta.textContent.includes(affiliate.label),
+      `${box.id} CTA uses the reseller label`
+    );
+    assert.match(cta.textContent, /\(affiliate\)/, `${box.id} CTA is clearly labeled affiliate`);
+    assert.match(
+      cta.getAttribute("rel"),
+      /\bsponsored\b/,
+      `${box.id} CTA carries the sponsored rel marker`
+    );
+
+    // Order guard: the provenance line leads the CTA within the card layout.
+    const childClasses = cards[i].children.map((child) => String(child.className || ""));
+    const sourceIdx = childClasses.findIndex((c) => /\bhardware-card-source\b/.test(c));
+    const actionsIdx = childClasses.findIndex((c) => /\bhardware-card-actions\b/.test(c));
+    assert.ok(sourceIdx !== -1, `${box.id} card has a source line`);
+    assert.ok(actionsIdx !== -1, `${box.id} card has an actions row`);
+    assert.ok(
+      sourceIdx < actionsIdx,
+      `${box.id} source line must precede the affiliate CTA`
+    );
+  }
+});
+
 test("featured hardware cards render the documented product images", () => {
   const { doc } = boot();
   const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
