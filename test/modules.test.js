@@ -306,6 +306,21 @@ test("Mac Studio matches Apple's official buy-page structured data", async () =>
   assert.equal(macStudio.defaultBoxPrice, macStudio.priceLow);
 });
 
+test("featured hardware cards use real product-photo assets instead of SVG illustrations", async () => {
+  const { hardware } = await import(new URL("data.js", jsDir));
+
+  for (const box of hardware.filter((entry) => !entry.exampleOf)) {
+    assert.ok(box.image, `${box.id} needs a featured-card image`);
+    assert.match(
+      box.image.src,
+      /\.(?:jpe?g|png)$/i,
+      `${box.id} image should be a photo asset`
+    );
+    assert.doesNotMatch(box.image.src, /\.svg$/i, `${box.id} image must not be an SVG`);
+    assert.match(box.image.alt, /product photo/i, `${box.id} alt text should name the photo`);
+  }
+});
+
 test("Strix Halo points at a current official AMD product page", async () => {
   const { hardware } = await import(new URL("data.js", jsDir));
   const strixHalo = hardware.find((h) => h.id === "strix-halo");

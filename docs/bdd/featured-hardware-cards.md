@@ -5,7 +5,7 @@ Scenario: Featured hardware cards are visible on the home page
   Given the homepage loads
   When the visitor views the hero or featured products section
   Then Mac Studio, DGX Spark, and Strix Halo class cards are visible
-  And each card shows a product image with descriptive alt text at the top
+  And each card shows a vendor-sourced product photo with descriptive alt text at the top
   And each card includes a current price or price range
 
 Scenario: Range-based featured hardware cards expose a trim selector

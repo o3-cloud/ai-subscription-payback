@@ -759,6 +759,7 @@ test("featured hardware cards render the documented product images", () => {
     assert.ok(image, `expected an image for ${box.id}`);
     assert.equal(image.getAttribute("src"), box.image?.src, `${box.id} image source`);
     assert.equal(image.getAttribute("alt"), box.image?.alt, `${box.id} image alt text`);
+    assert.doesNotMatch(image.getAttribute("src") ?? "", /\.svg$/i, `${box.id} image must not regress to SVG`);
   }
 });
 
