@@ -41,6 +41,13 @@ Scenario: The custom domain is the single source of truth for SEO origins
   When a crawler reads any indexable artifact (index.html, robots.txt, sitemap.xml, or a generated guide)
   Then every canonical, sitemap, and social origin uses the custom domain
   And no legacy `*.github.io` origin appears in any of those artifacts
+
+Scenario: Launch-copy snippets stay aligned with the featured hardware and canonical URL
+  Given the ready-to-post launch copy in docs/launch-copy.md
+  When a maintainer copies a shareable social snippet
+  Then it names hardware from the current featured lineup (Mac Studio, DGX Spark, and Strix Halo systems such as the Framework Desktop AI Max 385)
+  And every share link is exactly the canonical production URL `https://www.othree.cloud/ai-subscription-payback/` with no tracking parameters or legacy origin
+  And it keeps the transparent, free-calculator tone
 ```
 
 ## Notes
@@ -58,3 +65,7 @@ Scenario: The custom domain is the single source of truth for SEO origins
   answers must match.
 - `sitemap.xml` `<lastmod>` tracks the site-wide last-updated date
   (`siteLastUpdated` in `assets/js/data.js`).
+- Launch-copy snippets in `docs/launch-copy.md` must stay aligned with the
+  current featured hardware lineup and share only the canonical production URL
+  `https://www.othree.cloud/ai-subscription-payback/`; `test/launch-copy.test.js`
+  guards both.
