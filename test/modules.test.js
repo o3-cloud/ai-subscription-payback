@@ -280,6 +280,64 @@ test("Amazon Q Developer tiers disclose their agentic / Java-transformation quot
   }
 });
 
+test("Replit tiers cover the Starter/Core/Pro ladder with Agent-credit and tax caveats", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official Replit pricing page named in the issue: a free
+  // Starter tier plus monthly/annual Core and Pro tiers.
+  const expected = {
+    "replit-starter": 0,
+    "replit-core-monthly": 25,
+    "replit-core-annual": 20,
+    "replit-pro-monthly": 100,
+    "replit-pro-annual": 95,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Replit", `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(
+      sub.sourceUrl,
+      "https://replit.com/pricing",
+      `${id} points at the official Replit pricing page`
+    );
+    // Optional: none seed the default selection.
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+  }
+
+  // The free Starter tier advertises its free daily Agent credits.
+  assert.match(byId.get("replit-starter").includedValue, /Replit Agent/i, "starter names Replit Agent");
+  assert.match(byId.get("replit-starter").includedValue, /free daily/i, "starter names free daily credits");
+
+  // The paid Core/Pro tiers each disclose the included monthly credit
+  // allowance, the metered overage, and the tax caveat from Replit's page.
+  const paid = {
+    "replit-core-monthly": /\$25\/mo of Replit Agent credits/i,
+    "replit-core-annual": /\$25\/mo of Replit Agent credits/i,
+    "replit-pro-monthly": /\$100\/mo of Replit Agent credits/i,
+    "replit-pro-annual": /\$100\/mo of Replit Agent credits/i,
+  };
+  for (const [id, creditPattern] of Object.entries(paid)) {
+    const value = byId.get(id).includedValue;
+    assert.match(value, creditPattern, `${id} states its included Agent credit allowance`);
+    assert.match(value, /beyond the included credits is billed separately/i, `${id} discloses metered overage`);
+    assert.match(value, /taxes may vary by location/i, `${id} notes the tax caveat`);
+  }
+
+  // Annually billed tiers document the effective-monthly framing.
+  assert.match(byId.get("replit-core-annual").billingCadence, /annually/i, "core annual billed annually");
+  assert.match(byId.get("replit-pro-annual").billingCadence, /annually/i, "pro annual billed annually");
+});
+
+test("the pricing-disclosure BDD documents the Replit Agent-credit and tax caveats", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Replit tiers disclose their Agent-credit and tax caveats/i);
+  assert.match(bdd, /Replit tiers are listed: Starter \(Free\), Core \(monthly and annual\), and Pro \(monthly and annual\)/i);
+});
+
 test("hardware features the Mac Studio, DGX Spark, Strix Halo, and Framework Desktop classes", async () => {
   const { hardware } = await import(new URL("data.js", jsDir));
   const names = hardware.map((h) => h.name).join(" | ");

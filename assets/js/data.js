@@ -96,8 +96,11 @@ export const siteLastUpdated = "2026-07-19";
  * coding agent — its Teams plan is a `$80/mo team base + $40/mo per full dev
  * seat` formula, so it is modeled as the real cost of the first seat ($120/mo)
  * rather than a misleading single-seat number, with the base-plus-seat formula
- * spelled out in its `billingCadence`/`includedValue`. All of these ship
- * unchecked (no `defaultSelected`) so the default comparison basis stays
+ * spelled out in its `billingCadence`/`includedValue`. The Replit tiers (Starter,
+ * Core monthly/annual, Pro monthly/annual) cover Replit Agent, the app-building
+ * assistant; the paid tiers bundle a monthly Replit Agent credit allowance and
+ * note that taxes may vary by location per Replit's pricing page. All of these
+ * ship unchecked (no `defaultSelected`) so the default comparison basis stays
  * Codex + Claude Code Pro and only expands when a visitor opts in.
  *
  * `monthlyPrice` is always the month-by-month comparison value — for annually
@@ -479,6 +482,71 @@ export const subscriptions = [
     sourceLabel: "Official Devin pricing",
     verification: "official",
     lastUpdated: "2026-07-17",
+  },
+  {
+    id: "replit-starter",
+    name: "Replit",
+    plan: "Starter (Free)",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free plan for one person with free daily Replit Agent credits to build and code; no included monthly credit allowance.",
+    sourceUrl: "https://replit.com/pricing",
+    sourceLabel: "Official Replit pricing",
+    verification: "official",
+    lastUpdated: "2026-07-19",
+  },
+  {
+    id: "replit-core-monthly",
+    name: "Replit",
+    plan: "Core (monthly)",
+    monthlyPrice: 25,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Core plan for one developer: includes $25/mo of Replit Agent credits, up to 5 collaborators, and up to 2 agents in parallel; usage beyond the included credits is billed separately, and taxes may vary by location.",
+    sourceUrl: "https://replit.com/pricing",
+    sourceLabel: "Official Replit pricing",
+    verification: "official",
+    lastUpdated: "2026-07-19",
+  },
+  {
+    id: "replit-core-annual",
+    name: "Replit",
+    plan: "Core (annual)",
+    monthlyPrice: 20,
+    billingCadence: "Billed annually — $240 up front (~$20/mo effective)",
+    includedValue:
+      "The Core plan prepaid for a year at a lower effective monthly rate: includes $25/mo of Replit Agent credits, up to 5 collaborators, and up to 2 agents in parallel; usage beyond the included credits is billed separately, and taxes may vary by location.",
+    sourceUrl: "https://replit.com/pricing",
+    sourceLabel: "Official Replit pricing",
+    verification: "official",
+    lastUpdated: "2026-07-19",
+  },
+  {
+    id: "replit-pro-monthly",
+    name: "Replit",
+    plan: "Pro (monthly)",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Pro plan for one developer: includes $100/mo of Replit Agent credits, up to 15 collaborators, up to 50 viewers, up to 10 agents in parallel, and access to the most powerful models; usage beyond the included credits is billed separately, and taxes may vary by location.",
+    sourceUrl: "https://replit.com/pricing",
+    sourceLabel: "Official Replit pricing",
+    verification: "official",
+    lastUpdated: "2026-07-19",
+  },
+  {
+    id: "replit-pro-annual",
+    name: "Replit",
+    plan: "Pro (annual)",
+    monthlyPrice: 95,
+    billingCadence: "Billed annually — $1,140 up front (~$95/mo effective)",
+    includedValue:
+      "The Pro plan prepaid for a year at a lower effective monthly rate: includes $100/mo of Replit Agent credits, up to 15 collaborators, up to 50 viewers, up to 10 agents in parallel, and access to the most powerful models; usage beyond the included credits is billed separately, and taxes may vary by location.",
+    sourceUrl: "https://replit.com/pricing",
+    sourceLabel: "Official Replit pricing",
+    verification: "official",
+    lastUpdated: "2026-07-19",
   },
 ];
 

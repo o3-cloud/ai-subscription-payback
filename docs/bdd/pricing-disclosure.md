@@ -20,6 +20,7 @@ Scenario: Supported subscription tiers are listed
   And the Google AI tiers are listed: Plus, Pro, and Ultra
   And the Amazon Q Developer tiers are listed: Free and Pro
   And the Devin tiers are listed: Free, Pro, Max, and Teams (base + 1 seat)
+  And the Replit tiers are listed: Starter (Free), Core (monthly and annual), and Pro (monthly and annual)
   And each tier is distinguishable by its plan name even when it shares a product name
 
 Scenario: Devin Teams pricing preserves the base-fee plus seat math
@@ -33,7 +34,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, and Amazon Q Developer tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, and Replit tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
@@ -50,6 +51,16 @@ Scenario: Amazon Q Developer tiers disclose their quota caveat
   And the Free tier is priced at $0/mo and the Pro tier at $19/mo per user
   And both point at the official AWS Q Developer pricing page
   And both are optional and unchecked in the default selection
+
+Scenario: Replit tiers disclose their Agent-credit and tax caveats
+  Given the Replit Starter, Core, and Pro tiers
+  When the visitor views their included-value text
+  Then the Starter tier is priced at $0/mo with free daily Replit Agent credits
+  And the Core tier is priced at $25/mo (or $20/mo effective billed annually) and includes $25/mo of Replit Agent credits
+  And the Pro tier is priced at $100/mo (or $95/mo effective billed annually) and includes $100/mo of Replit Agent credits
+  And the paid tiers note that usage beyond the included credits is billed separately and that taxes may vary by location
+  And all point at the official Replit pricing page
+  And all are optional and unchecked in the default selection
 
 Scenario: Usage-based tiers disclose their included-credit caveat
   Given a usage-based tier such as GitHub Copilot Pro or Zed Pro

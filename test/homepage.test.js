@@ -251,9 +251,10 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI and Devin coding-agent tiers", () => {
-  // The checklist covers Google AI (Gemini / Jules / Antigravity) alongside the
-  // other plans, so the helper text and pricing copy must surface them too.
+test("subscription helper copy names the Google AI, Devin, and Replit coding-agent tiers", () => {
+  // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin, and
+  // Replit Agent alongside the other plans, so the helper text and pricing copy
+  // must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
   assert.match(help, /Google AI/i, "helper copy names Google AI");
@@ -262,6 +263,8 @@ test("subscription helper copy names the Google AI and Devin coding-agent tiers"
   assert.match(help, /Antigravity/i, "helper copy names Antigravity");
   assert.match(help, /Amazon Q Developer/i, "helper copy names Amazon Q Developer");
   assert.match(help, /Devin/i, "helper copy names Devin");
+  assert.match(help, /Replit/i, "helper copy names Replit");
+  assert.match(help, /Replit Agent/i, "helper copy names Replit Agent");
 
   const pricing =
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
@@ -271,6 +274,8 @@ test("subscription helper copy names the Google AI and Devin coding-agent tiers"
     "pricing copy explains Google AI Pro/Ultra bundle Jules and Antigravity"
   );
   assert.match(pricing, /Devin/i, "pricing disclosure mentions Devin tiers");
+  assert.match(pricing, /Replit/i, "pricing disclosure mentions Replit tiers");
+  assert.match(pricing, /Replit Agent/i, "pricing disclosure mentions Replit Agent credits");
 });
 
 test("pricing disclosure spells out the Devin Teams base-fee plus seat math", () => {

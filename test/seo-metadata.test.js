@@ -55,15 +55,15 @@ test("head declares indexing directives and a canonical URL", () => {
   assert.ok(metaContent("name", "description").length > 50, "meta description present");
   assert.match(
     metaContent("name", "description"),
-    /Google AI|Gemini|Jules|Antigravity/i,
-    "meta description names the Google AI coding-agent tiers"
+    /Google AI|Gemini|Jules|Antigravity|Replit/i,
+    "meta description names the Google AI and Replit coding-agent tiers"
   );
-  // Keywords should surface the Google AI coding-agent tiers now that they are
-  // modeled, so searchers with that intent can find the calculator.
+  // Keywords should surface the Google AI and Replit coding-agent tiers now
+  // that they are modeled, so searchers with that intent can find the calculator.
   assert.match(
     metaContent("name", "keywords"),
-    /Google AI|Gemini|Jules|Antigravity|Devin/i,
-    "keywords name the Google AI and Devin coding-agent tiers"
+    /Google AI|Gemini|Jules|Antigravity|Devin|Replit/i,
+    "keywords name the Google AI, Devin, and Replit coding-agent tiers"
   );
 });
 
@@ -86,8 +86,8 @@ test("Open Graph card is complete", () => {
   assert.equal(metaContent("property", "og:url"), SITE_URL);
   assert.match(
     metaContent("property", "og:description"),
-    /Google AI/i,
-    "og:description mentions Google AI tiers"
+    /Google AI|Replit/i,
+    "og:description mentions Google AI and Replit tiers"
   );
   assert.equal(
     metaContent("property", "og:image"),
@@ -103,8 +103,8 @@ test("Twitter card carries its own title, description, and image", () => {
   }
   assert.match(
     metaContent("name", "twitter:description"),
-    /Google AI/i,
-    "twitter:description mentions Google AI tiers"
+    /Google AI|Replit/i,
+    "twitter:description mentions Google AI and Replit tiers"
   );
   assert.equal(
     metaContent("name", "twitter:image"),
@@ -135,6 +135,7 @@ test("JSON-LD parses and describes the app plus its FAQ", () => {
   assert.equal(app.url, SITE_URL);
   assert.equal(app.isAccessibleForFree, true);
   assert.equal(app.offers.price, "0");
+  assert.match(app.description, /Google AI|Replit/i, "WebApplication description mentions Google AI and Replit");
 
   const faq = graph.find((n) => n["@type"] === "FAQPage");
   assert.ok(faq, "graph includes a FAQPage node");
