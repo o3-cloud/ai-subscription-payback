@@ -453,6 +453,15 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
     assert.equal(getAffiliate(id)?.vendor, vendor, `${id} has ${vendor} affiliate metadata`);
     assert.equal(getAffiliate(id)?.url, affiliateUrl, `${id} affiliate CTA points at the expected destination`);
     assert.equal(box.exampleOf, "strix-halo", `${id} is tagged as a Strix Halo example`);
+    if (id.startsWith("framework-")) {
+      // The source URL is a configuration page, so the label must match rather than
+      // claim a generic "product page"; pins the wording so the mismatch cannot recur.
+      assert.equal(
+        box.sourceLabel,
+        "Official Framework configuration page",
+        `${id} labels its source as the configuration page it links to`
+      );
+    }
   }
 });
 
