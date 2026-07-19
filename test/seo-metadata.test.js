@@ -117,6 +117,25 @@ test("the social-card asset exists", () => {
   assert.ok(exists("assets/img/og-card.png"), "assets/img/og-card.png is missing");
 });
 
+test("the head declares a favicon so browsers never fall back to a 404 /favicon.ico", () => {
+  // Chrome auto-requests /favicon.ico at the origin root unless the document
+  // declares an icon; the site ships from a project subpath, so the root has no
+  // favicon. Declaring rel="icon" here suppresses that request and its 404.
+  const icon = html.match(
+    /<link[^>]+rel="icon"[^>]+href="([^"]*)"/i
+  );
+  assert.ok(icon, "index.html declares a <link rel=\"icon\">");
+  const href = icon[1];
+  assert.ok(
+    /^\.\/assets\//.test(href),
+    `favicon href should point at a bundled asset, got "${href}"`
+  );
+  assert.ok(
+    exists(href.replace(/^\.\//, "")),
+    `favicon asset ${href} is missing`
+  );
+});
+
 /** Extract and parse the single JSON-LD block in the head. */
 const jsonLd = () => {
   const block = html.match(

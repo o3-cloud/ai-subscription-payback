@@ -28,6 +28,13 @@ Scenario: Google AI and Replit tiers are discoverable in homepage copy and metad
   Then the subscription helper text names Google AI, Gemini, Jules, Antigravity, and Replit Agent
   And the meta description, keywords, Open Graph description, and Twitter description all mention Google AI and Replit tiers
 
+Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
+  Given the static site ships from a project subpath with no favicon at the origin root
+  When a browser loads the landing page
+  Then the document head declares a <link rel="icon"> pointing at a bundled asset
+  And that favicon asset exists in the repository
+  So that the browser uses it instead of requesting a 404 /favicon.ico
+
 Scenario: The calculator is described as structured data
   Given the landing page includes JSON-LD structured data
   When a search engine parses it
@@ -55,6 +62,11 @@ Scenario: Launch-copy snippets stay aligned with the featured hardware and canon
 - The launch social card lives at `assets/img/og-card.png` for broad social
   platform compatibility. The editable SVG source is kept alongside it at
   `assets/img/og-card.svg`.
+- The favicon lives at `assets/img/favicon.svg` and is declared in the
+  `index.html` head via `<link rel="icon">`. The site ships from a project
+  subpath, so the origin root has no `/favicon.ico`; declaring the icon
+  suppresses the browser's default `/favicon.ico` request and its 404 console
+  error. `test/seo-metadata.test.js` guards the declaration and the asset.
 - The canonical/share URL for the launch surface is the production custom domain:
   `https://www.othree.cloud/ai-subscription-payback/`. This custom domain is the
   single source of truth for every SEO origin; the legacy project GitHub Pages
