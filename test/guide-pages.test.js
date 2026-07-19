@@ -55,7 +55,13 @@ test("each mini-guide carries the required SEO and content structure", () => {
     const canonical = `${SITE_URL}guides/${guide.slug}.html`;
     const guideDef = GUIDES.find((g) => g.slug === guide.slug);
     assert.ok(guideDef, `missing guide definition for ${guide.slug}`);
-    const expectedHash = serializeState(guideModel(guideDef).scenario).replace(/&/g, "&amp;");
+    const expectedHash = serializeState(guideModel(guideDef).scenario);
+    assert.equal(
+      new URLSearchParams(expectedHash).get("customSpend"),
+      "",
+      `${guide.path} clears customSpend in its calculator CTA hash`
+    );
+    const expectedHtmlHash = expectedHash.replace(/&/g, "&amp;");
 
     assert.match(
       html,
@@ -77,7 +83,7 @@ test("each mini-guide carries the required SEO and content structure", () => {
     assert.match(
       html,
       new RegExp(
-        `<a[^>]+href="\.\./index\.html#${escapeRegExp(expectedHash)}"[^>]*>Open this scenario in the calculator<\/a>`,
+        `<a[^>]+href="\.\./index\.html#${escapeRegExp(expectedHtmlHash)}"[^>]*>Open this scenario in the calculator<\/a>`,
         "i"
       ),
       `${guide.path} links back to the calculator with a preloaded scenario hash`

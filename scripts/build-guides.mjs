@@ -234,6 +234,13 @@ export function guideModel(guide) {
     electricityRate: inputs.electricityRate ?? defaults.electricityRate,
     powerDraw: box.powerDraw ?? defaults.powerDraw,
     hoursPerDay: inputs.hoursPerDay ?? defaults.hoursPerDay,
+    // Explicitly clear the custom monthly spend so the scenario compares against
+    // the listed subscription tiers, not a typed figure. This must be an empty
+    // string (not omitted): serializeState emits `customSpend=` into the CTA
+    // hash, which clears the calculator's default power-user spend when the link
+    // is opened. Omitting it would leave that default ($200/mo) in force and make
+    // the calculator show a different break-even than the guide states.
+    customSpend: "",
     subscriptions: guide.subs,
   };
   const result = computeResult(scenario);

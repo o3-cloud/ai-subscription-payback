@@ -16,6 +16,7 @@ Scenario: Each mini-guide answers a concrete comparison query
   And it includes a sample payback scenario with break-even metrics
   And it includes the main caveats and software tradeoffs
   And it includes a CTA that returns to the calculator with the scenario preloaded in the URL hash
+  And the CTA explicitly clears custom spend so the calculator uses the guide's tier selection
 
 Scenario: The guides are indexed and discoverable by crawlers
   Given a crawler fetches the sitemap
