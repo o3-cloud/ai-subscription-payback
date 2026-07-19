@@ -41,7 +41,9 @@ const metaContent = (attr, value) =>
     new RegExp(`<meta[^>]+${attr}="${value}"[^>]+content="([^"]*)"`, "i")
   )?.[1] ?? "";
 
-test("head declares indexing directives and a canonical URL", () => {
+test("head declares a descriptive title, indexing directives, and a canonical URL", () => {
+  const title = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1]?.trim() ?? "";
+  assert.ok(title.length > 10, "document declares a descriptive <title>");
   assert.match(
     html,
     /<meta[^>]+name="robots"[^>]+content="[^"]*index[^"]*"/i,
