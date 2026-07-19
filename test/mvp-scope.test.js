@@ -52,9 +52,19 @@ test("the repo docs point to the MVP scope source of truth", () => {
   assert.match(prd, /docs\/bdd\/mvp-scope\.md/i, "PRD links the MVP scope BDD");
   assert.match(readme, /MVP scope and assumptions/i, "README introduces the launch scope");
   assert.match(readme, /docs\/bdd\/mvp-scope\.md/i, "README links the scope BDD");
+  assert.match(
+    readme,
+    /Google AI|Gemini|Jules|Antigravity|Devin|Replit/i,
+    "README summary names the current subscription lineup"
+  );
   assert.match(rootIndex, /MVP Scope and Commercial Model/i, "root BDD index links the scope file");
   assert.match(rootIndex, /Featured Hardware Cards/i, "root BDD index links featured hardware cards");
   assert.match(rootIndex, /\[Comparison Mini-Guides\]\(docs\/bdd\/mini-guides\.md\)/i, "root BDD index links the comparison mini-guides");
   assert.match(bddIndex, /MVP Scope and Commercial Model/i, "bdd index links the scope file");
   assert.match(bddIndex, /Featured Hardware Cards/i, "bdd index links featured hardware cards");
+  assert.match(
+    prd,
+    /Google AI|Gemini|Jules|Antigravity|Devin|Replit/i,
+    "PRD problem statement names the current subscription lineup"
+  );
 });

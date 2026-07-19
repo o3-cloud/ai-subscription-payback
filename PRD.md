@@ -8,7 +8,8 @@
 ## Problem Statement
 
 Developers and small teams often pay recurring monthly fees for AI coding
-subscriptions such as Codex and Claude Code. This project will be an affiliate
+subscriptions such as Codex, Claude Code, Google AI tiers like Gemini, Jules,
+and Antigravity, Devin, and Replit. This project will be an affiliate
 marketing static site that promotes local AI inference boxes — especially
 Mac Studio, NVIDIA DGX Spark, and AMD Strix Halo class systems — and helps
 visitors estimate how long it would take to pay off one of those boxes if they
