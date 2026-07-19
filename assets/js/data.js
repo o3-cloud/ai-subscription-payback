@@ -76,10 +76,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-17";
+export const pricingLastUpdated = "2026-07-19";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-17";
+export const siteLastUpdated = "2026-07-19";
 
 /* ----------------------------- pricing data ----------------------------- */
 
@@ -516,7 +516,7 @@ export const hardware = [
     priceLow: 2999,
     priceHigh: 3999,
     priceNote:
-      "Estimated street price for the desktop unit; availability and bundling vary by reseller.",
+      "Estimated street price for the desktop class; named OEM systems such as ASUS Ascent GX10 can appear as selectable trims, and availability and bundling vary by reseller.",
     sourceUrl: "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
     sourceLabel: "Estimated retail / street price",
     verification: "retailer",
@@ -527,6 +527,22 @@ export const hardware = [
       src: "assets/img/dgx-spark.jpg",
       alt: "NVIDIA product photo of the DGX Spark: a small silver Grace Blackwell desktop unit beside a laptop running its setup.",
     },
+  },
+  {
+    id: "asus-ascent-gx10",
+    name: "ASUS Ascent GX10",
+    spec: "NVIDIA GB10 / DGX Spark-class system, 128 GB LPDDR5x unified memory, 1 TB SSD",
+    priceLow: 3970.99,
+    priceHigh: 4999.99,
+    priceNote:
+      "Retail street prices observed from Newegg listings for the ASUS DGX Spark / GB10-class system; seller mix and bundles vary.",
+    sourceUrl: "https://www.newegg.com/asus-ascent-gx10-mini-pc/p/N82E16859110044",
+    sourceLabel: "Newegg street price",
+    verification: "retailer",
+    lastUpdated: "2026-07-19",
+    defaultBoxPrice: 3970.99,
+    powerDraw: 240,
+    exampleOf: "dgx-spark",
   },
   {
     id: "strix-halo",
@@ -636,13 +652,40 @@ export const featuredHardware = hardware.filter((box) => !box.exampleOf);
  */
 export function hardwareTrims(box) {
   const children = hardware.filter((entry) => entry.exampleOf === box.id);
-  if (children.length > 0) {
+  if (children.length > 1) {
     return children.map((child) => ({
       id: child.id,
       name: child.name,
       boxPrice: child.defaultBoxPrice ?? child.priceLow,
       powerDraw: child.powerDraw ?? box.powerDraw ?? defaults.powerDraw,
     }));
+  }
+
+  if (children.length === 1) {
+    const child = children[0];
+    const powerDraw = box.powerDraw ?? defaults.powerDraw;
+
+    if (box.priceLow !== box.priceHigh) {
+      return [
+        { id: `${box.id}-low`, name: "Low-end", boxPrice: box.priceLow, powerDraw },
+        {
+          id: child.id,
+          name: child.name,
+          boxPrice: child.defaultBoxPrice ?? child.priceLow,
+          powerDraw: child.powerDraw ?? powerDraw,
+        },
+        { id: `${box.id}-high`, name: "High-end", boxPrice: box.priceHigh, powerDraw },
+      ];
+    }
+
+    return [
+      {
+        id: child.id,
+        name: child.name,
+        boxPrice: child.defaultBoxPrice ?? child.priceLow,
+        powerDraw: child.powerDraw ?? powerDraw,
+      },
+    ];
   }
 
   const powerDraw = box.powerDraw ?? defaults.powerDraw;
@@ -702,6 +745,12 @@ export const affiliates = {
     vendor: "NVIDIA",
     url: "https://marketplace.nvidia.com/en-us/developer/dgx-spark/",
     label: "Find a DGX Spark reseller",
+    affiliate: true,
+  },
+  "asus-ascent-gx10": {
+    vendor: "Newegg",
+    url: "https://www.newegg.com/p/pl?d=ASUS+Ascent+GX10",
+    label: "Check ASUS Ascent GX10 pricing",
     affiliate: true,
   },
   "strix-halo": {

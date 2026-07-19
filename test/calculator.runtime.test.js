@@ -869,6 +869,36 @@ test("choosing a featured trim loads that trim's price and power draw", async ()
   );
 });
 
+test("DGX Spark exposes a named ASUS Ascent GX10 trim and loads it correctly", async () => {
+  const { doc, win } = boot();
+  const dgxSparkIndex = featuredHardware.findIndex((box) => box.id === "dgx-spark");
+  const dgxSpark = featuredHardware[dgxSparkIndex];
+  const trims = hardwareTrims(dgxSpark);
+  const defaultTrim = defaultHardwareTrim(dgxSpark);
+  const selects = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select");
+  const buttons = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use");
+  const select = selects[dgxSparkIndex];
+  const asusTrim = trims.find((trim) => trim.id === "asus-ascent-gx10");
+
+  assert.ok(asusTrim, "expected the DGX Spark card to expose the ASUS Ascent GX10 trim");
+  assert.equal(trims.length, 3, "DGX Spark should keep low, ASUS, and high trims");
+  assert.equal(defaultTrim.id, "dgx-spark-high", "DGX Spark keeps its documented high-end default");
+  assert.ok(select, "expected a DGX Spark trim selector");
+  assert.equal(select.children.length, 3, "DGX Spark trim selector lists three options");
+
+  select.value = asusTrim.id;
+  await buttons[dgxSparkIndex].dispatch("click");
+
+  assert.equal(doc.getElementById("box-price").value, String(asusTrim.boxPrice));
+  assert.equal(doc.getElementById("power-draw").value, String(asusTrim.powerDraw));
+  assert.match(doc.getElementById("featured-hardware-status").textContent, /ASUS Ascent GX10/);
+  assert.equal(select.value, asusTrim.id, "the selector stays synced to the ASUS trim");
+  assert.ok(
+    win._plausibleCalls.some(([name]) => name === "Calculator: Interact"),
+    "loading the ASUS trim counts as calculator interaction"
+  );
+});
+
 test("preloading a hardware card marks it active and clears the others", async () => {
   const { doc } = boot();
   const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
@@ -885,15 +915,15 @@ test("preloading a hardware card marks it active and clears the others", async (
 });
 
 test("a hardware preset from the URL renders with its card already active", () => {
-  const box = hardware[2];
+  const box = hardware.find((entry) => entry.id === "asus-ascent-gx10");
   const { doc } = boot(
     `?boxPrice=${box.defaultBoxPrice ?? box.priceLow}&powerDraw=${box.powerDraw}`
   );
   const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
 
-  assert.equal(cards[2].getAttribute("data-active"), "true", "matching card is active");
+  assert.equal(cards[1].getAttribute("data-active"), "true", "matching card is active");
   assert.equal(cards[0].getAttribute("data-active"), null);
-  assert.equal(cards[1].getAttribute("data-active"), null);
+  assert.equal(cards[2].getAttribute("data-active"), null);
 });
 
 test("default boot leaves every hardware card inactive", () => {

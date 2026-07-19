@@ -112,7 +112,7 @@ Scenario: Affiliate links are separate from price sources
 Scenario: Featured products are named clearly
   Given the hardware comparison section
   When the visitor views it
-  Then the product names include Mac Studio, DGX Spark, and Strix Halo class systems
+  Then the product names include Mac Studio, DGX Spark, ASUS Ascent GX10, and Strix Halo class systems
   And each product name is paired with a source or vendor label
 
 Scenario: Prices are described as estimates
