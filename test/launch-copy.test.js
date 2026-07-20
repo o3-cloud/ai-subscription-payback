@@ -15,6 +15,7 @@ const root = new URL("../", import.meta.url);
 const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
 
 const launchCopy = read("docs/launch-copy.md");
+const launchCopyBdd = read("docs/bdd/launch-copy.md");
 
 const CANONICAL_URL = "https://www.othree.cloud/ai-subscription-payback/";
 
@@ -79,6 +80,31 @@ test("each shareable social snippet uses the canonical URL and keeps the free to
       body,
       /free/i,
       `${heading} snippet keeps the free-calculator tone`
+    );
+  }
+});
+
+// The dedicated BDD (docs/bdd/launch-copy.md) is the behavior spec for the copy
+// above; keep the two aligned so the spec cannot drift from what it documents.
+test("the launch-copy BDD stays aligned with the launch copy", () => {
+  assert.match(
+    launchCopyBdd,
+    /^# Feature: Launch Copy Snippets$/m,
+    "launch-copy BDD must declare the Launch Copy Snippets feature"
+  );
+  assert.ok(
+    launchCopyBdd.includes(CANONICAL_URL),
+    "launch-copy BDD must document the canonical share URL"
+  );
+  assert.doesNotMatch(
+    launchCopyBdd,
+    /AI Box Payback/i,
+    "launch-copy BDD must not reference the legacy 'AI Box Payback' name"
+  );
+  for (const hardware of ["Mac Studio", "DGX Spark", "Strix Halo", "ASUS Ascent GX10", "Framework Desktop AI Max 385"]) {
+    assert.ok(
+      launchCopyBdd.includes(hardware),
+      `launch-copy BDD must name the featured hardware "${hardware}"`
     );
   }
 });

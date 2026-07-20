@@ -14,6 +14,7 @@ This directory contains one behavior-focused BDD file per feature area for the s
 - [Shareable Scenarios](./shareable-scenarios.md)
 - [Methodology and Assumptions](./methodology-and-assumptions.md)
 - [SEO and Launch Metadata](./seo-and-metadata.md)
+- [Launch Copy Snippets](./launch-copy.md)
 - [Comparison Mini-Guides](./mini-guides.md)
 - [Accessibility](./accessibility.md)
 - [Privacy and Analytics](./privacy-and-analytics.md)
