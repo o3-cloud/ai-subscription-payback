@@ -18,6 +18,7 @@ const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
 const exists = (rel) => existsSync(fileURLToPath(new URL(rel, root)));
 
 const html = read("index.html");
+const launchCopy = read("docs/launch-copy.md");
 const SITE_URL = "https://www.othree.cloud/ai-subscription-payback/";
 
 // `siteLastUpdated` in the data module is the single source of truth for the
@@ -137,6 +138,25 @@ test("Twitter card carries its own title, description, and image", () => {
 
 test("the social-card asset exists", () => {
   assert.ok(exists("assets/img/og-card.png"), "assets/img/og-card.png is missing");
+});
+
+test("the launch-copy Posting notes point at the social card and a clean canonical link", () => {
+  // The Posting notes tell maintainers which social card to attach and to keep
+  // the shared link canonical; guard both so the guidance cannot drift from the
+  // bundled asset and the no-tracking-parameters rule the tests enforce.
+  const notes =
+    launchCopy.split(/^## /m).find((block) => /^Posting notes\b/.test(block)) ?? "";
+  assert.ok(notes, "docs/launch-copy.md has a Posting notes section");
+  assert.match(
+    notes,
+    /assets\/img\/og-card\.png/,
+    "Posting notes reference the social card at assets/img/og-card.png"
+  );
+  assert.match(
+    notes,
+    /canonical[^]*tracking parameters/i,
+    "Posting notes instruct keeping the link canonical without tracking parameters"
+  );
 });
 
 test("the social-card and favicon SVG sources use the official site name", () => {

@@ -56,6 +56,12 @@ Scenario: Launch-copy snippets stay aligned with the featured hardware and canon
   And it names hardware from the current featured lineup (Mac Studio, DGX Spark systems such as the ASUS Ascent GX10, and Strix Halo systems such as the Framework Desktop AI Max 385)
   And every share link is exactly the canonical production URL `https://www.othree.cloud/ai-subscription-payback/` with no tracking parameters or legacy origin
   And it keeps the transparent, free-calculator tone
+
+Scenario: Posting notes point at the social card and a clean canonical link
+  Given the Posting notes section of docs/launch-copy.md
+  When a maintainer prepares a post from the launch copy
+  Then the notes reference the social card at `assets/img/og-card.png`
+  And they instruct keeping the link canonical without tracking parameters
 ```
 
 ## Notes
