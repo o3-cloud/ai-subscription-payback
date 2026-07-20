@@ -7,8 +7,8 @@ mention the calculator is free, and point people at the main page URL.
 
 > How long until a local AI box beats your coding subscriptions?
 > I built a free payback calculator for Codex, Claude Code, and local hardware
-> like the Mac Studio, DGX Spark, and Strix Halo systems such as the Framework
-> Desktop AI Max 385.
+> like the Mac Studio, DGX Spark systems such as the ASUS Ascent GX10, and Strix
+> Halo systems such as the Framework Desktop AI Max 385.
 > https://www.othree.cloud/ai-subscription-payback/
 
 ## LinkedIn
@@ -17,8 +17,9 @@ mention the calculator is free, and point people at the main page URL.
 > local AI inference box.
 >
 > It models the break-even point for Codex, Claude Code, and similar monthly
-> subscriptions versus systems like the Mac Studio, DGX Spark, and Strix Halo
-> class hardware such as the Framework Desktop AI Max 385.
+> subscriptions versus systems like the Mac Studio, DGX Spark class hardware
+> such as the ASUS Ascent GX10, and Strix Halo class hardware such as the
+> Framework Desktop AI Max 385.
 >
 > The site is transparent about pricing sources, affiliate relationships, and the
 > assumptions behind the math.
@@ -41,8 +42,9 @@ mention the calculator is free, and point people at the main page URL.
 > subscriptions.
 >
 > It compares the modeled cost of buying hardware like the Mac Studio, DGX
-> Spark, or Strix Halo class systems such as the Framework Desktop AI Max 385
-> against subscriptions such as Codex and Claude Code.
+> Spark class systems such as the ASUS Ascent GX10, or Strix Halo class systems
+> such as the Framework Desktop AI Max 385 against subscriptions such as Codex
+> and Claude Code.
 >
 > The site includes pricing sources, FAQ/methodology copy, and affiliate
 > disclosures.

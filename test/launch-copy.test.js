@@ -51,6 +51,11 @@ test("launch copy reflects the current featured hardware lineup", () => {
   assert.match(launchCopy, /Strix Halo/i, "keeps Strix Halo in the launch copy");
   assert.match(
     launchCopy,
+    /ASUS Ascent GX10/i,
+    "mentions the named ASUS Ascent GX10 DGX Spark example"
+  );
+  assert.match(
+    launchCopy,
     /Framework Desktop AI Max 385/i,
     "mentions the named Framework Desktop Strix Halo example"
   );

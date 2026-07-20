@@ -53,7 +53,7 @@ Scenario: Launch-copy snippets stay aligned with the featured hardware and canon
   Given the ready-to-post launch copy in docs/launch-copy.md
   When a maintainer copies a shareable social snippet
   Then the document heading uses the official site name "AI Subscription Payback" and never the legacy "AI Box Payback"
-  And it names hardware from the current featured lineup (Mac Studio, DGX Spark, and Strix Halo systems such as the Framework Desktop AI Max 385)
+  And it names hardware from the current featured lineup (Mac Studio, DGX Spark systems such as the ASUS Ascent GX10, and Strix Halo systems such as the Framework Desktop AI Max 385)
   And every share link is exactly the canonical production URL `https://www.othree.cloud/ai-subscription-payback/` with no tracking parameters or legacy origin
   And it keeps the transparent, free-calculator tone
 ```
