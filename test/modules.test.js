@@ -338,6 +338,14 @@ test("the pricing-disclosure BDD documents the Replit Agent-credit and tax cavea
   assert.match(bdd, /Replit tiers are listed: Starter \(Free\), Core \(monthly and annual\), and Pro \(monthly and annual\)/i);
 });
 
+test("the pricing-disclosure BDD documents the RTX PRO 6000 Blackwell reference class", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /High-end reference workstation classes are listed without becoming featured cards/i);
+  assert.match(bdd, /RTX PRO 6000 Blackwell workstation class/i);
+  assert.match(bdd, /96 GB GDDR7 ECC VRAM/i);
+  assert.match(bdd, /does not appear among the featured hardware cards/i);
+});
+
 test("hardware features the Mac Studio, DGX Spark, Strix Halo, and Framework Desktop classes", async () => {
   const { hardware } = await import(new URL("data.js", jsDir));
   const names = hardware.map((h) => h.name).join(" | ");
@@ -365,9 +373,9 @@ test("Mac Studio matches Apple's official buy-page structured data", async () =>
 });
 
 test("featured hardware cards use real product-photo assets instead of SVG illustrations", async () => {
-  const { hardware } = await import(new URL("data.js", jsDir));
+  const { featuredHardware } = await import(new URL("data.js", jsDir));
 
-  for (const box of hardware.filter((entry) => !entry.exampleOf)) {
+  for (const box of featuredHardware) {
     assert.ok(box.image, `${box.id} needs a featured-card image`);
     assert.match(
       box.image.src,
@@ -537,6 +545,39 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       );
     }
   }
+});
+
+test("RTX PRO 6000 Blackwell is modeled as a reference-only high-end workstation class", async () => {
+  const { hardware, featuredHardware, getAffiliate } = await import(
+    new URL("data.js", jsDir)
+  );
+  const box = hardware.find((h) => h.id === "rtx-pro-6000-blackwell");
+  assert.ok(box, "missing rtx-pro-6000-blackwell hardware entry");
+
+  // A reference class: listed in the full comparison/pricing data for high-end
+  // context, but never promoted to a featured card and never seeding the form.
+  assert.equal(box.referenceOnly, true, "flagged as a reference-only class");
+  assert.ok(
+    !featuredHardware.some((entry) => entry.id === box.id),
+    "reference-only class stays out of the featured cards"
+  );
+
+  // Retailer-derived range from in-stock listings, with the build-required
+  // workstation/component caveat and 96 GB VRAM spec made explicit.
+  assert.equal(box.verification, "retailer");
+  assert.equal(box.priceLow, 18199);
+  assert.equal(box.priceHigh, 23999);
+  assert.match(box.spec, /96 GB/i, "names the 96 GB VRAM");
+  assert.match(box.priceNote, /build-required|workstation/i, "flags the build caveat");
+  assert.match(box.priceNote, /power draw/i, "makes the power assumption explicit");
+  assert.equal(box.sourceUrl, "https://www.newegg.com/p/pl?d=RTX+PRO+6000+Blackwell");
+  assert.match(box.lastUpdated, /^\d{4}-\d{2}-\d{2}$/);
+
+  // Its comparison-table CTA still resolves through the affiliate map.
+  const cta = getAffiliate(box.id);
+  assert.ok(cta, "missing RTX PRO 6000 affiliate CTA");
+  assert.equal(cta.vendor, "NVIDIA");
+  assert.equal(cta.url, "https://www.nvidia.com/en-us/products/workstations/");
 });
 
 test("Codex points at a specific OpenAI pricing page and is marked official", async () => {

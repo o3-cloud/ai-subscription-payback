@@ -58,6 +58,11 @@
  * @property {number} [defaultBoxPrice] - price used when this box seeds the form
  * @property {number} [powerDraw] - representative power draw under load (W)
  * @property {HardwareImage} [image] - product photo shown on the featured card
+ * @property {boolean} [referenceOnly] - true for a high-end reference class that
+ *   is listed in the full comparison table and pricing list for context but is
+ *   not promoted to a featured product card (e.g. a build-required workstation /
+ *   component class with no compact-appliance product photo). Kept out of
+ *   `featuredHardware`, so it never seeds the calculator or renders a card.
  */
 
 /**
@@ -76,10 +81,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-19";
+export const pricingLastUpdated = "2026-07-20";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-19";
+export const siteLastUpdated = "2026-07-20";
 
 /* ----------------------------- pricing data ----------------------------- */
 
@@ -682,18 +687,38 @@ export const hardware = [
     powerDraw: 140,
     exampleOf: "strix-halo",
   },
+  {
+    id: "rtx-pro-6000-blackwell",
+    name: "NVIDIA RTX PRO 6000 Blackwell workstation",
+    spec: "Discrete Blackwell GPU workstation, 96 GB GDDR7 ECC VRAM",
+    priceLow: 18199,
+    priceHigh: 23999,
+    priceNote:
+      "Retailer-derived range from in-stock Newegg listings for full RTX PRO 6000 Blackwell 96 GB workstations (e.g. ABS AI Workstation configurations observed at ~$18,199 and ~$23,999, varying by CPU/config). This is a build-required workstation / component class — not a compact appliance like DGX Spark — and its ~600 W-class GPU pushes full-system power draw well above the mini-PC boxes, so `powerDraw` records the GPU-class figure while a complete build under load draws more. Listed for high-end context; it is not a featured card and never seeds the calculator.",
+    sourceUrl: "https://www.newegg.com/p/pl?d=RTX+PRO+6000+Blackwell",
+    sourceLabel: "Newegg street price",
+    verification: "retailer",
+    lastUpdated: "2026-07-20",
+    defaultBoxPrice: 18199,
+    powerDraw: 600,
+    referenceOnly: true,
+  },
 ];
 
 /**
  * The top-level boxes shown as cards in the "Featured hardware to compare"
  * grid. Named example SKUs (`exampleOf`) are not standalone cards — they are the
- * selectable trim levels of their parent class card (see `hardwareTrims`). The
- * full `hardware` array still backs the comparison table and pricing list, so
- * every SKU keeps its own source and affiliate provenance there.
+ * selectable trim levels of their parent class card (see `hardwareTrims`) —
+ * and `referenceOnly` classes (e.g. a build-required RTX PRO 6000 workstation)
+ * are listed for context but not promoted to a card. The full `hardware` array
+ * still backs the comparison table and pricing list, so every SKU and reference
+ * class keeps its own source and affiliate provenance there.
  *
  * @type {Hardware[]}
  */
-export const featuredHardware = hardware.filter((box) => !box.exampleOf);
+export const featuredHardware = hardware.filter(
+  (box) => !box.exampleOf && !box.referenceOnly
+);
 
 /**
  * @typedef {Object} HardwareTrim
@@ -843,6 +868,12 @@ export const affiliates = {
     vendor: "GMKtec",
     url: "https://www.gmktec.com/collections/all",
     label: "Browse GMKtec listings",
+    affiliate: true,
+  },
+  "rtx-pro-6000-blackwell": {
+    vendor: "NVIDIA",
+    url: "https://www.nvidia.com/en-us/products/workstations/",
+    label: "Browse NVIDIA workstation options",
     affiliate: true,
   },
 };

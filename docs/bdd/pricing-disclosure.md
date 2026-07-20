@@ -126,6 +126,13 @@ Scenario: Featured products are named clearly
   Then the product names include Mac Studio, DGX Spark, ASUS Ascent GX10, and Strix Halo class systems
   And each product name is paired with a source or vendor label
 
+Scenario: High-end reference workstation classes are listed without becoming featured cards
+  Given the hardware comparison and pricing sections
+  When the visitor looks for an RTX PRO 6000 Blackwell workstation class
+  Then the pricing data includes the RTX PRO 6000 Blackwell workstation as a retailer-derived reference class
+  And it shows the 96 GB GDDR7 ECC VRAM spec with a build-required workstation caveat
+  And the reference class does not appear among the featured hardware cards
+
 Scenario: Prices are described as estimates
   Given the pricing section
   When the visitor reads the disclosure
