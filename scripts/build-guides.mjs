@@ -30,6 +30,7 @@ import { computeResult } from "../assets/js/calculator.js";
 import {
   serializeState,
   formatCurrency,
+  formatRate,
   formatBreakEven,
 } from "../assets/js/state.js";
 
@@ -494,7 +495,7 @@ ${hardwareExampleSectionHtml(guide)}
       <p class="section-intro">
         ${esc(guide.scenarioLede)} Financed at ${esc(String(scenario.apr))}% APR over
         ${esc(String(scenario.term))} months with a ${esc(formatCurrency(scenario.downPayment))}
-        down payment, at ${esc(formatCurrency(scenario.electricityRate))}/kWh and
+        down payment, at ${esc(formatRate(scenario.electricityRate))}/kWh and
         ${esc(String(scenario.hoursPerDay))} hours of use per day. Against
         ${esc(formatCurrency(monthlySubscription))}/mo of subscriptions
         (${esc(subNames)}), a ${esc(formatCurrency(scenario.boxPrice))} ${esc(box.name)}

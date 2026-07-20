@@ -14,6 +14,7 @@ Scenario: Each mini-guide answers a concrete comparison query
   Then the page includes a short use-case summary
   And it includes a source-backed price/spec snapshot
   And it includes a sample payback scenario with break-even metrics
+  And the sample scenario prose states the scenario's electricity rate (cent precision)
   And it includes the main caveats and software tradeoffs
   And it includes a CTA that returns to the calculator with the scenario preloaded in the URL hash
   And the CTA explicitly clears custom spend so the calculator uses the guide's tier selection

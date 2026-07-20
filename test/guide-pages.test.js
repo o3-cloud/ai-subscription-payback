@@ -13,7 +13,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { buildGuides, GUIDES, guideModel, SITE_URL } from "../scripts/build-guides.mjs";
-import { serializeState } from "../assets/js/state.js";
+import { serializeState, formatRate } from "../assets/js/state.js";
 
 const root = new URL("../", import.meta.url);
 const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
@@ -87,6 +87,12 @@ test("each mini-guide carries the required SEO and content structure", () => {
     assert.match(html, /"@type":\s*"BreadcrumbList"/i, `${guide.path} exposes breadcrumb JSON-LD`);
     assert.match(html, /Price &amp; spec snapshot/i, `${guide.path} includes the source-backed snapshot`);
     assert.match(html, /Sample payback scenario/i, `${guide.path} includes a sample scenario`);
+    const scenarioRate = guideModel(guideDef).scenario.electricityRate;
+    assert.match(
+      html,
+      new RegExp(`${escapeRegExp(formatRate(scenarioRate))}/kWh`),
+      `${guide.path} states the scenario electricity rate at cent precision in the prose`
+    );
     assert.match(html, /Caveats &amp; software tradeoffs/i, `${guide.path} includes caveats`);
     assert.ok(html.includes('<p class="results-caveat">'), `${guide.path} includes the results caveat paragraph`);
     assert.match(html, /Cost estimates only\.[\s\S]*Not\s+financial advice\./i, `${guide.path} states the comparison is cost-only and not financial advice`);

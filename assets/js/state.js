@@ -181,6 +181,24 @@ export function formatCurrency(amount) {
 }
 
 /**
+ * Format a small USD rate (e.g. an electricity price per kWh) with cent
+ * precision. Unlike formatCurrency, which rounds whole-dollar figures to no
+ * decimals, sub-dollar rates like $0.17/kWh would collapse to "$0" — so this
+ * keeps two fraction digits.
+ * @param {number} amount
+ * @returns {string}
+ */
+export function formatRate(amount) {
+  if (!Number.isFinite(amount)) return "—";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
+/**
  * Format a break-even month result.
  * @param {number|null} month - month index, or null if never reached
  * @returns {string}
