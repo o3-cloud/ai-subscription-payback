@@ -469,7 +469,7 @@ test("Strix Halo points at a current official AMD product page", async () => {
   );
 });
 
-test("DGX Spark affiliate CTA points at the official NVIDIA product page", async () => {
+test("DGX Spark affiliate CTA points at the Newegg retailer listing", async () => {
   const { getAffiliate } = await import(new URL("data.js", jsDir));
   const cta = getAffiliate("dgx-spark");
   assert.ok(cta, "missing dgx-spark affiliate CTA");

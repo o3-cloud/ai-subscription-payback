@@ -822,8 +822,8 @@ export function defaultHardwareTrim(box) {
  * price, source, or last-updated date. An entry with no key simply has no
  * affiliate call to action.
  *
- * URLs are placeholders until affiliate programs are finalized (see the PRD
- * open questions); swap the `url` values as programs come online.
+ * URLs point at live vendor/reseller destinations; swap the `url` values if a
+ * program's landing page moves or a commissioned link becomes available.
  *
  * @type {Record<string, Affiliate>}
  */
