@@ -1,4 +1,4 @@
-# AI Box Payback — launch copy
+# AI Subscription Payback — launch copy
 
 Short, ready-to-post copy for sharing the site at launch. Keep the tone transparent,
 mention the calculator is free, and point people at the main page URL.

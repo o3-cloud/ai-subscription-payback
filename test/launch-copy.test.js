@@ -31,6 +31,20 @@ const shareSnippets = launchCopy
   })
   .filter((section) => /https?:\/\//.test(section.body));
 
+test("launch copy heading uses the official site name", () => {
+  const heading = launchCopy.split(/\r?\n/)[0];
+  assert.match(
+    heading,
+    /^#\s+AI Subscription Payback\b/,
+    "launch-copy heading must lead with the official site name 'AI Subscription Payback'"
+  );
+  assert.doesNotMatch(
+    launchCopy,
+    /AI Box Payback/i,
+    "launch copy must not use the legacy 'AI Box Payback' name"
+  );
+});
+
 test("launch copy reflects the current featured hardware lineup", () => {
   assert.match(launchCopy, /Mac Studio/i, "keeps Mac Studio in the launch copy");
   assert.match(launchCopy, /DGX Spark/i, "keeps DGX Spark in the launch copy");

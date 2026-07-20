@@ -52,7 +52,8 @@ Scenario: The custom domain is the single source of truth for SEO origins
 Scenario: Launch-copy snippets stay aligned with the featured hardware and canonical URL
   Given the ready-to-post launch copy in docs/launch-copy.md
   When a maintainer copies a shareable social snippet
-  Then it names hardware from the current featured lineup (Mac Studio, DGX Spark, and Strix Halo systems such as the Framework Desktop AI Max 385)
+  Then the document heading uses the official site name "AI Subscription Payback" and never the legacy "AI Box Payback"
+  And it names hardware from the current featured lineup (Mac Studio, DGX Spark, and Strix Halo systems such as the Framework Desktop AI Max 385)
   And every share link is exactly the canonical production URL `https://www.othree.cloud/ai-subscription-payback/` with no tracking parameters or legacy origin
   And it keeps the transparent, free-calculator tone
 ```
@@ -79,5 +80,6 @@ Scenario: Launch-copy snippets stay aligned with the featured hardware and canon
   (`siteLastUpdated` in `assets/js/data.js`).
 - Launch-copy snippets in `docs/launch-copy.md` must stay aligned with the
   current featured hardware lineup and share only the canonical production URL
-  `https://www.othree.cloud/ai-subscription-payback/`; `test/launch-copy.test.js`
-  guards both.
+  `https://www.othree.cloud/ai-subscription-payback/`, and the document heading
+  must use the official site name "AI Subscription Payback" (never the legacy
+  "AI Box Payback"); `test/launch-copy.test.js` guards all three.
