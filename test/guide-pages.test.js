@@ -70,6 +70,16 @@ test("each mini-guide carries the required SEO and content structure", () => {
     );
     assert.match(
       html,
+      /AI Subscription Payback/i,
+      `${guide.path} uses the official site name`
+    );
+    assert.doesNotMatch(
+      html,
+      /AI Box Payback/i,
+      `${guide.path} does not use the legacy site name`
+    );
+    assert.match(
+      html,
       new RegExp(`<meta[^>]+name="description"[^>]+content="${escapeRegExp(guideDef.description)}"`, "i"),
       `${guide.path} has a unique description`
     );

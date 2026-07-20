@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="AI Box Payback — calculate when a local AI inference box beats your AI coding subscriptions.">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="AI Subscription Payback — calculate when a local AI inference box beats your AI coding subscriptions.">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#14171c" />
@@ -7,7 +7,7 @@
   </defs>
   <rect width="1200" height="630" fill="url(#bg)" />
   <rect x="0" y="0" width="1200" height="10" fill="#1f5fd6" />
-  <text x="80" y="150" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" font-weight="600" fill="#6ea0ff" letter-spacing="2">AI BOX PAYBACK</text>
+  <text x="80" y="150" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" font-weight="600" fill="#6ea0ff" letter-spacing="2">AI SUBSCRIPTION PAYBACK</text>
   <text x="80" y="270" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="76" font-weight="700" fill="#eef1f5">When does a local AI box</text>
   <text x="80" y="360" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="76" font-weight="700" fill="#eef1f5">beat your subscriptions?</text>
   <text x="80" y="450" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="36" fill="#a3acb9">Free payback calculator · Codex &amp; Claude Code vs. Mac Studio,</text>

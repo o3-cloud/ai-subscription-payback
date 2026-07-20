@@ -35,6 +35,13 @@ test("404.html tells search engines not to index the fallback", () => {
   );
 });
 
+test("404.html uses the official site name in its title, brand, and footer", () => {
+  const html = readFileSync(path, "utf8");
+  assert.match(html, /<title[^>]*>[^<]*AI Subscription Payback[^<]*<\/title>/i, "404 title uses the official site name");
+  assert.match(html, /<a[^>]+class="brand"[^>]*>AI Subscription Payback<\/a>/i, "404 header brand uses the official site name");
+  assert.match(html, /<strong>AI Subscription Payback<\/strong>/i, "404 footer uses the official site name");
+});
+
 test("404.html reuses the site stylesheet with a subpath-safe path", () => {
   const html = readFileSync(path, "utf8");
   // GitHub Pages serves this file for deep links at any depth, so a relative

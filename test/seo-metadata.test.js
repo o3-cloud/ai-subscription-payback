@@ -45,6 +45,11 @@ test("head declares a descriptive title, indexing directives, and a canonical UR
   const title = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1]?.trim() ?? "";
   assert.ok(title.length > 10, "document declares a descriptive <title>");
   assert.match(
+    title,
+    /AI Subscription Payback/i,
+    "document title uses the official site name"
+  );
+  assert.match(
     html,
     /<meta[^>]+name="robots"[^>]+content="[^"]*index[^"]*"/i,
     "a robots meta tag permits indexing"
@@ -59,6 +64,11 @@ test("head declares a descriptive title, indexing directives, and a canonical UR
     metaContent("name", "description"),
     /Google AI|Gemini|Jules|Antigravity|Replit/i,
     "meta description names the Google AI and Replit coding-agent tiers"
+  );
+  assert.equal(
+    metaContent("name", "author"),
+    "AI Subscription Payback",
+    "meta author matches the official site name"
   );
   // Keywords should surface the Google AI and Replit coding-agent tiers now
   // that they are modeled, so searchers with that intent can find the calculator.
@@ -85,6 +95,11 @@ test("Open Graph card is complete", () => {
       `missing or empty ${prop}`
     );
   }
+  assert.equal(
+    metaContent("property", "og:site_name"),
+    "AI Subscription Payback",
+    "Open Graph site name uses the official site name"
+  );
   assert.equal(metaContent("property", "og:url"), SITE_URL);
   assert.match(
     metaContent("property", "og:description"),
@@ -104,6 +119,11 @@ test("Twitter card carries its own title, description, and image", () => {
     assert.ok(metaContent("name", name).length > 0, `missing or empty ${name}`);
   }
   assert.match(
+    metaContent("name", "twitter:image:alt"),
+    /AI Subscription Payback/i,
+    "twitter:image:alt uses the official site name"
+  );
+  assert.match(
     metaContent("name", "twitter:description"),
     /Google AI|Replit/i,
     "twitter:description mentions Google AI and Replit tiers"
@@ -117,6 +137,15 @@ test("Twitter card carries its own title, description, and image", () => {
 
 test("the social-card asset exists", () => {
   assert.ok(exists("assets/img/og-card.png"), "assets/img/og-card.png is missing");
+});
+
+test("the social-card and favicon SVG sources use the official site name", () => {
+  const og = read("assets/img/og-card.svg");
+  const icon = read("assets/img/favicon.svg");
+  assert.match(og, /AI Subscription Payback/i, "og-card.svg uses the official site name");
+  assert.doesNotMatch(og, /AI Box Payback/i, "og-card.svg does not use the legacy name");
+  assert.match(icon, /AI Subscription Payback/i, "favicon.svg uses the official site name");
+  assert.doesNotMatch(icon, /AI Box Payback/i, "favicon.svg does not use the legacy name");
 });
 
 test("the head declares a favicon so browsers never fall back to a 404 /favicon.ico", () => {

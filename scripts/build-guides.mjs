@@ -364,14 +364,14 @@ export function renderGuide(guide) {
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#1f5fd6" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)" />
-  <meta name="author" content="AI Box Payback" />
+  <meta name="author" content="AI Subscription Payback" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="${canonical}" />
   <link rel="sitemap" type="application/xml" href="../sitemap.xml" />
 
   <!-- Open Graph / social sharing -->
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="AI Box Payback" />
+  <meta property="og:site_name" content="AI Subscription Payback" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:title" content="${esc(guide.title)}" />
   <meta property="og:description" content="${esc(guide.description)}" />
@@ -380,12 +380,12 @@ export function renderGuide(guide) {
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="AI Box Payback social card showing the calculator headline and featured hardware boxes." />
+  <meta property="og:image:alt" content="AI Subscription Payback social card showing the calculator headline and featured hardware boxes." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(guide.title)}" />
   <meta name="twitter:description" content="${esc(guide.description)}" />
   <meta name="twitter:image" content="${SITE_URL}assets/img/og-card.png" />
-  <meta name="twitter:image:alt" content="AI Box Payback — calculate when a local AI inference box beats your AI coding subscriptions." />
+  <meta name="twitter:image:alt" content="AI Subscription Payback — calculate when a local AI inference box beats your AI coding subscriptions." />
 
   <!-- Structured data: the guide as a tech article with a breadcrumb back to the app. -->
   <script type="application/ld+json">
@@ -399,7 +399,7 @@ export function renderGuide(guide) {
         "url": ${JSON.stringify(canonical)},
         "isPartOf": {
           "@type": "WebApplication",
-          "name": "AI Box Payback",
+          "name": "AI Subscription Payback",
           "url": ${JSON.stringify(SITE_URL)}
         },
         "dateModified": ${JSON.stringify(siteLastUpdated)},
@@ -411,7 +411,7 @@ export function renderGuide(guide) {
           {
             "@type": "ListItem",
             "position": 1,
-            "name": "AI Box Payback calculator",
+            "name": "AI Subscription Payback calculator",
             "item": ${JSON.stringify(SITE_URL)}
           },
           {
@@ -433,7 +433,7 @@ export function renderGuide(guide) {
 
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="../">AI Box Payback</a>
+      <a class="brand" href="../">AI Subscription Payback</a>
       <nav class="site-nav" aria-label="Primary">
         <a href="../">Calculator</a>
         <a href="../#guides">Guides</a>
@@ -537,7 +537,7 @@ ${caveatsHtml(guide.caveats)}
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <p class="footer-about">
-        <strong>AI Box Payback</strong> is a free, static, open calculator that
+        <strong>AI Subscription Payback</strong> is a free, static, open calculator that
         estimates when a local AI inference box becomes cheaper than AI coding
         subscriptions. Cost estimates only — not tax, accounting, or financial
         advice.

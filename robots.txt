@@ -1,4 +1,4 @@
-# AI Box Payback — static GitHub Pages site.
+# AI Subscription Payback — static GitHub Pages site.
 # The whole site is public and intended to be indexed.
 User-agent: *
 Allow: /
