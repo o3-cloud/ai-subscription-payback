@@ -769,6 +769,10 @@ test("state.js validation and formatting behave", async () => {
   assert.equal(state.validateNumber("   ", {}).valid, false);
   assert.equal(state.validateNumber("   ", {}).message, "Enter a value.");
   assert.equal(state.formatCurrency(3000), "$3,000");
+  assert.equal(state.formatCurrency(0.17), "$0");
+  assert.equal(state.formatRate(0.17), "$0.17");
+  assert.equal(state.formatRate(1), "$1.00");
+  assert.equal(state.formatRate(NaN), "—");
   assert.equal(state.formatBreakEven(null), "Not reached");
   assert.equal(state.formatBreakEven(12), "Month 12");
 });
