@@ -461,6 +461,22 @@ test("Strix Halo points at a current official AMD product page", async () => {
   );
 });
 
+test("DGX Spark affiliate CTA points at the official NVIDIA product page", async () => {
+  const { getAffiliate } = await import(new URL("data.js", jsDir));
+  const cta = getAffiliate("dgx-spark");
+  assert.ok(cta, "missing dgx-spark affiliate CTA");
+
+  // Pins the live destination so a stale reseller link cannot recur silently.
+  assert.equal(cta.url, "https://www.newegg.com/p/pl?d=DGX+Spark");
+  assert.equal(cta.vendor, "NVIDIA");
+  assert.equal(cta.label, "Browse DGX Spark retailer options");
+  assert.equal(cta.affiliate, true);
+  assert.ok(
+    !cta.url.includes("marketplace.nvidia.com"),
+    "must not point at the flaky NVIDIA Marketplace developer URL (issue #47)"
+  );
+});
+
 test("Strix Halo examples are modeled as official purchasable SKUs", async () => {
   const { hardware, getAffiliate } = await import(new URL("data.js", jsDir));
   const byId = new Map(hardware.map((h) => [h.id, h]));

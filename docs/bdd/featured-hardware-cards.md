@@ -26,7 +26,7 @@ Scenario: Featured hardware cards include affiliate calls to action
   Given a featured hardware card
   When the visitor views the card
   Then the card includes a clearly labeled affiliate or reseller button
-  And the button opens the vendor or reseller destination
+  And the button opens a currently reachable vendor or retailer destination
 
 Scenario: Featured hardware cards can drive the calculator
   Given a featured hardware card and calculator on the same page

@@ -811,8 +811,8 @@ export const affiliates = {
   },
   "dgx-spark": {
     vendor: "NVIDIA",
-    url: "https://marketplace.nvidia.com/en-us/developer/dgx-spark/",
-    label: "Find a DGX Spark reseller",
+    url: "https://www.newegg.com/p/pl?d=DGX+Spark",
+    label: "Browse DGX Spark retailer options",
     affiliate: true,
   },
   "asus-ascent-gx10": {
