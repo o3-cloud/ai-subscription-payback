@@ -608,6 +608,35 @@ test("comparison table renders billing cadence and included value for every tier
   }
 });
 
+test("comparison table renders hardware labels and specs as literal text", () => {
+  const original = {
+    name: hardware[0].name,
+    spec: hardware[0].spec,
+  };
+  hardware[0].name = "Rig <Alpha> & Co.";
+  hardware[0].spec = "GPU <96 GB> & 1 TB";
+
+  try {
+    const { doc } = boot();
+    const rows = doc.querySelectorAll("#comparison-body tr");
+    const row = rows[subscriptions.length];
+
+    assert.ok(row, "expected the first hardware comparison row");
+    assert.equal(
+      row.children.length,
+      4,
+      "hardware comparison rows should render name, spec, price, and provenance cells"
+    );
+    assert.equal(row.children[0].textContent, hardware[0].name);
+    assert.equal(row.children[1].textContent, hardware[0].spec);
+    assert.ok(row.children[2], "hardware price cell should be present");
+    assert.ok(row.children[3], "hardware provenance cell should be present");
+  } finally {
+    hardware[0].name = original.name;
+    hardware[0].spec = original.spec;
+  }
+});
+
 test("pricing list discloses billing cadence for every tier", () => {
   const { doc } = boot();
   const items = doc.getElementById("pricing-list").children.slice(0, subscriptions.length);

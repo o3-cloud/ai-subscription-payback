@@ -60,6 +60,12 @@ Scenario: Featured box comparison is shown
   Then the result identifies the selected box by name
   And the comparison table shows the subscription spend versus that box's cost profile
 
+Scenario: Hardware comparison labels render as literal text
+  Given a featured hardware row whose name or spec contains HTML-significant punctuation
+  When the comparison table renders
+  Then the hardware name and spec appear in separate table cells as literal text
+  And the punctuation is not interpreted as markup
+
 Scenario: Results update live
   Given a computed result is displayed
   When the visitor changes any input

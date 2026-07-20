@@ -806,9 +806,19 @@ function renderComparison(doc) {
 
   for (const box of hardware) {
     const row = doc.createElement("tr");
-    row.innerHTML =
-      `<td>${box.name}</td><td>${box.spec}</td>` +
-      `<td>${priceRange(box.priceLow, box.priceHigh)}</td>`;
+
+    const nameCell = doc.createElement("td");
+    nameCell.textContent = box.name;
+    row.appendChild(nameCell);
+
+    const specCell = doc.createElement("td");
+    specCell.textContent = box.spec;
+    row.appendChild(specCell);
+
+    const priceCell = doc.createElement("td");
+    priceCell.textContent = priceRange(box.priceLow, box.priceHigh);
+    row.appendChild(priceCell);
+
     const sourceCell = doc.createElement("td");
     appendSourceProvenance(doc, sourceCell, box);
     appendAffiliateLink(doc, sourceCell, box.id);
