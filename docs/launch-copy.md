@@ -35,6 +35,8 @@ mention the calculator is free, and point people at the main page URL.
 > affiliate disclosures separate from the calculator math.
 >
 > Feedback welcome on the assumptions and launch copy.
+>
+> https://www.othree.cloud/ai-subscription-payback/
 
 ## Reddit / forum intro
 
@@ -48,6 +50,8 @@ mention the calculator is free, and point people at the main page URL.
 >
 > The site includes pricing sources, FAQ/methodology copy, and affiliate
 > disclosures.
+>
+> https://www.othree.cloud/ai-subscription-payback/
 
 ## Posting notes
 

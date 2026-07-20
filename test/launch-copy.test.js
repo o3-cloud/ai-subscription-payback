@@ -20,9 +20,10 @@ const launchCopyBdd = read("docs/bdd/launch-copy.md");
 const CANONICAL_URL = "https://www.othree.cloud/ai-subscription-payback/";
 
 // Split the doc into its `##` sections so each shareable social snippet can be
-// checked on its own. Snippets that carry a share link are the social posts we
-// hand to platforms; the exact-URL assertion also fences out tracking
-// parameters and the legacy `*.github.io` origin.
+// checked on its own. Every section except "Posting notes" is a ready-to-post
+// snippet handed to a platform, so each must carry the canonical share link;
+// "Posting notes" is maintainer guidance, not a shared post, so it is excluded.
+const NON_SHARE_HEADING = /^Posting notes\b/;
 const shareSnippets = launchCopy
   .split(/^## /m)
   .slice(1)
@@ -30,7 +31,7 @@ const shareSnippets = launchCopy
     const newline = block.indexOf("\n");
     return { heading: block.slice(0, newline).trim(), body: block.slice(newline + 1) };
   })
-  .filter((section) => /https?:\/\//.test(section.body));
+  .filter((section) => !NON_SHARE_HEADING.test(section.heading));
 
 test("launch copy heading uses the official site name", () => {
   const heading = launchCopy.split(/\r?\n/)[0];
@@ -62,20 +63,22 @@ test("launch copy reflects the current featured hardware lineup", () => {
   );
 });
 
-test("each shareable social snippet uses the canonical URL and keeps the free tone", () => {
+test("each shareable social snippet includes the canonical URL exactly once and keeps the free tone", () => {
   assert.ok(
     shareSnippets.length > 0,
-    "expected at least one social snippet carrying a share link"
+    "expected at least one shareable social snippet"
   );
   for (const { heading, body } of shareSnippets) {
     const urls = body.match(/https?:\/\/\S+/g) ?? [];
-    for (const url of urls) {
-      assert.equal(
-        url,
-        CANONICAL_URL,
-        `${heading} snippet must link to ${CANONICAL_URL} exactly`
-      );
-    }
+    // Every ready-to-post snippet must carry the canonical link once — no more
+    // (duplicate/legacy origins) and no less (a snippet shared without a link).
+    // The exact match also fences out tracking parameters and the legacy
+    // `*.github.io` origin.
+    assert.deepEqual(
+      urls,
+      [CANONICAL_URL],
+      `${heading} snippet must include ${CANONICAL_URL} exactly once`
+    );
     assert.match(
       body,
       /free/i,
