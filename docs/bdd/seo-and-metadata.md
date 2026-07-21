@@ -26,7 +26,7 @@ Scenario: Google AI, Mistral, and Replit tiers are discoverable in homepage copy
   Given the landing page and its head metadata
   When a searcher or visitor scans the homepage copy
   Then the subscription helper text names Google AI, Gemini, Jules, Antigravity, Replit Agent, and Mistral
-  And the meta description, keywords, Open Graph description, and Twitter description all mention Google AI and Replit tiers
+  And the meta description, keywords, Open Graph description, Twitter description, and JSON-LD description all mention Google AI, Replit, and Mistral tiers
 
 Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
   Given the static site ships from a project subpath with no favicon at the origin root
