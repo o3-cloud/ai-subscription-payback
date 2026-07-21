@@ -67,6 +67,13 @@ Scenario: Invalid edits do not replace the last valid shareable scenario
   And the address bar keeps the last valid shareable scenario until the form is valid again
   And sharing copies the last valid scenario instead of serializing the invalid input
 
+Scenario: A valid hash scenario wins over a query string
+  Given a shared URL carries a valid hash scenario such as "#boxPrice=4200"
+  And the same URL also carries a query string such as "?boxPrice=1000"
+  When the page loads
+  Then the calculator restores the scenario from the hash fragment
+  And the query string is ignored
+
 Scenario: An in-page anchor does not disturb the share link
   Given the address bar reflects a valid calculator state
   When the visitor clicks an in-page fragment link such as "#calculator"

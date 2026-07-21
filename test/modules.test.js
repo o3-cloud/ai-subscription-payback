@@ -636,6 +636,24 @@ test("state.js round-trips calculator state through the URL helpers", async () =
   const searchFallback = state.readShareParams({ hash: "#calculator", search: "?term=24" });
   assert.equal(searchFallback, "term=24");
 
+  // A valid hash scenario takes precedence over any query string present on the
+  // same URL, so the canonical hash-based share link always wins.
+  const hashOverQuery = state.readShareParams({
+    hash: "#boxPrice=4200",
+    search: "?boxPrice=1000",
+  });
+  assert.equal(hashOverQuery, "boxPrice=4200");
+  assert.equal(state.parseState(hashOverQuery).boxPrice, 4200);
+
+  const hashPrecedence = state.readShareParams({
+    hash: "#boxPrice=4200&subs=codex",
+    search: "?boxPrice=3000&subs=claude-code",
+  });
+  assert.equal(hashPrecedence, "boxPrice=4200&subs=codex");
+  const parsedHashPrecedence = state.parseState(hashPrecedence);
+  assert.equal(parsedHashPrecedence.boxPrice, 4200);
+  assert.deepEqual(parsedHashPrecedence.subscriptions, ["codex"]);
+
   assert.equal(
     state.buildShareUrl({ origin: "https://payback.example", pathname: "/index.html" }, "boxPrice=4200"),
     "https://payback.example/index.html#boxPrice=4200"
