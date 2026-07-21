@@ -55,6 +55,7 @@
  *   substantiated: an "official" vendor price, a "retailer" / street price, or a
  *   class "estimate". Surfaced as a status badge next to the last-verified date.
  * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was last verified
+ * @property {string} [exampleOf] - id of the parent box this entry is a named SKU of; excluded from `featuredHardware` and surfaced as a trim instead
  * @property {number} [defaultBoxPrice] - price used when this box seeds the form
  * @property {number} [powerDraw] - representative power draw under load (W)
  * @property {HardwareImage} [image] - product photo shown on the featured card
