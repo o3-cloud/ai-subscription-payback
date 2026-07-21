@@ -20,6 +20,7 @@ Scenario: Shared links render a complete social card
   When the platform scrapes the page
   Then Open Graph title, description, url, site_name, and locale are present
   And an og:image with descriptive alt text is provided
+  And the social-card artwork itself shows the canonical production URL in its visible footer text
   And a Twitter card with its own title, description, and image is provided
 
 Scenario: Google AI, Mistral, and Replit tiers are discoverable in homepage copy and metadata
@@ -68,7 +69,8 @@ Scenario: Posting notes point at the social card and a clean canonical link
 
 - The launch social card lives at `assets/img/og-card.png` for broad social
   platform compatibility. The editable SVG source is kept alongside it at
-  `assets/img/og-card.svg`.
+  `assets/img/og-card.svg`, and the SVG footer text shows the canonical
+  production URL so the visible artwork reinforces the exact share origin.
 - The favicon lives at `assets/img/favicon.svg` and is declared in the
   `index.html` head via `<link rel="icon">`. The site ships from a project
   subpath, so the origin root has no `/favicon.ico`; declaring the icon

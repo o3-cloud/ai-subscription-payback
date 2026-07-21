@@ -175,6 +175,11 @@ test("the social-card and favicon SVG sources use the official site name", () =>
   const icon = read("assets/img/favicon.svg");
   assert.match(og, /AI Subscription Payback/i, "og-card.svg uses the official site name");
   assert.doesNotMatch(og, /AI Box Payback/i, "og-card.svg does not use the legacy name");
+  assert.match(
+    og,
+    /https:\/\/www\.othree\.cloud\/ai-subscription-payback\//,
+    "og-card.svg shows the canonical production URL in the artwork"
+  );
   assert.match(icon, /AI Subscription Payback/i, "favicon.svg uses the official site name");
   assert.doesNotMatch(icon, /AI Box Payback/i, "favicon.svg does not use the legacy name");
 });
