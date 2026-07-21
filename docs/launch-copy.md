@@ -56,6 +56,8 @@ mention the calculator is free, and point people at the main page URL.
 ## Posting notes
 
 - Use the social card at `assets/img/og-card.png` when a platform supports it.
-- Keep the link in the post canonical and avoid adding tracking parameters.
+- Keep the link in the post pointed at the canonical production URL
+  `https://www.othree.cloud/ai-subscription-payback/` and avoid adding tracking
+  parameters.
 - If you update pricing assumptions or featured hardware, refresh the copy so it
   still matches the current product names and positioning.

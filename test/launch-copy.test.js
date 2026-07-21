@@ -87,6 +87,27 @@ test("each shareable social snippet includes the canonical URL exactly once and 
   }
 });
 
+// The "Posting notes" maintainer guidance is excluded from the shareable-snippet
+// URL check above, so it gets its own assertion: the notes must name the exact
+// canonical production URL rather than only saying "keep the link canonical", so
+// a maintainer knows precisely which link to post.
+test("the Posting notes section names the exact canonical production URL", () => {
+  const postingNotes = launchCopy
+    .split(/^## /m)
+    .slice(1)
+    .map((block) => {
+      const newline = block.indexOf("\n");
+      return { heading: block.slice(0, newline).trim(), body: block.slice(newline + 1) };
+    })
+    .find((section) => NON_SHARE_HEADING.test(section.heading));
+
+  assert.ok(postingNotes, "expected a 'Posting notes' section in the launch copy");
+  assert.ok(
+    postingNotes.body.includes(CANONICAL_URL),
+    `Posting notes must name the canonical production URL ${CANONICAL_URL} explicitly`
+  );
+});
+
 // The dedicated BDD (docs/bdd/launch-copy.md) is the behavior spec for the copy
 // above; keep the two aligned so the spec cannot drift from what it documents.
 test("the launch-copy BDD stays aligned with the launch copy", () => {

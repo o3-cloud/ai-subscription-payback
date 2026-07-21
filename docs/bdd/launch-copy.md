@@ -25,7 +25,7 @@ Scenario: Posting notes point at the shared social card and canonical link
   Given the "Posting notes" section of docs/launch-copy.md
   When a maintainer prepares a post
   Then the notes reference the social card at `assets/img/og-card.png`
-  And they instruct keeping the link canonical without tracking parameters
+  And they instruct keeping the link pointed at the canonical production URL `https://www.othree.cloud/ai-subscription-payback/` without tracking parameters
 ```
 
 ## Notes

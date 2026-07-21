@@ -142,8 +142,9 @@ test("the social-card asset exists", () => {
 
 test("the launch-copy Posting notes point at the social card and a clean canonical link", () => {
   // The Posting notes tell maintainers which social card to attach and to keep
-  // the shared link canonical; guard both so the guidance cannot drift from the
-  // bundled asset and the no-tracking-parameters rule the tests enforce.
+  // the shared link pointed at the exact canonical production URL; guard both so
+  // the guidance cannot drift from the bundled asset and the no-tracking-parameters
+  // rule the tests enforce.
   const notes =
     launchCopy.split(/^## /m).find((block) => /^Posting notes\b/.test(block)) ?? "";
   assert.ok(notes, "docs/launch-copy.md has a Posting notes section");
@@ -152,9 +153,13 @@ test("the launch-copy Posting notes point at the social card and a clean canonic
     /assets\/img\/og-card\.png/,
     "Posting notes reference the social card at assets/img/og-card.png"
   );
+  assert.ok(
+    notes.includes("https://www.othree.cloud/ai-subscription-payback/"),
+    "Posting notes name the canonical production URL explicitly"
+  );
   assert.match(
     notes,
-    /canonical[^]*tracking parameters/i,
+    /canonical[^]*tracking\s+parameters/i,
     "Posting notes instruct keeping the link canonical without tracking parameters"
   );
 });
