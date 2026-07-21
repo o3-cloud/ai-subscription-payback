@@ -338,6 +338,65 @@ test("the pricing-disclosure BDD documents the Replit Agent-credit and tax cavea
   assert.match(bdd, /Replit tiers are listed: Starter \(Free\), Core \(monthly and annual\), and Pro \(monthly and annual\)/i);
 });
 
+test("Mistral tiers cover the Free/Pro/Team/Education ladder with Vibe and tax caveats", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official Mistral pricing page named in the issue and
+  // verified 2026-07-21: a free tier plus Pro, Team, and Education plans.
+  const expected = {
+    "mistral-free": 0,
+    "mistral-pro": 14.99,
+    "mistral-team": 24.99,
+    "mistral-education": 5.99,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Mistral", `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(
+      sub.sourceUrl,
+      "https://mistral.ai/pricing/",
+      `${id} points at the official Mistral pricing page`
+    );
+    // Optional: none seed the default selection.
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+  }
+
+  // The Free tier advertises its (limited) Vibe coding access.
+  assert.match(byId.get("mistral-free").includedValue, /Vibe/i, "free names Vibe");
+  assert.match(byId.get("mistral-free").includedValue, /fair-usage/i, "free notes fair-usage limits");
+
+  // The Pro tier surfaces the verbatim Vibe / long-running / all-day wording.
+  assert.match(
+    byId.get("mistral-pro").includedValue,
+    /full access to Vibe for long-running tasks plus all-day coding/i,
+    "pro states the Vibe long-running / all-day coding copy"
+  );
+
+  // The paid tiers each disclose the tax exclusion and fair-usage caveat.
+  for (const id of ["mistral-pro", "mistral-team", "mistral-education"]) {
+    const value = byId.get(id).includedValue;
+    assert.match(value, /excludes taxes/i, `${id} notes the price excludes taxes`);
+    assert.match(value, /fair-usage/i, `${id} notes the fair-usage caveat`);
+  }
+
+  // The Team tier is billed per user, excluding taxes.
+  assert.match(byId.get("mistral-team").billingCadence, /per user/i, "team billed per user");
+  for (const id of ["mistral-pro", "mistral-team", "mistral-education"]) {
+    assert.match(byId.get(id).billingCadence, /excluding taxes/i, `${id} cadence notes taxes are excluded`);
+  }
+});
+
+test("the pricing-disclosure BDD documents the Mistral Vibe and tax caveats", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Mistral tiers disclose their Vibe coding access and tax \/ fair-usage caveats/i);
+  assert.match(bdd, /the Mistral tiers are listed: Free, Pro, Team, and Education/i);
+  assert.match(bdd, /full access to Vibe for long-running tasks plus all-day coding/i);
+});
+
 test("the pricing-disclosure BDD documents the RTX PRO 6000 Blackwell reference class", () => {
   const bdd = read("docs/bdd/pricing-disclosure.md");
   assert.match(bdd, /High-end reference workstation classes are listed without becoming featured cards/i);

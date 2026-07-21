@@ -185,7 +185,7 @@
               <label for="custom-spend">Custom monthly subscription spend (USD)</label>
               <input type="number" id="custom-spend" name="customSpend" min="0" step="1" inputmode="decimal" placeholder="Leave blank to total the checked subscriptions" />
             </div>
-            <p class="field-help">Check the plans you pay for — Codex, Claude Code, GitHub Copilot, Cursor, Zed, Google AI (Gemini / Jules / Antigravity), Amazon Q Developer, Devin, and Replit Agent tiers are listed. Leave the spend blank to total the checked subscriptions, or enter your own monthly budget and the calculator will use that instead.</p>
+            <p class="field-help">Check the plans you pay for — Codex, Claude Code, GitHub Copilot, Cursor, Zed, Google AI (Gemini / Jules / Antigravity), Amazon Q Developer, Devin, Replit Agent, and Mistral (Vibe) tiers are listed. Leave the spend blank to total the checked subscriptions, or enter your own monthly budget and the calculator will use that instead.</p>
             <div id="subscription-options" class="checkbox-list">
               <!-- Populated from data by scripts; static fallback below. -->
               <p class="data-fallback">JavaScript populates the subscription options from the pricing data when the page loads. If this message stays, enable JavaScript to pick the plans you pay for.</p>
@@ -415,7 +415,11 @@
         and each additional full dev seat adds $40/mo. The Replit tiers (Starter,
         Core, and Pro) cover Replit Agent; the paid Core and Pro plans include a
         monthly Replit Agent credit allowance ($25/mo and $100/mo respectively),
-        and taxes may vary by location per Replit's pricing page.
+        and taxes may vary by location per Replit's pricing page. The Mistral
+        tiers (Free, Pro, Team, and Education) cover Mistral's Vibe coding plans;
+        the Pro plan gives full access to Vibe for long-running tasks plus
+        all-day coding, and the paid tiers are quoted excluding taxes and are
+        subject to fair-usage limits per Mistral's pricing page.
       </p>
       <p class="last-updated">
         Pricing last updated: <time id="pricing-last-updated" datetime="">—</time>
@@ -486,7 +490,7 @@
         collected.
       </p>
       <p class="footer-meta">
-        Site last updated: <time id="site-last-updated" datetime="2026-07-20">2026-07-20</time>
+        Site last updated: <time id="site-last-updated" datetime="2026-07-21">2026-07-21</time>
         · <a href="#methodology">Methodology</a>
         · <a href="#affiliate">Disclosures</a>
       </p>

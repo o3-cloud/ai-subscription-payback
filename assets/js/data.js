@@ -81,10 +81,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-20";
+export const pricingLastUpdated = "2026-07-21";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-20";
+export const siteLastUpdated = "2026-07-21";
 
 /* ----------------------------- pricing data ----------------------------- */
 
@@ -104,9 +104,13 @@ export const siteLastUpdated = "2026-07-20";
  * spelled out in its `billingCadence`/`includedValue`. The Replit tiers (Starter,
  * Core monthly/annual, Pro monthly/annual) cover Replit Agent, the app-building
  * assistant; the paid tiers bundle a monthly Replit Agent credit allowance and
- * note that taxes may vary by location per Replit's pricing page. All of these
- * ship unchecked (no `defaultSelected`) so the default comparison basis stays
- * Codex + Claude Code Pro and only expands when a visitor opts in.
+ * note that taxes may vary by location per Replit's pricing page. The Mistral
+ * tiers (Free, Pro, Team, Education) cover Mistral's consumer plans, whose Pro
+ * copy gives full access to Vibe for long-running tasks plus all-day coding; the
+ * paid tiers are quoted excluding taxes and are subject to fair-usage limits per
+ * Mistral's pricing page. All of these ship unchecked (no `defaultSelected`) so
+ * the default comparison basis stays Codex + Claude Code Pro and only expands
+ * when a visitor opts in.
  *
  * `monthlyPrice` is always the month-by-month comparison value — for annually
  * billed tiers it is the effective monthly cost (annual price ÷ 12), which keeps
@@ -552,6 +556,58 @@ export const subscriptions = [
     sourceLabel: "Official Replit pricing",
     verification: "official",
     lastUpdated: "2026-07-19",
+  },
+  {
+    id: "mistral-free",
+    name: "Mistral",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free plan for one person with limited access to Vibe coding sessions and Le Chat, subject to fair-usage limits.",
+    sourceUrl: "https://mistral.ai/pricing/",
+    sourceLabel: "Official Mistral pricing",
+    verification: "official",
+    lastUpdated: "2026-07-21",
+  },
+  {
+    id: "mistral-pro",
+    name: "Mistral",
+    plan: "Pro",
+    monthlyPrice: 14.99,
+    billingCadence: "Billed monthly, excluding taxes",
+    includedValue:
+      "Individual Pro plan for one developer: full access to Vibe for long-running tasks plus all-day coding across the Vibe CLI, IDE, and remote coding-agent interfaces; the price excludes taxes and heavy use is subject to fair-usage limits.",
+    sourceUrl: "https://mistral.ai/pricing/",
+    sourceLabel: "Official Mistral pricing",
+    verification: "official",
+    lastUpdated: "2026-07-21",
+  },
+  {
+    id: "mistral-team",
+    name: "Mistral",
+    plan: "Team",
+    monthlyPrice: 24.99,
+    billingCadence: "Billed monthly, per user, excluding taxes",
+    includedValue:
+      "Per-seat Team workspace adding shared collaboration on top of the Pro Vibe coding features; the per-user price excludes taxes and is subject to fair-usage limits.",
+    sourceUrl: "https://mistral.ai/pricing/",
+    sourceLabel: "Official Mistral pricing",
+    verification: "official",
+    lastUpdated: "2026-07-21",
+  },
+  {
+    id: "mistral-education",
+    name: "Mistral",
+    plan: "Education",
+    monthlyPrice: 5.99,
+    billingCadence: "Billed monthly, excluding taxes",
+    includedValue:
+      "Discounted student/education plan with Vibe coding access; the price excludes taxes and is subject to fair-usage limits.",
+    sourceUrl: "https://mistral.ai/pricing/",
+    sourceLabel: "Official Mistral pricing",
+    verification: "official",
+    lastUpdated: "2026-07-21",
   },
 ];
 

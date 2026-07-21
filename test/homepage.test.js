@@ -251,7 +251,7 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, and Replit coding-agent tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, and Mistral coding-agent tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin, and
   // Replit Agent alongside the other plans, so the helper text and pricing copy
   // must surface them too.
@@ -265,6 +265,7 @@ test("subscription helper copy names the Google AI, Devin, and Replit coding-age
   assert.match(help, /Devin/i, "helper copy names Devin");
   assert.match(help, /Replit/i, "helper copy names Replit");
   assert.match(help, /Replit Agent/i, "helper copy names Replit Agent");
+  assert.match(help, /Mistral/i, "helper copy names Mistral");
 
   const pricing =
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
@@ -276,6 +277,8 @@ test("subscription helper copy names the Google AI, Devin, and Replit coding-age
   assert.match(pricing, /Devin/i, "pricing disclosure mentions Devin tiers");
   assert.match(pricing, /Replit/i, "pricing disclosure mentions Replit tiers");
   assert.match(pricing, /Replit Agent/i, "pricing disclosure mentions Replit Agent credits");
+  assert.match(pricing, /Mistral/i, "pricing disclosure mentions Mistral tiers");
+  assert.match(pricing, /Vibe/i, "pricing disclosure mentions Mistral Vibe coding");
 });
 
 test("pricing disclosure spells out the Devin Teams base-fee plus seat math", () => {

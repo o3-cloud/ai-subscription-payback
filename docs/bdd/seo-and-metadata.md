@@ -22,10 +22,10 @@ Scenario: Shared links render a complete social card
   And an og:image with descriptive alt text is provided
   And a Twitter card with its own title, description, and image is provided
 
-Scenario: Google AI and Replit tiers are discoverable in homepage copy and metadata
+Scenario: Google AI, Mistral, and Replit tiers are discoverable in homepage copy and metadata
   Given the landing page and its head metadata
   When a searcher or visitor scans the homepage copy
-  Then the subscription helper text names Google AI, Gemini, Jules, Antigravity, and Replit Agent
+  Then the subscription helper text names Google AI, Gemini, Jules, Antigravity, Replit Agent, and Mistral
   And the meta description, keywords, Open Graph description, and Twitter description all mention Google AI and Replit tiers
 
 Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
