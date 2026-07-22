@@ -713,9 +713,42 @@ test("state.js round-trips calculator state through the URL helpers", async () =
   assert.equal(parsedHashPrecedence.boxPrice, 4200);
   assert.deepEqual(parsedHashPrecedence.subscriptions, ["codex"]);
 
+  // A trailing directory-index filename is collapsed to the directory URL so
+  // copied links use the canonical form the SEO surface advertises.
   assert.equal(
     state.buildShareUrl({ origin: "https://payback.example", pathname: "/index.html" }, "boxPrice=4200"),
-    "https://payback.example/index.html#boxPrice=4200"
+    "https://payback.example/#boxPrice=4200"
+  );
+  assert.equal(
+    state.buildShareUrl(
+      { origin: "https://payback.example", pathname: "/ai-subscription-payback/index.html" },
+      "boxPrice=4200"
+    ),
+    "https://payback.example/ai-subscription-payback/#boxPrice=4200",
+    "strips a trailing /index.html from a project-path pathname"
+  );
+  assert.equal(
+    state.buildShareUrl(
+      { origin: "https://payback.example", pathname: "/ai-subscription-payback/index.htm" },
+      "boxPrice=4200"
+    ),
+    "https://payback.example/ai-subscription-payback/#boxPrice=4200",
+    "strips a trailing /index.htm as well"
+  );
+  // Query/hash canonicalization is otherwise unchanged: a directory pathname is
+  // left intact, and "index" that is not the trailing filename is preserved.
+  assert.equal(
+    state.buildShareUrl({ origin: "https://payback.example", pathname: "/ai-subscription-payback/" }, "boxPrice=4200"),
+    "https://payback.example/ai-subscription-payback/#boxPrice=4200",
+    "leaves an already-canonical directory URL unchanged"
+  );
+  assert.equal(
+    state.buildShareUrl(
+      { origin: "https://payback.example", pathname: "/index.html-guide/thing.html" },
+      "boxPrice=4200"
+    ),
+    "https://payback.example/index.html-guide/thing.html#boxPrice=4200",
+    "only strips index.html when it is the trailing filename"
   );
 
   const emptySerialized = state.serializeState({

@@ -114,13 +114,30 @@ export function readShareParams(location = {}) {
  * Build a shareable URL that stores the scenario in the hash fragment. The hash
  * survives static hosting that ignores unknown query params and never triggers
  * a navigation/reload when written to the address bar.
+ *
+ * The pathname is canonicalized by stripping a trailing "/index.html" or
+ * "/index.htm" so copied links use the directory URL (e.g.
+ * "/ai-subscription-payback/" rather than "/ai-subscription-payback/index.html")
+ * — the same form the SEO canonical/sitemap surface advertises.
  * @param {{ origin?: string, pathname?: string }} location
  * @param {string} query - serialized state from serializeState()
  * @returns {string}
  */
 export function buildShareUrl(location = {}, query = "") {
-  const base = (location.origin || "") + (location.pathname || "");
+  const pathname = canonicalizePathname(location.pathname || "");
+  const base = (location.origin || "") + pathname;
   return query ? `${base}#${query}` : base;
+}
+
+/**
+ * Collapse a trailing directory-index filename to its directory URL so shared
+ * links match the canonical form. "/dir/index.html" and "/dir/index.htm" both
+ * become "/dir/"; other pathnames are returned unchanged.
+ * @param {string} pathname
+ * @returns {string}
+ */
+function canonicalizePathname(pathname) {
+  return pathname.replace(/\/index\.html?$/i, "/");
 }
 
 /**

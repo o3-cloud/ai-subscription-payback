@@ -369,6 +369,8 @@ export function renderGuide(guide) {
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="${canonical}" />
   <link rel="sitemap" type="application/xml" href="../sitemap.xml" />
+  <!-- Declared icon so browsers use it instead of requesting a 404 /favicon.ico -->
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg" />
 
   <!-- Open Graph / social sharing -->
   <meta property="og:type" content="article" />

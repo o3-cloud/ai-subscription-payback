@@ -24,4 +24,10 @@ Scenario: The guides are indexed and discoverable by crawlers
   When it reads the URL list
   Then sitemap.xml includes every published mini-guide URL
   And each guide page declares canonical, Open Graph, and Twitter metadata for its own URL
+
+Scenario: Guide pages ship a favicon on the guides/ subpath
+  Given a browser loads one of the published guide pages from the guides/ subpath
+  When the document head is parsed
+  Then the page declares a <link rel="icon"> pointing at the bundled favicon asset
+  So the browser uses the shipped icon instead of requesting /favicon.ico
 ```

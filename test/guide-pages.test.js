@@ -83,6 +83,19 @@ test("each mini-guide carries the required SEO and content structure", () => {
       new RegExp(`<meta[^>]+name="description"[^>]+content="${escapeRegExp(guideDef.description)}"`, "i"),
       `${guide.path} has a unique description`
     );
+    // Guides ship from the guides/ subpath, so — like the homepage — they must
+    // declare a favicon or the browser auto-requests a 404 /favicon.ico.
+    const icon = html.match(/<link[^>]+rel="icon"[^>]+href="([^"]*)"/i);
+    assert.ok(icon, `${guide.path} declares a <link rel="icon">`);
+    const iconHref = icon[1];
+    assert.ok(
+      /^\.\.\/assets\//.test(iconHref),
+      `${guide.path} favicon href should point at a bundled asset, got "${iconHref}"`
+    );
+    assert.ok(
+      exists(iconHref.replace(/^\.\.\//, "")),
+      `${guide.path} favicon asset ${iconHref} is missing`
+    );
     assert.match(html, /<script[^>]+type="application\/ld\+json"[\s\S]*"@type":\s*"TechArticle"/i, `${guide.path} exposes TechArticle JSON-LD`);
     assert.match(html, /"@type":\s*"BreadcrumbList"/i, `${guide.path} exposes breadcrumb JSON-LD`);
     assert.match(html, /Price &amp; spec snapshot/i, `${guide.path} includes the source-backed snapshot`);

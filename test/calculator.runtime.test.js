@@ -1276,7 +1276,7 @@ test("the share button serializes current state into a shareable URL", async () 
 
   assert.equal(win._clipboardWrites.length, 1, "copies exactly one URL");
   const url = new URL(win._clipboardWrites[0]);
-  assert.equal(url.origin + url.pathname, "https://payback.example/index.html");
+  assert.equal(url.origin + url.pathname, "https://payback.example/");
   assert.equal(url.search, "", "share URLs no longer rely on query parameters");
   assert.equal(url.hash.startsWith("#"), true);
   const params = new URLSearchParams(url.hash.slice(1));
