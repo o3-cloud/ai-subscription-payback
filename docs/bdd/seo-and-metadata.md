@@ -23,6 +23,13 @@ Scenario: Shared links render a complete social card
   And the social-card artwork itself shows the canonical production URL in its visible footer text
   And a Twitter card with its own title, description, and image is provided
 
+Scenario: The shipped social-card PNG stays in sync with its SVG source
+  Given the editable social-card source at assets/img/og-card.svg
+  And the shipped raster at assets/img/og-card.png that platforms scrape
+  When the SVG is rasterized to PNG
+  Then the shipped PNG is pixel-identical to the freshly rasterized SVG
+  So that edits to the SVG cannot silently drift from the card platforms show
+
 Scenario: Google AI, Mistral, and Replit tiers are discoverable in homepage copy and metadata
   Given the landing page and its head metadata
   When a searcher or visitor scans the homepage copy
@@ -71,6 +78,10 @@ Scenario: Posting notes point at the social card and a clean canonical link
   platform compatibility. The editable SVG source is kept alongside it at
   `assets/img/og-card.svg`, and the SVG footer text shows the canonical
   production URL so the visible artwork reinforces the exact share origin.
+  `test/seo-metadata.test.js` rasterizes the SVG with ffmpeg's SVG decoder into
+  a temp dir and asserts the committed PNG is pixel-identical, so the two
+  cannot drift; re-export the PNG after editing the SVG with
+  `ffmpeg -y -i assets/img/og-card.svg -pix_fmt rgb24 assets/img/og-card.png`.
 - The favicon lives at `assets/img/favicon.svg` and is declared in the
   `index.html` head via `<link rel="icon">`. The site ships from a project
   subpath, so the origin root has no `/favicon.ico`; declaring the icon

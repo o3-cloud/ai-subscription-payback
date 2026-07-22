@@ -10,8 +10,11 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync, readdirSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync, mkdtempSync, rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 const root = new URL("../", import.meta.url);
 const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
@@ -182,6 +185,52 @@ test("the social-card and favicon SVG sources use the official site name", () =>
   );
   assert.match(icon, /AI Subscription Payback/i, "favicon.svg uses the official site name");
   assert.doesNotMatch(icon, /AI Box Payback/i, "favicon.svg does not use the legacy name");
+});
+
+/** Decode a PNG to raw RGB pixel bytes via ffmpeg, so comparisons are on
+ * pixels rather than PNG container bytes (encoder version, chunks, timestamps). */
+const rgbPixels = (absPath) =>
+  execFileSync(
+    "ffmpeg",
+    ["-loglevel", "error", "-i", absPath, "-pix_fmt", "rgb24", "-f", "rawvideo", "-"],
+    { maxBuffer: 64 * 1024 * 1024 }
+  );
+
+test("the committed social-card PNG is pixel-identical to the SVG source", () => {
+  // The editable SVG and the shipped PNG can drift: someone edits og-card.svg
+  // (a URL, a headline) but forgets to re-export the PNG that platforms scrape.
+  // Rasterize the SVG here and assert the bytes-on-disk PNG still matches it.
+  // Regenerate the PNG with:
+  //   ffmpeg -y -i assets/img/og-card.svg -pix_fmt rgb24 assets/img/og-card.png
+  let decoders;
+  try {
+    decoders = execFileSync("ffmpeg", ["-hide_banner", "-decoders"], { encoding: "utf8" });
+  } catch {
+    // ffmpeg (with librsvg) is the one external dependency this check needs; if
+    // it is unavailable the assertion cannot run, so skip rather than fail.
+    return;
+  }
+  assert.ok(
+    /librsvg/.test(decoders),
+    "ffmpeg must be built with the librsvg decoder to rasterize the SVG source"
+  );
+
+  const svg = fileURLToPath(new URL("assets/img/og-card.svg", root));
+  const png = fileURLToPath(new URL("assets/img/og-card.png", root));
+  const dir = mkdtempSync(join(tmpdir(), "og-card-"));
+  try {
+    const rasterized = join(dir, "og-card.png");
+    execFileSync("ffmpeg", [
+      "-y", "-loglevel", "error", "-i", svg, "-pix_fmt", "rgb24", rasterized,
+    ]);
+    assert.deepEqual(
+      rgbPixels(rasterized),
+      rgbPixels(png),
+      "assets/img/og-card.png has drifted from assets/img/og-card.svg; re-export it from the SVG"
+    );
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test("the head declares a favicon so browsers never fall back to a 404 /favicon.ico", () => {
