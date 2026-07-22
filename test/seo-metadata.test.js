@@ -88,17 +88,9 @@ test("head declares a descriptive title, indexing directives, and a canonical UR
   );
   // Keywords should surface the Google AI, Replit, and Mistral coding-agent
   // tiers now that they are modeled, so searchers with that intent can find
-  // the calculator.
-  assert.match(
-    metaContent("name", "keywords"),
-    /Google AI|Gemini|Jules|Antigravity|Devin|Replit/i,
-    "keywords name the Google AI, Devin, Replit, and Mistral coding-agent tiers"
-  );
-  assert.match(
-    metaContent("name", "keywords"),
-    /Mistral/i,
-    "keywords name the Mistral coding-agent tier"
-  );
+  // the calculator. Assert each family individually (not an OR-alternation),
+  // so dropping any one from the keywords is caught.
+  assertNamesNewTiers(metaContent("name", "keywords"), "keywords");
 });
 
 test("Open Graph card is complete", () => {
