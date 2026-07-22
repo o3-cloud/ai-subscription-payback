@@ -79,6 +79,15 @@ test("each shareable social snippet includes the canonical URL exactly once and 
       [CANONICAL_URL],
       `${heading} snippet must include ${CANONICAL_URL} exactly once`
     );
+    // The exact-URL check above only fences out a `*.github.io` origin when it
+    // is written as a full scheme-prefixed link. Catch the legacy origin even
+    // when it appears as plain text (e.g. a bare `o3-cloud.github.io` mention
+    // with no `https://`), which the URL match would otherwise miss.
+    assert.doesNotMatch(
+      body,
+      /github\.io/i,
+      `${heading} snippet must not mention the legacy *.github.io origin`
+    );
     assert.match(
       body,
       /free/i,
