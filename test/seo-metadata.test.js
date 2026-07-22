@@ -45,6 +45,22 @@ const metaContent = (attr, value) =>
     new RegExp(`<meta[^>]+${attr}="${value}"[^>]+content="([^"]*)"`, "i")
   )?.[1] ?? "";
 
+// The SEO BDD requires the description-style fields to name *all three* newly
+// modeled tier families — Google AI, Replit, and Mistral — not merely one of
+// them ("all mention Google AI, Replit, and Mistral tiers" in
+// docs/bdd/seo-and-metadata.md). Assert each family individually so dropping
+// any one from a field is caught; an OR-alternation would let a field lose
+// Mistral (or Replit) silently.
+const assertNamesNewTiers = (text, field) => {
+  for (const [label, pattern] of [
+    ["Google AI", /Google AI|Gemini|Jules|Antigravity/i],
+    ["Replit", /Replit/i],
+    ["Mistral", /Mistral/i],
+  ]) {
+    assert.match(text, pattern, `${field} should name the ${label} tier`);
+  }
+};
+
 test("head declares a descriptive title, indexing directives, and a canonical URL", () => {
   const title = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1]?.trim() ?? "";
   assert.ok(title.length > 10, "document declares a descriptive <title>");
@@ -64,11 +80,7 @@ test("head declares a descriptive title, indexing directives, and a canonical UR
     "canonical link points at the site URL"
   );
   assert.ok(metaContent("name", "description").length > 50, "meta description present");
-  assert.match(
-    metaContent("name", "description"),
-    /Google AI|Gemini|Jules|Antigravity|Replit|Mistral/i,
-    "meta description names the Google AI, Replit, and Mistral coding-agent tiers"
-  );
+  assertNamesNewTiers(metaContent("name", "description"), "meta description");
   assert.equal(
     metaContent("name", "author"),
     "AI Subscription Payback",
@@ -111,11 +123,7 @@ test("Open Graph card is complete", () => {
     "Open Graph site name uses the official site name"
   );
   assert.equal(metaContent("property", "og:url"), SITE_URL);
-  assert.match(
-    metaContent("property", "og:description"),
-    /Google AI|Replit|Mistral/i,
-    "og:description mentions Google AI, Replit, and Mistral tiers"
-  );
+  assertNamesNewTiers(metaContent("property", "og:description"), "og:description");
   assert.equal(
     metaContent("property", "og:image"),
     new URL("assets/img/og-card.png", SITE_URL).href,
@@ -133,11 +141,7 @@ test("Twitter card carries its own title, description, and image", () => {
     /AI Subscription Payback/i,
     "twitter:image:alt uses the official site name"
   );
-  assert.match(
-    metaContent("name", "twitter:description"),
-    /Google AI|Replit|Mistral/i,
-    "twitter:description mentions Google AI, Replit, and Mistral tiers"
-  );
+  assertNamesNewTiers(metaContent("name", "twitter:description"), "twitter:description");
   assert.equal(
     metaContent("name", "twitter:image"),
     new URL("assets/img/og-card.png", SITE_URL).href,
@@ -270,11 +274,7 @@ test("JSON-LD parses and describes the app plus its FAQ", () => {
   assert.equal(app.url, SITE_URL);
   assert.equal(app.isAccessibleForFree, true);
   assert.equal(app.offers.price, "0");
-  assert.match(
-    app.description,
-    /Google AI|Replit|Mistral/i,
-    "WebApplication description mentions Google AI, Replit, and Mistral"
-  );
+  assertNamesNewTiers(app.description, "WebApplication description");
 
   const faq = graph.find((n) => n["@type"] === "FAQPage");
   assert.ok(faq, "graph includes a FAQPage node");
