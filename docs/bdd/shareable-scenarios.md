@@ -80,4 +80,10 @@ Scenario: An in-page anchor does not disturb the share link
   And then clicks the Share button
   Then the copied URL still includes the current calculator state
   And the address bar is restored to that share URL instead of the bare anchor
+
+Scenario: A non-share fragment does not shadow a valid query-string link
+  Given the address bar already contains a valid query-string share URL
+  When the visitor clicks a non-calculator fragment such as "#section=pricing"
+  Then the calculator still restores the query-string share state
+  And the fragment does not override the scenario because it carries no known calculator parameters
 ```

@@ -695,6 +695,16 @@ test("state.js round-trips calculator state through the URL helpers", async () =
   const searchFallback = state.readShareParams({ hash: "#calculator", search: "?term=24" });
   assert.equal(searchFallback, "term=24");
 
+  const irrelevantHash = state.readShareParams({
+    hash: "#section=pricing",
+    search: "?boxPrice=4200&subs=codex",
+  });
+  assert.equal(
+    irrelevantHash,
+    "boxPrice=4200&subs=codex",
+    "a non-share fragment with `=` must not shadow a valid query-string share link"
+  );
+
   // A valid hash scenario takes precedence over any query string present on the
   // same URL, so the canonical hash-based share link always wins.
   const hashOverQuery = state.readShareParams({

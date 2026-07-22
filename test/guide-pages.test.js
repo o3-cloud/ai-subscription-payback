@@ -68,6 +68,18 @@ test("each mini-guide carries the required SEO and content structure", () => {
       new RegExp(`<link[^>]+rel="canonical"[^>]+href="${escapeRegExp(canonical)}"`, "i"),
       `${guide.path} declares a canonical URL`
     );
+    // Social cards must mirror the canonical URL so shared links resolve to the
+    // same indexable page; assert both og:url and twitter:url point at it.
+    assert.match(
+      html,
+      new RegExp(`<meta[^>]+property="og:url"[^>]+content="${escapeRegExp(canonical)}"`, "i"),
+      `${guide.path} mirrors the canonical URL in og:url`
+    );
+    assert.match(
+      html,
+      new RegExp(`<meta[^>]+name="twitter:url"[^>]+content="${escapeRegExp(canonical)}"`, "i"),
+      `${guide.path} mirrors the canonical URL in twitter:url`
+    );
     assert.match(
       html,
       /AI Subscription Payback/i,

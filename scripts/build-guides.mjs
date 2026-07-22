@@ -385,6 +385,7 @@ export function renderGuide(guide) {
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="AI Subscription Payback social card showing the calculator headline and featured hardware boxes." />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="${canonical}" />
   <meta name="twitter:title" content="${esc(guide.title)}" />
   <meta name="twitter:description" content="${esc(guide.description)}" />
   <meta name="twitter:image" content="${SITE_URL}assets/img/og-card.png" />

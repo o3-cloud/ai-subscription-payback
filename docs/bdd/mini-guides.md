@@ -23,7 +23,7 @@ Scenario: The guides are indexed and discoverable by crawlers
   Given a crawler fetches the sitemap
   When it reads the URL list
   Then sitemap.xml includes every published mini-guide URL
-  And each guide page declares canonical, Open Graph, and Twitter metadata for its own URL
+  And each guide page declares canonical, Open Graph, and Twitter metadata for its own URL, including twitter:url
 
 Scenario: Guide pages ship a favicon on the guides/ subpath
   Given a browser loads one of the published guide pages from the guides/ subpath

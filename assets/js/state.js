@@ -100,12 +100,26 @@ export function serializeState(state) {
  * @param {{ search?: string, hash?: string }} location
  * @returns {string}
  */
+const SHARE_PARAM_KEYS = [
+  ...Object.keys(NUMERIC_FIELDS),
+  ...BOOLEAN_FIELDS,
+  CUSTOM_SPEND_FIELD,
+  "subs",
+];
+
+function hasShareParams(raw) {
+  if (!raw) return false;
+  const params = new URLSearchParams(raw);
+  return SHARE_PARAM_KEYS.some((key) => params.has(key));
+}
+
 export function readShareParams(location = {}) {
   const hash =
     typeof location.hash === "string" ? location.hash.replace(/^#/, "") : "";
-  // Only treat the hash as scenario state when it carries key=value pairs; a
-  // bare in-page anchor like "#calculator" must not shadow a "?"-style link.
-  if (hash.includes("=")) return hash;
+  // Only treat the hash as scenario state when it carries at least one known
+  // calculator parameter; a bare in-page anchor (even one with `=` in it) must
+  // not shadow a valid "?"-style link.
+  if (hasShareParams(hash)) return hash;
   const search = typeof location.search === "string" ? location.search : "";
   return search.replace(/^\?/, "");
 }
