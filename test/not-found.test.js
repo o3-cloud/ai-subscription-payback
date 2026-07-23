@@ -54,6 +54,18 @@ test("404.html reuses the site stylesheet with a subpath-safe path", () => {
   );
 });
 
+test("404.html declares a favicon so browsers don't auto-request /favicon.ico", () => {
+  const html = readFileSync(path, "utf8");
+  // A soft 404 without an icon still triggers a browser request for the
+  // default /favicon.ico, which then 404s again. Declare the bundled favicon
+  // with a base-qualified absolute path so it resolves at any deep-link depth.
+  assert.match(
+    html,
+    /<link[^>]+rel="icon"[^>]+href="\/ai-subscription-payback\/assets\/img\/favicon\.svg"/i,
+    "links the bundled favicon so no /favicon.ico request is made"
+  );
+});
+
 test("404.html routes visitors back to the calculator home", () => {
   const html = readFileSync(path, "utf8");
   assert.match(

@@ -27,6 +27,8 @@ Scenario: Unknown paths land on a friendly 404 fallback
   And it is marked noindex so it never replaces real content in search
   And its asset and link references are base-qualified absolute paths so they
     resolve regardless of how deep the missing URL was
+  And it declares the bundled favicon so the browser does not auto-request a
+    /favicon.ico that would 404 again
 
 Scenario: Client-rendered sections explain their JavaScript dependency
   Given the featured hardware cards and subscription options are populated by
