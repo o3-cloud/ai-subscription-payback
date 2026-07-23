@@ -310,6 +310,32 @@ test("FAQ structured-data answers match the on-page methodology copy", () => {
   }
 });
 
+test("the on-page subscription helper text names every modeled coding-agent brand", () => {
+  // The SEO BDD scenario ("the on-page helper text names each coding agent" in
+  // docs/bdd/seo-and-metadata.md) requires the visible field-help copy under the
+  // spend input to enumerate the newly modeled brands individually, so the
+  // homepage cannot silently drop one when the plan list changes. Assert each
+  // name on its own — a single OR-alternation would let a brand disappear.
+  const help =
+    html.match(/<p[^>]*class="field-help"[^>]*>([\s\S]*?)<\/p>/i)?.[1]
+      ?.replace(/\s+/g, " ")
+      .trim() ?? "";
+  assert.ok(help, "index.html has a <p class=\"field-help\"> element");
+  for (const brand of [
+    "Google AI",
+    "Gemini",
+    "Jules",
+    "Antigravity",
+    "Replit Agent",
+    "Mistral",
+  ]) {
+    assert.ok(
+      help.includes(brand),
+      `field-help copy should name the ${brand} tier`
+    );
+  }
+});
+
 test("robots.txt allows crawling and points at the sitemap", () => {
   assert.ok(exists("robots.txt"), "robots.txt is missing");
   const robots = read("robots.txt");
