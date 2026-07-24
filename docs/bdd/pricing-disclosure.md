@@ -132,6 +132,15 @@ Scenario: Affiliate links are separate from price sources
   And the affiliate CTA points to a separate destination
   And changing affiliate metadata does not change the displayed price or source URL
 
+Scenario: DGX Spark uses NVIDIA's official Marketplace Buy Now path
+  Given the DGX Spark featured hardware card
+  When the visitor views its call to action
+  Then the CTA links to NVIDIA's official Marketplace Buy Now page for DGX Spark
+  And the CTA is a direct official purchase path, not a commissioned affiliate link
+  And it carries no "(affiliate)" label and no sponsored rel marker
+  And the displayed price still comes from the unchanged retailer pricing source
+  And the other featured hardware cards may still use affiliate or reseller CTAs
+
 Scenario: Featured products are named clearly
   Given the hardware comparison section
   When the visitor views it

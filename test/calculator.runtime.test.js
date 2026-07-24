@@ -685,15 +685,31 @@ test("featured hardware renders affiliate CTAs from the separate affiliate metad
     // The price source link is always present and points at the pricing source.
     assert.ok(hrefs.includes(box.sourceUrl), `missing source link for ${box.id}`);
 
-    // The affiliate CTA is looked up from the affiliates map, not the pricing
-    // entry, and is marked as an affiliate/sponsored link.
+    // The CTA is looked up from the affiliates map, not the pricing entry.
+    // Commissioned links carry the (affiliate) label and sponsored rel; official
+    // buy-now paths (e.g. DGX Spark's NVIDIA Marketplace link) carry neither.
     const affiliate = getAffiliate(box.id);
-    assert.ok(affiliate, `expected affiliate metadata for ${box.id}`);
+    assert.ok(affiliate, `expected CTA metadata for ${box.id}`);
     const cta = links.find((a) => a.getAttribute("href") === affiliate.url);
-    assert.ok(cta, `missing affiliate CTA for ${box.id}`);
-    assert.match(cta.textContent, /\(affiliate\)/);
-    assert.match(cta.getAttribute("rel"), /sponsored/);
+    assert.ok(cta, `missing CTA for ${box.id}`);
+    if (affiliate.affiliate) {
+      assert.match(cta.textContent, /\(affiliate\)/, `${box.id} affiliate CTA is labeled`);
+      assert.match(cta.getAttribute("rel"), /sponsored/, `${box.id} affiliate CTA is sponsored`);
+    } else {
+      assert.doesNotMatch(cta.textContent, /\(affiliate\)/, `${box.id} official CTA is not labeled affiliate`);
+      assert.doesNotMatch(cta.getAttribute("rel") || "", /sponsored/, `${box.id} official CTA is not sponsored`);
+    }
   }
+
+  // Explicit guard for the mix: DGX Spark is the official Marketplace Buy Now
+  // path while at least one other featured card keeps an affiliate/reseller CTA.
+  const dgx = getAffiliate("dgx-spark");
+  assert.equal(dgx.affiliate, false, "DGX Spark CTA is the official non-affiliate path");
+  assert.match(dgx.url, /marketplace\.nvidia\.com/, "DGX Spark CTA points at NVIDIA Marketplace");
+  assert.ok(
+    hardware.some((box) => box.id !== "dgx-spark" && getAffiliate(box.id)?.affiliate),
+    "other hardware keeps affiliate/reseller CTAs"
+  );
 });
 
 test("each featured hardware card renders a source provenance block", () => {
@@ -726,18 +742,26 @@ test("each featured hardware card renders a source provenance block", () => {
   }
 });
 
-test("each featured hardware card renders a labeled affiliate CTA and keeps provenance first", () => {
-  // BDD contract: every card with affiliate metadata surfaces a clearly labeled
-  // affiliate/reseller button carrying the sponsored rel marker, and that CTA
-  // stays below the price-provenance line so a commissioned link is never
-  // conflated with the "where this price came from" trail.
+test("each featured hardware card renders a labeled CTA and keeps provenance first", () => {
+  // BDD contract: every card with CTA metadata surfaces a clearly labeled button
+  // that stays below the price-provenance line, so a commissioned link is never
+  // conflated with the "where this price came from" trail. Affiliate/reseller
+  // CTAs carry the (affiliate) label and sponsored rel; official Buy Now paths
+  // (DGX Spark's NVIDIA Marketplace link) carry neither.
   const { doc } = boot();
   const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
   const ctas = doc.querySelectorAll("#featured-hardware-cards .hardware-card-cta");
-  const withAffiliate = featuredHardware.filter((box) => getAffiliate(box.id));
+  const withCta = featuredHardware.filter((box) => getAffiliate(box.id));
 
   assert.equal(cards.length, featuredHardware.length, "one card per featured box");
-  assert.equal(ctas.length, withAffiliate.length, "one CTA per card with affiliate metadata");
+  assert.equal(ctas.length, withCta.length, "one CTA per card with CTA metadata");
+
+  // The featured set mixes both CTA kinds: DGX Spark is official/non-affiliate
+  // while at least one other card keeps an affiliate/reseller link.
+  const affiliateFlags = withCta.map((box) => getAffiliate(box.id).affiliate);
+  assert.ok(affiliateFlags.includes(true), "at least one featured card keeps an affiliate CTA");
+  assert.ok(affiliateFlags.includes(false), "at least one featured card uses an official non-affiliate CTA");
+  assert.equal(getAffiliate("dgx-spark").affiliate, false, "DGX Spark is the non-affiliate official CTA");
 
   for (let i = 0; i < featuredHardware.length; i += 1) {
     const box = featuredHardware[i];
@@ -745,17 +769,30 @@ test("each featured hardware card renders a labeled affiliate CTA and keeps prov
     if (!affiliate) continue;
 
     const cta = ctas.find((a) => a.getAttribute("href") === affiliate.url);
-    assert.ok(cta, `missing affiliate CTA for ${box.id}`);
+    assert.ok(cta, `missing CTA for ${box.id}`);
     assert.ok(
       cta.textContent.includes(affiliate.label),
-      `${box.id} CTA uses the reseller label`
+      `${box.id} CTA uses its documented label`
     );
-    assert.match(cta.textContent, /\(affiliate\)/, `${box.id} CTA is clearly labeled affiliate`);
-    assert.match(
-      cta.getAttribute("rel"),
-      /\bsponsored\b/,
-      `${box.id} CTA carries the sponsored rel marker`
-    );
+    if (affiliate.affiliate) {
+      assert.match(cta.textContent, /\(affiliate\)/, `${box.id} CTA is clearly labeled affiliate`);
+      assert.match(
+        cta.getAttribute("rel"),
+        /\bsponsored\b/,
+        `${box.id} CTA carries the sponsored rel marker`
+      );
+    } else {
+      assert.doesNotMatch(
+        cta.textContent,
+        /\(affiliate\)/,
+        `${box.id} official CTA is not labeled affiliate`
+      );
+      assert.doesNotMatch(
+        cta.getAttribute("rel") || "",
+        /\bsponsored\b/,
+        `${box.id} official CTA carries no sponsored rel marker`
+      );
+    }
 
     // Order guard: the provenance line leads the CTA within the card layout.
     const childClasses = cards[i].children.map((child) => String(child.className || ""));

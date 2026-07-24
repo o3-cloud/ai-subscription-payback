@@ -528,19 +528,21 @@ test("Strix Halo points at a current official AMD product page", async () => {
   );
 });
 
-test("DGX Spark affiliate CTA points at the Newegg retailer listing", async () => {
+test("DGX Spark CTA is NVIDIA's official Marketplace Buy Now path, not an affiliate link", async () => {
   const { getAffiliate } = await import(new URL("data.js", jsDir));
   const cta = getAffiliate("dgx-spark");
-  assert.ok(cta, "missing dgx-spark affiliate CTA");
+  assert.ok(cta, "missing dgx-spark CTA");
 
-  // Pins the live destination so a stale reseller link cannot recur silently.
-  assert.equal(cta.url, "https://www.newegg.com/p/pl?d=DGX+Spark");
+  // Issue #51: DGX Spark points at NVIDIA's official Marketplace Buy Now page,
+  // so the CTA is a direct official purchase path rather than a commissioned
+  // reseller link. Pins the destination so a stale retailer link cannot recur.
+  assert.equal(cta.url, "https://marketplace.nvidia.com/en-us/developer/dgx-spark/");
   assert.equal(cta.vendor, "NVIDIA");
-  assert.equal(cta.label, "Browse DGX Spark retailer options");
-  assert.equal(cta.affiliate, true);
+  assert.equal(cta.label, "Buy on NVIDIA Marketplace");
+  assert.equal(cta.affiliate, false, "official Marketplace path is non-affiliate");
   assert.ok(
-    !cta.url.includes("marketplace.nvidia.com"),
-    "must not point at the flaky NVIDIA Marketplace developer URL (issue #47)"
+    !cta.url.includes("newegg.com"),
+    "no longer routes DGX Spark through the Newegg retailer search"
   );
 });
 

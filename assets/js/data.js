@@ -13,8 +13,8 @@
  *     `lastUpdated` (last-verified) date. Pricing entries never carry affiliate
  *     links.
  *  2. AFFILIATE METADATA — `affiliates`, keyed by the pricing entry's `id`.
- *     Reseller / affiliate URLs, vendor names, and disclosure labels live here,
- *     kept deliberately separate from pricing so a monetization change can never
+ *     Reseller, affiliate, and official purchase URLs live here, kept
+ *     deliberately separate from pricing so a monetization change can never
  *     silently edit a price or source. Look them up with `getAffiliate(id)`.
  *
  * Prices are hand-curated estimates and may be out of date — see the pricing
@@ -893,9 +893,9 @@ export const affiliates = {
   },
   "dgx-spark": {
     vendor: "NVIDIA",
-    url: "https://www.newegg.com/p/pl?d=DGX+Spark",
-    label: "Browse DGX Spark retailer options",
-    affiliate: true,
+    url: "https://marketplace.nvidia.com/en-us/developer/dgx-spark/",
+    label: "Buy on NVIDIA Marketplace",
+    affiliate: false,
   },
   "asus-ascent-gx10": {
     vendor: "Newegg",
