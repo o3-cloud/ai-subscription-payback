@@ -92,6 +92,38 @@ test("the README documents the Pages deployment location and process", () => {
   );
 });
 
+test("the README documents serving over HTTP for local development", () => {
+  const readme = read("README.md");
+  // The dynamic content only initializes when served over http://, so the docs
+  // must recommend a static server and warn against opening index.html directly.
+  assert.match(
+    readme,
+    /## Local development/,
+    "README has a local development section"
+  );
+  assert.match(
+    readme,
+    /static server/i,
+    "README recommends serving with a static server"
+  );
+  assert.match(
+    readme,
+    /python3 -m http\.server|npx serve/,
+    "README shows a concrete static-server command"
+  );
+  // Guard against the old advice to open the file directly.
+  assert.doesNotMatch(
+    readme,
+    /open `index\.html` directly/i,
+    "README no longer tells users to open index.html directly"
+  );
+  assert.match(
+    readme,
+    /file:\/\/[\s\S]*fallback|don't open the file directly/i,
+    "README warns that a file:// load stays in the no-JS fallback state"
+  );
+});
+
 test("the static-site-delivery BDD documents the Pages deploy path", () => {
   const bdd = read("docs/bdd/static-site-delivery.md");
   assert.match(bdd, /GitHub Pages publishing/i, "describes Pages publishing");
@@ -99,5 +131,16 @@ test("the static-site-delivery BDD documents the Pages deploy path", () => {
     bdd,
     /each push to[\s>]*`main` publishes the site/i,
     "states that a push to main publishes the site"
+  );
+});
+
+test("the static-site-delivery BDD notes serving over HTTP locally", () => {
+  const bdd = read("docs/bdd/static-site-delivery.md");
+  assert.match(bdd, /Local development/i, "documents local development");
+  assert.match(bdd, /over HTTP/i, "recommends serving over HTTP");
+  assert.match(
+    bdd,
+    /file:\/\/[\s\S]*fallback/i,
+    "warns a file:// load stays in the no-JS fallback state"
   );
 });

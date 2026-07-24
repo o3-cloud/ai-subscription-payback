@@ -54,6 +54,11 @@ Scenario: Site-wide last-updated disclosure is visible in the footer
 > the repository is public it is eligible for Pages on any plan, so each push to
 > `main` publishes the site.
 
+> Local development: serve the repository root over HTTP (e.g. `npx serve .` or
+> `python3 -m http.server`) rather than opening `index.html` from a `file://`
+> URL. The client-rendered sections initialize only when the page is served over
+> `http://`; a `file://` load leaves the page in its no-JS fallback state.
+
 > Not-found handling: a root `404.html` is published alongside `index.html`.
 > GitHub Pages serves it for any unmatched path, so unknown or stale deep links
 > get a styled fallback (base-qualified absolute asset paths, `noindex`) instead

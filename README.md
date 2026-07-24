@@ -15,14 +15,20 @@ disclosures and no backend.
 
 ## Local development
 
-Open `index.html` directly, or serve the repository root with any static
-server, e.g.:
+Serve the repository root with any static server and open the site over HTTP —
+the dynamic content (calculator, featured hardware, subscription options) is
+populated by ES modules that only initialize when the page is served over
+`http://`. Opening `index.html` directly with a `file://` URL leaves the page in
+its no-JS fallback state, so don't open the file directly:
 
 ```bash
 npx serve .
 # or
 python3 -m http.server
 ```
+
+Then browse to the URL the server prints (for `http.server`, that's
+http://127.0.0.1:8000/).
 
 Run the test suite (Node's built-in runner, no dependencies):
 
