@@ -571,7 +571,7 @@ function syncShareUrl(doc, win) {
   return url;
 }
 
-function update(doc, win) {
+function update(doc, win, { writeUrl = true } = {}) {
   const valid = validateForm(doc);
   const state = readState(doc);
   renderResults(doc, state, valid);
@@ -579,8 +579,14 @@ function update(doc, win) {
   // Only mirror a valid scenario into the address bar; an invalid edit must not
   // replace the last valid shareable hash with NaN-poisoned params. Remember the
   // URL so Share can fall back to it (or restore it) when the address bar hash
-  // is later invalid or clobbered by an in-page anchor.
-  if (win && valid) lastValidShareUrl = syncShareUrl(doc, win);
+  // is later invalid or clobbered by an in-page anchor. On first render we pass
+  // writeUrl:false so a clean page load keeps its landing URL — we still record
+  // the fallback URL, but never call replaceState until the visitor edits.
+  if (win && valid) {
+    lastValidShareUrl = writeUrl
+      ? syncShareUrl(doc, win)
+      : buildShareUrl(win.location, serializeState(state));
+  }
   return state;
 }
 
@@ -1159,7 +1165,10 @@ export function initCalculator(doc, win) {
   // Reflect a preset that arrived via the URL/hash, so a shared link that
   // matches a featured box lands with that card already highlighted.
   setActiveHardwareCard(hardwareCards, matchLoadedHardware(doc));
-  update(doc, win);
+  // First render: leave the clean landing URL in the address bar. We still
+  // compute the fallback share URL, but skip the replaceState rewrite so a fresh
+  // page load never canonicalizes the URL. Edits and the Share button rewrite it.
+  update(doc, win, { writeUrl: false });
 
   const form = doc.getElementById("calculator-form");
   if (form) {
@@ -1187,5 +1196,4 @@ export function initCalculator(doc, win) {
 
   wireShare(doc, win, analytics);
   analytics.trackPageview();
-  update(doc, win);
 }

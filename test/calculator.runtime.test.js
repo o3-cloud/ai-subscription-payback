@@ -465,18 +465,13 @@ test("initCalculator wires up every DOM hook the UI depends on", () => {
 test("initCalculator boots the form from static data and defaults", () => {
   const { doc, win } = boot();
 
-  // The initial render syncs the canonical share hash: boot() must record at
-  // least one replaceState, and the latest address-bar URL carries the default
-  // scenario as a hash fragment (boxPrice + subs), not as query params.
-  assert.ok(
-    win._historyUrls.length >= 1,
-    "initial load records at least one history.replaceState call"
+  // A clean page load preserves its landing URL: the initial render must not
+  // rewrite the address bar, so boot() records no history.replaceState call.
+  assert.equal(
+    win._historyUrls.length,
+    0,
+    "a clean first load does not rewrite the address bar"
   );
-  const initialHash = win._historyUrls.at(-1).split("#")[1];
-  assert.ok(initialHash, "the latest history URL carries a hash fragment");
-  const initialParams = new URLSearchParams(initialHash);
-  assert.ok(initialParams.has("boxPrice"), "initial share hash includes boxPrice");
-  assert.ok(initialParams.has("subs"), "initial share hash includes subs");
 
   // Subscription checkboxes rendered one-per-subscription, defaults preselected.
   const options = doc.querySelectorAll(
@@ -1044,25 +1039,20 @@ test("initCalculator hydrates state from the location query string", () => {
   assert.deepEqual(checked, ["codex"]);
 });
 
-test("opening a query-string share link canonicalizes the address bar to a hash URL", () => {
-  // BDD: "The initial render canonicalizes the share URL" covers a scenario
-  // opened in the query string OR the hash fragment. Opening an older "?"-style
-  // link must rewrite the address bar to the canonical hash form and drop the
-  // query string, so copying from the address bar yields the hash-based link and
-  // static hosts that ignore unknown query params keep serving the scenario.
+test("opening a query-string share link hydrates state without rewriting the URL", () => {
+  // A clean first load preserves its landing URL, even for an older "?"-style
+  // link: the scenario hydrates into the form, but the initial render must not
+  // canonicalize the address bar — no replaceState fires and the query string is
+  // left in place. The Share button (not first render) produces the hash link.
   const { doc, win } = boot("?boxPrice=4200&subs=codex");
 
-  const canonical = win._historyUrls.at(-1);
-  assert.ok(canonical, "the initial load records a canonicalizing replaceState");
-  const url = new URL(canonical);
-  assert.equal(url.search, "", "the query string is dropped from the canonical URL");
-  assert.equal(url.hash.startsWith("#"), true, "the scenario moves into the hash fragment");
-  const params = new URLSearchParams(url.hash.slice(1));
-  assert.equal(params.get("boxPrice"), "4200", "the box price survives in the hash");
-  assert.equal(params.get("subs"), "codex", "the subscription selection survives in the hash");
-  assert.equal(win.location.hash, url.hash, "the address bar reflects the canonical hash");
+  assert.equal(
+    win._historyUrls.length,
+    0,
+    "opening a share link does not rewrite the address bar on first load"
+  );
 
-  // And the visible calculator state is unchanged by the canonicalization.
+  // The visible calculator state is still hydrated from the query string.
   assert.equal(doc.getElementById("box-price").value, 4200);
   assert.deepEqual(
     doc
@@ -1475,7 +1465,9 @@ test("an in-page anchor clobbering the hash does not lose the share scenario", a
 test("resetting the form restores inputs, subscriptions, results, and hash to defaults", async () => {
   const { doc, win } = boot();
 
-  // The hash the calculator boots with is the default scenario we must return to.
+  // Boot no longer rewrites the address bar, so sync the pristine default form
+  // once to capture the default scenario hash we must return to after a reset.
+  await doc.getElementById("calculator-form").dispatch("input");
   const defaultHash = new URL(win._historyUrls.at(-1)).hash;
   const defaultStatus = doc.getElementById("results-status").textContent;
 

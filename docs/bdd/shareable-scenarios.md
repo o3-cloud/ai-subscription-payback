@@ -12,11 +12,12 @@ Scenario: Shared URL restores the scenario
   Then the calculator restores the encoded inputs from either a query string or a hash fragment
   And the displayed result matches the shared values
 
-Scenario: The initial render canonicalizes the share URL
+Scenario: The initial render preserves the clean landing URL
   Given the visitor opens a valid calculator scenario in the query string or hash fragment
   When the page loads
-  Then the address bar is rewritten to the canonical hash-based share URL
+  Then the address bar is not rewritten on first render
   And the visible calculator state remains unchanged
+  And the Share button can still generate the canonical hash-based share URL on demand
 
 Scenario: An empty subscription selection round-trips
   Given the visitor has deselected every subscription plan
