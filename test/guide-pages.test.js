@@ -127,14 +127,18 @@ test("each mini-guide carries the required SEO and content structure", () => {
     const upperAnnualTokens = Math.round(
       valueModel.box.tokensPerSecond.high * tokenOutputValueAssumptions.annualUtilizationSeconds
     );
-    const lowerValue = Math.round(
+    const lowerValueExact =
       (lowerAnnualTokens / 1_000_000) *
-        tokenOutputValueAssumptions.frontierOutputPriceLowPerMillionTokens
-    );
-    const upperValue = Math.round(
+      tokenOutputValueAssumptions.frontierOutputPriceLowPerMillionTokens;
+    const upperValueExact =
       (upperAnnualTokens / 1_000_000) *
-        tokenOutputValueAssumptions.frontierOutputPriceHighPerMillionTokens
-    );
+      tokenOutputValueAssumptions.frontierOutputPriceHighPerMillionTokens;
+    const lowerValue = Math.round(lowerValueExact);
+    const upperValue = Math.round(upperValueExact);
+    const monthlySubscription = valueModel.monthlySubscription;
+    const lowerMonths = lowerValueExact / monthlySubscription;
+    const upperMonths = upperValueExact / monthlySubscription;
+    const formatMonths = (value) => new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 }).format(value);
     assert.match(
       html,
       /24\/7 yearly token-output value estimate/i,
@@ -164,6 +168,16 @@ test("each mini-guide carries the required SEO and content structure", () => {
       html,
       new RegExp(`${escapeRegExp(formatCurrency(upperValue))} at ${escapeRegExp(formatCurrency(tokenOutputValueAssumptions.frontierOutputPriceHighPerMillionTokens))}/M tokens`),
       `${guide.path} converts the upper bound into frontier-output value`
+    );
+    assert.match(
+      html,
+      new RegExp(`${escapeRegExp(formatMonths(lowerMonths))} months`),
+      `${guide.path} shows the lower equivalent subscription spend in months`
+    );
+    assert.match(
+      html,
+      new RegExp(`${escapeRegExp(formatMonths(upperMonths))} months`),
+      `${guide.path} shows the upper equivalent subscription spend in months`
     );
     assert.match(
       html,
