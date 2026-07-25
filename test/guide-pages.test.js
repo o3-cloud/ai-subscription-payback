@@ -51,6 +51,18 @@ test("the homepage links to the guide hub and each published guide", () => {
   }
 });
 
+test("the guides section links back to the main calculator", () => {
+  // Isolate the guides section so the assertion can't be satisfied by the
+  // header/nav "Calculator" link elsewhere on the page (per mini-guides.md).
+  const section = homepage.match(/<section[^>]+id="guides"[\s\S]*?<\/section>/i);
+  assert.ok(section, "homepage has a guides section");
+  assert.match(
+    section[0],
+    /<a[^>]+href="#calculator"/i,
+    "the guides section includes a CTA back to the main calculator"
+  );
+});
+
 test("each mini-guide carries the required SEO and content structure", () => {
   for (const guide of generated) {
     const html = read(guide.path);
