@@ -25,6 +25,7 @@ import {
   defaults,
   getAffiliate,
   siteLastUpdated,
+  tokenOutputValueAssumptions,
 } from "../assets/js/data.js";
 import { computeResult } from "../assets/js/calculator.js";
 import {
@@ -215,6 +216,112 @@ function priceRange(low, high) {
   return low === high
     ? formatCurrency(low)
     : `${formatCurrency(low)}–${formatCurrency(high)}`;
+}
+
+const YEAR_SECONDS = tokenOutputValueAssumptions.annualUtilizationSeconds;
+const FRONTIER_PRICE_LOW =
+  tokenOutputValueAssumptions.frontierOutputPriceLowPerMillionTokens;
+const FRONTIER_PRICE_HIGH =
+  tokenOutputValueAssumptions.frontierOutputPriceHighPerMillionTokens;
+const numberFormatter = new Intl.NumberFormat("en-US");
+const decimalFormatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 1,
+});
+
+function formatInteger(value) {
+  return numberFormatter.format(Math.round(value));
+}
+
+function formatDecimal(value) {
+  return decimalFormatter.format(value);
+}
+
+function annualTokenOutput(tokensPerSecond) {
+  return Math.round(tokensPerSecond * YEAR_SECONDS);
+}
+
+function frontierOutputValue(tokens, pricePerMillion) {
+  return (tokens / 1_000_000) * pricePerMillion;
+}
+
+function subscriptionMonthsEquivalent(value, monthlySubscription) {
+  return monthlySubscription > 0 ? value / monthlySubscription : null;
+}
+
+function valueComparisonRowsHtml(box, monthlySubscription) {
+  if (!box.tokensPerSecond) return "";
+  const lowerTokens = annualTokenOutput(box.tokensPerSecond.low);
+  const upperTokens = annualTokenOutput(box.tokensPerSecond.high);
+  const lowerValue = frontierOutputValue(lowerTokens, FRONTIER_PRICE_LOW);
+  const upperValue = frontierOutputValue(upperTokens, FRONTIER_PRICE_HIGH);
+  const lowerMonths = subscriptionMonthsEquivalent(lowerValue, monthlySubscription);
+  const upperMonths = subscriptionMonthsEquivalent(upperValue, monthlySubscription);
+
+  return `
+            <tr>
+              <td>Lower bound</td>
+              <td>${formatInteger(box.tokensPerSecond.low)} tok/s</td>
+              <td>${formatInteger(lowerTokens)} tokens</td>
+              <td>${formatCurrency(lowerValue)} at ${formatCurrency(FRONTIER_PRICE_LOW)}/M tokens</td>
+              <td>${lowerMonths === null ? "—" : `${formatDecimal(lowerMonths)} months`}</td>
+            </tr>
+            <tr>
+              <td>Upper bound</td>
+              <td>${formatInteger(box.tokensPerSecond.high)} tok/s</td>
+              <td>${formatInteger(upperTokens)} tokens</td>
+              <td>${formatCurrency(upperValue)} at ${formatCurrency(FRONTIER_PRICE_HIGH)}/M tokens</td>
+              <td>${upperMonths === null ? "—" : `${formatDecimal(upperMonths)} months`}</td>
+            </tr>`;
+}
+
+function valueComparisonSectionHtml(box, monthlySubscription) {
+  if (!box.tokensPerSecond) return "";
+  const lowerTokens = annualTokenOutput(box.tokensPerSecond.low);
+  const upperTokens = annualTokenOutput(box.tokensPerSecond.high);
+  return `
+    <!-- ===================== VALUE COMPARISON ===================== -->
+    <section class="comparison" aria-labelledby="value-title">
+      <h2 id="value-title">24/7 yearly token-output value estimate</h2>
+      <p class="section-intro">
+        This is a throughput-and-value estimate, not a benchmark or a guarantee.
+        The box is assumed to run 24 hours/day for 360 days/year (${formatInteger(
+          tokenOutputValueAssumptions.annualUtilizationHours
+        )} hours or ${formatInteger(YEAR_SECONDS)} seconds per year). We compare the
+        sustained token-output range to a maintained frontier output price band of
+        ${formatCurrency(FRONTIER_PRICE_LOW)}–${formatCurrency(FRONTIER_PRICE_HIGH)} per
+        million output tokens. That keeps the estimate transparent and easy to
+        revise if pricing or sustained throughput assumptions change.
+      </p>
+      <p class="section-intro">
+        Rate limiting, idle time, queueing, and thermal headroom all reduce the
+        realized value. Use the lower bound when the box is throttled or running a
+        smaller model, and the upper bound only when the stack stays saturated on a
+        well-tuned local deployment. The range is meant to bracket practical
+        sustained output, not to claim an exact frontier-model equivalent.
+      </p>
+      <div class="table-scroll" role="region" aria-labelledby="value-title" tabindex="0">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th scope="col">Bound</th>
+              <th scope="col">Sustained rate</th>
+              <th scope="col">Yearly token output</th>
+              <th scope="col">Frontier output value</th>
+              <th scope="col">Equivalent subscription spend</th>
+            </tr>
+          </thead>
+          <tbody>
+${valueComparisonRowsHtml(box, monthlySubscription)}
+          </tbody>
+        </table>
+      </div>
+      <p class="disclosure">
+        Practical model mapping: the low end is closer to a compact frontier helper
+        class, while the high end is closer to a heavier coding-assistant class.
+        Because local stacks, quantization choices, and rate limits vary, the site
+        intentionally shows a range instead of a single precise number.
+      </p>
+    </section>`;
 }
 
 /** Resolve a guide's featured box, comparison tiers, and calculator scenario. */
@@ -490,6 +597,7 @@ ${subscriptionRowsHtml(subs)}
       </div>
       <p class="disclosure">${esc(box.name)}: ${esc(box.priceNote)}</p>
     </section>
+${valueComparisonSectionHtml(box, monthlySubscription)}
 ${hardwareExampleSectionHtml(guide)}
 
     <!-- ===================== SAMPLE SCENARIO ===================== -->

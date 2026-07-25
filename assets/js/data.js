@@ -58,12 +58,23 @@
  * @property {string} [exampleOf] - id of the parent box this entry is a named SKU of; excluded from `featuredHardware` and surfaced as a trim instead
  * @property {number} [defaultBoxPrice] - price used when this box seeds the form
  * @property {number} [powerDraw] - representative power draw under load (W)
+ * @property {TokenThroughput} [tokensPerSecond] - sustained single-stream output
+ *   generation throughput (tokens/sec) for a representative local coding model on
+ *   this class of box, as a deliberately wide lower/upper estimate. Featured boxes
+ *   carry it so the guides can price a full-time (24/7) year of token output; it is
+ *   optional, and boxes without it simply omit the token-value view.
  * @property {HardwareImage} [image] - product photo shown on the featured card
  * @property {boolean} [referenceOnly] - true for a high-end reference class that
  *   is listed in the full comparison table and pricing list for context but is
  *   not promoted to a featured product card (e.g. a build-required workstation /
  *   component class with no compact-appliance product photo). Kept out of
  *   `featuredHardware`, so it never seeds the calculator or renders a card.
+ */
+
+/**
+ * @typedef {Object} TokenThroughput
+ * @property {number} low - conservative sustained tokens/sec
+ * @property {number} high - optimistic sustained tokens/sec
  */
 
 /**
@@ -86,6 +97,20 @@ export const pricingLastUpdated = "2026-07-21";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
 export const siteLastUpdated = "2026-07-21";
+
+/**
+ * Assumptions used for the 24/7 yearly token-output value comparison.
+ *
+ * These are maintained, transparent ranges rather than benchmark claims. They
+ * intentionally err on the side of being easy to audit in the static site.
+ */
+export const tokenOutputValueAssumptions = {
+  annualUtilizationHours: 24 * 360,
+  annualUtilizationDays: 360,
+  annualUtilizationSeconds: 24 * 360 * 3600,
+  frontierOutputPriceLowPerMillionTokens: 2,
+  frontierOutputPriceHighPerMillionTokens: 15,
+};
 
 /* ----------------------------- pricing data ----------------------------- */
 
@@ -634,6 +659,7 @@ export const hardware = [
     lastUpdated: "2026-07-14",
     defaultBoxPrice: 2499,
     powerDraw: 270,
+    tokensPerSecond: { low: 8, high: 60 },
     image: {
       src: "assets/img/mac-studio.jpg",
       alt: "Apple product photo of the Mac Studio: a compact square aluminum desktop computer.",
@@ -653,6 +679,7 @@ export const hardware = [
     lastUpdated: "2026-07-01",
     defaultBoxPrice: 3999,
     powerDraw: 240,
+    tokensPerSecond: { low: 8, high: 50 },
     image: {
       src: "assets/img/dgx-spark.jpg",
       alt: "NVIDIA product photo of the DGX Spark: a small silver Grace Blackwell desktop unit beside a laptop running its setup.",
@@ -689,6 +716,7 @@ export const hardware = [
     lastUpdated: "2026-07-17",
     defaultBoxPrice: 1099,
     powerDraw: 140,
+    tokensPerSecond: { low: 5, high: 40 },
     image: {
       src: "assets/img/strix-halo.jpg",
       alt: "AMD product photo of the Ryzen AI Max Series processor that powers Strix Halo mini-PCs and workstations.",
@@ -1002,6 +1030,32 @@ export const optionalCostRates = {
   salesTaxRate: 0.08,
   /** Residual resale value as a fraction of box price, credited at horizon end. */
   resaleValueRate: 0.25,
+};
+
+/* --------------------- 24/7 token-output value model --------------------- */
+
+/**
+ * Continuous-utilization assumptions for the "run it 24/7" token-output value
+ * estimate the guides show alongside the payback math. A deliberately round,
+ * conservative full-time year: 24 hours a day over 360 days (not 365), leaving
+ * headroom for downtime/maintenance rather than claiming every calendar second.
+ */
+export const continuousUtilization = {
+  hoursPerDay: 24,
+  daysPerYear: 360,
+};
+
+/**
+ * The value of one million output tokens, as a lower/upper bound in USD. This is
+ * the hosted-API price a local box's generated output displaces — a wide range
+ * because comparable open-weight models are served anywhere from budget
+ * ($0.20/M) to frontier-class ($10/M) list prices. Paired as low↔low and
+ * high↔high with the box throughput range so the bounds stay honest rather than
+ * mixing a best-case price with a worst-case speed.
+ */
+export const outputTokenValuePerMillion = {
+  low: 0.2,
+  high: 10,
 };
 
 /** Human-readable assumptions surfaced in the methodology section. */

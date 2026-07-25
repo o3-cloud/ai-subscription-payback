@@ -146,6 +146,62 @@
       <p class="disclosure">AMD Strix Halo workstation: Representative range derived from the named Framework Desktop 32 GB configuration plus the GMKtec EVO-X2 and EVO-X3 configurations below; the class spans lower- and higher-memory configs, so confirm the exact spec before buying.</p>
     </section>
 
+    <!-- ===================== VALUE COMPARISON ===================== -->
+    <section class="comparison" aria-labelledby="value-title">
+      <h2 id="value-title">24/7 yearly token-output value estimate</h2>
+      <p class="section-intro">
+        This is a throughput-and-value estimate, not a benchmark or a guarantee.
+        The box is assumed to run 24 hours/day for 360 days/year (8,640 hours or 31,104,000 seconds per year). We compare the
+        sustained token-output range to a maintained frontier output price band of
+        $2–$15 per
+        million output tokens. That keeps the estimate transparent and easy to
+        revise if pricing or sustained throughput assumptions change.
+      </p>
+      <p class="section-intro">
+        Rate limiting, idle time, queueing, and thermal headroom all reduce the
+        realized value. Use the lower bound when the box is throttled or running a
+        smaller model, and the upper bound only when the stack stays saturated on a
+        well-tuned local deployment. The range is meant to bracket practical
+        sustained output, not to claim an exact frontier-model equivalent.
+      </p>
+      <div class="table-scroll" role="region" aria-labelledby="value-title" tabindex="0">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th scope="col">Bound</th>
+              <th scope="col">Sustained rate</th>
+              <th scope="col">Yearly token output</th>
+              <th scope="col">Frontier output value</th>
+              <th scope="col">Equivalent subscription spend</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>Lower bound</td>
+              <td>5 tok/s</td>
+              <td>155,520,000 tokens</td>
+              <td>$311 at $2/M tokens</td>
+              <td>2.6 months</td>
+            </tr>
+            <tr>
+              <td>Upper bound</td>
+              <td>40 tok/s</td>
+              <td>1,244,160,000 tokens</td>
+              <td>$18,662 at $15/M tokens</td>
+              <td>155.5 months</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="disclosure">
+        Practical model mapping: the low end is closer to a compact frontier helper
+        class, while the high end is closer to a heavier coding-assistant class.
+        Because local stacks, quantization choices, and rate limits vary, the site
+        intentionally shows a range instead of a single precise number.
+      </p>
+    </section>
+
     <!-- ===================== PURCHASEABLE EXAMPLES ===================== -->
     <section class="comparison" aria-labelledby="examples-title">
       <h2 id="examples-title">Concrete Strix Halo SKU examples</h2>

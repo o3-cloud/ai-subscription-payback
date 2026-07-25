@@ -13,7 +13,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { buildGuides, GUIDES, guideModel, SITE_URL } from "../scripts/build-guides.mjs";
-import { serializeState, formatRate } from "../assets/js/state.js";
+import { serializeState, formatRate, formatCurrency } from "../assets/js/state.js";
+import { tokenOutputValueAssumptions } from "../assets/js/data.js";
 
 const root = new URL("../", import.meta.url);
 const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
@@ -24,6 +25,7 @@ const sitemap = read("sitemap.xml");
 const generated = buildGuides();
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const formatInteger = (value) => new Intl.NumberFormat("en-US").format(value);
 
 const expectedGuideLinks = () =>
   generated.map((guide) => ({
@@ -117,6 +119,66 @@ test("each mini-guide carries the required SEO and content structure", () => {
       html,
       new RegExp(`${escapeRegExp(formatRate(scenarioRate))}/kWh`),
       `${guide.path} states the scenario electricity rate at cent precision in the prose`
+    );
+    const valueModel = guideModel(guideDef);
+    const lowerAnnualTokens = Math.round(
+      valueModel.box.tokensPerSecond.low * tokenOutputValueAssumptions.annualUtilizationSeconds
+    );
+    const upperAnnualTokens = Math.round(
+      valueModel.box.tokensPerSecond.high * tokenOutputValueAssumptions.annualUtilizationSeconds
+    );
+    const lowerValue = Math.round(
+      (lowerAnnualTokens / 1_000_000) *
+        tokenOutputValueAssumptions.frontierOutputPriceLowPerMillionTokens
+    );
+    const upperValue = Math.round(
+      (upperAnnualTokens / 1_000_000) *
+        tokenOutputValueAssumptions.frontierOutputPriceHighPerMillionTokens
+    );
+    assert.match(
+      html,
+      /24\/7 yearly token-output value estimate/i,
+      `${guide.path} includes the yearly token-output value section`
+    );
+    assert.match(
+      html,
+      /360 days\/year/i,
+      `${guide.path} spells out the 360-day annualization`
+    );
+    assert.match(
+      html,
+      new RegExp(`${escapeRegExp(formatInteger(lowerAnnualTokens))} tokens`),
+      `${guide.path} includes the lower annual token output math`
+    );
+    assert.match(
+      html,
+      new RegExp(`${escapeRegExp(formatInteger(upperAnnualTokens))} tokens`),
+      `${guide.path} includes the upper annual token output math`
+    );
+    assert.match(
+      html,
+      new RegExp(`${escapeRegExp(formatCurrency(lowerValue))} at ${escapeRegExp(formatCurrency(tokenOutputValueAssumptions.frontierOutputPriceLowPerMillionTokens))}/M tokens`),
+      `${guide.path} converts the lower bound into frontier-output value`
+    );
+    assert.match(
+      html,
+      new RegExp(`${escapeRegExp(formatCurrency(upperValue))} at ${escapeRegExp(formatCurrency(tokenOutputValueAssumptions.frontierOutputPriceHighPerMillionTokens))}/M tokens`),
+      `${guide.path} converts the upper bound into frontier-output value`
+    );
+    assert.match(
+      html,
+      /Equivalent subscription spend/i,
+      `${guide.path} compares the value band to subscription spend`
+    );
+    assert.match(
+      html,
+      /compact frontier helper[\s\S]*class/i,
+      `${guide.path} includes the qualitative model-class mapping`
+    );
+    assert.match(
+      html,
+      /rate limiting, idle time, queueing, and thermal headroom/i,
+      `${guide.path} documents the realized-value caveats`
     );
     assert.match(html, /Caveats &amp; software tradeoffs/i, `${guide.path} includes caveats`);
     assert.ok(html.includes('<p class="results-caveat">'), `${guide.path} includes the results caveat paragraph`);
