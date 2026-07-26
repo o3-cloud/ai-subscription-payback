@@ -20,6 +20,7 @@ Scenario: Supported subscription tiers are listed
   And the Google AI tiers are listed: Plus, Pro, and Ultra
   And the Amazon Q Developer tiers are listed: Free and Pro
   And the Devin tiers are listed: Free, Pro, Max, and Teams (base + 1 seat)
+  And the Devin tiers surface the alias "Devin (Windsurf / Devin Desktop)" without duplicating any rows
   And the Replit tiers are listed: Starter (Free), Core (monthly and annual), and Pro (monthly and annual)
   And the Mistral tiers are listed: Free, Pro, Team, and Education
   And the Bolt tiers are listed: Free, Pro, and Teams

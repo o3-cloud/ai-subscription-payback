@@ -39,6 +39,10 @@
  *   class "estimate". Surfaced as a status badge next to the last-verified date.
  * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was last verified
  * @property {boolean} [defaultSelected]
+ * @property {string[]} [aliases] - other names the product is searched or
+ *   marketed under (e.g. Devin's Windsurf / Devin Desktop). Surfaced alongside
+ *   the product name in the calculator UI so shared plans stay discoverable
+ *   without duplicating rows.
  */
 
 /**
@@ -476,6 +480,7 @@ export const subscriptions = [
   {
     id: "devin-free",
     name: "Devin",
+    aliases: ["Windsurf", "Devin Desktop"],
     plan: "Free",
     monthlyPrice: 0,
     billingCadence: "Free tier",
@@ -489,6 +494,7 @@ export const subscriptions = [
   {
     id: "devin-pro",
     name: "Devin",
+    aliases: ["Windsurf", "Devin Desktop"],
     plan: "Pro",
     monthlyPrice: 20,
     billingCadence: "Billed monthly",
@@ -502,6 +508,7 @@ export const subscriptions = [
   {
     id: "devin-max",
     name: "Devin",
+    aliases: ["Windsurf", "Devin Desktop"],
     plan: "Max",
     monthlyPrice: 200,
     billingCadence: "Billed monthly",
@@ -515,6 +522,7 @@ export const subscriptions = [
   {
     id: "devin-teams",
     name: "Devin",
+    aliases: ["Windsurf", "Devin Desktop"],
     plan: "Teams (base + 1 seat)",
     monthlyPrice: 120,
     billingCadence: "Billed monthly — $80 team base + $40 per full dev seat ($120 for the first seat)",

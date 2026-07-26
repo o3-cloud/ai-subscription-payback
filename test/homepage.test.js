@@ -262,6 +262,11 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, and 
   assert.match(help, /Jules/i, "helper copy names Jules");
   assert.match(help, /Antigravity/i, "helper copy names Antigravity");
   assert.match(help, /Amazon Q Developer/i, "helper copy names Amazon Q Developer");
+  assert.match(
+    help,
+    /Devin \(Windsurf \/ Devin Desktop\)/i,
+    "helper copy names the Devin Windsurf / Devin Desktop search label"
+  );
   assert.match(help, /Devin/i, "helper copy names Devin");
   assert.match(help, /Replit/i, "helper copy names Replit");
   assert.match(help, /Replit Agent/i, "helper copy names Replit Agent");

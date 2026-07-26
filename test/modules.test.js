@@ -190,6 +190,40 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
   }
 });
 
+test("Devin tiers carry the Windsurf / Devin Desktop alias without duplicating rows", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const devinRows = subscriptions.filter((s) => s.name === "Devin");
+
+  // The alias must not spawn extra rows: still exactly the four singular tiers.
+  assert.equal(devinRows.length, 4, "Devin still has exactly four tiers");
+  const plans = devinRows.map((s) => s.plan);
+  assert.deepEqual(
+    plans,
+    ["Free", "Pro", "Max", "Teams (base + 1 seat)"],
+    "Devin plan rows remain singular and distinct"
+  );
+
+  for (const sub of devinRows) {
+    assert.deepEqual(
+      sub.aliases,
+      ["Windsurf", "Devin Desktop"],
+      `${sub.id} carries the Windsurf / Devin Desktop aliases`
+    );
+    // The UI folds the aliases into a single parenthetical display name.
+    assert.equal(
+      `${sub.name} (${sub.aliases.join(" / ")})`,
+      "Devin (Windsurf / Devin Desktop)",
+      `${sub.id} renders the expected alias label`
+    );
+  }
+
+  // No other subscription borrows the Devin alias.
+  const aliasCarriers = subscriptions.filter(
+    (s) => s.aliases && s.aliases.includes("Windsurf")
+  );
+  assert.equal(aliasCarriers.length, 4, "only the four Devin rows carry the alias");
+});
+
 test("Devin Teams pricing preserves the base fee plus seat math", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const teams = subscriptions.find((s) => s.id === "devin-teams");

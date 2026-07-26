@@ -592,6 +592,19 @@ function update(doc, win, { writeUrl = true } = {}) {
 
 /* ---------------- one-time rendering from static data ---------------- */
 
+/**
+ * Display name for a subscription, folding in any alternate names it is searched
+ * or marketed under (e.g. Devin's "Windsurf / Devin Desktop") as a parenthetical
+ * so shared plans stay discoverable without duplicating rows.
+ * @param {Subscription} sub
+ * @returns {string}
+ */
+function subscriptionDisplayName(sub) {
+  return sub.aliases && sub.aliases.length
+    ? `${sub.name} (${sub.aliases.join(" / ")})`
+    : sub.name;
+}
+
 function renderSubscriptionOptions(doc, preselected) {
   const container = doc.getElementById("subscription-options");
   if (!container) return;
@@ -611,7 +624,7 @@ function renderSubscriptionOptions(doc, preselected) {
     // ladder) stay distinguishable in the checkbox list.
     label.appendChild(
       doc.createTextNode(
-        ` ${sub.name} — ${sub.plan} · ${formatCurrency(sub.monthlyPrice)}/mo`
+        ` ${subscriptionDisplayName(sub)} — ${sub.plan} · ${formatCurrency(sub.monthlyPrice)}/mo`
       )
     );
     container.appendChild(label);
@@ -785,7 +798,7 @@ function renderComparison(doc) {
     const row = doc.createElement("tr");
 
     const nameCell = doc.createElement("td");
-    nameCell.textContent = sub.name;
+    nameCell.textContent = subscriptionDisplayName(sub);
     row.appendChild(nameCell);
 
     // Plan cell carries the tier name plus what a seat at this tier includes.

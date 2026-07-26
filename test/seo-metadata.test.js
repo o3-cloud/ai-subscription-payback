@@ -327,6 +327,7 @@ test("the on-page subscription helper text names every modeled coding-agent bran
     "Gemini",
     "Jules",
     "Antigravity",
+    "Devin (Windsurf / Devin Desktop)",
     "Replit Agent",
     "Mistral",
   ]) {

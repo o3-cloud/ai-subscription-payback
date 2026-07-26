@@ -34,6 +34,7 @@ Scenario: Google AI, Mistral, Replit, and Bolt tiers are discoverable in homepag
   Given the landing page and its head metadata
   When a searcher or visitor scans the homepage copy
   Then the subscription helper text names Google AI, Gemini, Jules, Antigravity, Replit Agent, Mistral, and Bolt
+  And the subscription helper text names Devin's Windsurf / Devin Desktop search label without duplicating any Devin rows
   And the meta description, keywords, Open Graph description, Twitter description, and JSON-LD description all mention Google AI, Replit, Mistral, and Bolt tiers
 
 Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
