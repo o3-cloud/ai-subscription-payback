@@ -552,6 +552,11 @@ test("initCalculator boots the form from static data and defaults", () => {
     "renders a trim selector for each ranged featured card"
   );
   assert.equal(
+    doc.querySelectorAll("#featured-hardware-cards .hardware-card-fit").length,
+    featuredHardware.length,
+    "renders one practical model-fit line per featured hardware card"
+  );
+  assert.equal(
     doc.getElementById("assumptions-list").children.length,
     assumptions.length
   );

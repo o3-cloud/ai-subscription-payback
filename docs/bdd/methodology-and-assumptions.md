@@ -60,3 +60,7 @@ stay consistent with the methodology copy.
 - **Monthly net savings** compares monthly subscription spend against the
   recurring monthly cost of ownership (loan payment + electricity + maintenance);
   a negative value means owning the box costs more each month.
+- **Practical model-fit guidance** on the featured hardware cards is a conservative
+  heuristic derived from the published memory or VRAM spec and the repo's wide
+  throughput ranges. It is intentionally not a benchmark promise because model
+  fit changes with quantization, context length, batching, and runtime settings.

@@ -933,6 +933,13 @@ function renderFeaturedHardware(doc, win, analytics) {
     note.textContent = box.priceNote;
     card.appendChild(note);
 
+    if (box.modelFit) {
+      const fit = doc.createElement("p");
+      fit.className = "hardware-card-fit";
+      fit.textContent = box.modelFit;
+      card.appendChild(fit);
+    }
+
     // A range card lets the visitor pick a trim before loading; a single-price
     // card has one trim and renders no selector (keeping its prior behavior).
     const trims = hardwareTrims(box);

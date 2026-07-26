@@ -476,6 +476,28 @@ test("hardware features the Mac Studio, DGX Spark, Strix Halo, and Framework Des
   }
 });
 
+test("featured hardware cards carry conservative model-fit guidance", async () => {
+  const { featuredHardware } = await import(new URL("data.js", jsDir));
+
+  const expectedBuckets = [
+    /small coding models/i,
+    /30B-class quantized/i,
+    /70B-class quantized/i,
+    /fine-tune-capable/i,
+    /large-memory experimental/i,
+  ];
+
+  for (const box of featuredHardware) {
+    assert.equal(typeof box.modelFit, "string", `${box.id} needs model-fit guidance`);
+    assert.ok(box.modelFit.length > 0, `${box.id} model-fit guidance is empty`);
+    assert.match(
+      box.modelFit,
+      new RegExp(expectedBuckets.map((r) => r.source).join("|"), "i"),
+      `${box.id} should use conservative bucket language`
+    );
+  }
+});
+
 test("Mac Studio matches Apple's official buy-page structured data", async () => {
   const { hardware } = await import(new URL("data.js", jsDir));
   const macStudio = hardware.find((h) => h.id === "mac-studio");

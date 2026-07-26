@@ -63,6 +63,8 @@
  *   this class of box, as a deliberately wide lower/upper estimate. Featured boxes
  *   carry it so the guides can price a full-time (24/7) year of token output; it is
  *   optional, and boxes without it simply omit the token-value view.
+ * @property {string} [modelFit] - conservative, human-readable model-fit guidance
+ *   for the featured card; advisory only, not a benchmark promise
  * @property {HardwareImage} [image] - product photo shown on the featured card
  * @property {boolean} [referenceOnly] - true for a high-end reference class that
  *   is listed in the full comparison table and pricing list for context but is
@@ -704,6 +706,8 @@ export const hardware = [
     defaultBoxPrice: 2499,
     powerDraw: 270,
     tokensPerSecond: { low: 8, high: 60 },
+    modelFit:
+      "Practical local model fit: 30B-class quantized models, 70B-class quantized experiments on higher-memory trims, and large-memory experimental workloads on the top end.",
     image: {
       src: "assets/img/mac-studio.jpg",
       alt: "Apple product photo of the Mac Studio: a compact square aluminum desktop computer.",
@@ -724,6 +728,8 @@ export const hardware = [
     defaultBoxPrice: 3999,
     powerDraw: 240,
     tokensPerSecond: { low: 8, high: 50 },
+    modelFit:
+      "Practical local model fit: 30B-class quantized models and 70B-class quantized / fine-tune-capable workflows.",
     image: {
       src: "assets/img/dgx-spark.jpg",
       alt: "NVIDIA product photo of the DGX Spark: a small silver Grace Blackwell desktop unit beside a laptop running its setup.",
@@ -761,6 +767,8 @@ export const hardware = [
     defaultBoxPrice: 1099,
     powerDraw: 140,
     tokensPerSecond: { low: 5, high: 40 },
+    modelFit:
+      "Practical local model fit: small coding models and 30B-class quantized workloads; the highest-memory trims can stretch toward 70B-class experiments.",
     image: {
       src: "assets/img/strix-halo.jpg",
       alt: "AMD product photo of the Ryzen AI Max Series processor that powers Strix Halo mini-PCs and workstations.",

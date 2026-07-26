@@ -41,6 +41,13 @@ Scenario: Featured hardware cards show a source label
   Then the card shows the source of the displayed price
   And the source makes clear whether the number is official, retail, or an estimate
 
+Scenario: Featured hardware cards include practical model-fit guidance
+  Given the user is comparing local AI boxes
+  When the visitor reads a featured hardware card
+  Then the card shows a practical local model-fit line
+  And the guidance uses conservative buckets instead of benchmark promises
+  And the section note explains that the guidance is a heuristic derived from memory or VRAM plus broad throughput ranges
+
 Scenario: Strix Halo cards are backed by named purchasable SKUs
   Given the Strix Halo class card on the homepage
   When the visitor opens the detailed Strix Halo guide

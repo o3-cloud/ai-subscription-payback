@@ -338,6 +338,22 @@ test("a prominent affiliate disclosure sits above the featured-hardware section"
   );
 });
 
+test("the featured hardware section includes a model-fit methodology note", () => {
+  const featuredSection =
+    html.match(/<section[^>]*id="featured-hardware"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
+  assert.ok(featuredSection, "index.html has a #featured-hardware section");
+  assert.match(
+    featuredSection,
+    /Practical model-fit guidance on the cards is a conservative heuristic/i,
+    "featured-hardware section explains that model-fit guidance is advisory"
+  );
+  assert.match(
+    featuredSection,
+    /memory or VRAM spec/i,
+    "featured-hardware section names the memory/VRAM basis for the guidance"
+  );
+});
+
 /** Inner HTML of the first <tag>...</tag> block, or "" if absent. */
 const blockOf = (tag) =>
   html.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i"))?.[1] ?? "";
