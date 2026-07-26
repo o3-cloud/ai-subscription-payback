@@ -39,6 +39,23 @@ test("data.js exports the datasets the UI renders", async () => {
   assert.match(data.siteLastUpdated, ISO_DATE);
 });
 
+test("data.js exposes only the token-value model the guides actually consume", async () => {
+  const data = await import(new URL("data.js", jsDir));
+
+  assert.ok(
+    Object.hasOwn(data, "tokenOutputValueAssumptions"),
+    "the guides' token-value model remains exported"
+  );
+  assert.ok(
+    !Object.hasOwn(data, "continuousUtilization"),
+    "dead token-utilization model should not stay exported"
+  );
+  assert.ok(
+    !Object.hasOwn(data, "outputTokenValuePerMillion"),
+    "dead token-price model should not stay exported"
+  );
+});
+
 test("every pricing entry carries a source URL and a last-updated date", async () => {
   const data = await import(new URL("data.js", jsDir));
 

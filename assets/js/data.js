@@ -1092,32 +1092,6 @@ export const optionalCostRates = {
   resaleValueRate: 0.25,
 };
 
-/* --------------------- 24/7 token-output value model --------------------- */
-
-/**
- * Continuous-utilization assumptions for the "run it 24/7" token-output value
- * estimate the guides show alongside the payback math. A deliberately round,
- * conservative full-time year: 24 hours a day over 360 days (not 365), leaving
- * headroom for downtime/maintenance rather than claiming every calendar second.
- */
-export const continuousUtilization = {
-  hoursPerDay: 24,
-  daysPerYear: 360,
-};
-
-/**
- * The value of one million output tokens, as a lower/upper bound in USD. This is
- * the hosted-API price a local box's generated output displaces — a wide range
- * because comparable open-weight models are served anywhere from budget
- * ($0.20/M) to frontier-class ($10/M) list prices. Paired as low↔low and
- * high↔high with the box throughput range so the bounds stay honest rather than
- * mixing a best-case price with a worst-case speed.
- */
-export const outputTokenValuePerMillion = {
-  low: 0.2,
-  high: 10,
-};
-
 /** Human-readable assumptions surfaced in the methodology section. */
 export const assumptions = [
   "Subscriptions are compared at their monthly per-seat price. Annually billed tiers use the effective monthly cost (annual price ÷ 12), so the comparison stays month-by-month even when a plan is paid yearly up front.",
