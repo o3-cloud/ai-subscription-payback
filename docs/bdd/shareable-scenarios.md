@@ -40,6 +40,7 @@ Scenario: Share link is available
   When the visitor views the results area
   Then a shareable link or copy button is visible
   And the share action mirrors the current calculator state in the address bar
+  And the share action uses the browser clipboard when available and falls back to a legacy copy path before showing failure text
 
 Scenario: Share controls sit near the results summary
   Given a computed result is displayed

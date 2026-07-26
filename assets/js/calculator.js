@@ -1118,6 +1118,65 @@ function wireOutboundLinks(doc, analytics) {
   }
 }
 
+/**
+ * Copy text to the clipboard with a resilient fallback.
+ *
+ * The async Clipboard API is the happy path, but it is unavailable over plain
+ * HTTP, inside some in-app/webview browsers, and when the page lacks focus or
+ * clipboard permission — in those environments writeText is missing or rejects.
+ * Fall back to a hidden textarea + execCommand("copy"), the legacy path that
+ * still works without a secure context. Returns true only when a copy path
+ * actually succeeds so callers can show failure text only as a last resort.
+ * @returns {Promise<boolean>}
+ */
+async function copyToClipboard(doc, win, text) {
+  const clipboard = win.navigator && win.navigator.clipboard;
+  if (clipboard && typeof clipboard.writeText === "function") {
+    try {
+      await clipboard.writeText(text);
+      return true;
+    } catch {
+      // Fall through to the execCommand fallback below.
+    }
+  }
+  return copyViaExecCommand(doc, text);
+}
+
+/**
+ * Legacy clipboard fallback: stage the text in an off-screen textarea, select
+ * it, and ask the document to copy the selection. Guarded feature-by-feature so
+ * a browser missing execCommand (or a hostile selection state) fails cleanly.
+ * @returns {boolean}
+ */
+function copyViaExecCommand(doc, text) {
+  if (typeof doc.execCommand !== "function") return false;
+  const host = doc.body || doc.querySelector("body") || doc.documentElement;
+  if (!host) return false;
+
+  const textarea = doc.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  // Keep the textarea out of view and out of the layout so selecting it never
+  // scrolls the page or flashes on screen.
+  textarea.setAttribute(
+    "style",
+    "position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:none;opacity:0;"
+  );
+  host.appendChild(textarea);
+
+  let copied = false;
+  try {
+    if (typeof textarea.focus === "function") textarea.focus();
+    if (typeof textarea.select === "function") textarea.select();
+    copied = doc.execCommand("copy") === true;
+  } catch {
+    copied = false;
+  } finally {
+    textarea.remove();
+  }
+  return copied;
+}
+
 function wireShare(doc, win, analytics) {
   const button = doc.getElementById("share-button");
   const status = doc.getElementById("share-status");
@@ -1143,15 +1202,11 @@ function wireShare(doc, win, analytics) {
       win.history.replaceState(null, "", url);
     }
 
-    try {
-      if (win.navigator && win.navigator.clipboard) {
-        await win.navigator.clipboard.writeText(url);
-        if (status) status.textContent = "Link copied to clipboard.";
-      } else {
-        throw new Error("clipboard unavailable");
-      }
-    } catch {
-      if (status) status.textContent = "Copy failed — copy from the address bar.";
+    const copied = await copyToClipboard(doc, win, url);
+    if (status) {
+      status.textContent = copied
+        ? "Link copied to clipboard."
+        : "Copy failed — copy from the address bar.";
     }
   });
 }

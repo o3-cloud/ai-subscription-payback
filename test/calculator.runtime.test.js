@@ -347,11 +347,20 @@ function buildWindow(search = "", options = {}) {
     },
     navigator: {
       doNotTrack: options.dnt,
-      clipboard: {
-        writeText: async (text) => {
-          clipboardWrites.push(text);
-        },
-      },
+      // options.clipboard: "missing" drops the Clipboard API entirely (plain
+      // HTTP / older webviews); "fails" exposes a writeText that rejects
+      // (denied permission / unfocused page). Both must fall back to execCommand.
+      clipboard:
+        options.clipboard === "missing"
+          ? undefined
+          : {
+              writeText: async (text) => {
+                if (options.clipboard === "fails") {
+                  throw new Error("clipboard write denied");
+                }
+                clipboardWrites.push(text);
+              },
+            },
     },
     history: {
       replaceState: (_state, _title, url) => {
@@ -378,6 +387,23 @@ function boot(search = "", options = {}) {
   const win = buildWindow(search, options);
   initCalculator(doc, win);
   return { doc, win };
+}
+
+/**
+ * Wire a document.execCommand("copy") stub mirroring the browser: it copies the
+ * current textarea selection, which the fallback stages just before calling it.
+ * Records each copied value; set succeed=false to simulate execCommand failing.
+ */
+function installExecCommandCopy(doc, succeed = true) {
+  const copies = [];
+  doc.execCommand = (command) => {
+    if (command !== "copy") return false;
+    const textarea = doc.querySelector("textarea");
+    if (!textarea || !succeed) return false;
+    copies.push(textarea.value);
+    return true;
+  };
+  return copies;
 }
 
 /* ----------------------------- tests ----------------------------- */
@@ -1327,6 +1353,64 @@ test("the share button serializes current state into a shareable URL", async () 
   assert.equal(
     doc.getElementById("share-status").textContent,
     "Link copied to clipboard."
+  );
+});
+
+test("share falls back to execCommand when the Clipboard API is missing", async () => {
+  const { doc, win } = boot("", { clipboard: "missing" });
+  const copies = installExecCommandCopy(doc);
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  assert.equal(win._clipboardWrites.length, 0, "no Clipboard API to write through");
+  assert.equal(copies.length, 1, "falls back to a single execCommand copy");
+  assert.equal(copies[0], win._historyUrls.at(-1), "copies the current share URL");
+  assert.equal(
+    doc.querySelector("textarea"),
+    null,
+    "the temporary textarea is removed after copying"
+  );
+  assert.equal(
+    doc.getElementById("share-status").textContent,
+    "Link copied to clipboard.",
+    "the fallback copy still reports success"
+  );
+});
+
+test("share falls back to execCommand when clipboard.writeText rejects", async () => {
+  const { doc, win } = boot("", { clipboard: "fails" });
+  const copies = installExecCommandCopy(doc);
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  assert.equal(win._clipboardWrites.length, 0, "the rejected write records nothing");
+  assert.equal(copies.length, 1, "a rejected Clipboard API write falls back to execCommand");
+  assert.equal(copies[0], win._historyUrls.at(-1), "copies the current share URL");
+  assert.equal(
+    doc.getElementById("share-status").textContent,
+    "Link copied to clipboard."
+  );
+});
+
+test("share only reports failure when every copy path fails", async () => {
+  const { doc, win } = boot("", { clipboard: "missing" });
+  const copies = installExecCommandCopy(doc, false);
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  assert.equal(win._clipboardWrites.length, 0, "no Clipboard API write happened");
+  assert.equal(copies.length, 0, "execCommand reported failure, so nothing was copied");
+  assert.equal(
+    doc.querySelector("textarea"),
+    null,
+    "the temporary textarea is cleaned up even on failure"
+  );
+  // The address bar still holds the share URL, so the fallback message points
+  // the user there.
+  assert.equal(win.location.hash.startsWith("#"), true, "share URL remains in the address bar");
+  assert.equal(
+    doc.getElementById("share-status").textContent,
+    "Copy failed — copy from the address bar."
   );
 });
 
