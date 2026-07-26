@@ -45,17 +45,18 @@ const metaContent = (attr, value) =>
     new RegExp(`<meta[^>]+${attr}="${value}"[^>]+content="([^"]*)"`, "i")
   )?.[1] ?? "";
 
-// The SEO BDD requires the description-style fields to name *all three* newly
-// modeled tier families — Google AI, Replit, and Mistral — not merely one of
-// them ("all mention Google AI, Replit, and Mistral tiers" in
+// The SEO BDD requires the description-style fields to name *all four* newly
+// modeled tier families — Google AI, Replit, Mistral, and Bolt — not merely one of
+// them ("all mention Google AI, Replit, Mistral, and Bolt tiers" in
 // docs/bdd/seo-and-metadata.md). Assert each family individually so dropping
 // any one from a field is caught; an OR-alternation would let a field lose
-// Mistral (or Replit) silently.
+// Bolt (or Mistral/Replit) silently.
 const assertNamesNewTiers = (text, field) => {
   for (const [label, pattern] of [
     ["Google AI", /Google AI|Gemini|Jules|Antigravity/i],
     ["Replit", /Replit/i],
     ["Mistral", /Mistral/i],
+    ["Bolt", /Bolt/i],
   ]) {
     assert.match(text, pattern, `${field} should name the ${label} tier`);
   }
@@ -86,7 +87,7 @@ test("head declares a descriptive title, indexing directives, and a canonical UR
     "AI Subscription Payback",
     "meta author matches the official site name"
   );
-  // Keywords should surface the Google AI, Replit, and Mistral coding-agent
+  // Keywords should surface the Google AI, Replit, Mistral, and Bolt tiers
   // tiers now that they are modeled, so searchers with that intent can find
   // the calculator. Assert each family individually (not an OR-alternation),
   // so dropping any one from the keywords is caught.

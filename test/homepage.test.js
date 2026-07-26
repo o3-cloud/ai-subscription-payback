@@ -251,7 +251,7 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, and Mistral coding-agent tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, and Bolt coding-agent tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin, and
   // Replit Agent alongside the other plans, so the helper text and pricing copy
   // must surface them too.
@@ -266,6 +266,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, and Mistral c
   assert.match(help, /Replit/i, "helper copy names Replit");
   assert.match(help, /Replit Agent/i, "helper copy names Replit Agent");
   assert.match(help, /Mistral/i, "helper copy names Mistral");
+  assert.match(help, /Bolt/i, "helper copy names Bolt");
 
   const pricing =
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";

@@ -343,7 +343,7 @@ test("Mistral tiers cover the Free/Pro/Team/Education ladder with Vibe and tax c
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
   // Curated from the official Mistral pricing page named in the issue and
-  // verified 2026-07-21: a free tier plus Pro, Team, and Education plans.
+  // verified 2026-07-26: a free tier plus Pro, Team, and Education plans.
   const expected = {
     "mistral-free": 0,
     "mistral-pro": 14.99,
@@ -395,6 +395,69 @@ test("the pricing-disclosure BDD documents the Mistral Vibe and tax caveats", ()
   assert.match(bdd, /Mistral tiers disclose their Vibe coding access and tax \/ fair-usage caveats/i);
   assert.match(bdd, /the Mistral tiers are listed: Free, Pro, Team, and Education/i);
   assert.match(bdd, /full access to Vibe for long-running tasks plus all-day coding/i);
+});
+
+test("Bolt tiers cover the Free/Pro/Teams ladder with app-building token limits", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official Bolt pricing page named in the issue and verified
+  // 2026-07-26: a free tier plus Pro and Teams plans (Enterprise is custom and
+  // out of scope).
+  const expected = {
+    "bolt-free": 0,
+    "bolt-pro": 25,
+    "bolt-teams": 30,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Bolt", `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceLabel, "Official Bolt pricing", `${id} source label`);
+    assert.equal(sub.lastUpdated, "2026-07-26", `${id} last verified date`);
+    assert.equal(
+      sub.sourceUrl,
+      "https://bolt.new/pricing",
+      `${id} points at the official Bolt pricing page`
+    );
+    // Optional: none seed the default selection.
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+  }
+
+  // The Free tier advertises its daily and monthly token caps.
+  assert.match(byId.get("bolt-free").includedValue, /300K tokens daily/i, "free names the 300K daily cap");
+  assert.match(byId.get("bolt-free").includedValue, /1M tokens per month/i, "free names the 1M monthly cap");
+
+  // The Pro tier surfaces the 10M/month allowance, no daily limit, and premium
+  // app-building features.
+  const pro = byId.get("bolt-pro").includedValue;
+  assert.match(pro, /10M tokens per month/i, "pro names the 10M monthly allowance");
+  assert.match(pro, /no daily token limit/i, "pro notes there is no daily limit");
+  assert.match(pro, /custom domains?/i, "pro names custom domains");
+  assert.match(pro, /SEO/i, "pro names SEO controls");
+  assert.match(pro, /no Bolt branding/i, "pro names the no-branding feature");
+  assert.match(byId.get("bolt-pro").billingCadence, /billed monthly/i, "pro billed monthly");
+
+  // The Teams tier is billed per member with a shared workspace and per-member
+  // token allotment, and notes Enterprise is out of scope.
+  const teams = byId.get("bolt-teams").includedValue;
+  assert.match(teams, /team workspace/i, "teams names the shared workspace");
+  assert.match(teams, /per-member monthly token allotment/i, "teams names the per-member token allotment");
+  assert.match(teams, /Enterprise plan is custom-priced and out of scope/i, "teams notes Enterprise is out of scope");
+  assert.match(byId.get("bolt-teams").billingCadence, /per member/i, "teams billed per member");
+
+  // Each is framed as an app-building plan, not a pure IDE assistant.
+  for (const id of ["bolt-free", "bolt-pro", "bolt-teams"]) {
+    assert.match(byId.get(id).includedValue, /app-building/i, `${id} framed as app-building`);
+  }
+});
+
+test("the pricing-disclosure BDD documents the Bolt app-building token limits", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Bolt tiers disclose their app-building token limits/i);
+  assert.match(bdd, /the Bolt tiers are listed: Free, Pro, and Teams/i);
 });
 
 test("the pricing-disclosure BDD documents the RTX PRO 6000 Blackwell reference class", () => {

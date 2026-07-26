@@ -93,10 +93,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-21";
+export const pricingLastUpdated = "2026-07-26";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-21";
+export const siteLastUpdated = "2026-07-26";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -134,7 +134,12 @@ export const tokenOutputValueAssumptions = {
  * tiers (Free, Pro, Team, Education) cover Mistral's consumer plans, whose Pro
  * copy gives full access to Vibe for long-running tasks plus all-day coding; the
  * paid tiers are quoted excluding taxes and are subject to fair-usage limits per
- * Mistral's pricing page. All of these ship unchecked (no `defaultSelected`) so
+ * Mistral's pricing page. The Bolt tiers (Free, Pro, Teams) cover Bolt, the
+ * app-building agent, and are token-limited: Free is capped at 300K tokens daily
+ * and 1M tokens monthly, Pro starts at 10M tokens/month with no daily limit plus
+ * custom domain/SEO/no-branding features, and Teams adds a shared team workspace
+ * with a per-member monthly token allotment; Bolt's Enterprise plan is custom and
+ * out of scope. All of these ship unchecked (no `defaultSelected`) so
  * the default comparison basis stays Codex + Claude Code Pro and only expands
  * when a visitor opts in.
  *
@@ -634,6 +639,45 @@ export const subscriptions = [
     sourceLabel: "Official Mistral pricing",
     verification: "official",
     lastUpdated: "2026-07-21",
+  },
+  {
+    id: "bolt-free",
+    name: "Bolt",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free app-building plan for one person: build full-stack apps with the Bolt agent, capped at 300K tokens daily and 1M tokens per month.",
+    sourceUrl: "https://bolt.new/pricing",
+    sourceLabel: "Official Bolt pricing",
+    verification: "official",
+    lastUpdated: "2026-07-26",
+  },
+  {
+    id: "bolt-pro",
+    name: "Bolt",
+    plan: "Pro",
+    monthlyPrice: 25,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Individual Pro app-building plan for one developer: starts at 10M tokens per month with no daily token limit, plus custom domains, SEO controls, and no Bolt branding.",
+    sourceUrl: "https://bolt.new/pricing",
+    sourceLabel: "Official Bolt pricing",
+    verification: "official",
+    lastUpdated: "2026-07-26",
+  },
+  {
+    id: "bolt-teams",
+    name: "Bolt",
+    plan: "Teams",
+    monthlyPrice: 30,
+    billingCadence: "Billed monthly, per member",
+    includedValue:
+      "Per-member Teams app-building plan adding a shared team workspace on top of the Pro features, with a per-member monthly token allotment; Bolt's Enterprise plan is custom-priced and out of scope here.",
+    sourceUrl: "https://bolt.new/pricing",
+    sourceLabel: "Official Bolt pricing",
+    verification: "official",
+    lastUpdated: "2026-07-26",
   },
 ];
 
