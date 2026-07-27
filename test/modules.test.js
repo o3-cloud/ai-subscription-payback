@@ -666,6 +666,28 @@ test("featured hardware cards carry conservative model-fit guidance", async () =
   }
 });
 
+test("featured hardware cards carry a numeric tokens/sec throughput range", async () => {
+  const { featuredHardware } = await import(new URL("data.js", jsDir));
+
+  for (const box of featuredHardware) {
+    assert.ok(box.tokensPerSecond, `${box.id} needs a tokensPerSecond range`);
+    assert.equal(
+      typeof box.tokensPerSecond,
+      "object",
+      `${box.id} tokensPerSecond should be an object`
+    );
+    const { low, high } = box.tokensPerSecond;
+    assert.equal(typeof low, "number", `${box.id} tokensPerSecond.low must be numeric`);
+    assert.equal(typeof high, "number", `${box.id} tokensPerSecond.high must be numeric`);
+    assert.ok(Number.isFinite(low), `${box.id} tokensPerSecond.low must be finite`);
+    assert.ok(Number.isFinite(high), `${box.id} tokensPerSecond.high must be finite`);
+    assert.ok(
+      low <= high,
+      `${box.id} tokensPerSecond.low should not exceed tokensPerSecond.high`
+    );
+  }
+});
+
 test("Mac Studio matches Apple's official buy-page structured data", async () => {
   const { hardware } = await import(new URL("data.js", jsDir));
   const macStudio = hardware.find((h) => h.id === "mac-studio");

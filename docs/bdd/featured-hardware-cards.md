@@ -48,6 +48,13 @@ Scenario: Featured hardware cards include practical model-fit guidance
   And the guidance uses conservative buckets instead of benchmark promises
   And the section note explains that the guidance is a heuristic derived from memory or VRAM plus broad throughput ranges
 
+Scenario: Featured hardware cards expose a sustained throughput range for guide-value math
+  Given a featured hardware card on the homepage
+  When the maintainer inspects the data model
+  Then the card includes a numeric sustained tokens/second range with low and high bounds
+  And the low bound does not exceed the high bound
+  And the mini-guide value section can use that range to show the annual token-output estimate
+
 Scenario: Strix Halo cards are backed by named purchasable SKUs
   Given the Strix Halo class card on the homepage
   When the visitor opens the detailed Strix Halo guide
