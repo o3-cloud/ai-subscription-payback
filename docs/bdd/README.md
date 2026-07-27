@@ -18,3 +18,4 @@ This directory contains one behavior-focused BDD file per feature area for the s
 - [Comparison Mini-Guides](./mini-guides.md)
 - [Accessibility](./accessibility.md)
 - [Privacy and Analytics](./privacy-and-analytics.md)
+- [Augment Code Business Tier](./augment-code.md)

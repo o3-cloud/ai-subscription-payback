@@ -272,6 +272,12 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, and 
   assert.match(help, /Replit Agent/i, "helper copy names Replit Agent");
   assert.match(help, /Mistral/i, "helper copy names Mistral");
   assert.match(help, /Bolt/i, "helper copy names Bolt");
+  assert.match(help, /Augment Code/i, "helper copy names Augment Code");
+  assert.match(
+    help,
+    /Augment Code \(Business\)/i,
+    "helper copy names the Augment Code Business tier"
+  );
 
   const pricing =
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
@@ -285,6 +291,12 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, and 
   assert.match(pricing, /Replit Agent/i, "pricing disclosure mentions Replit Agent credits");
   assert.match(pricing, /Mistral/i, "pricing disclosure mentions Mistral tiers");
   assert.match(pricing, /Vibe/i, "pricing disclosure mentions Mistral Vibe coding");
+  assert.match(pricing, /Augment Code/i, "pricing disclosure mentions the Augment Code tier");
+  assert.match(
+    pricing,
+    /pooled usage/i,
+    "pricing disclosure explains the Augment Code pooled-usage caveat"
+  );
 });
 
 test("pricing disclosure spells out the Devin Teams base-fee plus seat math", () => {

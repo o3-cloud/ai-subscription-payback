@@ -18,3 +18,4 @@ The behavior specifications now live in `docs/bdd/` as one file per feature area
 - [Comparison Mini-Guides](docs/bdd/mini-guides.md)
 - [Accessibility](docs/bdd/accessibility.md)
 - [Privacy and Analytics](docs/bdd/privacy-and-analytics.md)
+- [Augment Code Business Tier](docs/bdd/augment-code.md)

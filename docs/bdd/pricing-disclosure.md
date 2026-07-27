@@ -24,6 +24,7 @@ Scenario: Supported subscription tiers are listed
   And the Replit tiers are listed: Starter (Free), Core (monthly and annual), and Pro (monthly and annual)
   And the Mistral tiers are listed: Free, Pro, Team, and Education
   And the Bolt tiers are listed: Free, Pro, and Teams
+  And the Augment Code tier is listed: Business
   And each tier is distinguishable by its plan name even when it shares a product name
 
 Scenario: Devin Teams pricing preserves the base-fee plus seat math
@@ -37,7 +38,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, and Bolt tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, and Augment Code tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
@@ -86,6 +87,16 @@ Scenario: Bolt tiers disclose their app-building token limits
   And the copy notes that Bolt's Enterprise plan is custom-priced and out of scope
   And all point at the official Bolt pricing page
   And all are optional and unchecked in the default selection
+
+Scenario: The Augment Code Business tier discloses its pooled-usage caveat
+  Given the Augment Code Business tier
+  When the visitor views its included-value text
+  Then it is described as a team plan for the Augment Code coding agent
+  And it is priced at a flat $100/mo covering up to 50 seats and $100/mo of pooled usage
+  And it notes that usage beyond the pooled usage is billed as metered top-ups
+  And it notes that Augment Code's Enterprise plan is custom-priced and out of scope
+  And it points at the official Augment Code pricing page
+  And it is optional and unchecked in the default selection
 
 Scenario: Usage-based tiers disclose their included-credit caveat
   Given a usage-based tier such as GitHub Copilot Pro or Zed Pro

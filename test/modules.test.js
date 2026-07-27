@@ -511,6 +511,49 @@ test("the pricing-disclosure BDD documents the Bolt app-building token limits", 
   assert.match(bdd, /the Bolt tiers are listed: Free, Pro, and Teams/i);
 });
 
+test("Augment Code Business tier is listed with its pooled-usage / top-up / Enterprise caveat", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official Augment Code pricing page named in the issue: the
+  // Business team plan (Enterprise is custom and out of scope).
+  const sub = byId.get("augment-code-business");
+  assert.ok(sub, "missing subscription tier: augment-code-business");
+  assert.equal(sub.name, "Augment Code", "augment-code-business product name");
+  assert.equal(sub.plan, "Business", "augment-code-business plan name");
+  assert.equal(sub.monthlyPrice, 100, "augment-code-business monthly price");
+  assert.equal(sub.verification, "official", "augment-code-business is marked official");
+  assert.equal(
+    sub.sourceUrl,
+    "https://www.augmentcode.com/pricing",
+    "augment-code-business points at the official Augment Code pricing page"
+  );
+  // Optional: it must not seed the default selection.
+  assert.ok(!sub.defaultSelected, "augment-code-business must not be selected by default");
+
+  // The flat-fee / seat framing lives in the billing cadence.
+  assert.match(sub.billingCadence, /\$100\/month flat/i, "cadence names the $100/month flat fee");
+  assert.match(sub.billingCadence, /up to 50 seats/i, "cadence names the up-to-50-seats allowance");
+  assert.match(sub.billingCadence, /\$100\/month of pooled usage/i, "cadence names the $100/month pooled usage");
+
+  // The included-value copy explains the pooled usage, top-up, and Enterprise caveat.
+  assert.match(sub.includedValue, /pooled usage/i, "included value names the pooled usage");
+  assert.match(sub.includedValue, /top-ups?/i, "included value names metered top-ups");
+  assert.match(
+    sub.includedValue,
+    /custom-priced Enterprise plan/i,
+    "included value notes the custom-priced Enterprise plan"
+  );
+  assert.match(sub.includedValue, /out of scope/i, "included value notes Enterprise is out of scope");
+});
+
+test("the pricing-disclosure BDD documents the Augment Code Business pooled-usage caveat", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /The Augment Code Business tier discloses its pooled-usage caveat/i);
+  assert.match(bdd, /the Augment Code tier is listed: Business/i);
+  assert.match(bdd, /flat \$100\/mo covering up to 50 seats and \$100\/mo of pooled usage/i);
+});
+
 test("the pricing-disclosure BDD documents the RTX PRO 6000 Blackwell reference class", () => {
   const bdd = read("docs/bdd/pricing-disclosure.md");
   assert.match(bdd, /High-end reference workstation classes are listed without becoming featured cards/i);

@@ -145,9 +145,13 @@ export const tokenOutputValueAssumptions = {
  * and 1M tokens monthly, Pro starts at 10M tokens/month with no daily limit plus
  * custom domain/SEO/no-branding features, and Teams adds a shared team workspace
  * with a per-member monthly token allotment; Bolt's Enterprise plan is custom and
- * out of scope. All of these ship unchecked (no `defaultSelected`) so
- * the default comparison basis stays Codex + Claude Code Pro and only expands
- * when a visitor opts in.
+ * out of scope. The Augment Code tier (Business) covers Augment Code's team plan
+ * for its autonomous coding agent: a flat $100/month covering up to 50 seats and
+ * $100/month of pooled usage shared across the team, with usage beyond the pool
+ * billed as metered top-ups and larger needs moving to the custom-priced
+ * Enterprise plan (out of scope here). All of these ship unchecked (no
+ * `defaultSelected`) so the default comparison basis stays Codex + Claude Code
+ * Pro and only expands when a visitor opts in.
  *
  * `monthlyPrice` is always the month-by-month comparison value — for annually
  * billed tiers it is the effective monthly cost (annual price ÷ 12), which keeps
@@ -686,6 +690,19 @@ export const subscriptions = [
       "Per-member Teams app-building plan adding a shared team workspace on top of the Pro features, with a per-member monthly token allotment; Bolt's Enterprise plan is custom-priced and out of scope here.",
     sourceUrl: "https://bolt.new/pricing",
     sourceLabel: "Official Bolt pricing",
+    verification: "official",
+    lastUpdated: "2026-07-26",
+  },
+  {
+    id: "augment-code-business",
+    name: "Augment Code",
+    plan: "Business",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly — $100/month flat, up to 50 seats, and $100/month of pooled usage",
+    includedValue:
+      "Business plan for a team using the Augment Code coding agent: a flat $100/month covering up to 50 seats and $100/month of pooled usage shared across the team; usage beyond the pool is billed as metered top-ups, and larger needs move to the custom-priced Enterprise plan, which is out of scope here.",
+    sourceUrl: "https://www.augmentcode.com/pricing",
+    sourceLabel: "Official Augment Code pricing",
     verification: "official",
     lastUpdated: "2026-07-26",
   },
