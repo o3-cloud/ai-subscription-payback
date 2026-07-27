@@ -113,6 +113,15 @@ Scenario: Pricing section shows pricing freshness
   And it is rendered as a <time> element whose datetime attribute holds the machine-readable ISO date
   And this pricing-freshness date is distinct from the site-wide last-updated disclosure shown in the footer
 
+Scenario: Pricing data health check flags stale entries and outbound link failures
+  Given the maintainer-facing health check
+  When it scans the pricing, hardware, and affiliate data
+  Then it validates each source and CTA URL before deploy
+  And it warns when a canonical vendor source is bot-protected but still live
+  And it warns when an entry's last-updated date is older than the staleness threshold
+  And it fails on malformed URLs, dead links, and other hard failures
+  And the report remains concise enough to run on a schedule or by hand
+
 Scenario: Hardware prices and sources are disclosed
   Given the hardware comparison section
   When the visitor views it
@@ -177,4 +186,22 @@ Scenario: Price source links open externally
   When the visitor clicks it
   Then the link opens the referenced source
   And the calculator state remains unchanged
+
+Scenario: Maintainer health-checks the curated pricing data
+  Given the hand-curated subscription, hardware, and affiliate data
+  When the maintainer runs the pricing-data health check (npm run health-check)
+  Then it collects every subscription and hardware source URL and every affiliate CTA URL
+  And it reports any malformed URL as a hard failure
+  And it probes each unique URL and reports an unreachable link (a 404 or network error) as a hard failure
+  And a 403 or 429 response is treated as a bot-protection warning rather than a hard failure
+  And a canonical vendor source that is bot-protected or times out is downgraded to a warning, since official pricing pages are commonly guarded
+  And an entry whose last-verified date is older than the staleness threshold is reported as a warning
+  And the check exits non-zero only when there are hard failures, so warnings alone do not fail an unattended run
 ```
+
+> Maintenance tooling: the health check lives in `scripts/health-check.mjs` and
+> runs offline-testably (fetch and clock are injectable). It is run on demand by a
+> maintainer (`npm run health-check`) and on a schedule via the
+> `.github/workflows/health-check.yml` workflow; it is deliberately kept off the
+> deploy path so vendor bot-protection or transient network errors never block a
+> push to `main`.
