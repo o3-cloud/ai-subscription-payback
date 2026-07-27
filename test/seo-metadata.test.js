@@ -45,18 +45,19 @@ const metaContent = (attr, value) =>
     new RegExp(`<meta[^>]+${attr}="${value}"[^>]+content="([^"]*)"`, "i")
   )?.[1] ?? "";
 
-// The SEO BDD requires the description-style fields to name *all four* newly
-// modeled tier families — Google AI, Replit, Mistral, and Bolt — not merely one of
-// them ("all mention Google AI, Replit, Mistral, and Bolt tiers" in
-// docs/bdd/seo-and-metadata.md). Assert each family individually so dropping
-// any one from a field is caught; an OR-alternation would let a field lose
-// Bolt (or Mistral/Replit) silently.
+// The SEO BDD requires the description-style fields to name *all five* newly
+// modeled tier families — Google AI, Replit, Mistral, Bolt, and Lovable — not
+// merely one of them ("all mention Google AI, Replit, Mistral, Bolt, and
+// Lovable tiers" in docs/bdd/seo-and-metadata.md). Assert each family
+// individually so dropping any one from a field is caught; an OR-alternation
+// would let a field lose Bolt (or Mistral/Replit/Lovable) silently.
 const assertNamesNewTiers = (text, field) => {
   for (const [label, pattern] of [
     ["Google AI", /Google AI|Gemini|Jules|Antigravity/i],
     ["Replit", /Replit/i],
     ["Mistral", /Mistral/i],
     ["Bolt", /Bolt/i],
+    ["Lovable", /Lovable/i],
   ]) {
     assert.match(text, pattern, `${field} should name the ${label} tier`);
   }
@@ -328,8 +329,12 @@ test("the on-page subscription helper text names every modeled coding-agent bran
     "Jules",
     "Antigravity",
     "Devin (Windsurf / Devin Desktop)",
+    "Amazon Q Developer",
     "Replit Agent",
     "Mistral",
+    "Bolt",
+    "Lovable",
+    "Augment Code",
   ]) {
     assert.ok(
       help.includes(brand),

@@ -30,12 +30,12 @@ Scenario: The shipped social-card PNG stays in sync with its SVG source
   Then the shipped PNG is pixel-identical to the freshly rasterized SVG
   So that edits to the SVG cannot silently drift from the card platforms show
 
-Scenario: Google AI, Mistral, Replit, Bolt, and Augment Code tiers are discoverable in homepage copy and metadata
+Scenario: Google AI, Mistral, Replit, Bolt, Lovable, and Augment Code tiers are discoverable in homepage copy and metadata
   Given the landing page and its head metadata
   When a searcher or visitor scans the homepage copy
-  Then the subscription helper text names Google AI, Gemini, Jules, Antigravity, Replit Agent, Mistral, Bolt, and Augment Code
+  Then the subscription helper text names Google AI, Gemini, Jules, Antigravity, Replit Agent, Mistral, Bolt, Lovable, and Augment Code
   And the subscription helper text names Devin's Windsurf / Devin Desktop search label without duplicating any Devin rows
-  And the meta description, keywords, Open Graph description, Twitter description, and JSON-LD description all mention Google AI, Replit, Mistral, Bolt, and Augment Code tiers
+  And the meta description, keywords, Open Graph description, Twitter description, and JSON-LD description all mention Google AI, Replit, Mistral, Bolt, Lovable, and Augment Code tiers
 
 Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
   Given the static site ships from a project subpath with no favicon at the origin root

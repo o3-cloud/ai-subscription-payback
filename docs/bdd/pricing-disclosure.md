@@ -24,6 +24,7 @@ Scenario: Supported subscription tiers are listed
   And the Replit tiers are listed: Starter (Free), Core (monthly and annual), and Pro (monthly and annual)
   And the Mistral tiers are listed: Free, Pro, Team, and Education
   And the Bolt tiers are listed: Free, Pro, and Teams
+  And the Lovable tiers are listed: Free, Pro, and Business
   And the Augment Code tier is listed: Business
   And each tier is distinguishable by its plan name even when it shares a product name
 
@@ -38,7 +39,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, and Augment Code tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, and Augment Code tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
@@ -86,6 +87,18 @@ Scenario: Bolt tiers disclose their app-building token limits
   And the Teams tier is priced at $30/member/mo with a shared team workspace and a per-member monthly token allotment
   And the copy notes that Bolt's Enterprise plan is custom-priced and out of scope
   And all point at the official Bolt pricing page
+  And all are optional and unchecked in the default selection
+
+Scenario: Lovable tiers disclose their credit-limit caveats
+  Given the Lovable Free, Pro, and Business tiers
+  When the visitor views their included-value text
+  Then each is described as an app-building plan
+  And the Free tier is priced at $0/mo with a limited allowance of free monthly credits
+  And the Pro tier is priced at $25/mo with 100 monthly credits, credit rollovers, on-demand top-ups, custom domains, and no Lovable badge
+  And the Business tier is priced at $50/mo with 100 monthly credits plus a team workspace, role-based access, internal publishing, and an SSO/security center
+  And the copy notes that building beyond the included credits requires paid top-ups
+  And the copy notes that Lovable's Enterprise plan is custom/volume-priced and out of scope
+  And all point at the official Lovable pricing page
   And all are optional and unchecked in the default selection
 
 Scenario: The Augment Code Business tier discloses its pooled-usage caveat

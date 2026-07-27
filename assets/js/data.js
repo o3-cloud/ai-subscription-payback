@@ -99,10 +99,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-26";
+export const pricingLastUpdated = "2026-07-27";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-26";
+export const siteLastUpdated = "2026-07-27";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -145,7 +145,13 @@ export const tokenOutputValueAssumptions = {
  * and 1M tokens monthly, Pro starts at 10M tokens/month with no daily limit plus
  * custom domain/SEO/no-branding features, and Teams adds a shared team workspace
  * with a per-member monthly token allotment; Bolt's Enterprise plan is custom and
- * out of scope. The Augment Code tier (Business) covers Augment Code's team plan
+ * out of scope. The Lovable tiers (Free, Pro, Business) cover Lovable, another
+ * app-building agent, and are credit-limited: Free builds on a limited allowance
+ * of free monthly credits, Pro includes 100 monthly credits with rollovers plus
+ * on-demand top-ups, custom domains, and no Lovable badge, and Business keeps the
+ * 100-credit monthly base while adding a team workspace, role-based access,
+ * internal publishing, and an SSO/security center; Lovable's Enterprise plan is
+ * custom/volume-priced and out of scope. The Augment Code tier (Business) covers Augment Code's team plan
  * for its autonomous coding agent: a flat $100/month covering up to 50 seats and
  * $100/month of pooled usage shared across the team, with usage beyond the pool
  * billed as metered top-ups and larger needs moving to the custom-priced
@@ -692,6 +698,45 @@ export const subscriptions = [
     sourceLabel: "Official Bolt pricing",
     verification: "official",
     lastUpdated: "2026-07-26",
+  },
+  {
+    id: "lovable-free",
+    name: "Lovable",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free app-building plan for one person: build apps with the Lovable agent on a limited allowance of free monthly credits, with workspace-private projects, unlimited collaborators, and up to 5 lovable.app domains.",
+    sourceUrl: "https://lovable.dev/pricing",
+    sourceLabel: "Official Lovable pricing",
+    verification: "official",
+    lastUpdated: "2026-07-27",
+  },
+  {
+    id: "lovable-pro",
+    name: "Lovable",
+    plan: "Pro",
+    monthlyPrice: 25,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Individual Pro app-building plan for one developer: 100 monthly credits with credit rollovers and on-demand credit top-ups, plus custom domains, user roles/permissions, and no Lovable badge; building beyond the included credits requires paid top-ups.",
+    sourceUrl: "https://lovable.dev/pricing",
+    sourceLabel: "Official Lovable pricing",
+    verification: "official",
+    lastUpdated: "2026-07-27",
+  },
+  {
+    id: "lovable-business",
+    name: "Lovable",
+    plan: "Business",
+    monthlyPrice: 50,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Business app-building plan for a team: 100 monthly credits plus a team workspace, role-based access, internal publishing, an SSO/security center, and priority support; building beyond the included credits requires paid top-ups, and Lovable's Enterprise plan is custom/volume-priced and out of scope here.",
+    sourceUrl: "https://lovable.dev/pricing",
+    sourceLabel: "Official Lovable pricing",
+    verification: "official",
+    lastUpdated: "2026-07-27",
   },
   {
     id: "augment-code-business",

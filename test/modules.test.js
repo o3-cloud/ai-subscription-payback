@@ -511,6 +511,80 @@ test("the pricing-disclosure BDD documents the Bolt app-building token limits", 
   assert.match(bdd, /the Bolt tiers are listed: Free, Pro, and Teams/i);
 });
 
+test("Lovable tiers cover the Free/Pro/Business ladder with credit-limit caveats", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official Lovable pricing page named in the issue and
+  // verified 2026-07-27: a free tier plus Pro and Business plans (Enterprise is
+  // custom/volume-priced and out of scope).
+  const expected = {
+    "lovable-free": 0,
+    "lovable-pro": 25,
+    "lovable-business": 50,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Lovable", `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceLabel, "Official Lovable pricing", `${id} source label`);
+    assert.equal(sub.lastUpdated, "2026-07-27", `${id} last verified date`);
+    assert.equal(
+      sub.sourceUrl,
+      "https://lovable.dev/pricing",
+      `${id} points at the official Lovable pricing page`
+    );
+    // Optional: none seed the default selection.
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+  }
+
+  // The Free tier builds on a limited allowance of free monthly credits.
+  assert.match(byId.get("lovable-free").includedValue, /free monthly credits/i, "free names the free monthly credits");
+
+  // The Pro tier surfaces the 100-credit allowance, rollovers, top-ups, and
+  // premium app-building features.
+  const pro = byId.get("lovable-pro").includedValue;
+  assert.match(pro, /100 monthly credits/i, "pro names the 100 monthly credits");
+  assert.match(pro, /rollovers?/i, "pro names credit rollovers");
+  assert.match(pro, /top-ups?/i, "pro names on-demand top-ups");
+  assert.match(pro, /custom domains?/i, "pro names custom domains");
+  assert.match(pro, /no Lovable badge/i, "pro names the no-branding feature");
+
+  // The Business tier keeps the 100-credit base and adds team features, and
+  // notes Enterprise is out of scope.
+  const business = byId.get("lovable-business").includedValue;
+  assert.match(business, /100 monthly credits/i, "business names the 100 monthly credits");
+  assert.match(business, /team workspace/i, "business names the shared workspace");
+  assert.match(business, /SSO/i, "business names the SSO/security center");
+  assert.match(
+    business,
+    /Enterprise plan is custom\/volume-priced and out of scope/i,
+    "business notes Enterprise is out of scope"
+  );
+
+  // The paid tiers make the credit ceiling explicit so nothing implies unlimited use.
+  for (const id of ["lovable-pro", "lovable-business"]) {
+    assert.match(
+      byId.get(id).includedValue,
+      /beyond the included credits requires paid top-ups/i,
+      `${id} states top-ups are needed beyond the credits`
+    );
+  }
+
+  // Each is framed as an app-building plan, not a pure IDE assistant.
+  for (const id of ["lovable-free", "lovable-pro", "lovable-business"]) {
+    assert.match(byId.get(id).includedValue, /app-building/i, `${id} framed as app-building`);
+  }
+});
+
+test("the pricing-disclosure BDD documents the Lovable credit-limit caveats", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Lovable tiers disclose their credit-limit caveats/i);
+  assert.match(bdd, /the Lovable tiers are listed: Free, Pro, and Business/i);
+});
+
 test("Augment Code Business tier is listed with its pooled-usage / top-up / Enterprise caveat", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));

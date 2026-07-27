@@ -19,3 +19,4 @@ This directory contains one behavior-focused BDD file per feature area for the s
 - [Accessibility](./accessibility.md)
 - [Privacy and Analytics](./privacy-and-analytics.md)
 - [Augment Code Business Tier](./augment-code.md)
+- [Lovable App-Builder Tiers](./lovable.md)

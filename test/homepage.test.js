@@ -251,10 +251,10 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, and Bolt coding-agent tiers", () => {
-  // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin, and
-  // Replit Agent alongside the other plans, so the helper text and pricing copy
-  // must surface them too.
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, and Augment Code tiers", () => {
+  // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
+  // Replit Agent, the Bolt and Lovable app builders, and Augment Code alongside
+  // the other plans, so the helper text and pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
   assert.match(help, /Google AI/i, "helper copy names Google AI");
@@ -272,6 +272,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, and 
   assert.match(help, /Replit Agent/i, "helper copy names Replit Agent");
   assert.match(help, /Mistral/i, "helper copy names Mistral");
   assert.match(help, /Bolt/i, "helper copy names Bolt");
+  assert.match(help, /Lovable/i, "helper copy names Lovable");
   assert.match(help, /Augment Code/i, "helper copy names Augment Code");
   assert.match(
     help,
@@ -292,6 +293,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, and 
   assert.match(pricing, /Mistral/i, "pricing disclosure mentions Mistral tiers");
   assert.match(pricing, /Vibe/i, "pricing disclosure mentions Mistral Vibe coding");
   assert.match(pricing, /Augment Code/i, "pricing disclosure mentions the Augment Code tier");
+  assert.match(pricing, /Lovable/i, "pricing disclosure mentions Lovable tiers");
   assert.match(
     pricing,
     /pooled usage/i,
