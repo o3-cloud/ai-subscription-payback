@@ -122,6 +122,15 @@ and the fact that all savings numbers are estimates.
 - Shareable, hash-encoded scenarios to earn links and social shares.
 - Content: methodology, FAQ, and product comparison copy should be indexable.
 
+## Hardware Watchlist
+
+- Track NVIDIA DGX Station here as a future local AI system candidate until a
+  public price or retailer listing is verified.
+- Do not add a calculator preset or a priced `referenceOnly` row until a real,
+  sourced purchase price exists.
+- The official DGX Station page exposes specs and order/partner positioning, but
+  no public price has been verified yet.
+
 ## Analytics
 
 - Privacy-respecting, cookieless analytics preferred.
