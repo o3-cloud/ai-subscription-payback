@@ -217,7 +217,8 @@ Scenario: Maintainer health-checks the curated pricing data
   Then it collects every subscription and hardware source URL and every affiliate CTA URL
   And it reports any malformed URL as a hard failure
   And it probes each unique URL and reports an unreachable link (a 404 or network error) as a hard failure
-  And a 403 or 429 response is treated as a bot-protection warning rather than a hard failure
+  And a 403 or 429 response from a canonical vendor source is treated as a bot-protection warning rather than a hard failure
+  And a 403 or 429 response from an affiliate or reseller CTA is treated as a hard failure
   And a canonical vendor source that is bot-protected or times out is downgraded to a warning, since official pricing pages are commonly guarded
   And an entry whose last-verified date is older than the staleness threshold is reported as a warning
   And the check exits non-zero only when there are hard failures, so warnings alone do not fail an unattended run

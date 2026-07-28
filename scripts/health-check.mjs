@@ -207,10 +207,10 @@ export function classifyProbe(result, { canonicalVendorSource } = {}) {
     return { level: "fail", reason: result.error };
   }
   if (result.ok) return { level: "ok" };
-  if (BOT_PROTECTION_STATUSES.has(result.status)) {
+  if (canonicalVendorSource && BOT_PROTECTION_STATUSES.has(result.status)) {
     return {
       level: "warn",
-      reason: `HTTP ${result.status} (likely bot protection${canonicalVendorSource ? " on vendor page" : ""})`,
+      reason: `HTTP ${result.status} (likely bot protection on vendor page)`,
     };
   }
   return { level: "fail", reason: `HTTP ${result.status ?? "no response"}` };

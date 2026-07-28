@@ -144,14 +144,14 @@ test("a canonical vendor source returning 403/429 is downgraded to a warning", a
   }
 });
 
-test("a 403/429 on any URL is treated as a bot-protection warning", () => {
+test("a 403/429 warns only for canonical vendor sources and hard-fails affiliates", () => {
   for (const status of [403, 429]) {
     const canonicalVerdict = classifyProbe(response(status), { canonicalVendorSource: true });
     assert.equal(canonicalVerdict.level, "warn", `status ${status} on a vendor source should warn`);
     assert.match(canonicalVerdict.reason, new RegExp(String(status)));
 
     const affiliateVerdict = classifyProbe(response(status), { canonicalVendorSource: false });
-    assert.equal(affiliateVerdict.level, "warn", `status ${status} on an affiliate should also warn`);
+    assert.equal(affiliateVerdict.level, "fail", `status ${status} on an affiliate should hard-fail`);
     assert.match(affiliateVerdict.reason, new RegExp(String(status)));
   }
 });
