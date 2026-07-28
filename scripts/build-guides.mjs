@@ -324,6 +324,39 @@ ${valueComparisonRowsHtml(box, monthlySubscription)}
     </section>`;
 }
 
+/**
+ * Render the box's model-fit block, keeping the vendor's official workload
+ * ceiling (when one exists) visibly separate from the site's conservative
+ * heuristic. The official claim is vendor-attributed; the heuristic is framed
+ * as this site's advisory estimate so the two are never conflated.
+ */
+function modelFitSectionHtml(box) {
+  if (!box.officialModelFit && !box.modelFit) return "";
+  const officialHtml = box.officialModelFit
+    ? `
+      <p class="section-intro guide-model-fit-official">
+        <strong>Vendor workload ceiling.</strong> ${esc(box.officialModelFit)}
+      </p>`
+    : "";
+  const heuristicLead = box.officialModelFit
+    ? "This site's conservative heuristic — a separate estimate, not the vendor claim above:"
+    : "This site's conservative model-fit heuristic:";
+  const heuristicHtml = box.modelFit
+    ? `
+      <p class="disclosure guide-model-fit-heuristic">
+        <strong>${esc(heuristicLead)}</strong> ${esc(box.modelFit)} It combines the
+        published memory spec with this site's wide sustained-throughput ranges, so
+        it moves with quantization, context length, batching, and runtime settings —
+        a heuristic, not a benchmark or a vendor guarantee.
+      </p>`
+    : "";
+  return `
+    <!-- ===================== MODEL FIT ===================== -->
+    <section class="comparison" aria-labelledby="model-fit-title">
+      <h2 id="model-fit-title">What models fit locally</h2>${officialHtml}${heuristicHtml}
+    </section>`;
+}
+
 /** Resolve a guide's featured box, comparison tiers, and calculator scenario. */
 export function guideModel(guide) {
   const box = hardware.find((h) => h.id === guide.hardwareId);
@@ -597,6 +630,7 @@ ${subscriptionRowsHtml(subs)}
       </div>
       <p class="disclosure">${esc(box.name)}: ${esc(box.priceNote)}</p>
     </section>
+${modelFitSectionHtml(box)}
 ${valueComparisonSectionHtml(box, monthlySubscription)}
 ${hardwareExampleSectionHtml(guide)}
 

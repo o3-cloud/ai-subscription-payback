@@ -66,4 +66,7 @@ stay consistent with the methodology copy.
   fit changes with quantization, context length, batching, and runtime settings.
 - When a vendor publishes an official workload ceiling for a featured card, the
   card shows that claim separately from the site's heuristic so the vendor's own
-  limit and the repo's conservative guidance cannot be confused.
+  limit and the repo's conservative guidance cannot be confused. For DGX Spark,
+  that means NVIDIA's 200B-parameter inference, 70B-parameter fine-tuning, and
+  405B two-system ceiling are shown as vendor claims, not as the site's
+  practical coding heuristic.

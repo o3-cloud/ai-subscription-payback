@@ -146,6 +146,20 @@
       <p class="disclosure">NVIDIA DGX Spark: Estimated street price for the desktop class; named OEM systems such as ASUS Ascent GX10 can appear as selectable trims, and availability and bundling vary by reseller.</p>
     </section>
 
+    <!-- ===================== MODEL FIT ===================== -->
+    <section class="comparison" aria-labelledby="model-fit-title">
+      <h2 id="model-fit-title">What models fit locally</h2>
+      <p class="section-intro guide-model-fit-official">
+        <strong>Vendor workload ceiling.</strong> NVIDIA's official workload claim: a single DGX Spark is rated for local inference on models up to 200B parameters and fine-tuning models up to 70B parameters. NVIDIA also says two connected DGX Spark systems can handle models up to 405B parameters. These are the vendor's stated ceilings for the platform, not a benchmark of sustained throughput on any given model or quantization.
+      </p>
+      <p class="disclosure guide-model-fit-heuristic">
+        <strong>This site's conservative heuristic — a separate estimate, not the vendor claim above:</strong> Practical local model fit: 30B-class quantized models and 70B-class quantized / fine-tune-capable workflows. It combines the
+        published memory spec with this site's wide sustained-throughput ranges, so
+        it moves with quantization, context length, batching, and runtime settings —
+        a heuristic, not a benchmark or a vendor guarantee.
+      </p>
+    </section>
+
     <!-- ===================== VALUE COMPARISON ===================== -->
     <section class="comparison" aria-labelledby="value-title">
       <h2 id="value-title">24/7 yearly token-output value estimate</h2>

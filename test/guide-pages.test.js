@@ -208,6 +208,14 @@ test("each mini-guide carries the required SEO and content structure", () => {
     );
     assert.match(html, /Caveats &amp; software tradeoffs/i, `${guide.path} includes caveats`);
     assert.ok(html.includes('<p class="results-caveat">'), `${guide.path} includes the results caveat paragraph`);
+    if (guide.slug === "dgx-spark-price-payback") {
+      assert.match(html, /What models fit locally/i, `${guide.path} includes a dedicated model-fit section`);
+      assert.match(html, /Vendor workload ceiling\./i, `${guide.path} labels the official workload claim as vendor-attributed`);
+      assert.match(html, /200B parameters/i, `${guide.path} includes NVIDIA's 200B-parameter inference claim`);
+      assert.match(html, /70B parameters/i, `${guide.path} includes NVIDIA's 70B-parameter fine-tuning claim`);
+      assert.match(html, /405B parameters/i, `${guide.path} includes NVIDIA's 405B two-system claim`);
+      assert.match(html, /separate estimate, not the vendor claim above/i, `${guide.path} keeps the heuristic separate from the official claim`);
+    }
     assert.match(html, /Cost estimates only\.[\s\S]*Not\s+financial advice\./i, `${guide.path} states the comparison is cost-only and not financial advice`);
     assert.match(
       html,
