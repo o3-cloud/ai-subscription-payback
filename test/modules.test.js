@@ -716,6 +716,22 @@ test("featured hardware cards carry conservative model-fit guidance", async () =
   }
 });
 
+test("DGX Spark carries a separate official workload claim alongside the heuristic", async () => {
+  const { featuredHardware } = await import(new URL("data.js", jsDir));
+  const dgx = featuredHardware.find((box) => box.id === "dgx-spark");
+
+  assert.ok(dgx, "missing dgx-spark featured hardware entry");
+  assert.equal(typeof dgx.officialModelFit, "string", "dgx-spark needs an official workload claim");
+  assert.match(dgx.officialModelFit, /NVIDIA's official workload claim/i);
+  assert.match(dgx.officialModelFit, /200B parameters/i);
+  assert.match(dgx.officialModelFit, /70B parameters/i);
+  assert.match(dgx.officialModelFit, /405B parameters/i);
+  assert.match(dgx.officialModelFit, /not a benchmark/i);
+  assert.match(dgx.modelFit, /30B-class quantized models/i);
+  assert.match(dgx.modelFit, /70B-class quantized/i);
+  assert.notEqual(dgx.officialModelFit, dgx.modelFit, "official claim stays separate from heuristic guidance");
+});
+
 test("featured hardware cards carry a numeric tokens/sec throughput range", async () => {
   const { featuredHardware } = await import(new URL("data.js", jsDir));
 

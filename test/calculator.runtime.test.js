@@ -583,6 +583,11 @@ test("initCalculator boots the form from static data and defaults", () => {
     "renders one practical model-fit line per featured hardware card"
   );
   assert.equal(
+    doc.querySelectorAll("#featured-hardware-cards .hardware-card-fit-official").length,
+    1,
+    "renders one official DGX Spark workload claim separate from the heuristic"
+  );
+  assert.equal(
     doc.getElementById("assumptions-list").children.length,
     assumptions.length
   );
@@ -989,6 +994,26 @@ test("DGX Spark exposes a named ASUS Ascent GX10 trim and loads it correctly", a
     win._plausibleCalls.some(([name]) => name === "Calculator: Interact"),
     "loading the ASUS trim counts as calculator interaction"
   );
+});
+
+test("DGX Spark shows an official workload claim separate from the advisory model-fit copy", () => {
+  const { doc } = boot();
+  const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  const titles = doc.querySelectorAll("#featured-hardware-cards .hardware-card-title");
+  const dgxIndex = Array.from(titles).findIndex((title) => title.textContent === "NVIDIA DGX Spark");
+  const dgxCard = cards[dgxIndex];
+
+  assert.ok(dgxCard, "expected the DGX Spark hardware card");
+  const official = dgxCard.children[6];
+  const heuristic = dgxCard.children[7];
+
+  assert.ok(official, "DGX Spark should show a vendor-attributed workload claim");
+  assert.ok(heuristic, "DGX Spark should still show the advisory heuristic line");
+  assert.match(official.textContent, /200B parameters/i);
+  assert.match(official.textContent, /70B parameters/i);
+  assert.match(official.textContent, /405B parameters/i);
+  assert.match(heuristic.textContent, /Practical local model fit/i);
+  assert.notEqual(official.textContent, heuristic.textContent, "the official claim must remain distinct from the heuristic");
 });
 
 test("preloading a hardware card marks it active and clears the others", async () => {

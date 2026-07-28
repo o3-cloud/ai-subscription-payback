@@ -67,6 +67,8 @@
  *   this class of box, as a deliberately wide lower/upper estimate. Featured boxes
  *   carry it so the guides can price a full-time (24/7) year of token output; it is
  *   optional, and boxes without it simply omit the token-value view.
+ * @property {string} [officialModelFit] - vendor-published workload claim shown
+ *   separately from the site's advisory heuristic when an official ceiling exists
  * @property {string} [modelFit] - conservative, human-readable model-fit guidance
  *   for the featured card; advisory only, not a benchmark promise
  * @property {HardwareImage} [image] - product photo shown on the featured card
@@ -884,6 +886,8 @@ export const hardware = [
     defaultBoxPrice: 3999,
     powerDraw: 240,
     tokensPerSecond: { low: 8, high: 50 },
+    officialModelFit:
+      "NVIDIA's official workload claim: a single DGX Spark is rated for local inference on models up to 200B parameters and fine-tuning models up to 70B parameters. NVIDIA also says two connected DGX Spark systems can handle models up to 405B parameters. These are the vendor's stated ceilings for the platform, not a benchmark of sustained throughput on any given model or quantization.",
     modelFit:
       "Practical local model fit: 30B-class quantized models and 70B-class quantized / fine-tune-capable workflows.",
     image: {

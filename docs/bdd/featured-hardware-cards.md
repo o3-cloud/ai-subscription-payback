@@ -47,6 +47,7 @@ Scenario: Featured hardware cards include practical model-fit guidance
   Then the card shows a practical local model-fit line
   And the guidance uses conservative buckets instead of benchmark promises
   And the section note explains that the guidance is a heuristic derived from memory or VRAM plus broad throughput ranges
+  And where a vendor publishes an official workload claim, the card shows it as a separate vendor-attributed line distinct from the heuristic
 
 Scenario: Featured hardware cards expose a sustained throughput range for guide-value math
   Given a featured hardware card on the homepage

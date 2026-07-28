@@ -946,6 +946,13 @@ function renderFeaturedHardware(doc, win, analytics) {
     note.textContent = box.priceNote;
     card.appendChild(note);
 
+    if (box.officialModelFit) {
+      const officialFit = doc.createElement("p");
+      officialFit.className = "hardware-card-fit-official";
+      officialFit.textContent = box.officialModelFit;
+      card.appendChild(officialFit);
+    }
+
     if (box.modelFit) {
       const fit = doc.createElement("p");
       fit.className = "hardware-card-fit";

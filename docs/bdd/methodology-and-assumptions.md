@@ -64,3 +64,6 @@ stay consistent with the methodology copy.
   heuristic derived from the published memory or VRAM spec and the repo's wide
   throughput ranges. It is intentionally not a benchmark promise because model
   fit changes with quantization, context length, batching, and runtime settings.
+- When a vendor publishes an official workload ceiling for a featured card, the
+  card shows that claim separately from the site's heuristic so the vendor's own
+  limit and the repo's conservative guidance cannot be confused.
