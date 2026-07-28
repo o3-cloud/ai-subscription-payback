@@ -45,12 +45,11 @@ const metaContent = (attr, value) =>
     new RegExp(`<meta[^>]+${attr}="${value}"[^>]+content="([^"]*)"`, "i")
   )?.[1] ?? "";
 
-// The SEO BDD requires the description-style fields to name *all five* newly
-// modeled tier families — Google AI, Replit, Mistral, Bolt, and Lovable — not
-// merely one of them ("all mention Google AI, Replit, Mistral, Bolt, and
-// Lovable tiers" in docs/bdd/seo-and-metadata.md). Assert each family
+// The SEO BDD requires the description-style fields to name all of the newly
+// modeled tier families — Google AI, Replit, Mistral, Bolt, Lovable, Augment
+// Code, Amp, and TRAE — not merely one of them. Assert each family
 // individually so dropping any one from a field is caught; an OR-alternation
-// would let a field lose Bolt (or Mistral/Replit/Lovable) silently.
+// would let a field lose one family silently.
 const assertNamesNewTiers = (text, field) => {
   for (const [label, pattern] of [
     ["Google AI", /Google AI|Gemini|Jules|Antigravity/i],
@@ -58,6 +57,9 @@ const assertNamesNewTiers = (text, field) => {
     ["Mistral", /Mistral/i],
     ["Bolt", /Bolt/i],
     ["Lovable", /Lovable/i],
+    ["Augment Code", /Augment Code/i],
+    ["Amp", /Amp/i],
+    ["TRAE", /TRAE/i],
   ]) {
     assert.match(text, pattern, `${field} should name the ${label} tier`);
   }
@@ -335,6 +337,8 @@ test("the on-page subscription helper text names every modeled coding-agent bran
     "Bolt",
     "Lovable",
     "Augment Code",
+    "Amp",
+    "TRAE (AI IDE)",
   ]) {
     assert.ok(
       help.includes(brand),

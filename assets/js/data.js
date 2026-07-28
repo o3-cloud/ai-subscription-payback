@@ -99,10 +99,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-27";
+export const pricingLastUpdated = "2026-07-28";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-27";
+export const siteLastUpdated = "2026-07-28";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -155,7 +155,15 @@ export const tokenOutputValueAssumptions = {
  * for its autonomous coding agent: a flat $100/month covering up to 50 seats and
  * $100/month of pooled usage shared across the team, with usage beyond the pool
  * billed as metered top-ups and larger needs moving to the custom-priced
- * Enterprise plan (out of scope here). All of these ship unchecked (no
+ * Enterprise plan (out of scope here). The Amp tiers (Megawatt, Gigawatt) cover
+ * Amp's coding agent and are usage-based: each bundles an equal amount of
+ * included agent usage ($20 and $200 respectively) billed monthly, with usage
+ * beyond the included amount billed pay-as-you-go and Amp's usage-based and
+ * Enterprise/BYOK options out of scope. The TRAE tiers (Lite, Pro, Pro+, Ultra)
+ * cover the TRAE AI IDE at its monthly-billed prices ($3, $10, $30, $100); Pro
+ * has a 7-day trial noted on the pricing page, and the comparison-table usage
+ * allowances (monthly basic/bonus usage, queue priority, autocomplete,
+ * concurrent cloud tasks) scale up with the tier. All of these ship unchecked (no
  * `defaultSelected`) so the default comparison basis stays Codex + Claude Code
  * Pro and only expands when a visitor opts in.
  *
@@ -750,6 +758,84 @@ export const subscriptions = [
     sourceLabel: "Official Augment Code pricing",
     verification: "official",
     lastUpdated: "2026-07-26",
+  },
+  {
+    id: "amp-megawatt",
+    name: "Amp",
+    plan: "Megawatt",
+    monthlyPrice: 20,
+    billingCadence: "Billed monthly — usage-based beyond the included agent usage",
+    includedValue:
+      "Individual Megawatt plan for one developer using the Amp coding agent: $20/month including $20 of agent usage; usage beyond the included amount is billed pay-as-you-go, and Amp's usage-based and Enterprise/BYOK options are out of scope here.",
+    sourceUrl: "https://ampcode.com/pricing",
+    sourceLabel: "Official Amp pricing",
+    verification: "official",
+    lastUpdated: "2026-07-28",
+  },
+  {
+    id: "amp-gigawatt",
+    name: "Amp",
+    plan: "Gigawatt",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly — usage-based beyond the included agent usage",
+    includedValue:
+      "Top individual Gigawatt plan for heavier Amp coding-agent use: $200/month including $200 of agent usage; usage beyond the included amount is billed pay-as-you-go, and Amp's usage-based and Enterprise/BYOK options are out of scope here.",
+    sourceUrl: "https://ampcode.com/pricing",
+    sourceLabel: "Official Amp pricing",
+    verification: "official",
+    lastUpdated: "2026-07-28",
+  },
+  {
+    id: "trae-lite",
+    name: "TRAE",
+    plan: "Lite",
+    monthlyPrice: 3,
+    billingCadence: "Billed monthly (monthly-billed view)",
+    includedValue:
+      "Entry Lite plan for one developer using the TRAE AI IDE: a low monthly basic usage allowance with autocomplete; the heavier tiers raise the monthly usage, queue priority, and concurrent cloud tasks. Prices shown are the monthly-billed view.",
+    sourceUrl: "https://www.trae.ai/pricing",
+    sourceLabel: "Official TRAE pricing",
+    verification: "official",
+    lastUpdated: "2026-07-28",
+  },
+  {
+    id: "trae-pro",
+    name: "TRAE",
+    plan: "Pro",
+    monthlyPrice: 10,
+    billingCadence: "Billed monthly (monthly-billed view) — 7-day trial on the pricing page",
+    includedValue:
+      "Individual Pro plan for one developer using the TRAE AI IDE: higher monthly basic and bonus usage than Lite plus autocomplete, offered after a 7-day trial noted on the pricing page. Prices shown are the monthly-billed view.",
+    sourceUrl: "https://www.trae.ai/pricing",
+    sourceLabel: "Official TRAE pricing",
+    verification: "official",
+    lastUpdated: "2026-07-28",
+  },
+  {
+    id: "trae-pro-plus",
+    name: "TRAE",
+    plan: "Pro+",
+    monthlyPrice: 30,
+    billingCadence: "Billed monthly (monthly-billed view)",
+    includedValue:
+      "Pro+ plan for heavier TRAE AI IDE use: more monthly basic and bonus usage than Pro with higher queue priority and more concurrent cloud tasks. Prices shown are the monthly-billed view.",
+    sourceUrl: "https://www.trae.ai/pricing",
+    sourceLabel: "Official TRAE pricing",
+    verification: "official",
+    lastUpdated: "2026-07-28",
+  },
+  {
+    id: "trae-ultra",
+    name: "TRAE",
+    plan: "Ultra",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly (monthly-billed view)",
+    includedValue:
+      "Top Ultra plan for power users of the TRAE AI IDE: the highest monthly basic and bonus usage, queue priority, and concurrent cloud tasks of the individual tiers. Prices shown are the monthly-billed view.",
+    sourceUrl: "https://www.trae.ai/pricing",
+    sourceLabel: "Official TRAE pricing",
+    verification: "official",
+    lastUpdated: "2026-07-28",
   },
 ];
 

@@ -585,6 +585,56 @@ test("the pricing-disclosure BDD documents the Lovable credit-limit caveats", ()
   assert.match(bdd, /the Lovable tiers are listed: Free, Pro, and Business/i);
 });
 
+test("Amp tiers cover Megawatt and Gigawatt with included-agent-usage and pay-as-you-go caveats", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official Amp pricing page named in the issue.
+  const expected = {
+    "amp-megawatt": 20,
+    "amp-gigawatt": 200,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Amp", `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceUrl, "https://ampcode.com/pricing", `${id} points at the official Amp pricing page`);
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+    assert.match(sub.billingCadence, /usage-based/i, `${id} billing cadence notes usage-based overage`);
+    assert.match(sub.includedValue, /agent usage/i, `${id} included value names agent usage`);
+    assert.match(sub.includedValue, /pay-as-you-go/i, `${id} included value names pay-as-you-go overage`);
+    assert.match(sub.includedValue, /Enterprise\/BYOK/i, `${id} included value names the Enterprise/BYOK options`);
+  }
+});
+
+test("TRAE tiers cover Lite, Pro, Pro+, and Ultra with monthly-billed and trial caveats", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official TRAE pricing page named in the issue.
+  const expected = {
+    "trae-lite": 3,
+    "trae-pro": 10,
+    "trae-pro-plus": 30,
+    "trae-ultra": 100,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "TRAE", `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceUrl, "https://www.trae.ai/pricing", `${id} points at the official TRAE pricing page`);
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+    assert.match(sub.billingCadence, /monthly-billed view/i, `${id} billing cadence notes the monthly-billed view`);
+    assert.match(sub.includedValue, /basic usage|bonus usage|autocomplete|queue priority|concurrent cloud tasks/i, `${id} included value names the usage features`);
+  }
+  assert.match(byId.get("trae-pro").billingCadence, /7-day trial/i, "trae-pro billing cadence names the 7-day trial caveat");
+  assert.match(byId.get("trae-pro").includedValue, /7-day trial/i, "trae-pro included value names the 7-day trial caveat");
+});
+
 test("Augment Code Business tier is listed with its pooled-usage / top-up / Enterprise caveat", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));

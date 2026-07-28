@@ -251,10 +251,10 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, and Augment Code tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, and TRAE tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
-  // Replit Agent, the Bolt and Lovable app builders, and Augment Code alongside
-  // the other plans, so the helper text and pricing copy must surface them too.
+  // Replit Agent, the Bolt and Lovable app builders, Augment Code, and the new
+  // Amp / TRAE tiers, so the helper text and pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
   assert.match(help, /Google AI/i, "helper copy names Google AI");
@@ -274,6 +274,8 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(help, /Bolt/i, "helper copy names Bolt");
   assert.match(help, /Lovable/i, "helper copy names Lovable");
   assert.match(help, /Augment Code/i, "helper copy names Augment Code");
+  assert.match(help, /Amp/i, "helper copy names Amp");
+  assert.match(help, /TRAE \(AI IDE\)/i, "helper copy names TRAE");
   assert.match(
     help,
     /Augment Code \(Business\)/i,
@@ -294,6 +296,10 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /Vibe/i, "pricing disclosure mentions Mistral Vibe coding");
   assert.match(pricing, /Augment Code/i, "pricing disclosure mentions the Augment Code tier");
   assert.match(pricing, /Lovable/i, "pricing disclosure mentions Lovable tiers");
+  assert.match(pricing, /Amp/i, "pricing disclosure mentions Amp tiers");
+  assert.match(pricing, /TRAE/i, "pricing disclosure mentions TRAE tiers");
+  assert.match(pricing, /pay-as-you-go/i, "pricing disclosure explains Amp pay-as-you-go overage");
+  assert.match(pricing, /7-day trial/i, "pricing disclosure explains the TRAE trial caveat");
   assert.match(
     pricing,
     /pooled usage/i,

@@ -26,6 +26,8 @@ Scenario: Supported subscription tiers are listed
   And the Bolt tiers are listed: Free, Pro, and Teams
   And the Lovable tiers are listed: Free, Pro, and Business
   And the Augment Code tier is listed: Business
+  And the Amp tiers are listed: Megawatt and Gigawatt
+  And the TRAE tiers are listed: Lite, Pro, Pro+, and Ultra
   And each tier is distinguishable by its plan name even when it shares a product name
 
 Scenario: Devin Teams pricing preserves the base-fee plus seat math
@@ -110,6 +112,25 @@ Scenario: The Augment Code Business tier discloses its pooled-usage caveat
   And it notes that Augment Code's Enterprise plan is custom-priced and out of scope
   And it points at the official Augment Code pricing page
   And it is optional and unchecked in the default selection
+
+Scenario: Amp tiers disclose their included-agent-usage caveat
+  Given the Amp Megawatt and Gigawatt tiers
+  When the visitor views their billing cadence and included-value text
+  Then the Megawatt tier is priced at $20/mo with $20 of included agent usage
+  And the Gigawatt tier is priced at $200/mo with $200 of included agent usage
+  And each notes that usage beyond the included amount is billed pay-as-you-go
+  And each notes that Amp's usage-based and Enterprise/BYOK options are out of scope
+  And both point at the official Amp pricing page
+  And both are optional and unchecked in the default selection
+
+Scenario: TRAE tiers disclose their monthly-billed view and Pro trial caveat
+  Given the TRAE Lite, Pro, Pro+, and Ultra tiers
+  When the visitor views their billing cadence and included-value text
+  Then the prices shown are stated to be the monthly-billed view
+  And the Pro tier notes it is offered after a 7-day trial on the pricing page
+  And the copy notes that monthly basic usage, bonus usage, queue priority, autocomplete, and concurrent cloud tasks scale up with the tier
+  And all point at the official TRAE pricing page
+  And all are optional and unchecked in the default selection
 
 Scenario: Usage-based tiers disclose their included-credit caveat
   Given a usage-based tier such as GitHub Copilot Pro or Zed Pro
