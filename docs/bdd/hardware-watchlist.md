@@ -9,6 +9,15 @@ Scenario: The watchlist tracks DGX Station as a future, unpriced candidate
   And it records the official specs (GB300 Grace Blackwell Ultra Desktop Superchip, 748 GB coherent memory, up to 20 petaFLOPS, up to 1T-parameter models)
   And it links the official NVIDIA DGX Station source page
 
+Scenario: The watchlist tracks the HP ZGX Nano AI Station as a future, unpriced DGX Spark OEM candidate
+  Given the hardware watchlist in docs/hardware-watchlist.md
+  When a maintainer reviews the entries
+  Then the HP ZGX Nano AI Station is listed as a future hardware candidate
+  And its status states that no public price has been verified yet
+  And its graduation blocker is that no public price is verified yet
+  And it records the official HP ZGX Nano AI Station specs (NVIDIA GB10 Grace Blackwell Superchip, 128 GB coherent unified memory, up to 1 petaFLOP / 1,000 TOPS FP4 compute, local inference up to 200B parameters, and 4 TB NVMe storage)
+  And it links the official HP ZGX Nano AI Station page and NVIDIA's DGX Spark platform page
+
 Scenario: A watchlisted product never seeds the calculator without a sourced price
   Given a product on the hardware watchlist
   When the calculator hardware data in assets/js/data.js is built
@@ -34,6 +43,12 @@ Scenario: The watchlist note and this spec stay in sync
   page exposes specs and order/partner positioning, but no public price has been
   verified yet, so it must not become a calculator preset or a priced
   `referenceOnly` row until a sourced price exists.
+- **HP ZGX Nano AI Station** is a watched entry (see issue #65): HP's OEM take on
+  NVIDIA's DGX Spark (GB10 Grace Blackwell) deskside system. HP's official page
+  and NVIDIA's DGX Spark platform page cover the shared specs, but no public
+  price has been verified yet, so it stays on the watchlist — no calculator
+  preset, featured card, or priced `referenceOnly` row until a sourced price
+  exists.
 - `test/hardware-watchlist.test.js` keeps this spec aligned with the note and
   guards the core invariant: a watchlisted product carries no fabricated price
   and never leaks into the priced calculator data.
