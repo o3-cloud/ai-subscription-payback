@@ -56,6 +56,19 @@ test("data.js exposes only the token-value model the guides actually consume", a
   );
 });
 
+test("data.js does not export the dead subscription category taxonomy", async () => {
+  const data = await import(new URL("data.js", jsDir));
+
+  assert.ok(
+    !Object.hasOwn(data, "subscriptionCategories"),
+    "calculator.js owns the live subscription category filter labels"
+  );
+  assert.ok(
+    data.subscriptions.every((sub) => !Object.hasOwn(sub, "category")),
+    "subscription rows should not carry a stale category field"
+  );
+});
+
 test("every pricing entry carries a source URL and a last-updated date", async () => {
   const data = await import(new URL("data.js", jsDir));
 
