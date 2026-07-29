@@ -7,6 +7,7 @@ The behavior specifications now live in `docs/bdd/` as one file per feature area
 - [Static Site Delivery](docs/bdd/static-site-delivery.md)
 - [Featured Hardware Cards](docs/bdd/featured-hardware-cards.md)
 - [Calculator Inputs](docs/bdd/calculator-inputs.md)
+- [Subscription Selector Filters](docs/bdd/subscription-selector-filters.md)
 - [Calculator Outputs](docs/bdd/calculator-outputs.md)
 - [Pricing Disclosure](docs/bdd/pricing-disclosure.md)
 - [Affiliate Disclosure](docs/bdd/affiliate-disclosure.md)

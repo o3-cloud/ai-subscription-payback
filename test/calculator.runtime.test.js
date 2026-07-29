@@ -205,6 +205,9 @@ function querySelectorAll(root, selector) {
 const REQUIRED_IDS = [
   "calculator-form",
   "subscription-options",
+  "subscription-filter",
+  "subscription-category",
+  "subscription-filter-status",
   "spend-preset",
   "custom-spend",
   "spend-basis",
@@ -265,6 +268,20 @@ function buildDocument() {
   const subOptions = doc.createElement("div");
   subOptions.id = "subscription-options";
   form.appendChild(subOptions);
+
+  const filterSearch = doc.createElement("input");
+  filterSearch.id = "subscription-filter";
+  filterSearch.type = "search";
+  filterSearch.value = "";
+  form.appendChild(filterSearch);
+
+  const filterCategory = doc.createElement("select");
+  filterCategory.id = "subscription-category";
+  form.appendChild(filterCategory);
+
+  const filterStatus = doc.createElement("p");
+  filterStatus.id = "subscription-filter-status";
+  form.appendChild(filterStatus);
 
   const status = doc.createElement("p");
   status.id = "results-status";
@@ -610,6 +627,60 @@ test("initCalculator boots the form from static data and defaults", () => {
     /^Break-even (not reached within \d+ months\.|reached in Month \d+\.)$/
   );
 });
+
+test("subscription filters narrow visible rows without changing selections or spend", () => {
+  const { doc } = boot();
+
+  const rows = () => Array.from(doc.querySelectorAll("#subscription-options .checkbox"));
+  const visibleRows = () => rows().filter((row) => !row.hidden);
+  const selectedIds = () =>
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+      .map((el) => el.value);
+  const selectedBefore = selectedIds();
+  const spendBefore = doc.getElementById("spend-basis").textContent;
+
+  doc.getElementById("subscription-filter").value = "claude";
+  doc.getElementById("calculator-form").dispatch("input");
+
+  const searchVisible = rows().filter((row) =>
+    (row.getAttribute("data-subscription-search") || "").includes("claude")
+  );
+  assert.ok(searchVisible.length < rows().length, "text filtering hides some rows");
+  assert.ok(
+    visibleRows().every((row) =>
+      (row.getAttribute("data-subscription-search") || "").includes("claude")
+    ),
+    "every visible row matches the search text"
+  );
+  assert.equal(
+    doc.getElementById("subscription-filter-status").textContent,
+    `Showing ${searchVisible.length} of ${rows().length} plans for “claude”.`
+  );
+  assert.deepEqual(selectedIds(), selectedBefore, "filtering does not change selections");
+  assert.equal(doc.getElementById("spend-basis").textContent, spendBefore, "filtering does not change the spend basis");
+
+  doc.getElementById("subscription-filter").value = "";
+  doc.getElementById("subscription-category").value = "App builder";
+  doc.getElementById("calculator-form").dispatch("input");
+
+  const categoryVisible = rows().filter(
+    (row) => row.getAttribute("data-subscription-category") === "App builder"
+  );
+  assert.ok(categoryVisible.length < rows().length, "category filtering hides other rows");
+  assert.ok(
+    visibleRows().every(
+      (row) => row.getAttribute("data-subscription-category") === "App builder"
+    ),
+    "every visible row matches the selected category"
+  );
+  assert.equal(
+    doc.getElementById("subscription-filter-status").textContent,
+    `Showing ${categoryVisible.length} of ${rows().length} plans in App builder.`
+  );
+  assert.deepEqual(selectedIds(), selectedBefore, "category filtering also preserves selections");
+});
+
 
 test("comparison table renders billing cadence and included value for every tier", () => {
   const { doc } = boot();

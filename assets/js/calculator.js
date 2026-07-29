@@ -56,6 +56,22 @@ const FIELD_IDS = {
   taxes: "opt-taxes",
 };
 
+/** IDs for the subscription filter controls. */
+const FILTER_IDS = {
+  search: "subscription-filter",
+  category: "subscription-category",
+  status: "subscription-filter-status",
+};
+
+/** Canonical category labels shown in the filter select. */
+const SUBSCRIPTION_CATEGORIES = [
+  "Coding assistant",
+  "AI IDE/editor",
+  "App builder",
+  "Broad AI plan",
+  "Team/enterprise",
+];
+
 // Model constants live in data.js so the methodology copy and the math share a
 // single source of truth.
 const DAYS_PER_MONTH = daysPerMonth;
@@ -575,6 +591,7 @@ function update(doc, win, { writeUrl = true } = {}) {
   const valid = validateForm(doc);
   const state = readState(doc);
   renderResults(doc, state, valid);
+  applySubscriptionFilters(doc);
   syncSpendPreset(doc);
   // Only mirror a valid scenario into the address bar; an invalid edit must not
   // replace the last valid shareable hash with NaN-poisoned params. Remember the
@@ -605,6 +622,36 @@ function subscriptionDisplayName(sub) {
     : sub.name;
 }
 
+/**
+ * Broad, user-facing buckets for the filter select. The categories are
+ * intentionally coarse so they stay useful as pricing coverage grows without
+ * needing a new taxonomy entry for every plan.
+ * @param {Subscription} sub
+ * @returns {string}
+ */
+function subscriptionCategory(sub) {
+  const text = `${sub.name} ${sub.plan}`.toLowerCase();
+  if (/\b(team|business|enterprise)\b/.test(text)) return "Team/enterprise";
+  if (/\b(bolt|lovable|replit)\b/.test(text)) return "App builder";
+  if (/\b(google ai|amazon q developer|mistral)\b/.test(text)) return "Broad AI plan";
+  if (/\b(cursor|zed|jetbrains|trae)\b/.test(text)) return "AI IDE/editor";
+  return "Coding assistant";
+}
+
+/**
+ * Build a normalized search index for a subscription row so the text filter can
+ * match product names, aliases, plan labels, and the included-value copy.
+ * @param {Subscription} sub
+ * @returns {string}
+ */
+function subscriptionSearchIndex(sub) {
+  const category = subscriptionCategory(sub);
+  return [subscriptionDisplayName(sub), sub.plan, sub.includedValue, category]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
 function renderSubscriptionOptions(doc, preselected) {
   const container = doc.getElementById("subscription-options");
   if (!container) return;
@@ -612,6 +659,9 @@ function renderSubscriptionOptions(doc, preselected) {
   for (const sub of subscriptions) {
     const label = doc.createElement("label");
     label.className = "checkbox";
+    const category = subscriptionCategory(sub);
+    label.setAttribute("data-subscription-category", category);
+    label.setAttribute("data-subscription-search", subscriptionSearchIndex(sub));
     const input = doc.createElement("input");
     input.type = "checkbox";
     input.value = sub.id;
@@ -628,6 +678,73 @@ function renderSubscriptionOptions(doc, preselected) {
       )
     );
     container.appendChild(label);
+  }
+}
+
+/** Populate the category filter select from the canonical category list. */
+function renderSubscriptionFilters(doc) {
+  const select = doc.getElementById(FILTER_IDS.category);
+  if (!select) return;
+  select.innerHTML = "";
+
+  const placeholder = doc.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "All categories";
+  select.appendChild(placeholder);
+
+  for (const category of SUBSCRIPTION_CATEGORIES) {
+    const option = doc.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    select.appendChild(option);
+  }
+}
+
+/** Clear the filter controls when the calculator resets to its defaults. */
+function clearSubscriptionFilters(doc) {
+  const search = doc.getElementById(FILTER_IDS.search);
+  const category = doc.getElementById(FILTER_IDS.category);
+  if (search) search.value = "";
+  if (category) category.value = "";
+}
+
+/**
+ * Show only the subscription rows that match the current text and category
+ * filters. Filtering never touches the checkbox state, so selections still feed
+ * the calculator even when a plan is hidden from view.
+ */
+function applySubscriptionFilters(doc) {
+  const search = doc.getElementById(FILTER_IDS.search);
+  const category = doc.getElementById(FILTER_IDS.category);
+  const status = doc.getElementById(FILTER_IDS.status);
+  const rawQuery = (search?.value || "").trim();
+  const query = rawQuery.toLowerCase();
+  const activeCategory = category?.value || "";
+
+  const rows = doc.querySelectorAll("#subscription-options .checkbox");
+  let visible = 0;
+  for (const row of rows) {
+    const rowCategory = row.getAttribute("data-subscription-category") || "";
+    const searchable = row.getAttribute("data-subscription-search") || "";
+    const matchesQuery = !query || searchable.includes(query);
+    const matchesCategory = !activeCategory || rowCategory === activeCategory;
+    const show = matchesQuery && matchesCategory;
+    row.hidden = !show;
+    row.setAttribute("aria-hidden", show ? "false" : "true");
+    if (show) visible += 1;
+  }
+
+  if (status) {
+    const total = rows.length;
+    if (!query && !activeCategory) {
+      status.textContent = `Showing all ${total} subscription plans.`;
+    } else if (query && activeCategory) {
+      status.textContent = `Showing ${visible} of ${total} plans for “${rawQuery}” in ${activeCategory}.`;
+    } else if (query) {
+      status.textContent = `Showing ${visible} of ${total} plans for “${rawQuery}”.`;
+    } else {
+      status.textContent = `Showing ${visible} of ${total} plans in ${activeCategory}.`;
+    }
   }
 }
 
@@ -1235,6 +1352,7 @@ export function initCalculator(doc, win) {
 
   const hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
   renderSubscriptionOptions(doc, initialState.subscriptions);
+  renderSubscriptionFilters(doc);
   renderSpendPresets(doc);
   renderComparison(doc);
   renderPricing(doc);
@@ -1270,6 +1388,7 @@ export function initCalculator(doc, win) {
         event.preventDefault();
       }
       renderSubscriptionOptions(doc);
+      clearSubscriptionFilters(doc);
       applyState(doc, defaults);
       setActiveHardwareCard(hardwareCards, matchLoadedHardware(doc));
       update(doc, win);

@@ -68,6 +68,9 @@ test("scaffold exposes the ids the scripts mount onto", () => {
   const requiredIds = [
     "calculator-form",
     "subscription-options",
+    "subscription-filter",
+    "subscription-category",
+    "subscription-filter-status",
     "results-status",
     "comparison-body",
     "pricing-list",

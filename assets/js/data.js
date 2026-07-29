@@ -38,6 +38,11 @@
  *   substantiated: an "official" vendor price, a "retailer" / street price, or a
  *   class "estimate". Surfaced as a status badge next to the last-verified date.
  * @property {string} lastUpdated - ISO date (YYYY-MM-DD) this entry was last verified
+ * @property {string} [category] - the coarse product family used to group the
+ *   plan in the calculator's subscription-checklist filter (e.g. "Coding agent",
+ *   "IDE assistant"). Assigned from the product name after the array is defined,
+ *   so every tier of a product shares one category. Purely a display/filter aid —
+ *   it never enters the payback math.
  * @property {boolean} [defaultSelected]
  * @property {string[]} [aliases] - other names the product is searched or
  *   marketed under (e.g. Devin's Windsurf / Devin Desktop). Surfaced alongside
@@ -879,6 +884,49 @@ export const subscriptions = [
     lastUpdated: "2026-07-29",
   },
 ];
+
+/**
+ * The coarse product families the subscription checklist can be filtered by, in
+ * the order they appear in the category selector. Purely a discovery aid for the
+ * checklist — categories never enter the payback math or the shareable state.
+ *
+ * @type {string[]}
+ */
+export const subscriptionCategories = [
+  "Coding agent",
+  "IDE assistant",
+  "App builder",
+  "Broad AI subscription",
+];
+
+/**
+ * Category by product `name`. Kept as a single map (rather than a field repeated
+ * on every tier) so all tiers of a product share one category and a new tier
+ * inherits it automatically. Applied onto each subscription's `category` below.
+ */
+const subscriptionCategoryByName = {
+  Codex: "Coding agent",
+  "Claude Code": "Coding agent",
+  "GitHub Copilot": "IDE assistant",
+  Cursor: "IDE assistant",
+  Zed: "IDE assistant",
+  "Google AI": "Broad AI subscription",
+  "Amazon Q Developer": "IDE assistant",
+  Devin: "Coding agent",
+  Replit: "App builder",
+  Mistral: "Broad AI subscription",
+  Bolt: "App builder",
+  Lovable: "App builder",
+  "Augment Code": "Coding agent",
+  Amp: "Coding agent",
+  TRAE: "IDE assistant",
+  "JetBrains AI": "IDE assistant",
+  Tabnine: "IDE assistant",
+};
+
+for (const sub of subscriptions) {
+  sub.category = subscriptionCategoryByName[sub.name] || "Other";
+}
 
 /**
  * Featured local-inference boxes. Ranges span the entry-level and high-memory
