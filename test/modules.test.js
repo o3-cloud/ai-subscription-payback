@@ -159,7 +159,7 @@ test("default-selected subscriptions total $40/mo", async () => {
   assert.equal(total, 40);
 });
 
-test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Developer, and Devin editor-assistant tiers", async () => {
+test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, JetBrains AI, and Tabnine editor-assistant tiers", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
@@ -186,6 +186,9 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     "devin-pro": { name: "Devin", monthlyPrice: 20 },
     "devin-max": { name: "Devin", monthlyPrice: 200 },
     "devin-teams": { name: "Devin", monthlyPrice: 120 },
+    "jetbrains-ai-pro": { name: "JetBrains AI", monthlyPrice: 16.67 },
+    "tabnine-code-assistant": { name: "Tabnine", monthlyPrice: 39 },
+    "tabnine-agentic": { name: "Tabnine", monthlyPrice: 59 },
   };
   const sourceUrls = {
     "GitHub Copilot": "https://github.com/features/copilot/plans",
@@ -194,6 +197,8 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     "Google AI": "https://gemini.google/subscriptions/",
     "Amazon Q Developer": "https://aws.amazon.com/q/developer/pricing/",
     Devin: "https://devin.ai/pricing",
+    "JetBrains AI": "https://www.jetbrains.com/store/?section=commercial&billing=yearly",
+    Tabnine: "https://www.tabnine.com/pricing/",
   };
   for (const [id, { name, monthlyPrice }] of Object.entries(expected)) {
     assert.ok(byId.has(id), `missing subscription tier: ${id}`);
@@ -205,6 +210,22 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     // These editor-assistant tiers are optional: none seed the default selection.
     assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
   }
+
+  assert.match(
+    byId.get("jetbrains-ai-pro").billingCadence,
+    /annual/i,
+    "JetBrains AI Pro discloses annual billing"
+  );
+  assert.match(
+    byId.get("jetbrains-ai-pro").includedValue,
+    /AI Assistant/i,
+    "JetBrains AI Pro included-value text names JetBrains AI Assistant"
+  );
+  assert.match(
+    byId.get("tabnine-agentic").includedValue,
+    /Context Engine/i,
+    "Tabnine Agentic Platform included-value text names the Context Engine"
+  );
 });
 
 test("Devin tiers carry the Windsurf / Devin Desktop alias without duplicating rows", async () => {
@@ -583,6 +604,12 @@ test("the pricing-disclosure BDD documents the Lovable credit-limit caveats", ()
   const bdd = read("docs/bdd/pricing-disclosure.md");
   assert.match(bdd, /Lovable tiers disclose their credit-limit caveats/i);
   assert.match(bdd, /the Lovable tiers are listed: Free, Pro, and Business/i);
+});
+
+test("the pricing-disclosure BDD documents JetBrains AI Pro and Tabnine annual pricing", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /JetBrains AI Pro tier is listed at about \$16\.67\/mo effective/i);
+  assert.match(bdd, /Tabnine tiers are listed: Code Assistant Platform and Agentic Platform/i);
 });
 
 test("Amp tiers cover Megawatt and Gigawatt with included-agent-usage and pay-as-you-go caveats", async () => {

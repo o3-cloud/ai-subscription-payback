@@ -251,10 +251,11 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, and TRAE tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, JetBrains AI Pro, and Tabnine tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
   // Replit Agent, the Bolt and Lovable app builders, Augment Code, and the new
-  // Amp / TRAE tiers, so the helper text and pricing copy must surface them too.
+  // Amp / TRAE / JetBrains AI Pro / Tabnine tiers, so the helper text and
+  // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
   assert.match(help, /Google AI/i, "helper copy names Google AI");
@@ -276,6 +277,8 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(help, /Augment Code/i, "helper copy names Augment Code");
   assert.match(help, /Amp/i, "helper copy names Amp");
   assert.match(help, /TRAE \(AI IDE\)/i, "helper copy names TRAE");
+  assert.match(help, /JetBrains AI Pro/i, "helper copy names JetBrains AI Pro");
+  assert.match(help, /Tabnine/i, "helper copy names Tabnine");
   assert.match(
     help,
     /Augment Code \(Business\)/i,
@@ -298,6 +301,11 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /Lovable/i, "pricing disclosure mentions Lovable tiers");
   assert.match(pricing, /Amp/i, "pricing disclosure mentions Amp tiers");
   assert.match(pricing, /TRAE/i, "pricing disclosure mentions TRAE tiers");
+  assert.match(pricing, /JetBrains AI Pro/i, "pricing disclosure mentions JetBrains AI Pro");
+  assert.match(pricing, /Tabnine/i, "pricing disclosure mentions Tabnine tiers");
+  assert.match(pricing, /\$200 per user\/year/i, "pricing disclosure names JetBrains annual price");
+  assert.match(pricing, /\$39\/user\/month/i, "pricing disclosure names Tabnine Code Assistant pricing");
+  assert.match(pricing, /\$59\/user\/month/i, "pricing disclosure names Tabnine Agentic pricing");
   assert.match(pricing, /pay-as-you-go/i, "pricing disclosure explains Amp pay-as-you-go overage");
   assert.match(pricing, /7-day trial/i, "pricing disclosure explains the TRAE trial caveat");
   assert.match(

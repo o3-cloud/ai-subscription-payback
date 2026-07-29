@@ -188,7 +188,7 @@
               <label for="custom-spend">Custom monthly subscription spend (USD)</label>
               <input type="number" id="custom-spend" name="customSpend" min="0" step="1" inputmode="decimal" placeholder="Leave blank to total the checked subscriptions" />
             </div>
-            <p class="field-help">Check the plans you pay for — Codex, Claude Code, GitHub Copilot, Cursor, Zed, Google AI (Gemini / Jules / Antigravity), Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral (Vibe), Bolt (app builder), Lovable (app builder), Augment Code (Business), Amp, and TRAE (AI IDE) tiers are listed. Leave the spend blank to total the checked subscriptions, or enter your own monthly budget and the calculator will use that instead.</p>
+            <p class="field-help">Check the plans you pay for — Codex, Claude Code, GitHub Copilot, Cursor, Zed, Google AI (Gemini / Jules / Antigravity), Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral (Vibe), Bolt (app builder), Lovable (app builder), Augment Code (Business), Amp, TRAE (AI IDE), JetBrains AI Pro, and Tabnine (Code Assistant Platform / Agentic Platform) tiers are listed. Leave the spend blank to total the checked subscriptions, or enter your own monthly budget and the calculator will use that instead.</p>
             <div id="subscription-options" class="checkbox-list">
               <!-- Populated from data by scripts; static fallback below. -->
               <p class="data-fallback">JavaScript populates the subscription options from the pricing data when the page loads. If this message stays, enable JavaScript to pick the plans you pay for.</p>
@@ -452,7 +452,15 @@
         AI IDE at its monthly-billed prices ($3, $10, $30, and $100); the Pro
         tier has a 7-day trial noted on TRAE's pricing page, and the usage
         allowances (monthly basic/bonus usage, queue priority, autocomplete, and
-        concurrent cloud tasks) scale up with the tier.
+        concurrent cloud tasks) scale up with the tier. The JetBrains AI Pro tier
+        adds AI Assistant and the coding agent to JetBrains IDEs, billed annually
+        at $200 per user/year (~$16.67/mo effective); the free AI Free tier and
+        higher AI Ultimate / enterprise plans are out of scope here. The Tabnine
+        tiers (Code Assistant Platform, Agentic Platform) cover Tabnine's coding
+        assistant, billed as annual subscriptions at $39/user/month and
+        $59/user/month; the Agentic Platform adds agentic workflows and the
+        Context Engine on top of the Code Assistant Platform, and Tabnine's free
+        tier and custom-priced Enterprise deployment are out of scope here.
       </p>
       <p class="last-updated">
         Pricing last updated: <time id="pricing-last-updated" datetime="">—</time>
@@ -523,7 +531,7 @@
         collected.
       </p>
       <p class="footer-meta">
-        Site last updated: <time id="site-last-updated" datetime="2026-07-28">2026-07-28</time>
+        Site last updated: <time id="site-last-updated" datetime="2026-07-29">2026-07-29</time>
         · <a href="#methodology">Methodology</a>
         · <a href="#affiliate">Disclosures</a>
       </p>

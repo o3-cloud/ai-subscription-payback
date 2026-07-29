@@ -101,10 +101,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-28";
+export const pricingLastUpdated = "2026-07-29";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-28";
+export const siteLastUpdated = "2026-07-29";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -838,6 +838,45 @@ export const subscriptions = [
     sourceLabel: "Official TRAE pricing",
     verification: "official",
     lastUpdated: "2026-07-28",
+  },
+  {
+    id: "jetbrains-ai-pro",
+    name: "JetBrains AI",
+    plan: "AI Pro",
+    monthlyPrice: 16.67,
+    billingCadence: "Billed annually — $200 per user/year (~$16.67/mo effective)",
+    includedValue:
+      "AI Pro plan adding JetBrains AI Assistant and the coding agent to JetBrains IDEs for one developer: a per-user allowance of AI credits for chat, completion, and agentic actions across the IDE family, prepaid for a year at a lower effective monthly rate. The free AI Free tier and higher AI Ultimate / enterprise plans are out of scope here.",
+    sourceUrl: "https://www.jetbrains.com/store/?section=commercial&billing=yearly",
+    sourceLabel: "Official JetBrains store pricing",
+    verification: "official",
+    lastUpdated: "2026-07-29",
+  },
+  {
+    id: "tabnine-code-assistant",
+    name: "Tabnine",
+    plan: "Code Assistant Platform",
+    monthlyPrice: 39,
+    billingCadence: "Billed as an annual subscription, per user ($39/user/month)",
+    includedValue:
+      "Code Assistant Platform seat for one developer using Tabnine's AI coding assistant: privacy-oriented code completion and chat across editors, billed as an annual subscription at $39 per user/month. The free tier and custom-priced Enterprise deployment are out of scope here.",
+    sourceUrl: "https://www.tabnine.com/pricing/",
+    sourceLabel: "Official Tabnine pricing",
+    verification: "official",
+    lastUpdated: "2026-07-29",
+  },
+  {
+    id: "tabnine-agentic",
+    name: "Tabnine",
+    plan: "Agentic Platform",
+    monthlyPrice: 59,
+    billingCadence: "Billed as an annual subscription, per user ($59/user/month)",
+    includedValue:
+      "Agentic Platform seat for one developer: everything in the Code Assistant Platform plus Tabnine's agentic workflows and Context Engine, billed as an annual subscription at $59 per user/month. The free tier and custom-priced Enterprise deployment are out of scope here.",
+    sourceUrl: "https://www.tabnine.com/pricing/",
+    sourceLabel: "Official Tabnine pricing",
+    verification: "official",
+    lastUpdated: "2026-07-29",
   },
 ];
 

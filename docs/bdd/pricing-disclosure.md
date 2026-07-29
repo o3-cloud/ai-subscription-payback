@@ -28,6 +28,8 @@ Scenario: Supported subscription tiers are listed
   And the Augment Code tier is listed: Business
   And the Amp tiers are listed: Megawatt and Gigawatt
   And the TRAE tiers are listed: Lite, Pro, Pro+, and Ultra
+  And the JetBrains AI Pro tier is listed at about $16.67/mo effective from $200/year annual billing
+  And the Tabnine tiers are listed: Code Assistant Platform and Agentic Platform
   And each tier is distinguishable by its plan name even when it shares a product name
 
 Scenario: Devin Teams pricing preserves the base-fee plus seat math
@@ -41,7 +43,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, and Augment Code tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, JetBrains AI, and Tabnine tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
