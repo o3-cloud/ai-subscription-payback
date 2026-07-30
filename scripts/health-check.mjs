@@ -36,9 +36,14 @@ const HEAD_UNSUPPORTED = new Set([405, 501]);
 /** HTTP statuses treated as bot-protection warnings on canonical vendor sources. */
 const BOT_PROTECTION_STATUSES = new Set([403, 429]);
 
-/** Browser-like UA to reduce trivial bot blocks on vendor pages. */
-const USER_AGENT =
-  "Mozilla/5.0 (compatible; ai-subscription-payback-healthcheck/1.0; +https://github.com/)";
+/**
+ * User-Agent sent with every probe. Vendor bot-protection commonly blocks the
+ * classic crawler shape (`Mozilla/5.0 (compatible; <bot>/1.0; +https://...)`),
+ * so we present an ordinary desktop-browser UA instead to reduce false 403/429s.
+ */
+export const USER_AGENT =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+  "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 

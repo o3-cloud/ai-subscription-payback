@@ -22,6 +22,7 @@ import assert from "node:assert/strict";
 
 import {
   STALE_THRESHOLD_DAYS,
+  USER_AGENT,
   isValidHttpUrl,
   collectUrlEntries,
   ageInDays,
@@ -116,6 +117,43 @@ test("a valid URL returning 200 OK is probed and graded ok", async () => {
   assert.equal(result.method, "HEAD");
 
   assert.deepEqual(classifyProbe(result, { canonicalVendorSource: true }), { level: "ok" });
+});
+
+test("probeUrl sends a normal desktop-browser User-Agent, not a bot signature", async () => {
+  // Vendor bot-protection blocks the classic crawler UA shape; assert we present
+  // an ordinary browser UA instead so warnings from trivial bot blocks drop.
+  const seen = [];
+  const fetchImpl = async (url, options) => {
+    seen.push(options.headers["user-agent"]);
+    return response(200, { url });
+  };
+
+  await probeUrl("https://example.com/ua", { fetchImpl });
+
+  assert.equal(seen.length, 1);
+  assert.equal(seen[0], USER_AGENT);
+  // A real browser UA: no "compatible; <bot>" token and no "+https" contact URL.
+  assert.match(USER_AGENT, /^Mozilla\/5\.0 /);
+  assert.match(USER_AGENT, /Chrome\/\d/);
+  assert.doesNotMatch(USER_AGENT, /compatible;/i);
+  assert.doesNotMatch(USER_AGENT, /\+https?:\/\//);
+  assert.doesNotMatch(USER_AGENT, /healthcheck|bot|crawler/i);
+});
+
+test("probeUrl reuses the browser User-Agent on the GET fallback too", async () => {
+  const seen = [];
+  const fetchImpl = async (url, options) => {
+    seen.push([options.method, options.headers["user-agent"]]);
+    if (options.method === "HEAD") return response(405, { url });
+    return response(200, { url });
+  };
+
+  await probeUrl("https://example.com/ua-fallback", { fetchImpl });
+
+  assert.deepEqual(seen, [
+    ["HEAD", USER_AGENT],
+    ["GET", USER_AGENT],
+  ]);
 });
 
 test("probeUrl falls back to GET when HEAD is unsupported (405)", async () => {

@@ -1062,7 +1062,7 @@ test("Codex points at a specific OpenAI pricing page and is marked official", as
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const codex = subscriptions.find((s) => s.id === "codex");
   assert.ok(codex, "missing codex subscription entry");
-  assert.equal(codex.sourceUrl, "https://openai.com/chatgpt/pricing/");
+  assert.equal(codex.sourceUrl, "https://chatgpt.com/pricing/");
   assert.equal(codex.verification, "official");
 });
 

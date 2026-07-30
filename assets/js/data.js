@@ -185,7 +185,7 @@ export const subscriptions = [
     monthlyPrice: 20,
     billingCadence: "Billed monthly",
     includedValue: "Individual Codex plan for a single developer.",
-    sourceUrl: "https://openai.com/chatgpt/pricing/",
+    sourceUrl: "https://chatgpt.com/pricing/",
     sourceLabel: "Official OpenAI pricing",
     verification: "official",
     lastUpdated: "2026-07-01",
