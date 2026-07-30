@@ -1,6 +1,6 @@
 # AI Subscription Payback
 
-> Free, static calculator that estimates how long until buying a local AI inference box (Mac Studio, NVIDIA DGX Spark, or Strix Halo / Ryzen AI Max class) is cheaper than paying for AI coding subscriptions like Codex, Claude Code, Google AI (Gemini / Jules / Antigravity), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Amp, and TRAE.
+> Free, static calculator that estimates how long until buying a local AI inference box (Mac Studio, NVIDIA DGX Spark, or Strix Halo / Ryzen AI Max class) is cheaper than paying for AI coding subscriptions like Codex, Claude Code, Google AI (Gemini / Jules / Antigravity), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, and Warp.
 
 The site is a single static page hosted on GitHub Pages at https://www.othree.cloud/ai-subscription-payback/. All computation runs client-side in the browser — there is no backend or API. It is affiliate-funded, and affiliate relationships never change the calculator's math or results. Pricing figures are hand-maintained snapshots with a visible "last updated" date; always confirm current prices with the vendor before buying.
 

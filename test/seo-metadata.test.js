@@ -47,7 +47,7 @@ const metaContent = (attr, value) =>
 
 // The SEO BDD requires the description-style fields to name all of the newly
 // modeled tier families — Google AI, Replit, Mistral, Bolt, Lovable, Augment
-// Code, Amp, and TRAE — not merely one of them. Assert each family
+// Code, Amp, TRAE, and Warp — not merely one of them. Assert each family
 // individually so dropping any one from a field is caught; an OR-alternation
 // would let a field lose one family silently.
 const assertNamesNewTiers = (text, field) => {
@@ -60,6 +60,7 @@ const assertNamesNewTiers = (text, field) => {
     ["Augment Code", /Augment Code/i],
     ["Amp", /Amp/i],
     ["TRAE", /TRAE/i],
+    ["Warp", /Warp/i],
   ]) {
     assert.match(text, pattern, `${field} should name the ${label} tier`);
   }

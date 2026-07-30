@@ -241,6 +241,34 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
   );
 });
 
+test("subscriptions cover the Warp Free, Build, Max, and Business tiers", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  const expected = {
+    "warp-free": { name: "Warp", monthlyPrice: 0 },
+    "warp-build": { name: "Warp", monthlyPrice: 20 },
+    "warp-max": { name: "Warp", monthlyPrice: 200 },
+    "warp-business": { name: "Warp", monthlyPrice: 50 },
+  };
+  for (const [id, { name, monthlyPrice }] of Object.entries(expected)) {
+    assert.ok(byId.has(id), `missing subscription tier: ${id}`);
+    const sub = byId.get(id);
+    assert.equal(sub.name, name, `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.sourceUrl, "https://www.warp.dev/pricing", `${id} points at the official plans page`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+  }
+
+  assert.match(byId.get("warp-free").includedValue, /AI usage is not included/i, "Warp Free excludes AI usage");
+  assert.match(byId.get("warp-build").includedValue, /1,500 credits/i, "Warp Build names the monthly credits");
+  assert.match(byId.get("warp-build").includedValue, /20 concurrent cloud agents/i, "Warp Build names concurrent cloud agents");
+  assert.match(byId.get("warp-max").includedValue, /18,000 credits/i, "Warp Max names the monthly credits");
+  assert.match(byId.get("warp-business").includedValue, /25 seats/i, "Warp Business names the seat cap");
+  assert.match(byId.get("warp-business").billingCadence, /per seat/i, "Warp Business billing cadence is per seat");
+});
+
 test("Devin tiers carry the Windsurf / Devin Desktop alias without duplicating rows", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const devinRows = subscriptions.filter((s) => s.name === "Devin");
@@ -291,6 +319,14 @@ test("the pricing-disclosure BDD explicitly documents Devin Teams base-fee math"
   assert.match(bdd, /Devin Teams pricing preserves the base-fee plus seat math/i);
   assert.match(bdd, /\$80\/mo base fee plus \$40\/mo per full dev seat/i);
   assert.match(bdd, /\$120\/mo shown is the real cost of the base plus one seat/i);
+});
+
+test("the pricing-disclosure BDD explicitly documents Warp's credit caveats", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Warp tiers disclose their agentic-terminal pricing ladder and credit caveats/i);
+  assert.match(bdd, /\$20 \(1,500 credits\)/i);
+  assert.match(bdd, /\$240 \(18,000 credits\)/i);
+  assert.match(bdd, /\$50\/user\/mo/i);
 });
 
 test("usage-based tiers disclose their included-credit caveat", async () => {

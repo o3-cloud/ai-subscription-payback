@@ -254,10 +254,10 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, JetBrains AI Pro, and Tabnine tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, JetBrains AI Pro, Tabnine, and Warp tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
   // Replit Agent, the Bolt and Lovable app builders, Augment Code, and the new
-  // Amp / TRAE / JetBrains AI Pro / Tabnine tiers, so the helper text and
+  // Amp / TRAE / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
   // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
@@ -282,6 +282,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(help, /TRAE \(AI IDE\)/i, "helper copy names TRAE");
   assert.match(help, /JetBrains AI Pro/i, "helper copy names JetBrains AI Pro");
   assert.match(help, /Tabnine/i, "helper copy names Tabnine");
+  assert.match(help, /Warp/i, "helper copy names Warp");
   assert.match(
     help,
     /Augment Code \(Business\)/i,
@@ -304,6 +305,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /Lovable/i, "pricing disclosure mentions Lovable tiers");
   assert.match(pricing, /Amp/i, "pricing disclosure mentions Amp tiers");
   assert.match(pricing, /TRAE/i, "pricing disclosure mentions TRAE tiers");
+  assert.match(pricing, /Warp/i, "pricing disclosure mentions Warp tiers");
   assert.match(pricing, /JetBrains AI Pro/i, "pricing disclosure mentions JetBrains AI Pro");
   assert.match(pricing, /Tabnine/i, "pricing disclosure mentions Tabnine tiers");
   assert.match(pricing, /\$200 per user\/year/i, "pricing disclosure names JetBrains annual price");

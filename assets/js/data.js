@@ -101,10 +101,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-29";
+export const pricingLastUpdated = "2026-07-30";
 
 /** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-29";
+export const siteLastUpdated = "2026-07-30";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -877,6 +877,58 @@ export const subscriptions = [
     sourceLabel: "Official Tabnine pricing",
     verification: "official",
     lastUpdated: "2026-07-29",
+  },
+  {
+    id: "warp-free",
+    name: "Warp",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free plan for one developer: core Warp terminal features with support for agentic coding, but AI usage is not included and must be added through a paid plan or usage.",
+    sourceUrl: "https://www.warp.dev/pricing",
+    sourceLabel: "Official Warp pricing",
+    verification: "official",
+    lastUpdated: "2026-07-30",
+  },
+  {
+    id: "warp-build",
+    name: "Warp",
+    plan: "Build",
+    monthlyPrice: 20,
+    billingCadence: "Billed monthly — from $20/mo, usage-based beyond the included credits",
+    includedValue:
+      "Individual Build plan for one developer starting at $20/mo: includes $20 (1,500 credits) of monthly AI usage with access to frontier and open-source models, 20 concurrent cloud agents, and 2 vCPU / 4 GiB cloud-agent compute; AI usage beyond the included monthly credits is billed separately, so the plan price is not unlimited AI usage.",
+    sourceUrl: "https://www.warp.dev/pricing",
+    sourceLabel: "Official Warp pricing",
+    verification: "official",
+    lastUpdated: "2026-07-30",
+  },
+  {
+    id: "warp-max",
+    name: "Warp",
+    plan: "Max",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly — from $200/mo, usage-based beyond the included credits",
+    includedValue:
+      "Top individual Max plan for heavier use starting at $200/mo: includes $240 (18,000 credits) of monthly AI usage, 20 concurrent cloud agents, and 4 vCPU / 8 GiB cloud-agent compute; AI usage beyond the included monthly credits is billed separately, so the plan price is not unlimited AI usage.",
+    sourceUrl: "https://www.warp.dev/pricing",
+    sourceLabel: "Official Warp pricing",
+    verification: "official",
+    lastUpdated: "2026-07-30",
+  },
+  {
+    id: "warp-business",
+    name: "Warp",
+    plan: "Business",
+    monthlyPrice: 50,
+    billingCadence: "Billed monthly, per seat — from $50/user/mo, usage-based beyond the included credits",
+    includedValue:
+      "Per-seat Business plan for a team starting at $50/user/mo for up to 25 seats: includes $20 (1,500 credits) of monthly AI usage per plan, 80 concurrent cloud agents, and 8 vCPU / 16 GiB cloud-agent compute; AI usage beyond the included monthly credits is billed separately, and Warp's custom-priced Enterprise plan is out of scope here.",
+    sourceUrl: "https://www.warp.dev/pricing",
+    sourceLabel: "Official Warp pricing",
+    verification: "official",
+    lastUpdated: "2026-07-30",
   },
 ];
 

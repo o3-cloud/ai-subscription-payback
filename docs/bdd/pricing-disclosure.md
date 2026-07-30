@@ -28,6 +28,8 @@ Scenario: Supported subscription tiers are listed
   And the Augment Code tier is listed: Business
   And the Amp tiers are listed: Megawatt and Gigawatt
   And the TRAE tiers are listed: Lite, Pro, Pro+, and Ultra
+  And the Warp tiers are listed: Free, Build, Max, and Business
+  And the Warp tiers disclose that AI usage is billed separately from the included monthly credits and that Enterprise is out of scope
   And the JetBrains AI Pro tier is listed at about $16.67/mo effective from $200/year annual billing
   And the Tabnine tiers are listed: Code Assistant Platform and Agentic Platform
   And each tier is distinguishable by its plan name even when it shares a product name
@@ -43,7 +45,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, JetBrains AI, and Tabnine tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, JetBrains AI, Tabnine, and Warp tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
@@ -132,6 +134,18 @@ Scenario: TRAE tiers disclose their monthly-billed view and Pro trial caveat
   And the Pro tier notes it is offered after a 7-day trial on the pricing page
   And the copy notes that monthly basic usage, bonus usage, queue priority, autocomplete, and concurrent cloud tasks scale up with the tier
   And all point at the official TRAE pricing page
+  And all are optional and unchecked in the default selection
+
+Scenario: Warp tiers disclose their agentic-terminal pricing ladder and credit caveats
+  Given the Warp Free, Build, Max, and Business tiers
+  When the visitor views their billing cadence and included-value text
+  Then the Free tier is priced at $0/mo with core terminal features but no included AI usage
+  And the Build tier starts at $20/mo with $20 (1,500 credits) of monthly AI usage plus frontier and open-source model access, 20 concurrent cloud agents, and 2 vCPU / 4 GiB cloud-agent compute
+  And the Max tier starts at $200/mo with $240 (18,000 credits) of monthly AI usage plus 20 concurrent cloud agents and 4 vCPU / 8 GiB cloud-agent compute
+  And the Business tier starts at $50/user/mo with $20 (1,500 credits) of monthly AI usage, up to 25 seats, 80 concurrent cloud agents, and 8 vCPU / 16 GiB cloud-agent compute
+  And the copy notes that AI usage beyond the included monthly credits is billed separately
+  And the copy notes that Warp's Enterprise plan is custom-priced and out of scope
+  And all point at the official Warp pricing page
   And all are optional and unchecked in the default selection
 
 Scenario: Usage-based tiers disclose their included-credit caveat
