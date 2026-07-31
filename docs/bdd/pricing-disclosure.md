@@ -225,6 +225,15 @@ Scenario: DGX Spark uses NVIDIA's official Marketplace Buy Now path
   And the displayed price still comes from the unchanged retailer pricing source
   And the other featured hardware cards may still use affiliate or reseller CTAs
 
+Scenario: DGX Spark surfaces current retailer trims alongside the base estimate
+  Given the DGX Spark featured hardware card
+  When the visitor views its price note and trim selector
+  Then the base range remains a $2,999-$3,999 estimate for the platform class
+  And the trim selector includes the Seeed Studio $3,999 listing
+  And the trim selector includes the ASUS Ascent GX10 GB10 system
+  And the trim selector includes the PNY 4 TB retailer listing at $5,199.99
+  And the named trims stay separate from the official Marketplace CTA
+
 Scenario: Featured products are named clearly
   Given the hardware comparison section
   When the visitor views it

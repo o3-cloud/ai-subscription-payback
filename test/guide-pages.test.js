@@ -215,6 +215,9 @@ test("each mini-guide carries the required SEO and content structure", () => {
       assert.match(html, /70B parameters/i, `${guide.path} includes NVIDIA's 70B-parameter fine-tuning claim`);
       assert.match(html, /405B parameters/i, `${guide.path} includes NVIDIA's 405B two-system claim`);
       assert.match(html, /separate estimate, not the vendor claim above/i, `${guide.path} keeps the heuristic separate from the official claim`);
+      assert.match(html, /\$2,999–\$3,999/i, `${guide.path} keeps the base DGX Spark estimate visible`);
+      assert.match(html, /Seeed Studio \$3,999 listing/i, `${guide.path} surfaces the current Seeed Studio listing`);
+      assert.match(html, /PNY at \$5,199\.99/i, `${guide.path} surfaces the current PNY retailer context`);
     }
     assert.match(html, /Cost estimates only\.[\s\S]*Not\s+financial advice\./i, `${guide.path} states the comparison is cost-only and not financial advice`);
     assert.match(

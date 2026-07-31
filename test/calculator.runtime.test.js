@@ -793,18 +793,19 @@ test("featured hardware renders affiliate CTAs from the separate affiliate metad
     assert.ok(hrefs.includes(box.sourceUrl), `missing source link for ${box.id}`);
 
     // The CTA is looked up from the affiliates map, not the pricing entry.
-    // Commissioned links carry the (affiliate) label and sponsored rel; official
-    // buy-now paths (e.g. DGX Spark's NVIDIA Marketplace link) carry neither.
+    // Commissioned links carry the (affiliate) label and sponsored rel; some
+    // trims intentionally have no dedicated CTA metadata.
     const affiliate = getAffiliate(box.id);
-    assert.ok(affiliate, `expected CTA metadata for ${box.id}`);
-    const cta = links.find((a) => a.getAttribute("href") === affiliate.url);
-    assert.ok(cta, `missing CTA for ${box.id}`);
-    if (affiliate.affiliate) {
-      assert.match(cta.textContent, /\(affiliate\)/, `${box.id} affiliate CTA is labeled`);
-      assert.match(cta.getAttribute("rel"), /sponsored/, `${box.id} affiliate CTA is sponsored`);
-    } else {
-      assert.doesNotMatch(cta.textContent, /\(affiliate\)/, `${box.id} official CTA is not labeled affiliate`);
-      assert.doesNotMatch(cta.getAttribute("rel") || "", /sponsored/, `${box.id} official CTA is not sponsored`);
+    if (affiliate) {
+      const cta = links.find((a) => a.getAttribute("href") === affiliate.url);
+      assert.ok(cta, `missing CTA for ${box.id}`);
+      if (affiliate.affiliate) {
+        assert.match(cta.textContent, /\(affiliate\)/, `${box.id} affiliate CTA is labeled`);
+        assert.match(cta.getAttribute("rel"), /sponsored/, `${box.id} affiliate CTA is sponsored`);
+      } else {
+        assert.doesNotMatch(cta.textContent, /\(affiliate\)/, `${box.id} official CTA is not labeled affiliate`);
+        assert.doesNotMatch(cta.getAttribute("rel") || "", /sponsored/, `${box.id} official CTA is not sponsored`);
+      }
     }
   }
 
@@ -1046,11 +1047,19 @@ test("DGX Spark exposes a named ASUS Ascent GX10 trim and loads it correctly", a
   const selects = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select");
   const buttons = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use");
   const select = selects[dgxSparkIndex];
+  const seeedTrim = trims.find((trim) => trim.id === "seeed-dgx-spark");
   const asusTrim = trims.find((trim) => trim.id === "asus-ascent-gx10");
+  const pnyTrim = trims.find((trim) => trim.id === "pny-dgx-spark");
 
+  assert.ok(seeedTrim, "expected the DGX Spark card to expose the Seeed Studio trim");
   assert.ok(asusTrim, "expected the DGX Spark card to expose the ASUS Ascent GX10 trim");
-  assert.equal(trims.length, 3, "DGX Spark should keep low, ASUS, and high trims");
-  assert.equal(defaultTrim.id, "dgx-spark-high", "DGX Spark keeps its documented high-end default");
+  assert.ok(pnyTrim, "expected the DGX Spark card to expose the PNY trim");
+  assert.deepEqual(
+    trims.map((trim) => trim.id),
+    ["seeed-dgx-spark", "asus-ascent-gx10", "pny-dgx-spark"],
+    "DGX Spark should surface the current named retailer trims"
+  );
+  assert.equal(defaultTrim.id, "seeed-dgx-spark", "DGX Spark now defaults to the Seeed Studio trim");
   assert.ok(select, "expected a DGX Spark trim selector");
   assert.equal(select.children.length, 3, "DGX Spark trim selector lists three options");
 
