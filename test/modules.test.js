@@ -193,6 +193,7 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     "google-ai-plus": { name: "Google AI", monthlyPrice: 4.99 },
     "google-ai-pro": { name: "Google AI", monthlyPrice: 19.99 },
     "google-ai-ultra": { name: "Google AI", monthlyPrice: 99.99 },
+    "google-ai-ultra-20x": { name: "Google AI", monthlyPrice: 199.99 },
     "amazon-q-developer-free": { name: "Amazon Q Developer", monthlyPrice: 0 },
     "amazon-q-developer-pro": { name: "Amazon Q Developer", monthlyPrice: 19 },
     "devin-free": { name: "Devin", monthlyPrice: 0 },
@@ -353,8 +354,8 @@ test("Google AI tiers describe the Jules / Antigravity coding-agent benefit", as
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
-  // All three tiers are broad Google AI subscriptions marked official.
-  for (const id of ["google-ai-plus", "google-ai-pro", "google-ai-ultra"]) {
+  // All four tiers are broad Google AI subscriptions marked official.
+  for (const id of ["google-ai-plus", "google-ai-pro", "google-ai-ultra", "google-ai-ultra-20x"]) {
     const sub = byId.get(id);
     assert.ok(sub, `missing subscription tier: ${id}`);
     assert.equal(sub.verification, "official", `${id} is marked official`);
@@ -364,11 +365,20 @@ test("Google AI tiers describe the Jules / Antigravity coding-agent benefit", as
     assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
   }
 
-  // Only Pro and Ultra bundle the Jules / Google Antigravity coding agents.
-  for (const id of ["google-ai-pro", "google-ai-ultra"]) {
+  // Only Pro and the two Ultra tiers bundle the Jules / Google Antigravity coding agents.
+  for (const id of ["google-ai-pro", "google-ai-ultra", "google-ai-ultra-20x"]) {
     assert.match(byId.get(id).includedValue, /Jules/, `${id} names Jules`);
     assert.match(byId.get(id).includedValue, /Antigravity/, `${id} names Google Antigravity`);
   }
+
+  // The Ultra plan family exposes both the $99.99 (5x) and $199.99 (20x) prices.
+  assert.equal(byId.get("google-ai-ultra").monthlyPrice, 99.99, "Ultra 5x is $99.99/mo");
+  assert.equal(byId.get("google-ai-ultra-20x").monthlyPrice, 199.99, "Ultra 20x is $199.99/mo");
+  assert.notEqual(
+    byId.get("google-ai-ultra").plan,
+    byId.get("google-ai-ultra-20x").plan,
+    "the two Ultra tiers have distinct plan labels"
+  );
 });
 
 test("Amazon Q Developer tiers disclose their agentic / Java-transformation quota caveat", async () => {

@@ -17,7 +17,7 @@ Scenario: Supported subscription tiers are listed
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
   And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
   And the Zed tiers are listed: Personal, Pro, and Business
-  And the Google AI tiers are listed: Plus, Pro, and Ultra
+  And the Google AI tiers are listed: Plus, Pro, Ultra 5x, and Ultra 20x
   And the Amazon Q Developer tiers are listed: Free and Pro
   And the Devin tiers are listed: Free, Pro, Max, and Teams (base + 1 seat)
   And the Devin tiers surface the alias "Devin (Windsurf / Devin Desktop)" without duplicating any rows
@@ -49,11 +49,12 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
-  Given the Google AI Plus, Pro, and Ultra tiers
+  Given the Google AI Plus, Pro, Ultra 5x, and Ultra 20x tiers
   When the visitor views their included-value text
   Then each is described as a broad Google AI subscription
-  And the Pro and Ultra tiers note the included coding-agent access to Jules and Google Antigravity
-  And all three are optional and unchecked in the default selection
+  And the Pro, Ultra 5x, and Ultra 20x tiers note the included coding-agent access to Jules and Google Antigravity
+  And the Ultra 5x tier is priced at $99.99/mo (5× AI Pro limits) and the Ultra 20x tier at $199.99/mo (20× AI Pro limits)
+  And all four are optional and unchecked in the default selection
 
 Scenario: Amazon Q Developer tiers disclose their quota caveat
   Given the Amazon Q Developer Free and Pro tiers

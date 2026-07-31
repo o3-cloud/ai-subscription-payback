@@ -101,10 +101,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-30";
+export const pricingLastUpdated = "2026-07-31";
 
-/** ISO date (YYYY-MM-DD) the site content was last updated. */
-export const siteLastUpdated = "2026-07-30";
+/** Site-wide freshness stamp used in the footer. */
+export const siteLastUpdated = "2026-07-31";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -127,8 +127,10 @@ export const tokenOutputValueAssumptions = {
  * single individual plan; Claude Code carries the full public ladder (Pro, Max,
  * and Team seats) so a visitor can compare their real tier. GitHub Copilot,
  * Cursor, and Zed round out the common IDE/editor assistant plans, and the
- * Google AI tiers (Plus, Pro, Ultra) cover the broad Gemini subscriptions whose
- * Pro/Ultra tiers bundle the Jules and Google Antigravity coding agents, and the
+ * Google AI tiers (Plus, Pro, Ultra 5x, Ultra 20x) cover the broad Gemini
+ * subscriptions whose Pro/Ultra tiers bundle the Jules and Google Antigravity
+ * coding agents — Ultra ships as a plan family at $99.99/mo (5× AI Pro limits)
+ * and $199.99/mo (20× AI Pro limits) — and the
  * Amazon Q Developer tiers (Free, Pro) cover AWS's assistant whose agentic
  * requests and Java code-transformation allowance are quota-limited, and the
  * Devin tiers (Free, Pro, Max, and a Teams plan) cover Cognition's autonomous
@@ -461,15 +463,28 @@ export const subscriptions = [
   {
     id: "google-ai-ultra",
     name: "Google AI",
-    plan: "Ultra",
+    plan: "Ultra 5x",
     monthlyPrice: 99.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Top Google AI subscription with the highest Gemini limits across Google apps, plus the largest coding-agent allowances for Jules and Google Antigravity.",
+      "Starting Google AI Ultra tier at 5× higher usage limits vs. AI Pro, with high Gemini limits across Google apps plus coding-agent access to Jules and Google Antigravity at the Ultra 5x rate limits.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-07-15",
+    lastUpdated: "2026-07-31",
+  },
+  {
+    id: "google-ai-ultra-20x",
+    name: "Google AI",
+    plan: "Ultra 20x",
+    monthlyPrice: 199.99,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Top Google AI Ultra tier at 20× higher usage limits vs. AI Pro, with the highest Gemini limits across Google apps plus the highest Jules limits and Google Antigravity rate limits of the coding agents.",
+    sourceUrl: "https://gemini.google/subscriptions/",
+    sourceLabel: "Official Google pricing",
+    verification: "official",
+    lastUpdated: "2026-07-31",
   },
   {
     id: "amazon-q-developer-free",

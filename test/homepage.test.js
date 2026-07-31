@@ -293,8 +293,8 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
   assert.match(
     pricing,
-    /Google AI Pro and Ultra[\s\S]*?Jules[\s\S]*?Antigravity/i,
-    "pricing copy explains Google AI Pro/Ultra bundle Jules and Antigravity"
+    /Google AI Pro, Ultra 5x, and Ultra 20x[\s\S]*?Jules[\s\S]*?Antigravity/i,
+    "pricing copy explains the Google AI Ultra family bundles Jules and Antigravity"
   );
   assert.match(pricing, /Devin/i, "pricing disclosure mentions Devin tiers");
   assert.match(pricing, /Replit/i, "pricing disclosure mentions Replit tiers");
