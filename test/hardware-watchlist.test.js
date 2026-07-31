@@ -50,6 +50,15 @@ const zgxNanoHpSource =
 const dgxSparkSource =
   /https?:\/\/www\.nvidia\.com\/en-us\/products\/workstations\/dgx-spark\//i;
 
+const dgxSparkWatchContextPatterns = [
+  /MSI EdgeXpert and GIGABYTE AI TOP Atom/i,
+  /watch \/ research context only/i,
+  /marketplace comparison\s+listings/i,
+  /not from a stable, in-stock retailer page/i,
+  /source stability(?:\s+\/\s+|\s+and\s+)availability/i,
+  /(?:Do not\s+add a calculator preset|no calculator preset), featured card, or priced `?referenceOnly`? row/i,
+];
+
 test("the PRD explicitly tracks DGX Station as a future watchlist item", () => {
   assert.match(prd, /## Hardware Watchlist/i, "PRD has a hardware watchlist section");
   assert.match(prd, /NVIDIA DGX Station/i, "PRD names DGX Station");
@@ -105,6 +114,13 @@ test("the watchlist note records the official HP ZGX Nano specs and sources the 
   }
   assert.match(watchlist, zgxNanoHpSource, "watchlist note links the official HP ZGX Nano AI Station page");
   assert.match(watchlist, dgxSparkSource, "watchlist note links NVIDIA's DGX Spark platform page for the shared GB10 specs");
+});
+
+test("the watchlist note and BDD both keep unstable DGX Spark-class marketplace context out of the calculator", () => {
+  for (const pattern of dgxSparkWatchContextPatterns) {
+    assert.match(watchlist, pattern, `watchlist note should include ${pattern}`);
+    assert.match(watchlistBdd, pattern, `BDD should include ${pattern}`);
+  }
 });
 
 test("DGX Station does not leak into the priced calculator data yet", async () => {

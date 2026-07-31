@@ -18,6 +18,15 @@ Scenario: The watchlist tracks the HP ZGX Nano AI Station as a future, unpriced 
   And it records the official HP ZGX Nano AI Station specs (NVIDIA GB10 Grace Blackwell Superchip, 128 GB coherent unified memory, up to 1 petaFLOP / 1,000 TOPS FP4 compute, local inference up to 200B parameters, and 4 TB NVMe storage)
   And it links the official HP ZGX Nano AI Station page and NVIDIA's DGX Spark platform page
 
+Scenario: The watchlist keeps unstable DGX Spark-class marketplace context out of the calculator
+  Given the hardware watchlist in docs/hardware-watchlist.md
+  When a maintainer reviews the entries
+  Then MSI EdgeXpert and GIGABYTE AI TOP Atom are listed as DGX Spark-class watch / research context only
+  And their status says they were observed in marketplace comparison listings but not from a stable, in-stock retailer page
+  And their observed context records the unstable marketplace comparison prices without treating them as MSRP
+  And their graduation blocker is source stability and availability, not a missing price
+  And the note says no calculator preset, featured card, or priced referenceOnly row should be added until a stable retailer listing is verified
+
 Scenario: A watchlisted product never seeds the calculator without a sourced price
   Given a product on the hardware watchlist
   When the calculator hardware data in assets/js/data.js is built

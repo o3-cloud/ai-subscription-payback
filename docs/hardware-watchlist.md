@@ -49,6 +49,33 @@ source, and the exact blocker (usually "no public price verified yet").
   `sourceUrl`, `verification`, and `lastUpdated` set, and remove the entry from
   this watchlist.
 
+## MSI EdgeXpert and GIGABYTE AI TOP Atom (DGX Spark-class)
+
+- **Status:** Watch / research context only — observed in marketplace comparison
+  listings but not from a stable, in-stock retailer page as of 2026-07-31. Do not
+  add a calculator preset, featured card, or priced `referenceOnly` row until an
+  available, stable retailer listing is verified.
+- **Why watch it:** Both are OEM DGX Spark-class (NVIDIA GB10 Grace Blackwell)
+  systems that widen the street-price picture around the featured DGX Spark card,
+  so they matter for visitors comparing subscriptions against a name-brand local
+  inference box.
+- **Observed context:** The MSI EdgeXpert AI Mini Desktop (DGX Spark Platform)
+  showed a marketplace comparison price around $5,651.71 while the product itself
+  was marked currently unavailable; GIGABYTE AI TOP Atom showed a marketplace
+  comparison price around $4,999.99. These are unstable marketplace figures, not a
+  fixed MSRP or a verified in-stock listing, so no price graduates to the data.
+- **Source:** MSI EdgeXpert Amazon product / marketplace page
+  <https://www.amazon.com/msi-EdgeXpert-Supercomputer-Blackwell-Architecture/dp/B0FWFLZQSC>
+  with NVIDIA's DGX Spark platform page
+  <https://www.nvidia.com/en-us/products/workstations/dgx-spark/> for the shared
+  GB10 specs (marketplace / comparison context only; availability not stable at
+  last check).
+- **Graduation blocker:** Source stability / availability, not a missing price. A
+  verifiable, in-stock listing from a stable retailer (not a currently-unavailable
+  marketplace comparison) is required. When one exists, add a sourced `hardware`
+  entry (or a `referenceOnly` row) with `sourceUrl`, `verification`, and
+  `lastUpdated` set, and remove the entry from this watchlist.
+
 ## Maintaining this list
 
 - Keep this note in sync with its behavior spec,
