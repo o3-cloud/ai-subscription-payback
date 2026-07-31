@@ -170,6 +170,22 @@ test("probeUrl falls back to GET when HEAD is unsupported (405)", async () => {
   assert.equal(result.ok, true);
 });
 
+test("probeUrl falls back to GET when HEAD throws, and recovers", async () => {
+  const seen = [];
+  const fetchImpl = async (url, options) => {
+    seen.push(options.method);
+    if (options.method === "HEAD") throw new Error("ECONNRESET");
+    return response(200, { url });
+  };
+
+  const result = await probeUrl("https://example.com/head-throws", { fetchImpl });
+
+  assert.deepEqual(seen, ["HEAD", "GET"]);
+  assert.equal(result.method, "GET");
+  assert.equal(result.ok, true);
+  assert.equal(result.status, 200);
+});
+
 test("a canonical vendor source returning 403/429 is downgraded to a warning", async () => {
   for (const status of [403, 429]) {
     const url = `https://vendor.example/${status}`;
