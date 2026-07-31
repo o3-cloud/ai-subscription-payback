@@ -123,6 +123,23 @@ test("the watchlist note and BDD both keep unstable DGX Spark-class marketplace 
   }
 });
 
+test("MSI EdgeXpert and GIGABYTE AI TOP Atom do not leak into the priced calculator data yet", async () => {
+  const { hardware, featuredHardware } = await import(new URL("../assets/js/data.js", import.meta.url));
+  const isDGXSparkClassWatchlist = (box) =>
+    /edgexpert|ai[\s-]*top[\s-]*atom/i.test(box.id ?? "") || /edgexpert|ai[\s-]*top[\s-]*atom/i.test(box.name ?? "");
+
+  assert.equal(
+    hardware.some(isDGXSparkClassWatchlist),
+    false,
+    "MSI EdgeXpert and GIGABYTE AI TOP Atom should not yet be priced hardware rows"
+  );
+  assert.equal(
+    featuredHardware.some(isDGXSparkClassWatchlist),
+    false,
+    "MSI EdgeXpert and GIGABYTE AI TOP Atom should not be featured cards before pricing exists"
+  );
+});
+
 test("DGX Station does not leak into the priced calculator data yet", async () => {
   const { hardware, featuredHardware } = await import(new URL("../assets/js/data.js", import.meta.url));
   assert.equal(
