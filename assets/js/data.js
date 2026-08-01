@@ -101,10 +101,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-07-31";
+export const pricingLastUpdated = "2026-08-01";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-07-31";
+export const siteLastUpdated = "2026-08-01";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -184,7 +184,13 @@ export const tokenOutputValueAssumptions = {
  * seats) bundles $20 (1,500 credits) per plan; AI usage beyond the included
  * monthly credits is billed separately on every paid tier, so the plan price is
  * not unlimited AI usage, and Warp's custom-priced Enterprise plan is out of
- * scope. All of these ship unchecked (no `defaultSelected`) so the default
+ * scope. The Factory tiers (Pro, Plus, Max) cover Factory's Droid
+ * software-development agents at their monthly individual prices ($20, $100,
+ * $200): Pro covers Desktop/CLI/SDK access with cloud and local background
+ * agents, Plus adds roughly 5× the Pro usage plus Droid Computers
+ * (Factory-managed cloud computers) for remote Droids, and Max adds roughly 10×
+ * the Pro usage plus early access to new features; Factory's custom-priced
+ * Business and Enterprise plans are out of scope. All of these ship unchecked (no `defaultSelected`) so the default
  * comparison basis stays Codex + Claude Code Pro and only expands when a visitor
  * opts in.
  *
@@ -961,6 +967,45 @@ export const subscriptions = [
     sourceLabel: "Official Warp pricing",
     verification: "official",
     lastUpdated: "2026-07-30",
+  },
+  {
+    id: "factory-pro",
+    name: "Factory",
+    plan: "Pro",
+    monthlyPrice: 20,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Individual Pro plan for one developer using the Factory Droid software-development agents: Desktop, CLI, and SDK access with cloud and local background agents, billing/usage statistics, and an agent-readiness dashboard.",
+    sourceUrl: "https://factory.ai/pricing",
+    sourceLabel: "Official Factory pricing",
+    verification: "official",
+    lastUpdated: "2026-08-01",
+  },
+  {
+    id: "factory-plus",
+    name: "Factory",
+    plan: "Plus",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Individual Plus plan for heavier use: roughly 5× the usage of Pro, plus Droid Computers (Factory-managed cloud computers) for remote Droids.",
+    sourceUrl: "https://factory.ai/pricing",
+    sourceLabel: "Official Factory pricing",
+    verification: "official",
+    lastUpdated: "2026-08-01",
+  },
+  {
+    id: "factory-max",
+    name: "Factory",
+    plan: "Max",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Top individual Max plan for power users using the Factory Droid software-development agents: roughly 10× the usage of Pro plus early access to new features; Factory's custom-priced Business and Enterprise plans are out of scope here.",
+    sourceUrl: "https://factory.ai/pricing",
+    sourceLabel: "Official Factory pricing",
+    verification: "official",
+    lastUpdated: "2026-08-01",
   },
 ];
 

@@ -270,6 +270,54 @@ test("subscriptions cover the Warp Free, Build, Max, and Business tiers", async 
   assert.match(byId.get("warp-business").billingCadence, /per seat/i, "Warp Business billing cadence is per seat");
 });
 
+test("Factory tiers cover Pro, Plus, and Max for Factory's Droid agents", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  // Curated from the official Factory pricing page: three monthly individual
+  // tiers for Factory's Droid software-development agents.
+  const expected = {
+    "factory-pro": { plan: "Pro", monthlyPrice: 20 },
+    "factory-plus": { plan: "Plus", monthlyPrice: 100 },
+    "factory-max": { plan: "Max", monthlyPrice: 200 },
+  };
+  for (const [id, { plan, monthlyPrice }] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Factory", `${id} product name`);
+    assert.equal(sub.plan, plan, `${id} plan name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceUrl, "https://factory.ai/pricing", `${id} points at the official Factory pricing page`);
+    // Optional: none seed the default selection.
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+    // Each tier is framed around Factory's Droid software-development agents.
+    assert.match(sub.includedValue, /Droid/i, `${id} names the Droid agents`);
+  }
+
+  // The Pro tier names its Desktop/CLI/SDK access plus background agents.
+  const pro = byId.get("factory-pro").includedValue;
+  assert.match(pro, /Desktop, CLI, and SDK/i, "pro names Desktop/CLI/SDK access");
+  assert.match(pro, /cloud and local background agents/i, "pro names cloud and local background agents");
+
+  // The Plus tier surfaces the ~5x usage and Droid Computers benefit.
+  const plus = byId.get("factory-plus").includedValue;
+  assert.match(plus, /5×|5x/i, "plus names roughly 5x the Pro usage");
+  assert.match(plus, /Droid Computers/i, "plus names Droid Computers for remote Droids");
+
+  // The Max tier surfaces the ~10x usage, early access, and out-of-scope plans.
+  const max = byId.get("factory-max").includedValue;
+  assert.match(max, /10×|10x/i, "max names roughly 10x the Pro usage");
+  assert.match(max, /early access/i, "max names early access to new features");
+  assert.match(max, /Business and Enterprise plans are out of scope/i, "max notes the out-of-scope Business/Enterprise plans");
+});
+
+test("the pricing-disclosure BDD documents the Factory Droid-agent tiers", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Factory tiers disclose their Droid-agent pricing ladder and out-of-scope plans/i);
+  assert.match(bdd, /the Factory tiers are listed: Pro, Plus, and Max/i);
+});
+
 test("Devin tiers carry the Windsurf / Devin Desktop alias without duplicating rows", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const devinRows = subscriptions.filter((s) => s.name === "Devin");

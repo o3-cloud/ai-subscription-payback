@@ -32,6 +32,7 @@ Scenario: Supported subscription tiers are listed
   And the Warp tiers disclose that AI usage is billed separately from the included monthly credits and that Enterprise is out of scope
   And the JetBrains AI Pro tier is listed at about $16.67/mo effective from $200/year annual billing
   And the Tabnine tiers are listed: Code Assistant Platform and Agentic Platform
+  And the Factory tiers are listed: Pro, Plus, and Max
   And each tier is distinguishable by its plan name even when it shares a product name
 
 Scenario: Devin Teams pricing preserves the base-fee plus seat math
@@ -45,7 +46,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, JetBrains AI, Tabnine, and Warp tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, JetBrains AI, Tabnine, Warp, and Factory tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
@@ -147,6 +148,17 @@ Scenario: Warp tiers disclose their agentic-terminal pricing ladder and credit c
   And the copy notes that AI usage beyond the included monthly credits is billed separately
   And the copy notes that Warp's Enterprise plan is custom-priced and out of scope
   And all point at the official Warp pricing page
+  And all are optional and unchecked in the default selection
+
+Scenario: Factory tiers disclose their Droid-agent pricing ladder and out-of-scope plans
+  Given the Factory Pro, Plus, and Max tiers
+  When the visitor views their billing cadence and included-value text
+  Then each is described as a monthly individual plan for Factory's Droid software-development agents
+  And the Pro tier is priced at $20/mo with Desktop/CLI/SDK access plus cloud and local background agents
+  And the Plus tier is priced at $100/mo with roughly 5× the Pro usage plus Droid Computers for remote Droids
+  And the Max tier is priced at $200/mo with roughly 10× the Pro usage plus early access to new features
+  And the copy notes that Factory's custom-priced Business and Enterprise plans are out of scope
+  And all point at the official Factory pricing page
   And all are optional and unchecked in the default selection
 
 Scenario: Usage-based tiers disclose their included-credit caveat
