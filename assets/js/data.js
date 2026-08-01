@@ -190,7 +190,15 @@ export const tokenOutputValueAssumptions = {
  * agents, Plus adds roughly 5× the Pro usage plus Droid Computers
  * (Factory-managed cloud computers) for remote Droids, and Max adds roughly 10×
  * the Pro usage plus early access to new features; Factory's custom-priced
- * Business and Enterprise plans are out of scope. All of these ship unchecked (no `defaultSelected`) so the default
+ * Business and Enterprise plans are out of scope. The Manus tiers (Standard,
+ * Customizable, Extended) cover the Manus autonomous general AI agent at its
+ * monthly individual prices ($20, $40, $200) and are credit-based: Standard
+ * ships a base monthly credit allowance to run agentic tasks (building apps and
+ * sites, research, and automations), Customizable adds a larger credit allowance
+ * plus more concurrent tasks and customization options, and Extended tops the
+ * individual ladder with the highest credit allowance and concurrent-task
+ * limits; usage beyond the included credits requires add-on credits, and Manus's
+ * higher-tier team/enterprise plans are out of scope. All of these ship unchecked (no `defaultSelected`) so the default
  * comparison basis stays Codex + Claude Code Pro and only expands when a visitor
  * opts in.
  *
@@ -1004,6 +1012,45 @@ export const subscriptions = [
       "Top individual Max plan for power users using the Factory Droid software-development agents: roughly 10× the usage of Pro plus early access to new features; Factory's custom-priced Business and Enterprise plans are out of scope here.",
     sourceUrl: "https://factory.ai/pricing",
     sourceLabel: "Official Factory pricing",
+    verification: "official",
+    lastUpdated: "2026-08-01",
+  },
+  {
+    id: "manus-standard",
+    name: "Manus",
+    plan: "Standard",
+    monthlyPrice: 20,
+    billingCadence: "Billed monthly — usage-based beyond the included credits",
+    includedValue:
+      "Individual Standard plan for one person using the Manus autonomous general AI agent: a base monthly credit allowance to run agentic tasks — building apps and sites, research, and automations — with concurrent-task limits; usage beyond the included credits requires add-on credit purchases.",
+    sourceUrl: "https://manus.im/pricing",
+    sourceLabel: "Official Manus pricing",
+    verification: "official",
+    lastUpdated: "2026-08-01",
+  },
+  {
+    id: "manus-customizable",
+    name: "Manus",
+    plan: "Customizable",
+    monthlyPrice: 40,
+    billingCadence: "Billed monthly — usage-based beyond the included credits",
+    includedValue:
+      "Individual Customizable plan for heavier use: a larger monthly credit allowance than Standard plus more concurrent Manus tasks and additional customization options for the autonomous agent; usage beyond the included credits requires add-on credit purchases.",
+    sourceUrl: "https://manus.im/pricing",
+    sourceLabel: "Official Manus pricing",
+    verification: "official",
+    lastUpdated: "2026-08-01",
+  },
+  {
+    id: "manus-extended",
+    name: "Manus",
+    plan: "Extended",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly — usage-based beyond the included credits",
+    includedValue:
+      "Top individual Extended plan for power users of the Manus autonomous general AI agent: the highest monthly credit allowance and concurrent-task limits of the individual tiers; usage beyond the included credits requires add-on credits, and Manus's higher-tier team/enterprise plans are out of scope here.",
+    sourceUrl: "https://manus.im/pricing",
+    sourceLabel: "Official Manus pricing",
     verification: "official",
     lastUpdated: "2026-08-01",
   },

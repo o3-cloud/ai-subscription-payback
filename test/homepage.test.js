@@ -254,7 +254,7 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, JetBrains AI Pro, Tabnine, Warp, and Factory tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
   // Replit Agent, the Bolt and Lovable app builders, Augment Code, and the new
   // Amp / TRAE / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
@@ -284,6 +284,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(help, /Tabnine/i, "helper copy names Tabnine");
   assert.match(help, /Warp/i, "helper copy names Warp");
   assert.match(help, /Factory \(Droid agents\)/i, "helper copy names Factory");
+  assert.match(help, /Manus \(autonomous agent\)/i, "helper copy names Manus");
   assert.match(
     help,
     /Augment Code \(Business\)/i,
@@ -308,10 +309,20 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /TRAE/i, "pricing disclosure mentions TRAE tiers");
   assert.match(pricing, /Warp/i, "pricing disclosure mentions Warp tiers");
   assert.match(pricing, /Factory/i, "pricing disclosure mentions Factory tiers");
+  assert.match(pricing, /Manus/i, "pricing disclosure mentions Manus tiers");
   assert.match(
     pricing,
     /Factory tiers \(Pro, Plus, Max\)[\s\S]*?Droid/i,
     "pricing disclosure explains the Factory Droid-agent tiers"
+  );
+  assert.match(
+    pricing,
+    /Manus tiers \(Standard,[\s\S]*?Customizable, Extended\)/i,
+    "pricing disclosure names the Manus autonomous-agent tiers"
+  );
+  assert.ok(
+    pricing.includes("usage beyond the included credits requires add-on credits"),
+    "pricing disclosure explains the Manus add-on credit caveat"
   );
   assert.match(pricing, /JetBrains AI Pro/i, "pricing disclosure mentions JetBrains AI Pro");
   assert.match(pricing, /Tabnine/i, "pricing disclosure mentions Tabnine tiers");

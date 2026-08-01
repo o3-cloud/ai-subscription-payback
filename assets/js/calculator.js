@@ -632,7 +632,7 @@ function subscriptionDisplayName(sub) {
 function subscriptionCategory(sub) {
   const text = `${sub.name} ${sub.plan}`.toLowerCase();
   if (/\b(team|business|enterprise)\b/.test(text)) return "Team/enterprise";
-  if (/\b(bolt|lovable|replit)\b/.test(text)) return "App builder";
+  if (/\b(bolt|lovable|replit|manus)\b/.test(text)) return "App builder";
   if (/\b(google ai|amazon q developer|mistral)\b/.test(text)) return "Broad AI plan";
   if (/\b(cursor|zed|jetbrains|trae)\b/.test(text)) return "AI IDE/editor";
   return "Coding assistant";

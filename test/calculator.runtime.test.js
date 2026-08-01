@@ -674,6 +674,12 @@ test("subscription filters narrow visible rows without changing selections or sp
     ),
     "every visible row matches the selected category"
   );
+  assert.ok(
+    categoryVisible.some((row) =>
+      (row.getAttribute("data-subscription-search") || "").includes("manus")
+    ),
+    "Manus rows are included in the App builder category"
+  );
   assert.equal(
     doc.getElementById("subscription-filter-status").textContent,
     `Showing ${categoryVisible.length} of ${rows().length} plans in App builder.`
