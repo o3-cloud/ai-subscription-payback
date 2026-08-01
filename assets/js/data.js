@@ -167,9 +167,26 @@ export const tokenOutputValueAssumptions = {
  * cover the TRAE AI IDE at its monthly-billed prices ($3, $10, $30, $100); Pro
  * has a 7-day trial noted on the pricing page, and the comparison-table usage
  * allowances (monthly basic/bonus usage, queue priority, autocomplete,
- * concurrent cloud tasks) scale up with the tier. All of these ship unchecked (no
- * `defaultSelected`) so the default comparison basis stays Codex + Claude Code
- * Pro and only expands when a visitor opts in.
+ * concurrent cloud tasks) scale up with the tier. The JetBrains AI tier (AI Pro)
+ * covers JetBrains AI Assistant and its coding agent across the JetBrains IDE
+ * family, billed annually at $200/user/year (~$16.67/mo effective) with a
+ * per-user allowance of AI credits for chat, completion, and agentic actions;
+ * the free AI Free tier and higher AI Ultimate/enterprise plans are out of
+ * scope. The Tabnine tiers (Code Assistant Platform, Agentic Platform) cover
+ * Tabnine's privacy-oriented assistant billed as annual subscriptions at $39 and
+ * $59 per user/month — the Agentic Platform adds agentic workflows and the
+ * Context Engine on top of the Code Assistant seat — with the free tier and
+ * custom-priced Enterprise deployment out of scope. The Warp tiers (Free, Build,
+ * Max, Business) cover the Warp agentic terminal and are usage-based: the Free
+ * plan ships with no included AI usage, the individual Build ($20/mo) and Max
+ * ($200/mo) plans bundle $20 (1,500 credits) and $240 (18,000 credits) of monthly
+ * AI usage respectively, and the per-seat Business plan ($50/user/mo, up to 25
+ * seats) bundles $20 (1,500 credits) per plan; AI usage beyond the included
+ * monthly credits is billed separately on every paid tier, so the plan price is
+ * not unlimited AI usage, and Warp's custom-priced Enterprise plan is out of
+ * scope. All of these ship unchecked (no `defaultSelected`) so the default
+ * comparison basis stays Codex + Claude Code Pro and only expands when a visitor
+ * opts in.
  *
  * `monthlyPrice` is always the month-by-month comparison value — for annually
  * billed tiers it is the effective monthly cost (annual price ÷ 12), which keeps
