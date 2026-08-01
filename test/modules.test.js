@@ -318,6 +318,38 @@ test("the pricing-disclosure BDD documents the Factory Droid-agent tiers", () =>
   assert.match(bdd, /the Factory tiers are listed: Pro, Plus, and Max/i);
 });
 
+test("Cline is intentionally excluded from the priced subscription tiers", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+
+  // Cline is a free, open-source BYOK coding agent with no fixed subscription
+  // price, so it is deliberately omitted from the priced rows rather than
+  // listed. There must be no Cline subscription tier.
+  const clineRows = subscriptions.filter(
+    (s) => /cline/i.test(s.id ?? "") || /cline/i.test(s.name ?? "")
+  );
+  assert.equal(clineRows.length, 0, "Cline must not appear as a priced subscription tier");
+
+  // The exclusion is documented in the data model so the omission is explicit.
+  const data = read("assets/js/data.js");
+  assert.match(
+    data,
+    /Cline is intentionally excluded from the priced tiers/i,
+    "data.js documents that Cline is intentionally excluded from the priced tiers"
+  );
+  assert.match(
+    data,
+    /bring-your-own-key \(BYOK\)/i,
+    "data.js explains Cline is a bring-your-own-key (BYOK) agent"
+  );
+});
+
+test("the pricing-disclosure BDD documents the Cline exclusion / BYOK note", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Cline is disclosed as intentionally excluded from the priced tiers/i);
+  assert.match(bdd, /bring-your-own-key \(BYOK\)/i);
+  assert.match(bdd, /no priced subscription row is added for Cline/i);
+});
+
 test("Devin tiers carry the Windsurf / Devin Desktop alias without duplicating rows", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const devinRows = subscriptions.filter((s) => s.name === "Devin");

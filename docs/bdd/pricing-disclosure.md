@@ -174,6 +174,15 @@ Scenario: Manus tiers disclose their autonomous-agent pricing ladder and credit 
   And all point at the official Manus pricing page
   And all are optional and unchecked in the default selection
 
+Scenario: Cline is disclosed as intentionally excluded from the priced tiers
+  Given the pricing disclosure copy
+  When the visitor reads it
+  Then it states that Cline is intentionally left out of the priced comparison
+  And it explains that Cline is a free, open-source, bring-your-own-key (BYOK) VS Code / JetBrains coding agent with no fixed subscription price
+  And it notes that Cline's optional Cline-hosted API credits are pure usage-based spend and are out of scope
+  And the exclusion is disclosed as a deliberate choice rather than an oversight
+  And no priced subscription row is added for Cline
+
 Scenario: Usage-based tiers disclose their included-credit caveat
   Given a usage-based tier such as GitHub Copilot Pro or Zed Pro
   When the visitor views its included-value text

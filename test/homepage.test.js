@@ -336,6 +336,22 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
     /pooled usage/i,
     "pricing disclosure explains the Augment Code pooled-usage caveat"
   );
+  assert.match(pricing, /Cline/i, "pricing disclosure mentions Cline");
+  assert.match(
+    pricing,
+    /Cline is intentionally\s+left out of the priced comparison/i,
+    "pricing disclosure states Cline is intentionally excluded from the priced tiers"
+  );
+  assert.match(
+    pricing,
+    /bring-your-own-key \(BYOK\)/i,
+    "pricing disclosure explains Cline is a bring-your-own-key (BYOK) agent"
+  );
+  assert.match(
+    pricing,
+    /Cline-hosted API credits are pure usage-based spend and are out of[\s\S]*?scope/i,
+    "pricing disclosure notes Cline's optional API credits are out of scope"
+  );
 });
 
 test("pricing disclosure spells out the Devin Teams base-fee plus seat math", () => {

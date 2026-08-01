@@ -200,7 +200,13 @@ export const tokenOutputValueAssumptions = {
  * limits; usage beyond the included credits requires add-on credits, and Manus's
  * higher-tier team/enterprise plans are out of scope. All of these ship unchecked (no `defaultSelected`) so the default
  * comparison basis stays Codex + Claude Code Pro and only expands when a visitor
- * opts in.
+ * opts in. Cline is intentionally excluded from the priced tiers rather than
+ * listed: it is a free, open-source, bring-your-own-key (BYOK) VS Code /
+ * JetBrains coding agent with no fixed subscription price, so it has no
+ * subscription row here; its optional Cline-hosted API credits are pure
+ * usage-based spend and are out of scope. The exclusion is disclosed in the
+ * pricing copy (see index.html) so the omission is explicit rather than an
+ * oversight.
  *
  * `monthlyPrice` is always the month-by-month comparison value — for annually
  * billed tiers it is the effective monthly cost (annual price ÷ 12), which keeps
