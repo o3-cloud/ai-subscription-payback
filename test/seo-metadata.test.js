@@ -349,6 +349,30 @@ test("the on-page subscription helper text names every modeled coding-agent bran
   }
 });
 
+test("the SEO BDD documents the current helper-text and metadata families", () => {
+  const bdd = read("docs/bdd/seo-and-metadata.md");
+  assert.match(
+    bdd,
+    /Google AI, Mistral, Replit, Bolt, Lovable, Augment Code, Amp, TRAE, Warp, Factory, and Manus tiers are discoverable in homepage copy and metadata/i,
+    "SEO BDD scenario title must cover the current homepage copy and metadata families"
+  );
+  assert.match(
+    bdd,
+    /Factory \(Droid agents\)/i,
+    "SEO BDD helper-text coverage must mention Factory"
+  );
+  assert.match(
+    bdd,
+    /Manus \(autonomous agent\)/i,
+    "SEO BDD helper-text coverage must mention Manus"
+  );
+  assert.match(
+    bdd,
+    /meta description, keywords, Open Graph description, Twitter description, and JSON-LD description all mention Google AI, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, Warp, and Manus tiers/i,
+    "SEO BDD metadata coverage must mention Manus"
+  );
+});
+
 test("robots.txt allows crawling and points at the sitemap", () => {
   assert.ok(exists("robots.txt"), "robots.txt is missing");
   const robots = read("robots.txt");
