@@ -107,19 +107,45 @@ const SHARE_PARAM_KEYS = [
   "subs",
 ];
 
-function hasShareParams(raw) {
+function hasMeaningfulShareParams(raw) {
   if (!raw) return false;
   const params = new URLSearchParams(raw);
-  return SHARE_PARAM_KEYS.some((key) => params.has(key));
+  for (const key of SHARE_PARAM_KEYS) {
+    if (!params.has(key)) continue;
+
+    if (key === "subs") return true;
+
+    const value = (params.get(key) ?? "").trim();
+
+    if (key === CUSTOM_SPEND_FIELD) {
+      if (value === "") return true;
+      if (Number.isFinite(Number(value))) return true;
+      continue;
+    }
+
+    if (BOOLEAN_FIELDS.includes(key)) {
+      if (value === "0" || value === "1") return true;
+      continue;
+    }
+
+    const bounds = NUMERIC_FIELDS[key];
+    if (value === "") continue;
+    const num = Number(value);
+    if (!Number.isFinite(num)) continue;
+    if (bounds.min !== undefined && num < bounds.min) continue;
+    if (bounds.max !== undefined && num > bounds.max) continue;
+    return true;
+  }
+  return false;
 }
 
 export function readShareParams(location = {}) {
   const hash =
     typeof location.hash === "string" ? location.hash.replace(/^#/, "") : "";
   // Only treat the hash as scenario state when it carries at least one known
-  // calculator parameter; a bare in-page anchor (even one with `=` in it) must
-  // not shadow a valid "?"-style link.
-  if (hasShareParams(hash)) return hash;
+  // calculator value. Bare anchors, malformed numeric values, and other dead
+  // fragments must not shadow a valid "?"-style link.
+  if (hasMeaningfulShareParams(hash)) return hash;
   const search = typeof location.search === "string" ? location.search : "";
   return search.replace(/^\?/, "");
 }

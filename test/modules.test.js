@@ -1259,6 +1259,36 @@ test("state.js round-trips calculator state through the URL helpers", async () =
     "a non-share fragment with `=` must not shadow a valid query-string share link"
   );
 
+  const blankHash = state.readShareParams({
+    hash: "#boxPrice=",
+    search: "?boxPrice=4200&subs=codex",
+  });
+  assert.equal(
+    blankHash,
+    "boxPrice=4200&subs=codex",
+    "a blank known-key fragment must not shadow a valid query-string share link"
+  );
+
+  const invalidNumericHash = state.readShareParams({
+    hash: "#boxPrice=abc",
+    search: "?boxPrice=4200&subs=codex",
+  });
+  assert.equal(
+    invalidNumericHash,
+    "boxPrice=4200&subs=codex",
+    "an invalid numeric hash fragment must not shadow a valid query-string share link"
+  );
+
+  const blankCustomSpendHash = state.readShareParams({
+    hash: "#customSpend=",
+    search: "?customSpend=75",
+  });
+  assert.equal(
+    blankCustomSpendHash,
+    "customSpend=",
+    "an explicit blank custom-spend hash fragment should still take precedence"
+  );
+
   // A valid hash scenario takes precedence over any query string present on the
   // same URL, so the canonical hash-based share link always wins.
   const hashOverQuery = state.readShareParams({

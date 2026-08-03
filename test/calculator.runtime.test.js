@@ -1271,6 +1271,16 @@ test("initCalculator hydrates state from a hash-based share link", () => {
   assert.deepEqual(checked, ["codex"]);
 });
 
+test("initCalculator ignores a malformed hash fragment in favor of the query string", () => {
+  const { doc } = boot("?boxPrice=4200&subs=codex", { hash: "#boxPrice=" });
+
+  assert.equal(doc.getElementById("box-price").value, 4200);
+  const checked = doc
+    .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+    .map((el) => el.value);
+  assert.deepEqual(checked, ["codex"]);
+});
+
 test("a live edit re-validates and updates the results status", async () => {
   const { doc } = boot();
   const apr = doc.getElementById("apr");

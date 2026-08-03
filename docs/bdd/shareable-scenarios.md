@@ -88,4 +88,10 @@ Scenario: A non-share fragment does not shadow a valid query-string link
   When the visitor clicks a non-calculator fragment such as "#section=pricing"
   Then the calculator still restores the query-string share state
   And the fragment does not override the scenario because it carries no known calculator parameters
+
+Scenario: A malformed share fragment falls back to the query string
+  Given the address bar already contains a valid query-string share URL
+  When the visitor clicks a malformed calculator fragment such as "#boxPrice=" or "#boxPrice=abc"
+  Then the calculator ignores the malformed hash fragment
+  And it restores the scenario from the query string instead
 ```
