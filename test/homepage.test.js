@@ -254,7 +254,7 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, Kiro, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
   // Replit Agent, the Bolt and Lovable app builders, Augment Code, and the new
   // Amp / TRAE / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
@@ -280,6 +280,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(help, /Augment Code/i, "helper copy names Augment Code");
   assert.match(help, /Amp/i, "helper copy names Amp");
   assert.match(help, /TRAE \(AI IDE\)/i, "helper copy names TRAE");
+  assert.match(help, /Kiro/i, "helper copy names Kiro");
   assert.match(help, /JetBrains AI Pro/i, "helper copy names JetBrains AI Pro");
   assert.match(help, /Tabnine/i, "helper copy names Tabnine");
   assert.match(help, /Warp/i, "helper copy names Warp");
@@ -304,6 +305,8 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /Mistral/i, "pricing disclosure mentions Mistral tiers");
   assert.match(pricing, /Vibe/i, "pricing disclosure mentions Mistral Vibe coding");
   assert.match(pricing, /Augment Code/i, "pricing disclosure mentions the Augment Code tier");
+  assert.match(pricing, /Kiro/i, "pricing disclosure mentions Kiro tiers");
+  assert.match(pricing, /0\.04\/credit/i, "pricing disclosure mentions Kiro's overage rate");
   assert.match(pricing, /Lovable/i, "pricing disclosure mentions Lovable tiers");
   assert.match(pricing, /Amp/i, "pricing disclosure mentions Amp tiers");
   assert.match(pricing, /TRAE/i, "pricing disclosure mentions TRAE tiers");

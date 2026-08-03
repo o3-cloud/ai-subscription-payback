@@ -26,6 +26,7 @@ Scenario: Supported subscription tiers are listed
   And the Bolt tiers are listed: Free, Pro, and Teams
   And the Lovable tiers are listed: Free, Pro, and Business
   And the Augment Code tier is listed: Business
+  And the Kiro tiers are listed: Free, Pro, Pro+, Pro Max, and Power
   And the Amp tiers are listed: Megawatt and Gigawatt
   And the TRAE tiers are listed: Lite, Pro, Pro+, and Ultra
   And the Warp tiers are listed: Free, Build, Max, and Business
@@ -47,7 +48,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Kiro, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit

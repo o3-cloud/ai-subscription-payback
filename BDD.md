@@ -21,5 +21,6 @@ The behavior specifications now live in `docs/bdd/` as one file per feature area
 - [Accessibility](docs/bdd/accessibility.md)
 - [Privacy and Analytics](docs/bdd/privacy-and-analytics.md)
 - [Augment Code Business Tier](docs/bdd/augment-code.md)
+- [Kiro Coding-Agent Tiers](docs/bdd/kiro.md)
 - [Lovable App-Builder Tiers](docs/bdd/lovable.md)
 - [Hardware Watchlist](docs/bdd/hardware-watchlist.md)

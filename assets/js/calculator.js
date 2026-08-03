@@ -634,7 +634,7 @@ function subscriptionCategory(sub) {
   if (/\b(team|business|enterprise)\b/.test(text)) return "Team/enterprise";
   if (/\b(bolt|lovable|replit|manus)\b/.test(text)) return "App builder";
   if (/\b(google ai|amazon q developer|mistral)\b/.test(text)) return "Broad AI plan";
-  if (/\b(cursor|zed|jetbrains|trae)\b/.test(text)) return "AI IDE/editor";
+  if (/\b(cursor|zed|jetbrains|trae|kiro)\b/.test(text)) return "AI IDE/editor";
   return "Coding assistant";
 }
 

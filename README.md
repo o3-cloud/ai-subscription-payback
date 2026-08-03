@@ -10,7 +10,7 @@ The launch scope, commercial model, and non-goals are documented in the
 [PRD](./PRD.md) and the dedicated [MVP scope BDD](./docs/bdd/mvp-scope.md).
 In short: the site is an affiliate-first static Pages experience centered on
 Mac Studio, DGX Spark, and Strix Halo class systems, compared against Codex,
-Claude Code, Google AI, Devin, and Replit subscription spend, with transparent
+Claude Code, Kiro, Google AI, Devin, and Replit subscription spend, with transparent
 disclosures and no backend.
 
 ## Local development

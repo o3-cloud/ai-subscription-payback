@@ -684,6 +684,26 @@ test("subscription filters narrow visible rows without changing selections or sp
     doc.getElementById("subscription-filter-status").textContent,
     `Showing ${categoryVisible.length} of ${rows().length} plans in App builder.`
   );
+  doc.getElementById("subscription-filter").value = "Kiro";
+  doc.getElementById("subscription-category").value = "AI IDE/editor";
+  doc.getElementById("calculator-form").dispatch("input");
+
+  const kiroVisible = rows().filter(
+    (row) => row.getAttribute("data-subscription-search")?.includes("kiro")
+  );
+  assert.ok(kiroVisible.length > 0, "Kiro rows remain searchable in the AI IDE/editor category");
+  assert.ok(
+    visibleRows().every(
+      (row) =>
+        row.getAttribute("data-subscription-category") === "AI IDE/editor" &&
+        (row.getAttribute("data-subscription-search") || "").includes("kiro")
+    ),
+    "every visible row matches the Kiro search and AI IDE/editor category"
+  );
+  assert.equal(
+    doc.getElementById("subscription-filter-status").textContent,
+    `Showing ${kiroVisible.length} of ${rows().length} plans for “Kiro” in AI IDE/editor.`
+  );
   assert.deepEqual(selectedIds(), selectedBefore, "category filtering also preserves selections");
 });
 

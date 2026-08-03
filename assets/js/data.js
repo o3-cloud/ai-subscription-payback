@@ -101,10 +101,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-01";
+export const pricingLastUpdated = "2026-08-03";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-01";
+export const siteLastUpdated = "2026-08-03";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -198,11 +198,15 @@ export const tokenOutputValueAssumptions = {
  * plus more concurrent tasks and customization options, and Extended tops the
  * individual ladder with the highest credit allowance and concurrent-task
  * limits; usage beyond the included credits requires add-on credits, and Manus's
- * higher-tier team/enterprise plans are out of scope. All of these ship unchecked (no `defaultSelected`) so the default
- * comparison basis stays Codex + Claude Code Pro and only expands when a visitor
- * opts in. Cline is intentionally excluded from the priced tiers rather than
- * listed: it is a free, open-source, bring-your-own-key (BYOK) VS Code /
- * JetBrains coding agent with no fixed subscription price, so it has no
+ * higher-tier team/enterprise plans are out of scope. The Kiro tiers (Free, Pro,
+ * Pro+, Pro Max, Power) cover Kiro's AI coding IDE/CLI/Web/Mobile product at its
+ * public monthly prices ($0, $20, $40, $100, $200) and are credit-based: the paid
+ * tiers include credits, and Kiro's pricing page lists add-on / pay-per-use
+ * overage at $0.04/credit. All of these ship unchecked (no `defaultSelected`) so
+ * the default comparison basis stays Codex + Claude Code Pro and only expands
+ * when a visitor opts in. Cline is intentionally excluded from the priced tiers
+ * rather than listed: it is a free, open-source, bring-your-own-key (BYOK) VS
+ * Code / JetBrains coding agent with no fixed subscription price, so it has no
  * subscription row here; its optional Cline-hosted API credits are pure
  * usage-based spend and are out of scope. The exclusion is disclosed in the
  * pricing copy (see index.html) so the omission is explicit rather than an
@@ -314,6 +318,66 @@ export const subscriptions = [
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
     lastUpdated: "2026-07-01",
+  },
+  {
+    id: "kiro-free",
+    name: "Kiro",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue: "Free plan for one developer using Kiro's AI coding IDE/CLI/Web/Mobile experience at no cost.",
+    sourceUrl: "https://kiro.dev/pricing/",
+    sourceLabel: "Official Kiro pricing",
+    verification: "official",
+    lastUpdated: "2026-08-03",
+  },
+  {
+    id: "kiro-pro",
+    name: "Kiro",
+    plan: "Pro",
+    monthlyPrice: 20,
+    billingCadence: "Billed monthly, per user",
+    includedValue: "Entry paid plan for one developer with included Kiro credits; add-on / pay-per-use overage is listed at $0.04/credit.",
+    sourceUrl: "https://kiro.dev/pricing/",
+    sourceLabel: "Official Kiro pricing",
+    verification: "official",
+    lastUpdated: "2026-08-03",
+  },
+  {
+    id: "kiro-pro-plus",
+    name: "Kiro",
+    plan: "Pro+",
+    monthlyPrice: 40,
+    billingCadence: "Billed monthly, per user",
+    includedValue: "Higher-credit paid plan for one developer with included Kiro credits; add-on / pay-per-use overage is listed at $0.04/credit.",
+    sourceUrl: "https://kiro.dev/pricing/",
+    sourceLabel: "Official Kiro pricing",
+    verification: "official",
+    lastUpdated: "2026-08-03",
+  },
+  {
+    id: "kiro-pro-max",
+    name: "Kiro",
+    plan: "Pro Max",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly, per user",
+    includedValue: "High-credit paid plan for one developer with included Kiro credits; add-on / pay-per-use overage is listed at $0.04/credit.",
+    sourceUrl: "https://kiro.dev/pricing/",
+    sourceLabel: "Official Kiro pricing",
+    verification: "official",
+    lastUpdated: "2026-08-03",
+  },
+  {
+    id: "kiro-power",
+    name: "Kiro",
+    plan: "Power",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly, per user",
+    includedValue: "Top paid plan for power users with included Kiro credits; add-on / pay-per-use overage is listed at $0.04/credit.",
+    sourceUrl: "https://kiro.dev/pricing/",
+    sourceLabel: "Official Kiro pricing",
+    verification: "official",
+    lastUpdated: "2026-08-03",
   },
   {
     id: "copilot-free",
