@@ -94,4 +94,10 @@ Scenario: A malformed share fragment falls back to the query string
   When the visitor clicks a malformed calculator fragment such as "#boxPrice=" or "#boxPrice=abc"
   Then the calculator ignores the malformed hash fragment
   And it restores the scenario from the query string instead
+
+Scenario: Comma-separated subscription ids tolerate incidental whitespace
+  Given a shared URL carries a subscription list such as "subs=codex,%20claude-code,%20"
+  When the page loads
+  Then the calculator restores both subscription selections
+  And the restored scenario ignores whitespace around the comma-separated ids
 ```

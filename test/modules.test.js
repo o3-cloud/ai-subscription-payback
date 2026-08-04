@@ -1307,8 +1307,17 @@ test("state.js round-trips calculator state through the URL helpers", async () =
   assert.equal(parsedHashPrecedence.boxPrice, 4200);
   assert.deepEqual(parsedHashPrecedence.subscriptions, ["codex"]);
 
-  // A trailing directory-index filename is collapsed to the directory URL so
-  // copied links use the canonical form the SEO surface advertises.
+  const trimmedSubs = state.parseState("subs=codex,%20claude-code,%20", {
+    subscriptions: [],
+  });
+  assert.deepEqual(
+    trimmedSubs.subscriptions,
+    ["codex", "claude-code"],
+    "trims incidental whitespace around comma-separated subscription ids"
+  );
+
+  // buildShareUrl strips a trailing index file from the path, but leaves the
+  // rest of the pathname logic unchanged.
   assert.equal(
     state.buildShareUrl({ origin: "https://payback.example", pathname: "/index.html" }, "boxPrice=4200"),
     "https://payback.example/#boxPrice=4200"

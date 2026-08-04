@@ -218,7 +218,11 @@ export function parseState(search, defaults = {}) {
     }
   }
   if (params.has("subs")) {
-    state.subscriptions = params.get("subs").split(",").filter(Boolean);
+    const rawSubs = params.get("subs") ?? "";
+    state.subscriptions = rawSubs
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean);
   }
   return state;
 }
