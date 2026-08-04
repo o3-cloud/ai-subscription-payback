@@ -801,6 +801,29 @@ test("TRAE tiers cover Lite, Pro, Pro+, and Ultra with monthly-billed and trial 
   assert.match(byId.get("trae-pro").includedValue, /7-day trial/i, "trae-pro included value names the 7-day trial caveat");
 });
 
+test("Supermaven tiers are listed with their 1M-token context window and chat-credit caveats", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  for (const [id, plan, monthlyPrice] of [
+    ["supermaven-free-tier", "Free Tier", 0],
+    ["supermaven-pro", "Pro", 10],
+    ["supermaven-team", "Team", 10],
+  ]) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Supermaven", `${id} product name`);
+    assert.equal(sub.plan, plan, `${id} plan name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceUrl, "https://supermaven.com/pricing", `${id} points at the official Supermaven pricing page`);
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+    assert.match(sub.includedValue, /1M token context window/i, `${id} included value names the 1M token context window`);
+  }
+  assert.match(byId.get("supermaven-pro").includedValue, /\$5\/month in Supermaven Chat credits/i, "supermaven-pro included value names the chat credits");
+  assert.match(byId.get("supermaven-team").includedValue, /centralized user management and billing/i, "supermaven-team included value names the management caveat");
+});
+
 test("Augment Code Business tier is listed with its pooled-usage / top-up / Enterprise caveat", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));

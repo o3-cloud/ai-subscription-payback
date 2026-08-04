@@ -27,6 +27,7 @@ Scenario: Supported subscription tiers are listed
   And the Lovable tiers are listed: Free, Pro, and Business
   And the Augment Code tier is listed: Business
   And the Kiro tiers are listed: Free, Pro, Pro+, Pro Max, and Power
+  And the Supermaven tiers are listed: Free Tier, Pro, and Team
   And the Amp tiers are listed: Megawatt and Gigawatt
   And the TRAE tiers are listed: Lite, Pro, Pro+, and Ultra
   And the Warp tiers are listed: Free, Build, Max, and Business
@@ -36,6 +37,14 @@ Scenario: Supported subscription tiers are listed
   And the Factory tiers are listed: Pro, Plus, and Max
   And the Manus tiers are listed: Standard, Customizable, and Extended
   And each tier is distinguishable by its plan name even when it shares a product name
+
+Scenario: The Supermaven tiers disclose their context window and chat-credit caveat
+  Given the Supermaven Free Tier, Pro, and Team tiers
+  When the visitor views their billing cadence and included-value text
+  Then the Free Tier is priced at $0/mo and names the 1M token context window
+  And the Pro tier is priced at $10/mo and includes $5/month in Supermaven Chat credits
+  And the Team tier is priced at $10/user/mo and includes centralized user management and billing
+  And the paid tiers avoid implying unlimited usage from the flat monthly price
 
 Scenario: Devin Teams pricing preserves the base-fee plus seat math
   Given the Devin Teams tier
@@ -48,7 +57,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Kiro, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit

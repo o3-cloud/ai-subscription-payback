@@ -101,10 +101,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-03";
+export const pricingLastUpdated = "2026-08-04";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-03";
+export const siteLastUpdated = "2026-08-04";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -202,9 +202,11 @@ export const tokenOutputValueAssumptions = {
  * Pro+, Pro Max, Power) cover Kiro's AI coding IDE/CLI/Web/Mobile product at its
  * public monthly prices ($0, $20, $40, $100, $200) and are credit-based: the paid
  * tiers include credits, and Kiro's pricing page lists add-on / pay-per-use
- * overage at $0.04/credit. All of these ship unchecked (no `defaultSelected`) so
- * the default comparison basis stays Codex + Claude Code Pro and only expands
- * when a visitor opts in. Cline is intentionally excluded from the priced tiers
+ * overage at $0.04/credit. The Supermaven tiers (Free Tier, Pro, Team) cover
+ * Supermaven's coding assistant at $0, $10, and $10 per user per month; the
+ * paid tiers include the 1M token context window and $5/month in Supermaven
+ * Chat credits, and Team adds centralized user management and billing. All of
+ * these ship unchecked (no `defaultSelected`) so the default comparison basis stays Codex + Claude Code Pro and only expands when a visitor opts in. Cline is intentionally excluded from the priced tiers
  * rather than listed: it is a free, open-source, bring-your-own-key (BYOK) VS
  * Code / JetBrains coding agent with no fixed subscription price, so it has no
  * subscription row here; its optional Cline-hosted API credits are pure
@@ -378,6 +380,42 @@ export const subscriptions = [
     sourceLabel: "Official Kiro pricing",
     verification: "official",
     lastUpdated: "2026-08-03",
+  },
+  {
+    id: "supermaven-free-tier",
+    name: "Supermaven",
+    plan: "Free Tier",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue: "Free plan for one developer with Supermaven's 1M token context window at no cost.",
+    sourceUrl: "https://supermaven.com/pricing",
+    sourceLabel: "Official Supermaven pricing",
+    verification: "official",
+    lastUpdated: "2026-08-04",
+  },
+  {
+    id: "supermaven-pro",
+    name: "Supermaven",
+    plan: "Pro",
+    monthlyPrice: 10,
+    billingCadence: "Billed monthly",
+    includedValue: "Pro plan for one developer with Supermaven's 1M token context window and $5/month in Supermaven Chat credits.",
+    sourceUrl: "https://supermaven.com/pricing",
+    sourceLabel: "Official Supermaven pricing",
+    verification: "official",
+    lastUpdated: "2026-08-04",
+  },
+  {
+    id: "supermaven-team",
+    name: "Supermaven",
+    plan: "Team",
+    monthlyPrice: 10,
+    billingCadence: "Billed monthly, per user",
+    includedValue: "Team plan per user with Supermaven's 1M token context window, $5/month in Supermaven Chat credits per user, plus centralized user management and billing.",
+    sourceUrl: "https://supermaven.com/pricing",
+    sourceLabel: "Official Supermaven pricing",
+    verification: "official",
+    lastUpdated: "2026-08-04",
   },
   {
     id: "copilot-free",

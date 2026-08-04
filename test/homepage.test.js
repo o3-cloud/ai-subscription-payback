@@ -254,10 +254,10 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, Kiro, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
   // Replit Agent, the Bolt and Lovable app builders, Augment Code, and the new
-  // Amp / TRAE / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
+  // Amp / TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
   // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
@@ -281,6 +281,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(help, /Amp/i, "helper copy names Amp");
   assert.match(help, /TRAE \(AI IDE\)/i, "helper copy names TRAE");
   assert.match(help, /Kiro/i, "helper copy names Kiro");
+  assert.match(help, /Supermaven/i, "helper copy names Supermaven");
   assert.match(help, /JetBrains AI Pro/i, "helper copy names JetBrains AI Pro");
   assert.match(help, /Tabnine/i, "helper copy names Tabnine");
   assert.match(help, /Warp/i, "helper copy names Warp");
@@ -306,6 +307,9 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /Vibe/i, "pricing disclosure mentions Mistral Vibe coding");
   assert.match(pricing, /Augment Code/i, "pricing disclosure mentions the Augment Code tier");
   assert.match(pricing, /Kiro/i, "pricing disclosure mentions Kiro tiers");
+  assert.match(pricing, /Supermaven/i, "pricing disclosure mentions Supermaven tiers");
+  assert.match(pricing, /1M token context window/i, "pricing disclosure mentions Supermaven's context window");
+  assert.match(pricing, /Supermaven[\s\S]*?Chat credits/i, "pricing disclosure mentions Supermaven Chat credits");
   assert.match(pricing, /0\.04\/credit/i, "pricing disclosure mentions Kiro's overage rate");
   assert.match(pricing, /Lovable/i, "pricing disclosure mentions Lovable tiers");
   assert.match(pricing, /Amp/i, "pricing disclosure mentions Amp tiers");
