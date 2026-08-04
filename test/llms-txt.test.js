@@ -38,6 +38,7 @@ test("llms.txt follows the convention: H1 title then a blockquote summary", () =
   const summary = lines.find((line) => line.startsWith("> "));
   assert.match(summary, /calculator/i, "the summary describes the calculator");
   assert.match(summary, /Warp/i, "the summary names Warp alongside the other modeled subscription families");
+  assert.match(summary, /Supermaven/i, "the summary names Supermaven alongside the other modeled subscription families");
 });
 
 test("llms.txt links the calculator, methodology, and both disclosures", () => {
