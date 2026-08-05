@@ -39,6 +39,9 @@ test("llms.txt follows the convention: H1 title then a blockquote summary", () =
   assert.match(summary, /calculator/i, "the summary describes the calculator");
   assert.match(summary, /Warp/i, "the summary names Warp alongside the other modeled subscription families");
   assert.match(summary, /Supermaven/i, "the summary names Supermaven alongside the other modeled subscription families");
+  assert.match(summary, /Kiro/i, "the summary names Kiro alongside the other modeled subscription families");
+  assert.match(summary, /Factory/i, "the summary names Factory alongside the other modeled subscription families");
+  assert.match(summary, /Manus/i, "the summary names Manus alongside the other modeled subscription families");
 });
 
 test("llms.txt links the calculator, methodology, and both disclosures", () => {
