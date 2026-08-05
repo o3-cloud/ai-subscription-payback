@@ -745,6 +745,38 @@ test("the pricing-disclosure BDD documents the Lovable credit-limit caveats", ()
   assert.match(bdd, /the Lovable tiers are listed: Free, Pro, and Business/i);
 });
 
+test("v0 tiers cover Free, Plus, and Business for v0 by Vercel's app-building UI generator", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  const expected = {
+    "v0-free": 0,
+    "v0-plus": 30,
+    "v0-business": 100,
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "v0", `${id} product name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceUrl, "https://v0.app/pricing", `${id} points at the official v0 pricing page`);
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+    assert.match(sub.includedValue, /app-building/i, `${id} is framed as app-building`);
+    assert.match(sub.includedValue, /UI-generation/i, `${id} names the UI-generation use case`);
+  }
+
+  assert.match(byId.get("v0-free").includedValue, /7 messages per day/i, "v0 Free discloses the daily message cap");
+  assert.match(byId.get("v0-plus").includedValue, /\$2 of free daily login credits/i, "v0 Plus discloses daily login credits");
+  assert.match(byId.get("v0-business").includedValue, /training opt-out by default/i, "v0 Business discloses training opt-out");
+});
+
+test("the pricing-disclosure BDD documents the v0 credits and daily-login caveats", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /v0 tiers disclose their credits, daily-login, and training-opt-out caveats/i);
+  assert.match(bdd, /the v0 tiers are listed: Free, Plus, and Business/i);
+});
+
 test("the pricing-disclosure BDD documents JetBrains AI Pro and Tabnine annual pricing", () => {
   const bdd = read("docs/bdd/pricing-disclosure.md");
   assert.match(bdd, /JetBrains AI Pro tier is listed at about \$16\.67\/mo effective/i);

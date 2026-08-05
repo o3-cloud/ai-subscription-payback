@@ -676,9 +676,10 @@ test("subscription filters narrow visible rows without changing selections or sp
   );
   assert.ok(
     categoryVisible.some((row) =>
-      (row.getAttribute("data-subscription-search") || "").includes("manus")
+      (row.getAttribute("data-subscription-search") || "").includes("manus") ||
+      (row.getAttribute("data-subscription-search") || "").includes("v0")
     ),
-    "Manus rows are included in the App builder category"
+    "Manus and v0 rows are included in the App builder category"
   );
   assert.equal(
     doc.getElementById("subscription-filter-status").textContent,

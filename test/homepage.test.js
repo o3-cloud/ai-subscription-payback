@@ -254,10 +254,10 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
-  // Replit Agent, the Bolt and Lovable app builders, Augment Code, and the new
-  // Amp / TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
+  // Replit Agent, the Bolt and Lovable app builders, v0 by Vercel, Augment Code,
+  // and the new Amp / TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
   // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
@@ -277,6 +277,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(help, /Mistral/i, "helper copy names Mistral");
   assert.match(help, /Bolt/i, "helper copy names Bolt");
   assert.match(help, /Lovable/i, "helper copy names Lovable");
+  assert.match(help, /v0 by Vercel/i, "helper copy names v0 by Vercel");
   assert.match(help, /Augment Code/i, "helper copy names Augment Code");
   assert.match(help, /Amp/i, "helper copy names Amp");
   assert.match(help, /TRAE \(AI IDE\)/i, "helper copy names TRAE");
@@ -312,6 +313,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /Supermaven[\s\S]*?Chat credits/i, "pricing disclosure mentions Supermaven Chat credits");
   assert.match(pricing, /0\.04\/credit/i, "pricing disclosure mentions Kiro's overage rate");
   assert.match(pricing, /Lovable/i, "pricing disclosure mentions Lovable tiers");
+  assert.match(pricing, /v0 by Vercel/i, "pricing disclosure mentions v0 by Vercel tiers");
   assert.match(pricing, /Amp/i, "pricing disclosure mentions Amp tiers");
   assert.match(pricing, /TRAE/i, "pricing disclosure mentions TRAE tiers");
   assert.match(pricing, /Warp/i, "pricing disclosure mentions Warp tiers");
@@ -344,6 +346,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
     "pricing disclosure explains the Augment Code pooled-usage caveat"
   );
   assert.match(pricing, /Cline/i, "pricing disclosure mentions Cline");
+  assert.ok(pricing.includes("v0 by Vercel"), "pricing disclosure explains the v0 tiers");
   assert.match(
     pricing,
     /Cline is intentionally\s+left out of the priced comparison/i,

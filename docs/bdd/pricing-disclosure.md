@@ -25,6 +25,7 @@ Scenario: Supported subscription tiers are listed
   And the Mistral tiers are listed: Free, Pro, Team, and Education
   And the Bolt tiers are listed: Free, Pro, and Teams
   And the Lovable tiers are listed: Free, Pro, and Business
+  And the v0 tiers are listed: Free, Plus, and Business
   And the Augment Code tier is listed: Business
   And the Kiro tiers are listed: Free, Pro, Pro+, Pro Max, and Power
   And the Supermaven tiers are listed: Free Tier, Pro, and Team
@@ -118,6 +119,17 @@ Scenario: Lovable tiers disclose their credit-limit caveats
   And the copy notes that building beyond the included credits requires paid top-ups
   And the copy notes that Lovable's Enterprise plan is custom/volume-priced and out of scope
   And all point at the official Lovable pricing page
+  And all are optional and unchecked in the default selection
+
+Scenario: v0 tiers disclose their credits, daily-login, and training-opt-out caveats
+  Given the v0 Free, Plus, and Business tiers
+  When the visitor views their included-value text
+  Then each is described as an app-building and UI-generation plan
+  And the Free tier is priced at $0/mo with $5 of monthly credits and a 7-message/day cap
+  And the Plus tier is priced at $30/user/mo with $30 of monthly credits per user and $2 of free daily login credits per user
+  And the Business tier is priced at $100/user/mo with the same $30 credit base per user and training opt-out by default
+  And the copy notes that additional credit purchases and centralized billing are available
+  And all point at the official v0 pricing page
   And all are optional and unchecked in the default selection
 
 Scenario: The Augment Code Business tier discloses its pooled-usage caveat

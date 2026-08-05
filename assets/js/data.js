@@ -101,10 +101,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-04";
+export const pricingLastUpdated = "2026-08-05";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-04";
+export const siteLastUpdated = "2026-08-05";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -155,7 +155,7 @@ export const tokenOutputValueAssumptions = {
  * on-demand top-ups, custom domains, and no Lovable badge, and Business keeps the
  * 100-credit monthly base while adding a team workspace, role-based access,
  * internal publishing, and an SSO/security center; Lovable's Enterprise plan is
- * custom/volume-priced and out of scope. The Augment Code tier (Business) covers Augment Code's team plan
+ * custom/volume-priced and out of scope. The v0 tiers (Free, Plus, Business) cover v0 by Vercel, the app-building and UI-generation agent, and are credit-limited: Free includes $5 of monthly credits plus Design Mode, GitHub sync, deploy-to-Vercel support, and a 7-message/day cap, Plus includes access to all models, $30 of monthly credits per user, $2 of free daily login credits per user, additional credit purchases, centralized billing, and team collaboration, and Business keeps the same $30 credit base per user while adding training opt-out by default, additional credit purchases, centralized billing, and collaboration; v0's Enterprise plan is custom-priced and out of scope. The Augment Code tier (Business) covers Augment Code's team plan
  * for its autonomous coding agent: a flat $100/month covering up to 50 seats and
  * $100/month of pooled usage shared across the team, with usage beyond the pool
  * billed as metered top-ups and larger needs moving to the custom-priced
@@ -901,6 +901,45 @@ export const subscriptions = [
     sourceLabel: "Official Lovable pricing",
     verification: "official",
     lastUpdated: "2026-07-27",
+  },
+  {
+    id: "v0-free",
+    name: "v0",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free app-building and UI-generation plan for one person: v0 by Vercel includes $5 of monthly credits, deploys apps to Vercel, supports Design Mode and GitHub sync, and limits usage to 7 messages per day.",
+    sourceUrl: "https://v0.app/pricing",
+    sourceLabel: "Official v0 pricing",
+    verification: "official",
+    lastUpdated: "2026-08-05",
+  },
+  {
+    id: "v0-plus",
+    name: "v0",
+    plan: "Plus",
+    monthlyPrice: 30,
+    billingCadence: "Billed monthly, per user",
+    includedValue:
+      "Individual Plus app-building and UI-generation plan for one developer: $30/user/month with access to all models, $30 of monthly credits per user, $2 of free daily login credits per user, additional credit purchases, centralized billing on vercel.com, and team collaboration.",
+    sourceUrl: "https://v0.app/pricing",
+    sourceLabel: "Official v0 pricing",
+    verification: "official",
+    lastUpdated: "2026-08-05",
+  },
+  {
+    id: "v0-business",
+    name: "v0",
+    plan: "Business",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly, per user",
+    includedValue:
+      "Business app-building and UI-generation plan for a team: $100/user/month with access to all models, $30 of monthly credits per user, $2 of free daily login credits per user, training opt-out by default, additional credit purchases, centralized billing, and collaboration.",
+    sourceUrl: "https://v0.app/pricing",
+    sourceLabel: "Official v0 pricing",
+    verification: "official",
+    lastUpdated: "2026-08-05",
   },
   {
     id: "augment-code-business",
