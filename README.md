@@ -11,7 +11,8 @@ The launch scope, commercial model, and non-goals are documented in the
 In short: the site is an affiliate-first static Pages experience centered on
 Mac Studio, DGX Spark, and Strix Halo class systems, compared against Codex,
 Claude Code, Kiro, Supermaven, Google AI, Devin, and Replit subscription spend,
-with transparent disclosures and no backend.
+with comparison mini-guides for common follow-up questions, transparent
+disclosures, and no backend.
 
 ## Local development
 

@@ -78,6 +78,7 @@ and the fact that all savings numbers are estimates.
   - Featured hardware cards: Mac Studio, DGX Spark, Strix Halo.
   - Calculator: inputs panel + results panel + cost-over-time chart.
   - Comparison table: subscriptions vs. hardware profiles.
+  - Comparison mini-guides: indexable static pages for high-intent comparison queries linked from the homepage.
   - Pricing disclosure section (sources, last-updated date).
   - Affiliate disclosure section.
   - FAQ / methodology (how break-even is computed).

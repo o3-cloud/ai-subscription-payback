@@ -24,6 +24,7 @@ const REQUIRED_PHRASES = [
   "Strix Halo",
   "Codex",
   "Claude Code",
+  "comparison mini-guides",
   "static GitHub Pages experience",
   "affiliate or reseller links",
   "affiliate relationships are clearly disclosed",
@@ -52,6 +53,7 @@ test("the repo docs point to the MVP scope source of truth", () => {
   assert.match(prd, /docs\/bdd\/mvp-scope\.md/i, "PRD links the MVP scope BDD");
   assert.match(readme, /MVP scope and assumptions/i, "README introduces the launch scope");
   assert.match(readme, /docs\/bdd\/mvp-scope\.md/i, "README links the scope BDD");
+  assert.match(readme, /comparison mini-guides/i, "README mentions the guide hub that ships on the homepage");
   assert.match(
     readme,
     /Google AI|Gemini|Jules|Antigravity|Devin|Replit|Supermaven/i,
@@ -62,6 +64,11 @@ test("the repo docs point to the MVP scope source of truth", () => {
   assert.match(rootIndex, /\[Comparison Mini-Guides\]\(docs\/bdd\/mini-guides\.md\)/i, "root BDD index links the comparison mini-guides");
   assert.match(bddIndex, /MVP Scope and Commercial Model/i, "bdd index links the scope file");
   assert.match(bddIndex, /Featured Hardware Cards/i, "bdd index links featured hardware cards");
+  assert.match(
+    prd,
+    /comparison mini-guides/i,
+    "PRD problem statement names the guide hub that ships on the homepage"
+  );
   assert.match(
     prd,
     /Google AI|Gemini|Jules|Antigravity|Devin|Replit|Supermaven/i,
