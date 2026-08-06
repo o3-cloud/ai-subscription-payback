@@ -1,6 +1,6 @@
 # AI Subscription Payback
 
-> Free, static calculator that estimates how long until buying a local AI inference box (Mac Studio, NVIDIA DGX Spark, or Strix Halo / Ryzen AI Max class) is cheaper than paying for AI coding subscriptions like Codex, Claude Code, Google AI (Gemini / Jules / Antigravity), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, Supermaven, Warp, Kiro, Factory, and Manus.
+> Free, static calculator that estimates how long until buying a local AI inference box (Mac Studio, NVIDIA DGX Spark, or Strix Halo / Ryzen AI Max class) is cheaper than paying for AI coding subscriptions like Codex, Claude Code, Google AI (Gemini / Jules / Antigravity), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, Supermaven, Warp, Kiro, Factory, Manus, and v0.
 
 The site is a single static page hosted on GitHub Pages at https://www.othree.cloud/ai-subscription-payback/. All computation runs client-side in the browser — there is no backend or API. It is affiliate-funded, and affiliate relationships never change the calculator's math or results. Pricing figures are hand-maintained snapshots with a visible "last updated" date; always confirm current prices with the vendor before buying.
 
@@ -24,6 +24,11 @@ The site is a single static page hosted on GitHub Pages at https://www.othree.cl
 - [Claude Code vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/claude-code-vs-local-ai-box-cost.html): Cost comparison of Claude Code subscriptions versus owning local hardware.
 - [Codex vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/codex-vs-local-ai-box-cost.html): Cost comparison of Codex subscriptions versus owning local hardware.
 - [Strix Halo / Ryzen AI Max workstation](https://www.othree.cloud/ai-subscription-payback/guides/strix-halo-ryzen-ai-max-workstation.html): Cost comparison of a Strix Halo / Ryzen AI Max local box against subscription spend.
+- [Kiro vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/kiro-vs-local-ai-box-cost.html): Cost comparison of Kiro's paid plans versus local hardware.
+- [Supermaven vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/supermaven-vs-local-ai-box-cost.html): Cost comparison of Supermaven's paid plans versus local hardware.
+- [Factory vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/factory-vs-local-ai-box-cost.html): Cost comparison of Factory's paid plans versus local hardware.
+- [Manus vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/manus-vs-local-ai-box-cost.html): Cost comparison of Manus's paid plans versus local hardware.
+- [v0 by Vercel vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/v0-vercel-vs-local-ai-box-cost.html): Cost comparison of v0 by Vercel's paid plans versus local hardware.
 
 ## Optional
 

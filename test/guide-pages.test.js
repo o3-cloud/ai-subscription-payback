@@ -34,7 +34,7 @@ const expectedGuideLinks = () =>
   }));
 
 test("the comparison-guide generator and committed files stay in sync", () => {
-  assert.equal(GUIDES.length, 5, "expected five comparison mini-guides");
+  assert.equal(GUIDES.length, 10, "expected ten comparison mini-guides");
   for (const guide of generated) {
     assert.ok(exists(guide.path), `${guide.path} is missing`);
     const committed = read(guide.path);

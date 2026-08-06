@@ -170,6 +170,111 @@ export const GUIDES = [
       "The break-even assumes financing and the listed heavy usage; buying outright or a lighter subscription bill moves it.",
     ],
   },
+  {
+    slug: "kiro-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["kiro-pro-max", "kiro-power"],
+    title: "Kiro vs a Local AI Box — Cost Comparison",
+    description:
+      "How Kiro's higher-usage paid plans compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Kiro vs a local AI box: the cost",
+    useCase: [
+      "Kiro is an AI coding IDE/CLI/Web/Mobile product with a credit-based ladder, so the moment you move beyond lighter usage it becomes fair to ask whether local hardware would cost less over time. This guide compares the higher paid Kiro tiers against an owned local box and shows where the math crosses.",
+      "It is aimed at Kiro-heavy users who care about recurring credit spend, add-on overage, and whether a local machine can win on cost alone.",
+    ],
+    scenarioLede:
+      "A Kiro Pro Max plus Power bundle against a value-class Strix Halo box.",
+    caveats: [
+      "Kiro's paid tiers are credit-based and overage is billed separately at the published per-credit rate, so the real monthly bill can be higher than the list price alone.",
+      "A local box cannot run Kiro's hosted service; you'd be running open-weight models with a different agent stack, so you are comparing spend, not identical capability.",
+      "The box's payback only makes sense if you are already in the Kiro-heavy usage band — a lighter plan or a free-tier user does not pencil out the same way.",
+      "Financing assumptions and your actual credit consumption both move the break-even month materially.",
+    ],
+  },
+  {
+    slug: "supermaven-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["supermaven-pro", "supermaven-team"],
+    title: "Supermaven vs a Local AI Box — Cost Comparison",
+    description:
+      "How Supermaven's paid plans compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Supermaven vs a local AI box: the cost",
+    useCase: [
+      "Supermaven's paid ladder is still relatively inexpensive, which makes the local-hardware payback question much tougher than with the pricier agent products. This guide compares the paid Supermaven tiers against owning a local inference box and is honest about when the box does not pay off.",
+      "It is written for developers who care about the 1M token context window, the included Chat credits, and whether a local setup is cheaper than a lightweight subscription.",
+    ],
+    scenarioLede:
+      "A Supermaven Pro plus Team bundle against a value-class Strix Halo box.",
+    caveats: [
+      "Supermaven's paid tiers bundle the 1M token context window plus Chat credits, and Team adds central user management and billing on top of the individual Pro plan.",
+      "A local box cannot run Supermaven's hosted service; you would use open-weight models and a different coding agent, so the comparison is cost-first rather than capability-first.",
+      "Because the paid plans are comparatively cheap, the hardware only starts to make sense once your spend scales beyond the basic single-user tier.",
+      "Changing the number of seats or swapping in a more expensive local box shifts the payback month quickly.",
+    ],
+  },
+  {
+    slug: "factory-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["factory-plus", "factory-max"],
+    title: "Factory vs a Local AI Box — Cost Comparison",
+    description:
+      "How Factory's paid Droid plans compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Factory vs a local AI box: the cost",
+    useCase: [
+      "Factory's Droid plans move from everyday Desktop/CLI/SDK usage to higher-usage remote-computer workflows very quickly, so the spend can climb fast for power users. This guide compares the pricier Factory plans against buying local hardware and prices out the crossover.",
+      "It is aimed at users who are already leaning on Factory's background agents and Droid Computers and want to know whether the subscription stack or an owned box is the cheaper long-term path.",
+    ],
+    scenarioLede:
+      "A Factory Plus plus Max bundle against a value-class Strix Halo box.",
+    caveats: [
+      "Factory Plus adds about 5× the Pro usage and Droid Computers, while Max adds about 10× the Pro usage plus early access to new features, so the ladder is designed for heavier spend.",
+      "A local box cannot run Factory's hosted agent service; you're comparing the dollar cost of a different local workflow against Factory's cloud-backed Droid stack.",
+      "The bundle scenario is intentionally heavy: if your actual usage is closer to Pro, the box is less likely to win on cost alone.",
+      "As with every local-box comparison, model choice, quantization, and financing assumptions change the month where the lines cross.",
+    ],
+  },
+  {
+    slug: "manus-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["manus-customizable", "manus-extended"],
+    title: "Manus vs a Local AI Box — Cost Comparison",
+    description:
+      "How Manus's higher paid plans compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Manus vs a local AI box: the cost",
+    useCase: [
+      "Manus is a general-purpose autonomous agent for building apps, research, and automations, so its higher tiers are best thought of as ongoing production spend rather than an occasional utility bill. This guide compares the heavier Manus plans against a local box and shows when ownership starts to look cheaper.",
+      "It is for people who are pushing Manus beyond light experimentation and want to compare credit-heavy automation costs against a one-time hardware purchase.",
+    ],
+    scenarioLede:
+      "A Manus Customizable plus Extended bundle against a value-class Strix Halo box.",
+    caveats: [
+      "Manus's paid tiers are credit-based and the higher plans mainly buy you more included credits plus more concurrent agent tasks, so the effective monthly spend can move around with usage.",
+      "A local box cannot run Manus itself; you would be running open-weight models with a different agent stack, so the comparison is about spend, not feature parity.",
+      "The heavier the automation workload, the more plausible the hardware payback becomes — but a light Manus user usually stays ahead on subscription cost.",
+      "The calculator's financing and electricity assumptions remain the deciding factors for the exact break-even month.",
+    ],
+  },
+  {
+    slug: "v0-vercel-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["v0-plus", "v0-business"],
+    title: "v0 by Vercel vs a Local AI Box — Cost Comparison",
+    description:
+      "How v0 by Vercel's paid app-building tiers compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "v0 by Vercel vs a local AI box: the cost",
+    useCase: [
+      "v0 is an app-building and UI-generation agent with credit-based paid tiers, centralized billing, and deployment hooks into Vercel, so it sits squarely in the same recurring-spend bucket as the coding assistants. This guide compares the paid v0 plans against owning a local box and asks when the hardware wins on cost.",
+      "It is written for builders who are already paying for v0 Plus or Business and want to know whether recurring app-generation spend is still cheaper than buying local inference hardware.",
+    ],
+    scenarioLede:
+      "A v0 Plus plus Business bundle against a value-class Strix Halo box.",
+    caveats: [
+      "v0's paid plans buy credits, model access, deployment helpers, and team features; the list price is only part of the cost if you are actively building with it.",
+      "A local box cannot replace v0's hosted product features, so the comparison is cost-first rather than a claim of identical app-generation capability.",
+      "The bundle scenario is intentionally heavy; a lighter single-seat plan is much harder for local hardware to beat on cost alone.",
+      "Changing the number of seats or the amount of credit consumption will move the payback month quickly.",
+    ],
+  },
 ];
 
 /* ------------------------------- rendering ------------------------------- */
