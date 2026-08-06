@@ -349,17 +349,33 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.ok(pricing.includes("v0 by Vercel"), "pricing disclosure explains the v0 tiers");
   assert.match(
     pricing,
-    /Cline is intentionally\s+left out of the priced comparison/i,
+    /Cline is intentionally\s+left out of\s+the priced comparison/i,
     "pricing disclosure states Cline is intentionally excluded from the priced tiers"
+  );
+  assert.match(
+    pricing,
+    /Max 20× usage option/i,
+    "pricing disclosure mentions the exposed Claude Max 20x option"
+  );
+  assert.match(
+    pricing,
+    /from \$100\/mo Max 5× scenario/i,
+    "pricing disclosure says only the public Max 5x scenario is modeled"
+  );
+  assert.match(
+    pricing,
+    /until a verifiable public price exists/i,
+    "pricing disclosure explains why Claude Max 20x is excluded"
   );
   assert.match(
     pricing,
     /bring-your-own-key \(BYOK\)/i,
     "pricing disclosure explains Cline is a bring-your-own-key (BYOK) agent"
   );
+  assert.match(pricing, /Cline-hosted API\s+credits/i, "pricing disclosure notes Cline's optional API credits are mentioned");
   assert.match(
     pricing,
-    /Cline-hosted API credits are pure usage-based spend and are out of[\s\S]*?scope/i,
+    /out of scope here/i,
     "pricing disclosure notes Cline's optional API credits are out of scope"
   );
 });

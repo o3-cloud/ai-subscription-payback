@@ -125,7 +125,11 @@ export const tokenOutputValueAssumptions = {
 /**
  * Public subscription tiers people run AI coding assistants on. Codex keeps its
  * single individual plan; Claude Code carries the full public ladder (Pro, Max,
- * and Team seats) so a visitor can compare their real tier. GitHub Copilot,
+ * and Team seats) so a visitor can compare their real tier. Anthropic's public
+ * pricing page also exposes a Max 20× usage option, but it does not publish a
+ * durable standalone monthly price in the visible copy, so the calculator
+ * intentionally models only the publicly visible from $100/mo Max 5× scenario
+ * until a verifiable public price exists. GitHub Copilot,
  * Cursor, and Zed round out the common IDE/editor assistant plans, and the
  * Google AI tiers (Plus, Pro, Ultra 5x, Ultra 20x) cover the broad Gemini
  * subscriptions whose Pro/Ultra tiers bundle the Jules and Google Antigravity

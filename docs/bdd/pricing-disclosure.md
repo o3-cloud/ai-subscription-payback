@@ -14,6 +14,7 @@ Scenario: Supported subscription tiers are listed
   When the visitor views them
   Then the Codex individual plan is listed
   And the Claude Code tiers are listed: Pro monthly, Pro annual, Max 5×, Team standard seat (monthly and annual), and Team premium seat (monthly and annual)
+  And the public Claude pricing page also exposes Max 20×, but the calculator keeps it out of the priced rows until a durable standalone public price is available
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
   And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
   And the Zed tiers are listed: Personal, Pro, and Business
@@ -38,6 +39,12 @@ Scenario: Supported subscription tiers are listed
   And the Factory tiers are listed: Pro, Plus, and Max
   And the Manus tiers are listed: Standard, Customizable, and Extended
   And each tier is distinguishable by its plan name even when it shares a product name
+
+Scenario: Claude Code Max 20× is exposed but not modeled until a durable public price exists
+  Given the Claude Code pricing section
+  When the visitor reads the disclosure
+  Then it states that the public Claude pricing page exposes Max 20× as a usage option
+  And it explains that the calculator only models the publicly visible from $100/mo Max 5× scenario until a verifiable public price exists
 
 Scenario: The Supermaven tiers disclose their context window and chat-credit caveat
   Given the Supermaven Free Tier, Pro, and Team tiers

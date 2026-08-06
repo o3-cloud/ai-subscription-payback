@@ -160,17 +160,38 @@ test("subscriptions cover the Codex and Claude Code public tiers", async () => {
   }
 });
 
-test("default-selected subscriptions total $40/mo", async () => {
+test("Claude Max 20x is documented as exposed but unmodeled until a durable public price exists", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
-  const defaultSelected = subscriptions.filter((s) => s.defaultSelected);
-  // Exactly Codex + Claude Code Pro (monthly), the baseline comparison basis.
-  assert.deepEqual(
-    defaultSelected.map((s) => s.id),
-    ["codex", "claude-code"]
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  assert.equal(byId.has("claude-max-20x"), false, "no priced Claude Max 20x row is modeled yet");
+
+  const data = read("assets/js/data.js");
+  assert.match(
+    data,
+    /Max 20× usage option/i,
+    "data.js records that Claude Max 20x is exposed on the public pricing page"
   );
-  const total = defaultSelected.reduce((sum, s) => sum + s.monthlyPrice, 0);
-  assert.equal(total, 40);
+  assert.match(
+    data,
+    /from \$100\/mo Max 5× scenario/i,
+    "data.js records that only the public Max 5x scenario is modeled"
+  );
+  assert.match(
+    data,
+    /until a verifiable public price exists/i,
+    "data.js explains why Claude Max 20x is excluded"
+  );
+
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(
+    bdd,
+    /public Claude pricing page also exposes Max 20×/i,
+    "pricing BDD documents the exposed-but-unpriced Max 20x option"
+  );
 });
+
+
 
 test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, JetBrains AI, and Tabnine editor-assistant tiers", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
