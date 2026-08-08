@@ -406,6 +406,23 @@ function boot(search = "", options = {}) {
   return { doc, win };
 }
 
+async function importMainWithBrowserGlobals(doc, win, readyState = "complete") {
+  const previousDocument = globalThis.document;
+  const previousWindow = globalThis.window;
+  doc.readyState = readyState;
+  globalThis.document = doc;
+  globalThis.window = win;
+  const specifier = new URL(
+    `../assets/js/main.js?bootstrap=${Date.now()}-${Math.random()}`,
+    import.meta.url
+  );
+  await import(specifier);
+  return () => {
+    globalThis.document = previousDocument;
+    globalThis.window = previousWindow;
+  };
+}
+
 /**
  * Wire a document.execCommand("copy") stub mirroring the browser: it copies the
  * current textarea selection, which the fallback stages just before calling it.
@@ -1280,6 +1297,59 @@ test("initCalculator ignores a malformed hash fragment in favor of the query str
     .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
     .map((el) => el.value);
   assert.deepEqual(checked, ["codex"]);
+});
+
+test("main.js boots immediately when the DOM is already ready", async () => {
+  const doc = buildDocument();
+  const win = buildWindow();
+  const restore = await importMainWithBrowserGlobals(doc, win, "interactive");
+
+  try {
+    assert.equal(
+      doc.listeners.get("DOMContentLoaded")?.length || 0,
+      0,
+      "already-ready documents do not need a DOMContentLoaded listener"
+    );
+    assert.equal(
+      win._historyUrls.length,
+      0,
+      "booting on a ready document still preserves the clean landing URL"
+    );
+    assert.equal(
+      doc.getElementById("pricing-list").children.length,
+      subscriptions.length + hardware.length,
+      "the calculator still initializes its rendered content"
+    );
+  } finally {
+    restore();
+  }
+});
+
+test("main.js defers boot until DOMContentLoaded when the document is loading", async () => {
+  const doc = buildDocument();
+  const win = buildWindow();
+  const restore = await importMainWithBrowserGlobals(doc, win, "loading");
+
+  try {
+    assert.equal(
+      doc.listeners.get("DOMContentLoaded")?.length || 0,
+      1,
+      "loading documents register one DOMContentLoaded bootstrap listener"
+    );
+    assert.equal(
+      win._historyUrls.length,
+      0,
+      "loading documents do not boot until the DOMContentLoaded event fires"
+    );
+    await doc.dispatch("DOMContentLoaded");
+    assert.equal(
+      doc.getElementById("pricing-list").children.length,
+      subscriptions.length + hardware.length,
+      "the bootstrap listener eventually initializes the calculator"
+    );
+  } finally {
+    restore();
+  }
 });
 
 test("a live edit re-validates and updates the results status", async () => {
