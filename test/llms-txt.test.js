@@ -37,6 +37,8 @@ test("llms.txt follows the convention: H1 title then a blockquote summary", () =
   );
   const summary = lines.find((line) => line.startsWith("> "));
   assert.match(summary, /calculator/i, "the summary describes the calculator");
+  assert.match(summary, /Cursor/i, "the summary names Cursor alongside the other modeled subscription families");
+  assert.match(summary, /GitHub Copilot/i, "the summary names GitHub Copilot alongside the other modeled subscription families");
   assert.match(summary, /Warp/i, "the summary names Warp alongside the other modeled subscription families");
   assert.match(summary, /Supermaven/i, "the summary names Supermaven alongside the other modeled subscription families");
   assert.match(summary, /Kiro/i, "the summary names Kiro alongside the other modeled subscription families");
@@ -58,7 +60,7 @@ test("llms.txt links every published guide, matching sitemap.xml", () => {
   const guides = [...read("sitemap.xml").matchAll(/guides\/[a-z0-9-]+\.html/g)].map(
     (m) => m[0]
   );
-  assert.ok(guides.length >= 10, "sitemap lists the published guides");
+  assert.ok(guides.length >= 14, "sitemap lists the published guides");
   for (const guide of guides) {
     assert.ok(
       txt.includes(`${SITE_URL}${guide}`),

@@ -4,7 +4,7 @@
  *
  * The site is deliberately build-step-free, but the comparison guides share a
  * lot of structure and every price/spec they quote must stay in lock-step with
- * the curated data in `assets/js/data.js`. Rather than hand-maintain five
+ * the curated data in `assets/js/data.js`. Rather than hand-maintain many
  * near-identical HTML files (and risk their numbers drifting from the calculator
  * they link into), we generate them from the same data + payback math the app
  * uses, then commit the output so the site stays plain static HTML.
@@ -273,6 +273,90 @@ export const GUIDES = [
       "A local box cannot replace v0's hosted product features, so the comparison is cost-first rather than a claim of identical app-generation capability.",
       "The bundle scenario is intentionally heavy; a lighter single-seat plan is much harder for local hardware to beat on cost alone.",
       "Changing the number of seats or the amount of credit consumption will move the payback month quickly.",
+    ],
+  },
+  {
+    slug: "cursor-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["cursor-pro-plus", "cursor-ultra"],
+    title: "Cursor vs a Local AI Box — Cost Comparison",
+    description:
+      "How Cursor's paid editor-assistant tiers compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Cursor vs a local AI box: the cost",
+    useCase: [
+      "Cursor is the AI IDE/editor family where the decision is usually driven by Individual, Pro+, Ultra, or team spend rather than a one-off tool purchase. This guide compares the higher Cursor tiers against owned local hardware and shows when the recurring bill starts to rival the box.",
+      "It is for developers and teams already leaning on Cursor's agent limits and model access who want to know whether the higher tiers justify buying local inference hardware instead.",
+    ],
+    scenarioLede:
+      "A Cursor Pro+ seat plus the Ultra tier against a value-class Strix Halo box.",
+    caveats: [
+      "Cursor is an editor-first hosted product with frontier-model access and usage-based billing beyond the included allowances, so the list price is only part of the real spend.",
+      "A local box cannot replace Cursor's hosted editor experience or agent orchestration; you would be using a different local stack for open-weight models, not the same product.",
+      "The cheaper Individual plan is a very different payback story from the heavier Pro+ / Ultra ladder, so the sample scenario intentionally focuses on the high-usage end.",
+      "Seat count, billing cadence, and how hard you push the agents all move the break-even month.",
+    ],
+  },
+  {
+    slug: "github-copilot-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["copilot-pro-plus", "copilot-max"],
+    title: "GitHub Copilot vs a Local AI Box — Cost Comparison",
+    description:
+      "How GitHub Copilot's Pro+ and Max tiers compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "GitHub Copilot vs a local AI box: the cost",
+    useCase: [
+      "GitHub Copilot now spans free, Pro, Pro+, and Max tiers, plus GitHub AI Credits that can spill into premium-model usage. This guide compares the higher paid Copilot tiers against local hardware and asks whether the hosted coding-assistant bill still beats ownership.",
+      "It is written for developers already paying for Pro+ or thinking about Max who want to know when a local box can compete on cost.",
+    ],
+    scenarioLede:
+      "A Copilot Pro+ subscription plus the Max tier against a value-class Strix Halo box.",
+    caveats: [
+      "Copilot's paid plans include premium-model access and GitHub AI Credits, and usage beyond those credits is metered, so the sticker price understates heavy usage.",
+      "A local box cannot run Copilot itself; you would be comparing the spend to a different local model stack, not the same hosted assistant.",
+      "The Pro plan is much cheaper than Max, so the sample scenario intentionally focuses on the heavier tiers where hardware payback is more plausible.",
+      "If your usage is mostly lighter completions, the local box is much harder to justify on dollars alone.",
+    ],
+  },
+  {
+    slug: "google-ai-jules-antigravity-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["google-ai-pro", "google-ai-ultra"],
+    title: "Google AI, Jules, and Antigravity vs a Local AI Box — Cost Comparison",
+    description:
+      "How Google AI Pro and Ultra compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Google AI, Jules, and Antigravity vs a local AI box: the cost",
+    useCase: [
+      "Google AI is the broad Gemini subscription layer, and the Pro and Ultra tiers are the ones that bring Jules and Google Antigravity coding-agent access into the picture. This guide compares those higher Google AI plans against a local AI box and shows where the recurring subscription cost catches up.",
+      "It is aimed at people using Google AI for both everyday Gemini-app limits and the coding-agent workflow who want to know whether the higher tier spend is better replaced by local inference hardware.",
+    ],
+    scenarioLede:
+      "A Google AI Pro subscription plus the Ultra tier against a value-class Strix Halo box.",
+    caveats: [
+      "Google AI is a hosted service with broad Gemini-app limits plus coding-agent access on the relevant tiers, so the list price is really buying access and managed capacity rather than just tokens.",
+      "A local box cannot reproduce Google's hosted Gemini, Jules, or Antigravity stack; it only substitutes a local model workflow for the spending side of the equation.",
+      "The cheaper Plus tier does not include the same coding-agent benefits, so the sample focuses on Pro and Ultra where the payback question is more relevant.",
+      "As always, the exact break-even month shifts with seat count, billing cadence, and how heavily you use the agents.",
+    ],
+  },
+  {
+    slug: "replit-agent-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["replit-core-monthly", "replit-pro-monthly"],
+    title: "Replit Agent vs a Local AI Box — Cost Comparison",
+    description:
+      "How Replit Core and Pro compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Replit Agent vs a local AI box: the cost",
+    useCase: [
+      "Replit's Core and Pro plans bundle Replit Agent credits, collaborators, and parallel agents, so the real bill is driven by how much agentic building you do. This guide compares the monthly Core and Pro tiers against local hardware and shows when the hosted spend starts to rival ownership.",
+      "It is written for builders who treat Replit Agent as part of their everyday app workflow and want to know whether heavier usage justifies a local box instead.",
+    ],
+    scenarioLede:
+      "A Replit Core subscription plus Pro against a value-class Strix Halo box.",
+    caveats: [
+      "Replit credits, collaborators, and concurrent agents all shape the real monthly cost, so the top-line plan price is only the beginning.",
+      "A local box cannot replace Replit Agent's hosted environment and deployment workflow; it only gives you a different local model stack to spend against.",
+      "The annual plans lower the effective monthly rate, but the monthly Core and Pro tiers are the clearest way to see the payback crossover.",
+      "If your usage stays near the free or lower-credit levels, the hardware case gets much weaker very quickly.",
     ],
   },
 ];

@@ -25,6 +25,13 @@ Scenario: Each mini-guide answers a concrete comparison query
   And it includes a CTA that returns to the calculator with the scenario preloaded in the URL hash
   And the CTA explicitly clears custom spend so the calculator uses the guide's tier selection
 
+Scenario: The guide hub publishes the second-wave comparison pages
+  Given the visitor opens the homepage guide hub
+  When they read the published comparison links
+  Then the page includes indexable guide links for Cursor, GitHub Copilot, Google AI, and Replit Agent
+  And each link opens a static comparison page on the canonical origin
+  And the guide set stays aligned with sitemap.xml and llms.txt
+
 Scenario: The guides are indexed and discoverable by crawlers
   Given a crawler fetches the sitemap
   When it reads the URL list

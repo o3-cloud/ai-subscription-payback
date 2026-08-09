@@ -22,6 +22,7 @@ const exists = (rel) => existsSync(fileURLToPath(new URL(rel, root)));
 
 const homepage = read("index.html");
 const sitemap = read("sitemap.xml");
+const miniGuidesBdd = read("docs/bdd/mini-guides.md");
 const generated = buildGuides();
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -34,7 +35,7 @@ const expectedGuideLinks = () =>
   }));
 
 test("the comparison-guide generator and committed files stay in sync", () => {
-  assert.equal(GUIDES.length, 10, "expected ten comparison mini-guides");
+  assert.equal(GUIDES.length, 14, "expected fourteen comparison mini-guides");
   for (const guide of generated) {
     assert.ok(exists(guide.path), `${guide.path} is missing`);
     const committed = read(guide.path);
@@ -245,6 +246,15 @@ test("Strix Halo guides expose the named Framework Desktop and GMKtec purchasabl
     assert.match(html, /64 GB RAM \+ 1 TB SSD/i, `${slug} names the EVO-X2 memory/storage config`);
     assert.match(html, /128 GB RAM \+ 2 TB SSD/i, `${slug} names the EVO-X3 memory/storage config`);
   }
+});
+
+test("the mini-guides BDD names the second-wave guide families", () => {
+  assert.match(miniGuidesBdd, /Cursor/i, "mini-guides BDD names Cursor");
+  assert.match(miniGuidesBdd, /GitHub Copilot/i, "mini-guides BDD names GitHub Copilot");
+  assert.match(miniGuidesBdd, /Google AI/i, "mini-guides BDD names Google AI");
+  assert.match(miniGuidesBdd, /Replit Agent/i, "mini-guides BDD names Replit Agent");
+  assert.match(miniGuidesBdd, /sitemap\.xml/i, "mini-guides BDD ties the guide set back to the sitemap");
+  assert.match(miniGuidesBdd, /llms\.txt/i, "mini-guides BDD ties the guide set back to llms.txt");
 });
 
 test("the sitemap lists every published guide URL", () => {
