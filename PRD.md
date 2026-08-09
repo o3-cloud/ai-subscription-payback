@@ -7,13 +7,15 @@
 
 ## Problem Statement
 
-Developers and small teams often pay recurring monthly fees for AI coding
-subscriptions such as Codex, Claude Code, Kiro, Supermaven, Google AI tiers like Gemini,
-Jules, and Antigravity, Devin, and Replit. This project will be an affiliate
-marketing static site that promotes local AI inference boxes — especially
-Mac Studio, NVIDIA DGX Spark, and AMD Strix Halo class systems — and helps
-visitors estimate how long it would take to pay off one of those boxes if they
-canceled their AI subscriptions and financed the hardware instead.
+Developers and small teams often pay recurring monthly fees for AI coding,
+app-builder, and agent subscriptions such as Codex, Claude Code, Cursor, GitHub
+Copilot, Google AI tiers like Gemini, Jules, and Antigravity, Devin, Replit,
+Mistral, Bolt, Lovable, v0, Augment Code, Amp, TRAE, Kiro, Supermaven, Warp,
+Factory, and Manus. This project will be an affiliate marketing static site
+that promotes local AI inference boxes — especially Mac Studio, NVIDIA DGX
+Spark, and AMD Strix Halo class systems — and helps visitors estimate how long
+it would take to pay off one of those boxes if they canceled their AI
+subscriptions and financed the hardware instead.
 
 The site answers two related questions:
 
