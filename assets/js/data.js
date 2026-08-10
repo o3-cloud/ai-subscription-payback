@@ -1707,7 +1707,7 @@ export const affiliates = {
     vendor: "Framework",
     url: "https://frame.work/desktop",
     label: "Explore Framework Desktop",
-    affiliate: true,
+    affiliate: false,
   },
   "gmktec-evo-x2": {
     vendor: "GMKtec",

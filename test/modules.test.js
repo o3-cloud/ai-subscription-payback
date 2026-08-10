@@ -1343,6 +1343,15 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
   }
 });
 
+test("Framework Desktop uses the official non-affiliate CTA", async () => {
+  const { getAffiliate } = await import(new URL("data.js", jsDir));
+  assert.equal(
+    getAffiliate("framework-desktop-ai-max-385-32gb")?.affiliate,
+    false,
+    "Framework Desktop uses the official non-affiliate CTA"
+  );
+});
+
 test("RTX PRO 6000 Blackwell is modeled as a reference-only high-end workstation class", async () => {
   const { hardware, featuredHardware, getAffiliate } = await import(
     new URL("data.js", jsDir)
