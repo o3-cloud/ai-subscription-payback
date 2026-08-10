@@ -28,6 +28,7 @@ Scenario: Supported subscription tiers are listed
   And the Lovable tiers are listed: Free, Pro, and Business
   And the v0 tiers are listed: Free, Plus, and Business
   And the Augment Code tier is listed: Business
+  And the Qodo tiers are listed: Pro Team (2,500 credits), Pro Team (5,000 credits), and Pro Team (20,000 credits)
   And the Kiro tiers are listed: Free, Pro, Pro+, Pro Max, and Power
   And the Supermaven tiers are listed: Free Tier, Pro, and Team
   And the Amp tiers are listed: Megawatt and Gigawatt
@@ -65,7 +66,7 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their coding-agent benefit
@@ -141,13 +142,23 @@ Scenario: v0 tiers disclose their credits, daily-login, and training-opt-out cav
 
 Scenario: The Augment Code Business tier discloses its pooled-usage caveat
   Given the Augment Code Business tier
-  When the visitor views its included-value text
+  When the visitor views its billing cadence and included-value text
   Then it is described as a team plan for the Augment Code coding agent
   And it is priced at a flat $100/mo covering up to 50 seats and $100/mo of pooled usage
   And it notes that usage beyond the pooled usage is billed as metered top-ups
   And it notes that Augment Code's Enterprise plan is custom-priced and out of scope
   And it points at the official Augment Code pricing page
   And it is optional and unchecked in the default selection
+
+Scenario: The Qodo Pro Team tiers disclose their credit-metered caveat
+  Given the Qodo Pro Team tiers
+  When the visitor views their billing cadence and included-value text
+  Then the Pro Team 2,500-credit pack is priced at $30/mo with 2,500 pooled credits at $0.012/credit
+  And the Pro Team 5,000-credit pack is priced at $60/mo with 5,000 pooled credits at the same rate
+  And the Pro Team 20,000-credit pack is priced at $240/mo with 20,000 pooled credits at the same rate
+  And the copy notes that credits expire each monthly cycle, there is no annual commitment, no rate limits, and overage continues at the same per-credit rate subject to a spending cap
+  And all point at the official Qodo pricing page
+  And all are optional and unchecked in the default selection
 
 Scenario: Amp tiers disclose their included-agent-usage caveat
   Given the Amp Megawatt and Gigawatt tiers

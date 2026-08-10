@@ -47,7 +47,7 @@ const metaContent = (attr, value) =>
 
 // The SEO BDD requires the description-style fields to name all of the newly
 // modeled tier families — Google AI, Replit, Mistral, Bolt, Lovable, Augment
-// Code, Amp, TRAE, Kiro, Supermaven, Warp, and Manus — not merely one of them. Assert each family
+// Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus — not merely one of them. Assert each family
 // individually so dropping any one from a field is caught; an OR-alternation
 // would let a field lose one family silently.
 const assertNamesNewTiers = (text, field) => {
@@ -58,6 +58,7 @@ const assertNamesNewTiers = (text, field) => {
     ["Bolt", /Bolt/i],
     ["Lovable", /Lovable/i],
     ["Augment Code", /Augment Code/i],
+    ["Qodo", /Qodo/i],
     ["Amp", /Amp/i],
     ["TRAE", /TRAE/i],
     ["Kiro", /Kiro/i],
@@ -361,7 +362,7 @@ test("the SEO BDD documents the current helper-text and metadata families", () =
   const bdd = read("docs/bdd/seo-and-metadata.md");
   assert.match(
     bdd,
-    /Google AI, Mistral, Replit, Bolt, Lovable, Augment Code, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus tiers are discoverable in homepage copy and metadata/i,
+    /Google AI, Mistral, Replit, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus tiers are discoverable in homepage copy and metadata/i,
     "SEO BDD scenario title must cover the current homepage copy and metadata families"
   );
   assert.match(
@@ -376,7 +377,7 @@ test("the SEO BDD documents the current helper-text and metadata families", () =
   );
   assert.match(
     bdd,
-    /Google AI, Replit, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers/i,
+    /Google AI, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers/i,
     "SEO BDD metadata coverage must mention Manus"
   );
 });

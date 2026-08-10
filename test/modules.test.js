@@ -920,6 +920,45 @@ test("the pricing-disclosure BDD documents the Augment Code Business pooled-usag
   assert.match(bdd, /flat \$100\/mo covering up to 50 seats and \$100\/mo of pooled usage/i);
 });
 
+test("Qodo Pro Team tiers are listed with pooled-credit and no-annual-commitment caveats", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  const expected = {
+    "qodo-pro-team-2500": 30,
+    "qodo-pro-team-5000": 60,
+    "qodo-pro-team-20000": 240,
+  };
+  const plans = {
+    "qodo-pro-team-2500": "Pro Team (2,500 credits)",
+    "qodo-pro-team-5000": "Pro Team (5,000 credits)",
+    "qodo-pro-team-20000": "Pro Team (20,000 credits)",
+  };
+  for (const [id, monthlyPrice] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.ok(sub, `missing subscription tier: ${id}`);
+    assert.equal(sub.name, "Qodo", `${id} product name`);
+    assert.equal(sub.plan, plans[id], `${id} plan name`);
+    assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
+    assert.equal(sub.verification, "official", `${id} is marked official`);
+    assert.equal(sub.sourceUrl, "https://www.qodo.ai/pricing/", `${id} points at the official Qodo pricing page`);
+    assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
+    assert.match(sub.billingCadence, /no annual commitment/i, `${id} billing cadence notes no annual commitment`);
+    assert.match(sub.includedValue, /0\.012\/credit/i, `${id} included value names the per-credit rate`);
+    assert.match(sub.includedValue, /credits expire each monthly cycle/i, `${id} included value names the monthly expiration caveat`);
+    assert.match(sub.includedValue, /no rate limits/i, `${id} included value names the no-rate-limits caveat`);
+    assert.match(sub.includedValue, /spending cap/i, `${id} included value names the spending-cap caveat`);
+  }
+});
+
+test("the pricing-disclosure BDD documents the Qodo Pro Team credit-pack caveat", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /The Qodo Pro Team tiers disclose their credit-metered caveat/i);
+  assert.match(bdd, /Pro Team 2,500-credit pack is priced at \$30\/mo/i);
+  assert.match(bdd, /credits expire each monthly cycle/i);
+  assert.match(bdd, /no annual commitment/i);
+});
+
 test("the pricing-disclosure BDD documents the RTX PRO 6000 Blackwell reference class", () => {
   const bdd = read("docs/bdd/pricing-disclosure.md");
   assert.match(bdd, /High-end reference workstation classes are listed without becoming featured cards/i);

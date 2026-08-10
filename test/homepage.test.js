@@ -254,10 +254,10 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
+test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
   // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
   // Replit Agent, the Bolt and Lovable app builders, v0 by Vercel, Augment Code,
-  // and the new Amp / TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
+  // Qodo, and the new Amp / TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
   // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
@@ -279,6 +279,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(help, /Lovable/i, "helper copy names Lovable");
   assert.match(help, /v0 by Vercel/i, "helper copy names v0 by Vercel");
   assert.match(help, /Augment Code/i, "helper copy names Augment Code");
+  assert.match(help, /Qodo/i, "helper copy names Qodo");
   assert.match(help, /Amp/i, "helper copy names Amp");
   assert.match(help, /TRAE \(AI IDE\)/i, "helper copy names TRAE");
   assert.match(help, /Kiro/i, "helper copy names Kiro");
@@ -307,6 +308,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /Mistral/i, "pricing disclosure mentions Mistral tiers");
   assert.match(pricing, /Vibe/i, "pricing disclosure mentions Mistral Vibe coding");
   assert.match(pricing, /Augment Code/i, "pricing disclosure mentions the Augment Code tier");
+  assert.match(pricing, /Qodo/i, "pricing disclosure mentions the Qodo tiers");
   assert.match(pricing, /Kiro/i, "pricing disclosure mentions Kiro tiers");
   assert.match(pricing, /Supermaven/i, "pricing disclosure mentions Supermaven tiers");
   assert.match(pricing, /1M token context window/i, "pricing disclosure mentions Supermaven's context window");
@@ -342,9 +344,10 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   assert.match(pricing, /7-day trial/i, "pricing disclosure explains the TRAE trial caveat");
   assert.match(
     pricing,
-    /pooled usage/i,
-    "pricing disclosure explains the Augment Code pooled-usage caveat"
+    /Qodo tiers[\s\S]*?\(Pro Team, 2,500 \/ 5,000 \/ 20,000 credits\)/i,
+    "pricing disclosure explains the Qodo credit-pack tiers"
   );
+  assert.match(pricing, /pooled usage/i, "pricing disclosure explains the Augment Code pooled-usage caveat");
   assert.match(pricing, /Cline/i, "pricing disclosure mentions Cline");
   assert.ok(pricing.includes("v0 by Vercel"), "pricing disclosure explains the v0 tiers");
   assert.match(
