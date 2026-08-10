@@ -295,6 +295,10 @@ Scenario: DGX Spark surfaces current retailer trims alongside the base estimate
   And the trim selector includes the Seeed Studio $3,999 listing
   And the trim selector includes the ASUS Ascent GX10 GB10 system
   And the trim selector includes the PNY 4 TB retailer listing at $5,199.99
+  And the trim selector includes the HP ZGX Nano G1n 2 TB and 4 TB retailer listings
+  And the trim selector includes the Acer Veriton VGN100-UD11 retailer listing at $5,199.00
+  And the trim selector includes the GIGABYTE AI TOP ATOM retailer price band around $4,999.99-$5,999.99
+  And the trim selector includes the MSI EdgeXpert retailer price band around $5,339.99-$6,136.99
   And the named trims stay separate from the official Marketplace CTA
 
 Scenario: Featured products are named clearly

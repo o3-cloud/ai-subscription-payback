@@ -27,60 +27,13 @@ source, and the exact blocker (usually "no public price verified yet").
   (or a `referenceOnly` row) with `sourceUrl`, `verification`, and `lastUpdated`
   set, and remove the entry from this watchlist.
 
-## HP ZGX Nano AI Station
-
-- **Status:** Future hardware candidate — no public price has been verified yet
-  as of 2026-07-29. Do not add a calculator preset or a `referenceOnly` priced
-  row until an actual purchase price is sourced.
-- **Why watch it:** HP builds the ZGX Nano AI Station as its OEM take on NVIDIA's
-  DGX Spark (GB10 Grace Blackwell) deskside system, so it is relevant for
-  visitors weighing subscriptions against a name-brand DGX Spark-class local
-  inference box.
-- **Official specs:** NVIDIA GB10 Grace Blackwell Superchip, 128 GB of coherent
-  unified LPDDR5x memory, up to 1 petaFLOP (1,000 TOPS) of FP4 AI compute, local
-  inference on models up to 200B parameters, and up to 4 TB of NVMe storage.
-- **Source:** <https://www.hp.com/us-en/workstations/zgx-nano-ai-station.html> (official HP
-  ZGX Nano AI Station page) with NVIDIA's DGX Spark platform page
-  <https://www.nvidia.com/en-us/products/workstations/dgx-spark/> for the shared
-  GB10 specs (specs and positioning only; no public price at last check).
-- **Graduation blocker:** No public price verified yet. A verifiable purchase
-  price from HP, an authorized reseller, or a retailer listing is required. When
-  one exists, add a sourced `hardware` entry (or a `referenceOnly` row) with
-  `sourceUrl`, `verification`, and `lastUpdated` set, and remove the entry from
-  this watchlist.
-
-## MSI EdgeXpert and GIGABYTE AI TOP Atom (DGX Spark-class)
-
-- **Status:** Watch / research context only — observed in marketplace comparison
-  listings but not from a stable, in-stock retailer page as of 2026-07-31. Do not
-  add a calculator preset, featured card, or priced `referenceOnly` row until an
-  available, stable retailer listing is verified.
-- **Why watch it:** Both are OEM DGX Spark-class (NVIDIA GB10 Grace Blackwell)
-  systems that widen the street-price picture around the featured DGX Spark card,
-  so they matter for visitors comparing subscriptions against a name-brand local
-  inference box.
-- **Observed context:** The MSI EdgeXpert AI Mini Desktop (DGX Spark Platform)
-  showed a marketplace comparison price around $5,651.71 while the product itself
-  was marked currently unavailable; GIGABYTE AI TOP Atom showed a marketplace
-  comparison price around $4,999.99. These are unstable marketplace figures, not a
-  fixed MSRP or a verified in-stock listing, so no price graduates to the data.
-- **Source:** MSI EdgeXpert Amazon product / marketplace page
-  <https://www.amazon.com/msi-EdgeXpert-Supercomputer-Blackwell-Architecture/dp/B0FWFLZQSC>
-  with NVIDIA's DGX Spark platform page
-  <https://www.nvidia.com/en-us/products/workstations/dgx-spark/> for the shared
-  GB10 specs (marketplace / comparison context only; availability not stable at
-  last check).
-- **Graduation blocker:** Source stability / availability, not a missing price. A
-  verifiable, in-stock listing from a stable retailer (not a currently-unavailable
-  marketplace comparison) is required. When one exists, add a sourced `hardware`
-  entry (or a `referenceOnly` row) with `sourceUrl`, `verification`, and
-  `lastUpdated` set, and remove the entry from this watchlist.
-
 ## Maintaining this list
 
 - Keep this note in sync with its behavior spec,
   [docs/bdd/hardware-watchlist.md](bdd/hardware-watchlist.md); `test/hardware-watchlist.test.js`
   fails if they drift or if a watchlist product leaks into the priced calculator
   data.
+- DGX Spark-class retailer-priced trims now live in `assets/js/data.js`; this
+  watchlist is reserved for still-unpriced future candidates like DGX Station.
 - Never invent a price to move an entry off the watchlist. A candidate graduates
   only when a real, sourced price is added to `assets/js/data.js`.

@@ -1082,7 +1082,7 @@ test("choosing a featured trim loads that trim's price and power draw", async ()
   );
 });
 
-test("DGX Spark exposes a named ASUS Ascent GX10 trim and loads it correctly", async () => {
+test("DGX Spark exposes current retailer trims and loads them correctly", async () => {
   const { doc, win } = boot();
   const dgxSparkIndex = featuredHardware.findIndex((box) => box.id === "dgx-spark");
   const dgxSpark = featuredHardware[dgxSparkIndex];
@@ -1094,29 +1094,40 @@ test("DGX Spark exposes a named ASUS Ascent GX10 trim and loads it correctly", a
   const seeedTrim = trims.find((trim) => trim.id === "seeed-dgx-spark");
   const asusTrim = trims.find((trim) => trim.id === "asus-ascent-gx10");
   const pnyTrim = trims.find((trim) => trim.id === "pny-dgx-spark");
+  const hpTrim = trims.find((trim) => trim.id === "hp-zgx-nano-g1n-2tb");
 
   assert.ok(seeedTrim, "expected the DGX Spark card to expose the Seeed Studio trim");
   assert.ok(asusTrim, "expected the DGX Spark card to expose the ASUS Ascent GX10 trim");
   assert.ok(pnyTrim, "expected the DGX Spark card to expose the PNY trim");
+  assert.ok(hpTrim, "expected the DGX Spark card to expose the HP ZGX Nano trim");
   assert.deepEqual(
     trims.map((trim) => trim.id),
-    ["seeed-dgx-spark", "asus-ascent-gx10", "pny-dgx-spark"],
+    [
+      "seeed-dgx-spark",
+      "asus-ascent-gx10",
+      "pny-dgx-spark",
+      "hp-zgx-nano-g1n-2tb",
+      "hp-zgx-nano-g1n-4tb",
+      "acer-veriton-vgn100-ud11",
+      "gigabyte-ai-top-atom",
+      "msi-edgexpert",
+    ],
     "DGX Spark should surface the current named retailer trims"
   );
   assert.equal(defaultTrim.id, "seeed-dgx-spark", "DGX Spark now defaults to the Seeed Studio trim");
   assert.ok(select, "expected a DGX Spark trim selector");
-  assert.equal(select.children.length, 3, "DGX Spark trim selector lists three options");
+  assert.equal(select.children.length, 8, "DGX Spark trim selector lists eight options");
 
-  select.value = asusTrim.id;
+  select.value = hpTrim.id;
   await buttons[dgxSparkIndex].dispatch("click");
 
-  assert.equal(doc.getElementById("box-price").value, String(asusTrim.boxPrice));
-  assert.equal(doc.getElementById("power-draw").value, String(asusTrim.powerDraw));
-  assert.match(doc.getElementById("featured-hardware-status").textContent, /ASUS Ascent GX10/);
-  assert.equal(select.value, asusTrim.id, "the selector stays synced to the ASUS trim");
+  assert.equal(doc.getElementById("box-price").value, String(hpTrim.boxPrice));
+  assert.equal(doc.getElementById("power-draw").value, String(hpTrim.powerDraw));
+  assert.match(doc.getElementById("featured-hardware-status").textContent, /HP ZGX Nano G1n AI Station/);
+  assert.equal(select.value, hpTrim.id, "the selector stays synced to the HP trim");
   assert.ok(
     win._plausibleCalls.some(([name]) => name === "Calculator: Interact"),
-    "loading the ASUS trim counts as calculator interaction"
+    "loading the HP trim counts as calculator interaction"
   );
 });
 

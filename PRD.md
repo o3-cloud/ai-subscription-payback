@@ -133,10 +133,9 @@ and the fact that all savings numbers are estimates.
   sourced purchase price exists.
 - The official DGX Station page exposes specs and order/partner positioning, but
   no public price has been verified yet.
-- Track the HP ZGX Nano AI Station here too as a future DGX Spark (GB10) OEM
-  candidate; its official HP page and NVIDIA's DGX Spark page cover the specs,
-  but no public price has been verified yet, so it must not become a preset,
-  featured card, or priced `referenceOnly` row until a sourced price exists.
+- DGX Spark-class retailer-priced trims are modeled directly in the hardware
+  data once a public price is verified; the watchlist is reserved for still-
+  unpriced future candidates.
 
 ## Analytics
 

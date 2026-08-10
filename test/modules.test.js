@@ -1077,7 +1077,16 @@ test("featured hardware trims seed the documented default preload", async () => 
   assert.equal(defaultHardwareTrim(dgx).boxPrice, 3999, "DGX Spark defaults to the $3,999 listing");
   assert.deepEqual(
     hardwareTrims(dgx).map((trim) => trim.id),
-    ["seeed-dgx-spark", "asus-ascent-gx10", "pny-dgx-spark"],
+    [
+      "seeed-dgx-spark",
+      "asus-ascent-gx10",
+      "pny-dgx-spark",
+      "hp-zgx-nano-g1n-2tb",
+      "hp-zgx-nano-g1n-4tb",
+      "acer-veriton-vgn100-ud11",
+      "gigabyte-ai-top-atom",
+      "msi-edgexpert",
+    ],
     "DGX Spark trims surface the current named retailer offers"
   );
 
@@ -1097,35 +1106,94 @@ test("DGX Spark retailer trims are modeled as named DGX Spark-class listings", a
   const byId = new Map(hardware.map((h) => [h.id, h]));
 
   const expected = [
-    [
-      "seeed-dgx-spark",
-      "Seeed Studio NVIDIA DGX Spark",
-      3999,
-      "https://www.seeedstudio.com/NVIDIA-DGX-Spark-p-6611.html",
-      "Seeed Studio listing",
-      "GB10 Grace Blackwell desktop, 128 GB unified memory",
-    ],
-    [
-      "pny-dgx-spark",
-      "PNY NVIDIA DGX Spark",
-      5199.99,
-      "https://www.newegg.com/pny-technologies-inc-dgx-personal-ai-computer-20-core-arm-10-cortex-x925-10-cortex-a725-arm-nvdgxspark-pb/p/N82E16856987001",
-      "Newegg street price",
-      "NVIDIA GB10 Grace Blackwell, 128 GB LPDDR5x, 4 TB NVMe",
-    ],
+    {
+      id: "seeed-dgx-spark",
+      name: "Seeed Studio NVIDIA DGX Spark",
+      price: 3999,
+      sourceUrl: "https://www.seeedstudio.com/NVIDIA-DGX-Spark-p-6611.html",
+      sourceLabel: "Seeed Studio listing",
+      spec: "GB10 Grace Blackwell desktop, 128 GB unified memory",
+    },
+    {
+      id: "asus-ascent-gx10",
+      name: "ASUS Ascent GX10",
+      price: 3970.99,
+      priceHigh: 4999.99,
+      sourceUrl: "https://www.newegg.com/asus-ascent-gx10-mini-pc/p/N82E16859110044",
+      sourceLabel: "Newegg street price",
+      spec: "NVIDIA GB10 / DGX Spark-class system, 128 GB LPDDR5x unified memory, 1 TB SSD",
+    },
+    {
+      id: "pny-dgx-spark",
+      name: "PNY NVIDIA DGX Spark",
+      price: 5199.99,
+      sourceUrl:
+        "https://www.newegg.com/pny-technologies-inc-dgx-personal-ai-computer-20-core-arm-10-cortex-x925-10-cortex-a725-arm-nvdgxspark-pb/p/N82E16856987001",
+      sourceLabel: "Newegg street price",
+      spec: "NVIDIA GB10 Grace Blackwell, 128 GB LPDDR5x, 4 TB NVMe",
+    },
+    {
+      id: "hp-zgx-nano-g1n-2tb",
+      name: "HP ZGX Nano G1n AI Station",
+      price: 5399.63,
+      sourceUrl: "https://www.newegg.com/p/pl?d=HP+ZGX+Nano",
+      sourceLabel: "Newegg street price",
+      spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB coherent unified memory, 2 TB SSD",
+    },
+    {
+      id: "hp-zgx-nano-g1n-4tb",
+      name: "HP ZGX Nano G1n AI Station",
+      price: 6030,
+      sourceUrl: "https://www.newegg.com/p/pl?d=HP+ZGX+Nano",
+      sourceLabel: "Newegg street price",
+      spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB coherent unified memory, 4 TB SSD",
+    },
+    {
+      id: "acer-veriton-vgn100-ud11",
+      name: "Acer Veriton VGN100-UD11",
+      price: 5199,
+      sourceUrl: "https://www.newegg.com/p/pl?d=Acer+Veriton+VGN100-UD11",
+      sourceLabel: "Newegg street price",
+      spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB unified memory, 4 TB SSD",
+    },
+    {
+      id: "gigabyte-ai-top-atom",
+      name: "GIGABYTE AI TOP ATOM",
+      price: 4999.99,
+      priceHigh: 5999.99,
+      sourceUrl: "https://www.newegg.com/p/pl?d=GIGABYTE+AI+TOP+ATOM",
+      sourceLabel: "Newegg street price",
+      spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB unified memory, 4 TB SSD",
+    },
+    {
+      id: "msi-edgexpert",
+      name: "MSI EdgeXpert",
+      price: 5339.99,
+      priceHigh: 6136.99,
+      sourceUrl: "https://www.newegg.com/p/pl?d=MSI+EdgeXpert",
+      sourceLabel: "Newegg street price",
+      spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB unified memory",
+    },
   ];
 
-  for (const [id, name, price, sourceUrl, sourceLabel, spec] of expected) {
+  for (const { id, name, price, priceHigh, sourceUrl, sourceLabel, spec } of expected) {
     const box = byId.get(id);
     assert.ok(box, `missing ${id} hardware entry`);
     assert.equal(box.name, name, `${id} uses the expected product name`);
     assert.equal(box.priceLow, price, `${id} priceLow`);
-    assert.equal(box.priceHigh, price, `${id} priceHigh`);
-    assert.equal(box.spec, spec, `${id} spec`);
+    assert.equal(box.defaultBoxPrice, price, `${id} defaultBoxPrice`);
     assert.equal(box.sourceUrl, sourceUrl, `${id} source URL`);
     assert.equal(box.sourceLabel, sourceLabel, `${id} source label`);
     assert.equal(box.verification, "retailer", `${id} is a retailer listing`);
     assert.equal(box.exampleOf, "dgx-spark", `${id} stays a DGX Spark trim`);
+    assert.equal(box.spec, spec, `${id} spec`);
+    assert.equal(box.powerDraw, 240, `${id} power draw stays on the DGX Spark class`);
+    if (typeof priceHigh === "number") {
+      assert.equal(box.priceHigh, priceHigh, `${id} priceHigh`);
+      assert.ok(box.priceHigh > box.priceLow, `${id} records a retailer price band`);
+    } else {
+      assert.equal(box.priceHigh, price, `${id} priceHigh`);
+    }
   }
 });
 

@@ -16,11 +16,12 @@ Scenario: Range-based featured hardware cards expose a trim selector
   And selecting a different trim changes which box price is loaded
   And a range-based card shares one power draw across its trims, while SKU-backed trims each carry their own
 
-Scenario: DGX Spark exposes a named OEM trim
+Scenario: DGX Spark exposes named retailer trims
   Given the DGX Spark featured card
   When the visitor opens its configuration drop-down
   Then the selector includes an ASUS Ascent GX10 trim
-  And the named trim keeps the DGX Spark card's source provenance and loads its retailer-sourced price
+  And it also includes HP ZGX Nano G1n, Acer Veriton VGN100-UD11, GIGABYTE AI TOP ATOM, and MSI EdgeXpert trims
+  And each named trim keeps the DGX Spark card's source provenance and loads its retailer-sourced price
 
 Scenario: Featured hardware cards include affiliate calls to action
   Given a featured hardware card

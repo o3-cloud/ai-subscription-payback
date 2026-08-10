@@ -101,10 +101,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-05";
+export const pricingLastUpdated = "2026-08-10";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-05";
+export const siteLastUpdated = "2026-08-10";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1311,6 +1311,86 @@ export const hardware = [
     exampleOf: "dgx-spark",
   },
   {
+    id: "hp-zgx-nano-g1n-2tb",
+    name: "HP ZGX Nano G1n AI Station",
+    spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB coherent unified memory, 2 TB SSD",
+    priceLow: 5399.63,
+    priceHigh: 5399.63,
+    priceNote:
+      "Newegg street price observed for the 2 TB HP ZGX Nano G1n AI Station listing; treat it as a retailer snapshot, not MSRP.",
+    sourceUrl: "https://www.newegg.com/p/pl?d=HP+ZGX+Nano",
+    sourceLabel: "Newegg street price",
+    verification: "retailer",
+    lastUpdated: "2026-08-10",
+    defaultBoxPrice: 5399.63,
+    powerDraw: 240,
+    exampleOf: "dgx-spark",
+  },
+  {
+    id: "hp-zgx-nano-g1n-4tb",
+    name: "HP ZGX Nano G1n AI Station",
+    spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB coherent unified memory, 4 TB SSD",
+    priceLow: 6030,
+    priceHigh: 6030,
+    priceNote:
+      "Newegg street price observed for the 4 TB HP ZGX Nano G1n AI Station listing; treat it as a retailer snapshot, not MSRP.",
+    sourceUrl: "https://www.newegg.com/p/pl?d=HP+ZGX+Nano",
+    sourceLabel: "Newegg street price",
+    verification: "retailer",
+    lastUpdated: "2026-08-10",
+    defaultBoxPrice: 6030,
+    powerDraw: 240,
+    exampleOf: "dgx-spark",
+  },
+  {
+    id: "acer-veriton-vgn100-ud11",
+    name: "Acer Veriton VGN100-UD11",
+    spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB unified memory, 4 TB SSD",
+    priceLow: 5199,
+    priceHigh: 5199,
+    priceNote:
+      "Newegg street price observed for the Acer Veriton VGN100-UD11 DGX Spark workstation listing; treat it as a retailer snapshot, not MSRP.",
+    sourceUrl: "https://www.newegg.com/p/pl?d=Acer+Veriton+VGN100-UD11",
+    sourceLabel: "Newegg street price",
+    verification: "retailer",
+    lastUpdated: "2026-08-10",
+    defaultBoxPrice: 5199,
+    powerDraw: 240,
+    exampleOf: "dgx-spark",
+  },
+  {
+    id: "gigabyte-ai-top-atom",
+    name: "GIGABYTE AI TOP ATOM",
+    spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB unified memory, 4 TB SSD",
+    priceLow: 4999.99,
+    priceHigh: 5999.99,
+    priceNote:
+      "Newegg street-price snapshot observed around $4,999.99-$5,999.99 for the GIGABYTE AI TOP ATOM DGX Spark-class listing; treat the band as retailer pricing, not MSRP.",
+    sourceUrl: "https://www.newegg.com/p/pl?d=GIGABYTE+AI+TOP+ATOM",
+    sourceLabel: "Newegg street price",
+    verification: "retailer",
+    lastUpdated: "2026-08-10",
+    defaultBoxPrice: 4999.99,
+    powerDraw: 240,
+    exampleOf: "dgx-spark",
+  },
+  {
+    id: "msi-edgexpert",
+    name: "MSI EdgeXpert",
+    spec: "NVIDIA GB10 Grace Blackwell Superchip, 128 GB unified memory",
+    priceLow: 5339.99,
+    priceHigh: 6136.99,
+    priceNote:
+      "Newegg street-price snapshot observed for single-unit MSI EdgeXpert DGX Spark-class listings around $5,339.99 and $6,136.99; treat the band as retailer pricing, not MSRP.",
+    sourceUrl: "https://www.newegg.com/p/pl?d=MSI+EdgeXpert",
+    sourceLabel: "Newegg street price",
+    verification: "retailer",
+    lastUpdated: "2026-08-10",
+    defaultBoxPrice: 5339.99,
+    powerDraw: 240,
+    exampleOf: "dgx-spark",
+  },
+  {
     id: "strix-halo",
     name: "AMD Strix Halo workstation",
     spec: "Ryzen AI Max 300-series mini-PC, up to 128 GB unified memory",
@@ -1540,6 +1620,42 @@ export const affiliates = {
     vendor: "Newegg",
     url: "https://www.newegg.com/p/pl?d=ASUS+Ascent+GX10",
     label: "Check ASUS Ascent GX10 pricing",
+    affiliate: true,
+  },
+  "pny-dgx-spark": {
+    vendor: "Newegg",
+    url: "https://www.newegg.com/p/pl?d=PNY+NVIDIA+DGX+Spark",
+    label: "Check PNY pricing",
+    affiliate: true,
+  },
+  "hp-zgx-nano-g1n-2tb": {
+    vendor: "Newegg",
+    url: "https://www.newegg.com/p/pl?d=HP+ZGX+Nano+AI+Station",
+    label: "Check HP ZGX Nano pricing",
+    affiliate: true,
+  },
+  "hp-zgx-nano-g1n-4tb": {
+    vendor: "Newegg",
+    url: "https://www.newegg.com/p/pl?d=HP+ZGX+Nano+AI+Station",
+    label: "Check HP ZGX Nano pricing",
+    affiliate: true,
+  },
+  "acer-veriton-vgn100-ud11": {
+    vendor: "Newegg",
+    url: "https://www.newegg.com/p/pl?d=Acer+Veriton+VGN100-UD11+DGX+Spark",
+    label: "Check Acer Veriton pricing",
+    affiliate: true,
+  },
+  "gigabyte-ai-top-atom": {
+    vendor: "Newegg",
+    url: "https://www.newegg.com/p/pl?d=GIGABYTE+AI+TOP+ATOM+DGX+Spark",
+    label: "Check GIGABYTE AI TOP ATOM pricing",
+    affiliate: true,
+  },
+  "msi-edgexpert": {
+    vendor: "Newegg",
+    url: "https://www.newegg.com/p/pl?d=MSI+EdgeXpert+DGX+Spark",
+    label: "Check MSI EdgeXpert pricing",
     affiliate: true,
   },
   "strix-halo": {
