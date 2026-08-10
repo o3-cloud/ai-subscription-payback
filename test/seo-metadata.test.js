@@ -362,18 +362,21 @@ test("the SEO BDD documents the current helper-text and metadata families", () =
   const bdd = read("docs/bdd/seo-and-metadata.md");
   assert.match(
     bdd,
-    /Google AI, Mistral, Replit, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus tiers are discoverable in homepage copy and metadata/i,
+    /Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers are discoverable in homepage copy and metadata/i,
     "SEO BDD scenario title must cover the current homepage copy and metadata families"
   );
+  for (const family of [
+    "Amazon Q Developer",
+    "Devin (Windsurf / Devin Desktop)",
+    "JetBrains AI Pro",
+    "Tabnine (Code Assistant Platform / Agentic Platform)",
+  ]) {
+    assert.match(bdd, new RegExp(family.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), `SEO BDD helper-text coverage must mention ${family}`);
+  }
   assert.match(
     bdd,
-    /Factory \(Droid agents\)/i,
-    "SEO BDD helper-text coverage must mention Factory"
-  );
-  assert.match(
-    bdd,
-    /Manus \(autonomous agent\)/i,
-    "SEO BDD helper-text coverage must mention Manus"
+    /Google AI, Gemini, Jules, Antigravity, Amazon Q Developer, Devin \(Windsurf \/ Devin Desktop\), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo \(Pro Team\), Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine \(Code Assistant Platform \/ Agentic Platform\), Warp, Factory \(Droid agents\), and Manus \(autonomous agent\)/i,
+    "SEO BDD helper-text coverage must list the full current roster"
   );
   assert.match(
     bdd,
