@@ -72,6 +72,9 @@
  * @property {string} [modelFit] - conservative, human-readable model-fit guidance
  *   for the featured card; advisory only, not a benchmark promise
  * @property {HardwareImage} [image] - product photo shown on the featured card
+ * @property {HardwareFinancingExample} [financingExample] - optional vendor
+ *   financing context shown on the card when an official monthly-payment example
+ *   is publicly published; it is informational context, not a calculator input
  * @property {boolean} [referenceOnly] - true for a high-end reference class that
  *   is listed in the full comparison table and pricing list for context but is
  *   not promoted to a featured product card (e.g. a build-required workstation /
@@ -90,6 +93,14 @@
  * @property {string} src - path to a local, vendor-sourced product photo under
  *   assets/img/ (a committed raster image, not an SVG illustration)
  * @property {string} alt - descriptive alt text for the product photo
+ */
+
+/**
+ * @typedef {Object} HardwareFinancingExample
+ * @property {string} summary - vendor-published monthly-payment example shown as
+ *   contextual copy on the card
+ * @property {string} sourceUrl - link to the page that published the example
+ * @property {string} sourceLabel - short provenance label for the example
  */
 
 /**
@@ -1280,6 +1291,12 @@ export const hardware = [
     image: {
       src: "assets/img/mac-studio.jpg",
       alt: "Apple product photo of the Mac Studio: a compact square aluminum desktop computer.",
+    },
+    financingExample: {
+      summary:
+        "Apple's example financing is $208.25/mo for 12 months to buy, and lease-from pricing starts at $48.99/mo for 36 months with Apple Upgrade.",
+      sourceUrl: "https://www.apple.com/shop/buy-mac/mac-studio",
+      sourceLabel: "Apple financing example",
     },
   },
   {

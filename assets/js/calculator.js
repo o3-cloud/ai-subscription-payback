@@ -1063,6 +1063,21 @@ function renderFeaturedHardware(doc, win, analytics) {
     note.textContent = box.priceNote;
     card.appendChild(note);
 
+    if (box.financingExample) {
+      const financing = doc.createElement("p");
+      financing.className = "hardware-card-note hardware-card-financing";
+      financing.textContent = `Official vendor financing example: ${box.financingExample.summary} `;
+      financing.appendChild(
+        externalLink(
+          doc,
+          box.financingExample.sourceUrl,
+          box.financingExample.sourceLabel,
+          false
+        )
+      );
+      card.appendChild(financing);
+    }
+
     if (box.officialModelFit) {
       const officialFit = doc.createElement("p");
       officialFit.className = "hardware-card-fit-official";

@@ -1089,6 +1089,29 @@ test("Mac Studio matches Apple's official buy-page structured data", async () =>
   assert.equal(macStudio.defaultBoxPrice, macStudio.priceLow);
 });
 
+test("Mac Studio carries an official vendor financing example", async () => {
+  const { hardware } = await import(new URL("data.js", jsDir));
+  const macStudio = hardware.find((h) => h.id === "mac-studio");
+  assert.ok(macStudio, "missing mac-studio hardware entry");
+
+  assert.ok(macStudio.financingExample, "Mac Studio should expose a financing example");
+  assert.match(
+    macStudio.financingExample.summary,
+    /\$208\.25\/mo for 12 months/i,
+    "Mac Studio financing example should cite the purchase payment"
+  );
+  assert.match(
+    macStudio.financingExample.summary,
+    /\$48\.99\/mo for 36 months/i,
+    "Mac Studio financing example should cite the lease example"
+  );
+  assert.equal(
+    macStudio.financingExample.sourceUrl,
+    macStudio.sourceUrl,
+    "Mac Studio financing example should point at the same Apple buy page"
+  );
+});
+
 test("featured hardware cards use real product-photo assets instead of SVG illustrations", async () => {
   const { featuredHardware } = await import(new URL("data.js", jsDir));
 

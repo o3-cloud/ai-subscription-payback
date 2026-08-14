@@ -8,6 +8,13 @@ Scenario: Featured hardware cards are visible on the home page
   And each card shows a vendor-sourced product photo with descriptive alt text at the top
   And each card includes a current price or price range
 
+Scenario: Mac Studio surfaces Apple's official financing example
+  Given the Mac Studio featured card
+  When the visitor views the card
+  Then it includes Apple's official financing example as contextual copy beneath the price note
+  And the example mentions the $208.25/mo for 12 months purchase financing and the lease-from $48.99/mo for 36 months Apple Upgrade example
+  And the example links back to the Apple buy/configure page
+
 Scenario: Range-based featured hardware cards expose a trim selector
   Given a featured hardware card whose price is a range
   When the visitor views the card

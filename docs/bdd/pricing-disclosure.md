@@ -272,6 +272,13 @@ Scenario: Hardware prices and sources are disclosed
   And the source status shows whether the number is official, retailer, or estimate
   And the source status includes the last verified date
 
+Scenario: Mac Studio pricing surfaces an official financing example
+  Given the hardware comparison section
+  When the visitor views the Mac Studio card
+  Then it includes Apple's official example financing copy beneath the price note
+  And the example mentions the $208.25/mo for 12 months purchase example and the 36-month Apple Upgrade lease example
+  And the example links to the Apple buy/configure page
+
 Scenario: Mac Studio pricing uses the official buy-page range
   Given the hardware comparison section
   When the visitor views the Mac Studio card

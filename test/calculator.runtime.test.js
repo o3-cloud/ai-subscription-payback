@@ -997,6 +997,34 @@ test("featured hardware product image sits at the top of each card", () => {
   }
 });
 
+test("Mac Studio surfaces Apple's financing example on the featured card", () => {
+  const { doc } = boot();
+  const macCard = doc.querySelectorAll("#featured-hardware-cards .hardware-card")[0];
+  assert.ok(macCard, "expected the Mac Studio featured card");
+
+  const financing = doc.querySelectorAll("#featured-hardware-cards .hardware-card-financing")[0];
+  assert.ok(financing, "Mac Studio should show an official financing example");
+  assert.match(
+    financing.textContent,
+    /official vendor financing example/i,
+    "the financing line should be framed as vendor context"
+  );
+  assert.match(
+    financing.textContent,
+    /\$208\.25\/mo for 12 months/i,
+    "the financing line should mention the 12-month purchase example"
+  );
+  assert.match(
+    financing.textContent,
+    /\$48\.99\/mo for 36 months/i,
+    "the financing line should mention the lease example"
+  );
+
+  const link = doc.querySelectorAll("#featured-hardware-cards .hardware-card-financing a")[0];
+  assert.ok(link, "the financing example should link back to Apple");
+  assert.equal(link.getAttribute("href"), "https://www.apple.com/shop/buy-mac/mac-studio");
+});
+
 test("featured hardware preload button loads the calculator scenario", async () => {
   const { doc, win } = boot();
   const loadButton = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[0];
