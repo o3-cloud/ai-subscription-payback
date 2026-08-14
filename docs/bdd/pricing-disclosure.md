@@ -47,6 +47,12 @@ Scenario: Claude Code Max 20× is exposed but not modeled until a durable public
   Then it states that the public Claude pricing page exposes Max 20× as a usage option
   And it explains that the calculator only models the publicly visible from $100/mo Max 5× scenario until a verifiable public price exists
 
+Scenario: Claude Code included-value copy names the broader bundle
+  Given the Claude Code Pro and Team tiers
+  When the visitor views their included-value text
+  Then the Pro copy names Claude Code plus Claude Cowork, Claude Design, Claude Science, and Claude for Microsoft 365
+  And the Team copy keeps the collaboration and central-billing framing while referring to the broader Claude bundle
+
 Scenario: The Supermaven tiers disclose their context window and chat-credit caveat
   Given the Supermaven Free Tier, Pro, and Team tiers
   When the visitor views their billing cadence and included-value text

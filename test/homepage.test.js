@@ -357,6 +357,26 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   );
   assert.match(
     pricing,
+    /Claude Cowork/i,
+    "pricing disclosure names Claude Cowork in the Claude bundle"
+  );
+  assert.match(
+    pricing,
+    /Claude Design/i,
+    "pricing disclosure names Claude Design in the Claude bundle"
+  );
+  assert.match(
+    pricing,
+    /Claude Science/i,
+    "pricing disclosure names Claude Science in the Claude bundle"
+  );
+  assert.match(
+    pricing,
+    /Claude for Microsoft 365/i,
+    "pricing disclosure names Claude for Microsoft 365 in the Claude bundle"
+  );
+  assert.match(
+    pricing,
     /Max 20× usage option/i,
     "pricing disclosure mentions the exposed Claude Max 20x option"
   );
@@ -367,7 +387,7 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
   );
   assert.match(
     pricing,
-    /until a verifiable public price exists/i,
+    /until a\s+verifiable public price exists/i,
     "pricing disclosure explains why Claude Max 20x is excluded"
   );
   assert.match(

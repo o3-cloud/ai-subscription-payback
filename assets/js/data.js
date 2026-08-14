@@ -246,7 +246,8 @@ export const subscriptions = [
     plan: "Pro (monthly)",
     monthlyPrice: 20,
     billingCadence: "Billed monthly",
-    includedValue: "Individual Pro plan: Claude Code plus web and desktop chat for one person.",
+    includedValue:
+      "Individual Pro plan: Claude Code plus Claude Cowork, Claude Design, Claude Science, and Claude for Microsoft 365 for one person.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
@@ -259,7 +260,8 @@ export const subscriptions = [
     plan: "Pro (annual)",
     monthlyPrice: 17,
     billingCadence: "Billed annually — $200 up front (~$17/mo effective)",
-    includedValue: "The Pro plan prepaid for a year at a lower effective monthly rate.",
+    includedValue:
+      "The Pro bundle prepaid for a year at a lower effective monthly rate; includes Claude Code plus Claude Cowork, Claude Design, Claude Science, and Claude for Microsoft 365.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
@@ -271,7 +273,8 @@ export const subscriptions = [
     plan: "Max 5×",
     monthlyPrice: 100,
     billingCadence: "Billed monthly — from $100/mo",
-    includedValue: "Roughly 5× the Pro usage limits for heavier Claude Code sessions.",
+    includedValue:
+      "Roughly 5× the Pro usage limits for heavier Claude Code sessions in the broader Claude bundle.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
@@ -295,7 +298,8 @@ export const subscriptions = [
     plan: "Team — Standard seat (annual)",
     monthlyPrice: 20,
     billingCadence: "Billed annually, per seat (~$20/mo effective)",
-    includedValue: "The standard Team seat prepaid annually at a lower effective monthly rate.",
+    includedValue:
+      "The standard Team seat prepaid annually at a lower effective monthly rate; includes collaboration, central billing, and the broader Claude bundle at standard usage.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
@@ -307,7 +311,8 @@ export const subscriptions = [
     plan: "Team — Premium seat (monthly)",
     monthlyPrice: 125,
     billingCadence: "Billed monthly, per seat",
-    includedValue: "Premium Team seat bundling higher Claude Code usage with Team collaboration.",
+    includedValue:
+      "Premium Team seat bundling higher Claude Code usage with Team collaboration and the broader Claude bundle.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
@@ -319,7 +324,8 @@ export const subscriptions = [
     plan: "Team — Premium seat (annual)",
     monthlyPrice: 100,
     billingCadence: "Billed annually, per seat (~$100/mo effective)",
-    includedValue: "The premium Team seat prepaid annually at a lower effective monthly rate.",
+    includedValue:
+      "The premium Team seat prepaid annually at a lower effective monthly rate; includes Team collaboration and the broader Claude bundle.",
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",

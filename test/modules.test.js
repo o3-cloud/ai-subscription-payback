@@ -191,6 +191,42 @@ test("Claude Max 20x is documented as exposed but unmodeled until a durable publ
   );
 });
 
+test("Claude Pro and Team included-value copy names the broader Claude bundle", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  assert.match(
+    byId.get("claude-code").includedValue,
+    /Claude Cowork/i,
+    "Claude Code Pro monthly included-value text names Claude Cowork"
+  );
+  assert.match(
+    byId.get("claude-code").includedValue,
+    /Claude Design/i,
+    "Claude Code Pro monthly included-value text names Claude Design"
+  );
+  assert.match(
+    byId.get("claude-pro-annual").includedValue,
+    /Claude Science/i,
+    "Claude Code Pro annual included-value text names Claude Science"
+  );
+  assert.match(
+    byId.get("claude-pro-annual").includedValue,
+    /Microsoft 365/i,
+    "Claude Code Pro annual included-value text names Claude for Microsoft 365"
+  );
+  assert.match(
+    byId.get("claude-max-5x").includedValue,
+    /broader Claude bundle/i,
+    "Claude Max 5x included-value text keeps the bundle framing"
+  );
+  assert.match(
+    byId.get("claude-team-premium-monthly").includedValue,
+    /broader Claude bundle/i,
+    "Claude Team premium monthly included-value text names the broader bundle"
+  );
+});
+
 
 
 test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, JetBrains AI, and Tabnine editor-assistant tiers", async () => {
