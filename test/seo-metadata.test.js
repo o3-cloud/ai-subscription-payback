@@ -52,7 +52,7 @@ const metaContent = (attr, value) =>
 // would let a field lose one family silently.
 const assertNamesNewTiers = (text, field) => {
   for (const [label, pattern] of [
-    ["Google AI", /Google AI|Gemini|Jules|Antigravity/i],
+    ["Google AI", /Google AI|Gemini Spark|Jules|Antigravity/i],
     ["Replit", /Replit/i],
     ["Mistral", /Mistral/i],
     ["Bolt", /Bolt/i],
@@ -332,7 +332,7 @@ test("the on-page subscription helper text names every modeled coding-agent bran
   assert.ok(help, "index.html has a <p class=\"field-help\"> element");
   for (const brand of [
     "Google AI",
-    "Gemini",
+    "Gemini Spark",
     "Jules",
     "Antigravity",
     "Devin (Windsurf / Devin Desktop)",
@@ -375,13 +375,13 @@ test("the SEO BDD documents the current helper-text and metadata families", () =
   }
   assert.match(
     bdd,
-    /Google AI, Gemini, Jules, Antigravity, Amazon Q Developer, Devin \(Windsurf \/ Devin Desktop\), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo \(Pro Team\), Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine \(Code Assistant Platform \/ Agentic Platform\), Warp, Factory \(Droid agents\), and Manus \(autonomous agent\)/i,
+    /Google AI, Gemini Spark, Jules, Antigravity, Amazon Q Developer, Devin \(Windsurf \/ Devin Desktop\), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo \(Pro Team\), Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine \(Code Assistant Platform \/ Agentic Platform\), Warp, Factory \(Droid agents\), and Manus \(autonomous agent\)/i,
     "SEO BDD helper-text coverage must list the full current roster"
   );
   assert.match(
     bdd,
-    /Google AI, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers/i,
-    "SEO BDD metadata coverage must mention Manus"
+    /Google AI's Gemini Spark plus Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers/i,
+    "SEO BDD metadata coverage must mention Gemini Spark and Manus"
   );
 });
 

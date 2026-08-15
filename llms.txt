@@ -1,6 +1,6 @@
 # AI Subscription Payback
 
-> Free, static calculator that estimates how long until buying a local AI inference box (Mac Studio, NVIDIA DGX Spark, or Strix Halo / Ryzen AI Max class) is cheaper than paying for AI coding subscriptions like Codex, Claude Code, Cursor, GitHub Copilot, Google AI (Gemini / Jules / Antigravity), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Supermaven, Warp, Kiro, Factory, Manus, and v0.
+> Free, static calculator that estimates how long until buying a local AI inference box (Mac Studio, NVIDIA DGX Spark, or Strix Halo / Ryzen AI Max class) is cheaper than paying for AI coding subscriptions like Codex, Claude Code, Cursor, GitHub Copilot, Google AI (Gemini Spark / Jules / Antigravity), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Supermaven, Warp, Kiro, Factory, Manus, and v0.
 
 The site is a single static page hosted on GitHub Pages at https://www.othree.cloud/ai-subscription-payback/. All computation runs client-side in the browser — there is no backend or API. It is affiliate-funded, and affiliate relationships never change the calculator's math or results. Pricing figures are hand-maintained snapshots with a visible "last updated" date; always confirm current prices with the vendor before buying.
 
@@ -31,7 +31,7 @@ The site is a single static page hosted on GitHub Pages at https://www.othree.cl
 - [v0 by Vercel vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/v0-vercel-vs-local-ai-box-cost.html): Cost comparison of v0 by Vercel's paid plans versus local hardware.
 - [Cursor vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/cursor-vs-local-ai-box-cost.html): Cost comparison of Cursor's paid tiers versus local hardware.
 - [GitHub Copilot vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/github-copilot-vs-local-ai-box-cost.html): Cost comparison of GitHub Copilot's paid tiers versus local hardware.
-- [Google AI, Jules, and Antigravity vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/google-ai-jules-antigravity-vs-local-ai-box-cost.html): Cost comparison of Google AI Pro and Ultra versus local hardware.
+- [Google AI, Gemini Spark, Jules, and Antigravity vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/google-ai-jules-antigravity-vs-local-ai-box-cost.html): Cost comparison of Google AI Pro and Ultra plus Gemini Spark versus local hardware.
 - [Replit Agent vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/replit-agent-vs-local-ai-box-cost.html): Cost comparison of Replit Agent's paid tiers versus local hardware.
 
 ## Optional

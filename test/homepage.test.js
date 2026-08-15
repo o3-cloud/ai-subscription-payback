@@ -255,13 +255,14 @@ test("primary navigation targets exist as sections", () => {
 });
 
 test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
-  // The checklist covers Google AI (Gemini / Jules / Antigravity), Devin,
+  // The checklist covers Google AI (Gemini Spark / Jules / Antigravity), Devin,
   // Replit Agent, the Bolt and Lovable app builders, v0 by Vercel, Augment Code,
   // Qodo, and the new Amp / TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
   // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
   assert.match(help, /Google AI/i, "helper copy names Google AI");
+  assert.match(help, /Gemini Spark/i, "helper copy names Gemini Spark");
   assert.match(help, /Gemini/i, "helper copy names Gemini");
   assert.match(help, /Jules/i, "helper copy names Jules");
   assert.match(help, /Antigravity/i, "helper copy names Antigravity");
@@ -299,8 +300,8 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
   assert.match(
     pricing,
-    /Google AI Pro, Ultra 5x, and Ultra 20x[\s\S]*?Jules[\s\S]*?Antigravity/i,
-    "pricing copy explains the Google AI Ultra family bundles Jules and Antigravity"
+    /Google AI Pro, Ultra 5x, and Ultra 20x[\s\S]*?Gemini Spark[\s\S]*?Jules[\s\S]*?Antigravity/i,
+    "pricing copy explains the Google AI Ultra family surfaces Gemini Spark and bundles Jules and Antigravity"
   );
   assert.match(pricing, /Devin/i, "pricing disclosure mentions Devin tiers");
   assert.match(pricing, /Replit/i, "pricing disclosure mentions Replit tiers");

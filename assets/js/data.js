@@ -614,7 +614,7 @@ export const subscriptions = [
     monthlyPrice: 19.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Broad Google AI subscription with higher Gemini limits across Google apps, plus coding-agent access to Jules and Google Antigravity for one developer.",
+      "Broad Google AI subscription with higher Gemini limits across Google apps, plus Gemini Spark and coding-agent access to Jules and Google Antigravity for one developer.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
@@ -627,7 +627,7 @@ export const subscriptions = [
     monthlyPrice: 99.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Starting Google AI Ultra tier at 5× higher usage limits vs. AI Pro, with high Gemini limits across Google apps plus coding-agent access to Jules and Google Antigravity at the Ultra 5x rate limits.",
+      "Starting Google AI Ultra tier at 5× higher usage limits vs. AI Pro, with high Gemini limits across Google apps plus Gemini Spark and coding-agent access to Jules and Google Antigravity at the Ultra 5x rate limits.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
@@ -640,7 +640,7 @@ export const subscriptions = [
     monthlyPrice: 199.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Top Google AI Ultra tier at 20× higher usage limits vs. AI Pro, with the highest Gemini limits across Google apps plus the highest Jules limits and Google Antigravity rate limits of the coding agents.",
+      "Top Google AI Ultra tier at 20× higher usage limits vs. AI Pro, with the highest Gemini limits across Google apps plus Gemini Spark, the highest Jules limits, and Google Antigravity rate limits of the coding agents.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",

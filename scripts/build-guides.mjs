@@ -321,20 +321,20 @@ export const GUIDES = [
     slug: "google-ai-jules-antigravity-vs-local-ai-box-cost",
     hardwareId: "strix-halo",
     subs: ["google-ai-pro", "google-ai-ultra"],
-    title: "Google AI, Jules, and Antigravity vs a Local AI Box — Cost Comparison",
+    title: "Google AI, Gemini Spark, Jules, and Antigravity vs a Local AI Box — Cost Comparison",
     description:
-      "How Google AI Pro and Ultra compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
-    heading: "Google AI, Jules, and Antigravity vs a local AI box: the cost",
+      "How Google AI Pro and Ultra, plus Gemini Spark, compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Google AI, Gemini Spark, Jules, and Antigravity vs a local AI box: the cost",
     useCase: [
-      "Google AI is the broad Gemini subscription layer, and the Pro and Ultra tiers are the ones that bring Jules and Google Antigravity coding-agent access into the picture. This guide compares those higher Google AI plans against a local AI box and shows where the recurring subscription cost catches up.",
-      "It is aimed at people using Google AI for both everyday Gemini-app limits and the coding-agent workflow who want to know whether the higher tier spend is better replaced by local inference hardware.",
+      "Google AI is the broad Gemini subscription layer, and the Pro and Ultra tiers are the ones that surface Gemini Spark plus Jules and Google Antigravity coding-agent access. This guide compares those higher Google AI plans against a local AI box and shows where the recurring subscription cost catches up.",
+      "It is aimed at people using Google AI for both everyday Gemini-app limits and the Gemini Spark / coding-agent workflow who want to know whether the higher tier spend is better replaced by local inference hardware.",
     ],
     scenarioLede:
       "A Google AI Pro subscription plus the Ultra tier against a value-class Strix Halo box.",
     caveats: [
-      "Google AI is a hosted service with broad Gemini-app limits plus coding-agent access on the relevant tiers, so the list price is really buying access and managed capacity rather than just tokens.",
-      "A local box cannot reproduce Google's hosted Gemini, Jules, or Antigravity stack; it only substitutes a local model workflow for the spending side of the equation.",
-      "The cheaper Plus tier does not include the same coding-agent benefits, so the sample focuses on Pro and Ultra where the payback question is more relevant.",
+      "Google AI is a hosted service with broad Gemini-app limits plus Gemini Spark and coding-agent access on the relevant tiers, so the list price is really buying access and managed capacity rather than just tokens.",
+      "A local box cannot reproduce Google's hosted Gemini, Gemini Spark, Jules, or Antigravity stack; it only substitutes a local model workflow for the spending side of the equation.",
+      "The cheaper Plus tier does not include the same Gemini Spark / coding-agent benefits, so the sample focuses on Pro and Ultra where the payback question is more relevant.",
       "As always, the exact break-even month shifts with seat count, billing cadence, and how heavily you use the agents.",
     ],
   },

@@ -28,7 +28,7 @@ Scenario: Each mini-guide answers a concrete comparison query
 Scenario: The guide hub publishes the second-wave comparison pages
   Given the visitor opens the homepage guide hub
   When they read the published comparison links
-  Then the page includes indexable guide links for Cursor, GitHub Copilot, Google AI, and Replit Agent
+  Then the page includes indexable guide links for Cursor, GitHub Copilot, Google AI, Gemini Spark, and Replit Agent
   And each link opens a static comparison page on the canonical origin
   And the guide set stays aligned with sitemap.xml and llms.txt
 

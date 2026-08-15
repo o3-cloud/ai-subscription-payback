@@ -75,11 +75,12 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
-Scenario: Google AI tiers describe their coding-agent benefit
+Scenario: Google AI tiers describe their Gemini Spark and coding-agent benefit
   Given the Google AI Plus, Pro, Ultra 5x, and Ultra 20x tiers
   When the visitor views their included-value text
   Then each is described as a broad Google AI subscription
-  And the Pro, Ultra 5x, and Ultra 20x tiers note the included coding-agent access to Jules and Google Antigravity
+  And the Pro, Ultra 5x, and Ultra 20x tiers note the included Gemini Spark, Jules, and Google Antigravity coding-agent access
+  And the Plus tier keeps the broader Gemini-app positioning without the Gemini Spark benefits
   And the Ultra 5x tier is priced at $99.99/mo (5× AI Pro limits) and the Ultra 20x tier at $199.99/mo (20× AI Pro limits)
   And all four are optional and unchecked in the default selection
 

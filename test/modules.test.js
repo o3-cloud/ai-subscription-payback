@@ -487,7 +487,7 @@ test("usage-based tiers disclose their included-credit caveat", async () => {
   }
 });
 
-test("Google AI tiers describe the Jules / Antigravity coding-agent benefit", async () => {
+test("Google AI tiers describe the Gemini Spark / Jules / Antigravity coding-agent benefit", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
@@ -502,10 +502,11 @@ test("Google AI tiers describe the Jules / Antigravity coding-agent benefit", as
     assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
   }
 
-  // Only Pro and the two Ultra tiers bundle the Jules / Google Antigravity coding agents.
+  // Only Pro and the two Ultra tiers bundle the Gemini Spark / Jules / Google Antigravity coding agents.
   for (const id of ["google-ai-pro", "google-ai-ultra", "google-ai-ultra-20x"]) {
     assert.match(byId.get(id).includedValue, /Jules/, `${id} names Jules`);
     assert.match(byId.get(id).includedValue, /Antigravity/, `${id} names Google Antigravity`);
+    assert.match(byId.get(id).includedValue, /Gemini Spark/, `${id} names Gemini Spark`);
   }
 
   // The Ultra plan family exposes both the $99.99 (5x) and $199.99 (20x) prices.
