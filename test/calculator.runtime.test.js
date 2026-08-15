@@ -864,6 +864,20 @@ test("featured hardware renders affiliate CTAs from the separate affiliate metad
   );
 });
 
+test("DGX Spark featured card summary shows the full retailer trim spread", () => {
+  const { doc } = boot();
+  const titles = doc.querySelectorAll("#featured-hardware-cards .hardware-card-title");
+  const amounts = doc.querySelectorAll("#featured-hardware-cards .hardware-card-amount");
+  const dgxIndex = titles.findIndex((title) => title.textContent === "NVIDIA DGX Spark");
+
+  assert.ok(dgxIndex !== -1, "renders the NVIDIA DGX Spark featured card");
+  const amount = amounts[dgxIndex];
+  assert.ok(amount, "DGX Spark card renders a price amount");
+  const amountText = amount.childNodes.map((node) => node.textContent).join("");
+  assert.match(amountText, /Price:\s*\$2,999–\$6,030/, "DGX Spark summary price range is current");
+  assert.doesNotMatch(amountText, /\$2,999–\$3,999/, "DGX Spark summary no longer shows the stale narrower range");
+});
+
 test("each featured hardware card renders a source provenance block", () => {
   // BDD contract: every featured card shows where its price came from and
   // whether that number is official, retail, or an estimate. The card reuses the

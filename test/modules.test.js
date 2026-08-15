@@ -1173,6 +1173,7 @@ test("featured hardware trims seed the documented default preload", async () => 
   const dgx = featuredHardware.find((box) => box.id === "dgx-spark");
   assert.equal(defaultHardwareTrim(dgx).id, "seeed-dgx-spark", "DGX Spark defaults to the Seeed Studio listing");
   assert.equal(defaultHardwareTrim(dgx).boxPrice, 3999, "DGX Spark defaults to the $3,999 listing");
+  assert.equal(dgx.priceHigh, 6030, "DGX Spark card summary spans the highest listed retailer trim");
   assert.deepEqual(
     hardwareTrims(dgx).map((trim) => trim.id),
     [

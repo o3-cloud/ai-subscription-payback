@@ -1304,9 +1304,9 @@ export const hardware = [
     name: "NVIDIA DGX Spark",
     spec: "GB10 Grace Blackwell desktop, 128 GB unified memory",
     priceLow: 2999,
-    priceHigh: 3999,
+    priceHigh: 6030,
     priceNote:
-      "Estimated street price for the base DGX Spark platform; current named trims include the Seeed Studio $3,999 listing, the ASUS Ascent GX10 GB10 system, and higher 4 TB retailer offers such as PNY at $5,199.99, with availability and bundling varying by reseller.",
+      "Estimated street price for the DGX Spark platform class; current named trims extend from the Seeed Studio $3,999 listing and ASUS Ascent GX10 through higher retailer offers such as PNY at $5,199.99, HP ZGX Nano G1n at $5,399.63 and $6,030, Acer at $5,199, GIGABYTE around $4,999.99-$5,999.99, and MSI around $5,339.99-$6,136.99, with availability and bundling varying by reseller.",
     sourceUrl: "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
     sourceLabel: "Estimated retail / street price",
     verification: "retailer",
