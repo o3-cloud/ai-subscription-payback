@@ -1195,7 +1195,13 @@ test("featured hardware trims seed the documented default preload", async () => 
   const strixTrims = hardwareTrims(strix);
   assert.deepEqual(
     strixTrims.map((trim) => trim.id),
-    ["framework-desktop-ai-max-385-32gb", "gmktec-evo-x2", "gmktec-evo-x3"],
+    [
+      "framework-desktop-ai-max-385-32gb",
+      "gmktec-evo-x2",
+      "gmktec-evo-x3",
+      "minisforum-ms-s1-max-64gb",
+      "minisforum-ms-s1-max-mini-pc",
+    ],
     "Strix Halo trims are its named SKUs"
   );
   assert.equal(defaultHardwareTrim(strix).id, "framework-desktop-ai-max-385-32gb");
@@ -1310,7 +1316,7 @@ test("Strix Halo points at a current official AMD product page", async () => {
   assert.match(strixHalo.lastUpdated, /^\d{4}-\d{2}-\d{2}$/);
   assert.match(
     strixHalo.priceNote,
-    /GMKtec EVO-X2 and EVO-X3/i,
+    /GMKtec EVO-X2, GMKtec EVO-X3, and MINISFORUM MS-S1 MAX 64GB \/ 128GB/i,
     "class estimate names the purchasable Strix Halo examples it derives from"
   );
   assert.match(
@@ -1373,6 +1379,24 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "GMKtec",
       "GMKtec EVO-X3 AI Mini PC",
     ],
+    [
+      "minisforum-ms-s1-max-64gb",
+      2599,
+      "64GB RAM + 2TB SSD",
+      "https://store.minisforum.com/products/minisforum-ms-s1-max-64gb",
+      "https://store.minisforum.com/products/minisforum-ms-s1-max-64gb",
+      "MINISFORUM",
+      "MINISFORUM MS-S1 MAX 64GB Local AI Pilot Edition",
+    ],
+    [
+      "minisforum-ms-s1-max-mini-pc",
+      3719,
+      "128GB RAM + 2TB SSD",
+      "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
+      "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
+      "MINISFORUM",
+      "MINISFORUM MS-S1 MAX 128GB Max AI Compute Edition",
+    ],
   ];
 
   for (const [id, price, memoryStorage, sourceUrl, affiliateUrl, vendor, name] of examples) {
@@ -1386,7 +1410,7 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       : `Ryzen AI Max+ 395, ${memoryStorage}`;
     assert.equal(box.spec, expectedSpec, `${id} spec names the memory/storage config`);
     assert.equal(box.verification, "official", `${id} is an official listing`);
-    assert.match(box.sourceUrl, /^https:\/\/(frame\.work|www\.gmktec\.com)\//, `${id} points at the official product page`);
+    assert.match(box.sourceUrl, /^https:\/\/(frame\.work|www\.gmktec\.com|store\.minisforum\.com)\//, `${id} points at the official product page`);
     // Pins the live product URLs so stale source links cannot recur silently.
     assert.equal(box.sourceUrl, sourceUrl, `${id} points at the current live product page`);
     assert.equal(getAffiliate(id)?.vendor, vendor, `${id} has ${vendor} affiliate metadata`);

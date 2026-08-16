@@ -622,7 +622,7 @@ function hardwareExampleSectionHtml(guide) {
     <section class="comparison" aria-labelledby="examples-title">
       <h2 id="examples-title">Concrete Strix Halo SKU examples</h2>
       <p class="section-intro">
-        The named Framework Desktop and GMKtec systems below bound the class
+        The named Framework Desktop, GMKtec, and MINISFORUM systems below bound the class
         estimate above, so the Strix Halo range is backed by specific
         purchasable configurations rather than a generic class guess.
       </p>

@@ -112,10 +112,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-10";
+export const pricingLastUpdated = "2026-08-16";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-10";
+export const siteLastUpdated = "2026-08-16";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1459,7 +1459,7 @@ export const hardware = [
     priceLow: 1099,
     priceHigh: 3799.99,
     priceNote:
-      "Representative range derived from the named Framework Desktop 32 GB configuration plus the GMKtec EVO-X2 and EVO-X3 configurations below; the class spans lower- and higher-memory configs, so confirm the exact spec before buying.",
+      "Representative range derived from the named Framework Desktop 32 GB configuration plus the GMKtec EVO-X2, GMKtec EVO-X3, and MINISFORUM MS-S1 MAX 64GB / 128GB configurations below; the class spans lower- and higher-memory configs, so confirm the exact spec before buying.",
     sourceUrl:
       "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html",
     sourceLabel: "Derived range from named SKUs",
@@ -1522,6 +1522,38 @@ export const hardware = [
     verification: "official",
     lastUpdated: "2026-07-16",
     defaultBoxPrice: 3799.99,
+    powerDraw: 140,
+    exampleOf: "strix-halo",
+  },
+  {
+    id: "minisforum-ms-s1-max-64gb",
+    name: "MINISFORUM MS-S1 MAX 64GB Local AI Pilot Edition",
+    spec: "Ryzen AI Max+ 395, 64GB RAM + 2TB SSD",
+    priceLow: 2599,
+    priceHigh: 2599,
+    priceNote:
+      "Official MINISFORUM store price snapshot for the 64GB / 2TB MS-S1 MAX configuration; the product page also shows a compare-at price, so treat the listed amount as the current street price snapshot.",
+    sourceUrl: "https://store.minisforum.com/products/minisforum-ms-s1-max-64gb",
+    sourceLabel: "Official MINISFORUM product page",
+    verification: "official",
+    lastUpdated: "2026-08-16",
+    defaultBoxPrice: 2599,
+    powerDraw: 140,
+    exampleOf: "strix-halo",
+  },
+  {
+    id: "minisforum-ms-s1-max-mini-pc",
+    name: "MINISFORUM MS-S1 MAX 128GB Max AI Compute Edition",
+    spec: "Ryzen AI Max+ 395, 128GB RAM + 2TB SSD",
+    priceLow: 3719,
+    priceHigh: 3719,
+    priceNote:
+      "Official MINISFORUM store price snapshot for the 128GB / 2TB MS-S1 MAX configuration; the product page also shows a compare-at price, so treat the listed amount as the current street price snapshot.",
+    sourceUrl: "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
+    sourceLabel: "Official MINISFORUM product page",
+    verification: "official",
+    lastUpdated: "2026-08-16",
+    defaultBoxPrice: 3719,
     powerDraw: 140,
     exampleOf: "strix-halo",
   },
@@ -1743,6 +1775,18 @@ export const affiliates = {
     url: "https://www.gmktec.com/collections/all",
     label: "Browse GMKtec listings",
     affiliate: true,
+  },
+  "minisforum-ms-s1-max-64gb": {
+    vendor: "MINISFORUM",
+    url: "https://store.minisforum.com/products/minisforum-ms-s1-max-64gb",
+    label: "View MINISFORUM listing",
+    affiliate: false,
+  },
+  "minisforum-ms-s1-max-mini-pc": {
+    vendor: "MINISFORUM",
+    url: "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
+    label: "View MINISFORUM listing",
+    affiliate: false,
   },
   "rtx-pro-6000-blackwell": {
     vendor: "NVIDIA",

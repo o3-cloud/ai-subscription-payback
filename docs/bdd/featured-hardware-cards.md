@@ -69,7 +69,7 @@ Scenario: Featured hardware cards expose a sustained throughput range for guide-
 Scenario: Strix Halo cards are backed by named purchasable SKUs
   Given the Strix Halo class card on the homepage
   When the visitor opens the detailed Strix Halo guide
-  Then the guide lists concrete Framework Desktop, GMKtec EVO-X2, and GMKtec EVO-X3 examples
+  Then the guide lists concrete Framework Desktop, GMKtec EVO-X2, GMKtec EVO-X3, MINISFORUM MS-S1 MAX 64GB, and MINISFORUM MS-S1 MAX 128GB examples
   And each example includes vendor, memory or storage, source, price, and last-verified date
   And the generic Strix Halo class estimate is described as a range derived from those named SKUs
 ```
