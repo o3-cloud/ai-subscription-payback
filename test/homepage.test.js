@@ -254,14 +254,17 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
-  // The checklist covers Google AI (Gemini Spark / Jules / Antigravity), Devin,
-  // Replit Agent, the Bolt and Lovable app builders, v0 by Vercel, Augment Code,
-  // Qodo, and the new Amp / TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
+test("subscription helper copy names the Google AI, GitLab, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
+  // The checklist covers Google AI (Gemini Spark / Jules / Antigravity), GitLab
+  // Premium + Duo Agent Platform credits, Devin, Replit Agent, the Bolt and
+  // Lovable app builders, v0 by Vercel, Augment Code, Qodo, and the new Amp /
+  // TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
   // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
   assert.match(help, /Google AI/i, "helper copy names Google AI");
+  assert.match(help, /GitLab Premium/i, "helper copy names GitLab Premium");
+  assert.match(help, /Duo Agent Platform/i, "helper copy names Duo Agent Platform");
   assert.match(help, /Gemini Spark/i, "helper copy names Gemini Spark");
   assert.match(help, /Gemini/i, "helper copy names Gemini");
   assert.match(help, /Jules/i, "helper copy names Jules");
@@ -303,6 +306,8 @@ test("subscription helper copy names the Google AI, Devin, Replit, Mistral, Bolt
     /Google AI Pro, Ultra 5x, and Ultra 20x[\s\S]*?Gemini Spark[\s\S]*?Jules[\s\S]*?Antigravity/i,
     "pricing copy explains the Google AI Ultra family surfaces Gemini Spark and bundles Jules and Antigravity"
   );
+  assert.match(pricing, /GitLab Premium/i, "pricing disclosure mentions GitLab Premium");
+  assert.match(pricing, /Duo Agent Platform/i, "pricing disclosure mentions Duo Agent Platform");
   assert.match(pricing, /Devin/i, "pricing disclosure mentions Devin tiers");
   assert.match(pricing, /Replit/i, "pricing disclosure mentions Replit tiers");
   assert.match(pricing, /Replit Agent/i, "pricing disclosure mentions Replit Agent credits");

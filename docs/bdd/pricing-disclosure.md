@@ -16,6 +16,7 @@ Scenario: Supported subscription tiers are listed
   And the Claude Code tiers are listed: Pro monthly, Pro annual, Max 5×, Team standard seat (monthly and annual), and Team premium seat (monthly and annual)
   And the public Claude pricing page also exposes Max 20×, but the calculator keeps it out of the priced rows until a durable standalone public price is available
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
+  And the GitLab Premium + Duo Agent Platform credits tier is listed
   And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
   And the Zed tiers are listed: Personal, Pro, and Business
   And the Google AI tiers are listed: Plus, Pro, Ultra 5x, and Ultra 20x

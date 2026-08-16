@@ -234,6 +234,9 @@ export const tokenOutputValueAssumptions = {
  * the calculator's cumulative math cadence-agnostic. `billingCadence` and
  * `includedValue` document how the tier is actually billed and what it includes,
  * including usage-based caveats (Copilot AI Credits, Zed token credits).
+ * GitLab Premium + Duo Agent Platform credits is modeled as a team/enterprise
+ * comparator so the site can compare GitLab's AI-native DevSecOps subscription
+ * against local inference hardware alongside the other public developer plans.
  *
  * @type {Subscription[]}
  */
@@ -250,6 +253,19 @@ export const subscriptions = [
     verification: "official",
     lastUpdated: "2026-07-01",
     defaultSelected: true,
+  },
+  {
+    id: "gitlab-premium-duo",
+    name: "GitLab",
+    plan: "Premium",
+    monthlyPrice: 29,
+    billingCadence: "Billed annually, per user",
+    includedValue:
+      "GitLab Premium plus $12 in GitLab Credits/User/Month for Duo Agent Platform.",
+    sourceUrl: "https://about.gitlab.com/pricing/",
+    sourceLabel: "Official GitLab pricing",
+    verification: "official",
+    lastUpdated: "2026-08-16",
   },
   {
     id: "claude-code",

@@ -56,7 +56,7 @@ test("the repo docs point to the MVP scope source of truth", () => {
   assert.match(readme, /comparison mini-guides/i, "README mentions the guide hub that ships on the homepage");
   assert.match(
     readme,
-    /Google AI|Gemini|Jules|Antigravity|Devin|Replit|Supermaven/i,
+    /Google AI|Gemini|Jules|Antigravity|GitLab|Devin|Replit|Supermaven/i,
     "README summary names the current subscription lineup"
   );
   assert.match(rootIndex, /MVP Scope and Commercial Model/i, "root BDD index links the scope file");
@@ -71,7 +71,7 @@ test("the repo docs point to the MVP scope source of truth", () => {
   );
   assert.match(
     prd,
-    /Google AI|Gemini|Jules|Antigravity|Devin|Replit|Supermaven/i,
+    /Google AI|Gemini|Jules|Antigravity|GitLab|Devin|Replit|Supermaven/i,
     "PRD problem statement names the current subscription lineup"
   );
 });

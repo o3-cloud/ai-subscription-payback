@@ -191,6 +191,24 @@ test("Claude Max 20x is documented as exposed but unmodeled until a durable publ
   );
 });
 
+test("subscriptions cover the GitLab Premium and Duo Agent Platform credits comparator", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const gitlab = subscriptions.find((s) => s.id === "gitlab-premium-duo");
+
+  assert.ok(gitlab, "missing subscription tier: gitlab-premium-duo");
+  assert.equal(gitlab.name, "GitLab");
+  assert.equal(gitlab.plan, "Premium");
+  assert.equal(gitlab.monthlyPrice, 29);
+  assert.equal(gitlab.billingCadence, "Billed annually, per user");
+  assert.match(gitlab.includedValue, /GitLab Credits\/User\/Month/i);
+  assert.match(gitlab.includedValue, /Duo Agent Platform/i);
+  assert.equal(gitlab.sourceUrl, "https://about.gitlab.com/pricing/");
+  assert.equal(gitlab.sourceLabel, "Official GitLab pricing");
+  assert.equal(gitlab.verification, "official");
+  assert.equal(gitlab.lastUpdated, "2026-08-16");
+  assert.ok(!gitlab.defaultSelected, "GitLab must not seed the default selection");
+});
+
 test("Claude Pro and Team included-value copy names the broader Claude bundle", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));

@@ -11,10 +11,11 @@ The launch scope, commercial model, and non-goals are documented in the
 In short: the site is an affiliate-first static Pages experience centered on
 Mac Studio, DGX Spark, and Strix Halo class systems, compared against the
 currently modeled AI coding, app-builder, and agent subscriptions (for example
-Codex, Claude Code, Cursor, GitHub Copilot, Google AI, Devin, Replit, Mistral,
-Bolt, Lovable, v0, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, Factory,
-and Manus), with comparison mini-guides for common follow-up questions,
-transparent disclosures, and no backend.
+Codex, Claude Code, Cursor, GitHub Copilot, GitLab Premium + Duo Agent Platform
+credits, Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0, Augment Code,
+Qodo, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus), with comparison mini-guides for common follow-up questions,
+transparent disclosures, and no
+backend.
 
 ## Local development
 
