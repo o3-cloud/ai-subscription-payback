@@ -11,8 +11,7 @@ source, and the exact blocker (usually "no public price verified yet").
 
 ## NVIDIA DGX Station
 
-- **Status:** Future hardware candidate — no public price has been verified yet
-  as of 2026-07-27. Do not add a calculator preset or a `referenceOnly` priced
+- **Status:** Future hardware candidate — no public price has been verified yet as of 2026-08-16. Do not add a calculator preset or a `referenceOnly` priced
   row until an actual purchase price is sourced.
 - **Why watch it:** NVIDIA positions the DGX Station as a deskside AI
   supercomputer above the DGX Spark, which is relevant for visitors comparing
