@@ -37,7 +37,7 @@ Scenario: The disclosures stay honest and source-backed
   disclosures, and guides) instead of scraping the full HTML.
 - The opening summary is a maintained snapshot of the current modeled
   subscription families; when new rows land in the calculator data, refresh the
-  summary so it names the current coverage, including recent additions like
+  summary so it names the current coverage, including additions like GitLab,
   Cursor, GitHub Copilot, Google AI, Replit, Kiro, Factory, and Manus.
 - Like every SEO artifact, it uses the custom production domain
   `https://www.othree.cloud/ai-subscription-payback/` as the single source of

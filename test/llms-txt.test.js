@@ -39,6 +39,7 @@ test("llms.txt follows the convention: H1 title then a blockquote summary", () =
   assert.match(summary, /calculator/i, "the summary describes the calculator");
   assert.match(summary, /Cursor/i, "the summary names Cursor alongside the other modeled subscription families");
   assert.match(summary, /GitHub Copilot/i, "the summary names GitHub Copilot alongside the other modeled subscription families");
+  assert.match(summary, /GitLab Premium/i, "the summary names GitLab Premium alongside the other modeled subscription families");
   assert.match(summary, /Warp/i, "the summary names Warp alongside the other modeled subscription families");
   assert.match(summary, /Supermaven/i, "the summary names Supermaven alongside the other modeled subscription families");
   assert.match(summary, /Kiro/i, "the summary names Kiro alongside the other modeled subscription families");
