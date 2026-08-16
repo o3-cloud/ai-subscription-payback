@@ -251,7 +251,7 @@ export const subscriptions = [
     sourceUrl: "https://chatgpt.com/pricing/",
     sourceLabel: "Official OpenAI pricing",
     verification: "official",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-08-16",
     defaultSelected: true,
   },
   {
@@ -278,7 +278,7 @@ export const subscriptions = [
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-08-16",
     defaultSelected: true,
   },
   {
@@ -292,7 +292,7 @@ export const subscriptions = [
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-08-16",
   },
   {
     id: "claude-max-5x",
@@ -305,7 +305,7 @@ export const subscriptions = [
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-08-16",
   },
   {
     id: "claude-team-standard-monthly",
@@ -317,7 +317,7 @@ export const subscriptions = [
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-08-16",
   },
   {
     id: "claude-team-standard-annual",
@@ -330,7 +330,7 @@ export const subscriptions = [
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-08-16",
   },
   {
     id: "claude-team-premium-monthly",
@@ -343,7 +343,7 @@ export const subscriptions = [
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-08-16",
   },
   {
     id: "claude-team-premium-annual",
@@ -356,7 +356,7 @@ export const subscriptions = [
     sourceUrl: "https://claude.com/pricing",
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
-    lastUpdated: "2026-07-01",
+    lastUpdated: "2026-08-16",
   },
   {
     id: "kiro-free",
