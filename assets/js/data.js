@@ -1722,7 +1722,7 @@ export const affiliates = {
   },
   "dgx-spark": {
     vendor: "NVIDIA",
-    url: "https://marketplace.nvidia.com/en-us/developer/dgx-spark/",
+    url: "https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/",
     label: "Buy on NVIDIA Marketplace",
     affiliate: false,
   },

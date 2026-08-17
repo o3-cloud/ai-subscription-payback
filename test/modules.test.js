@@ -1356,7 +1356,7 @@ test("DGX Spark CTA is NVIDIA's official Marketplace Buy Now path, not an affili
   // Issue #51: DGX Spark points at NVIDIA's official Marketplace Buy Now page,
   // so the CTA is a direct official purchase path rather than a commissioned
   // reseller link. Pins the destination so a stale retailer link cannot recur.
-  assert.equal(cta.url, "https://marketplace.nvidia.com/en-us/developer/dgx-spark/");
+  assert.equal(cta.url, "https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/");
   assert.equal(cta.vendor, "NVIDIA");
   assert.equal(cta.label, "Buy on NVIDIA Marketplace");
   assert.equal(cta.affiliate, false, "official Marketplace path is non-affiliate");

@@ -310,6 +310,7 @@ Scenario: DGX Spark uses NVIDIA's official Marketplace Buy Now path
   Given the DGX Spark featured hardware card
   When the visitor views its call to action
   Then the CTA links to NVIDIA's official Marketplace Buy Now page for DGX Spark
+  And the CTA uses NVIDIA's current canonical enterprise/personal-ai-supercomputers path directly
   And the CTA is a direct official purchase path, not a commissioned affiliate link
   And it carries no "(affiliate)" label and no sponsored rel marker
   And the displayed price still comes from the unchanged retailer pricing source
