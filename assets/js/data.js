@@ -112,10 +112,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-16";
+export const pricingLastUpdated = "2026-08-17";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-16";
+export const siteLastUpdated = "2026-08-17";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -513,11 +513,11 @@ export const subscriptions = [
     monthlyPrice: 20,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Individual (Pro) plan for one developer: extended agent limits and frontier-model access in the Cursor editor, with usage-based billing beyond the included allowances.",
+      "Individual (Pro) plan for one developer: extended Agent limits, generous Grok limits, frontier-model access, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-17",
   },
   {
     id: "cursor-pro-plus",
@@ -526,11 +526,11 @@ export const subscriptions = [
     monthlyPrice: 60,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Individual Pro+ plan for heavier agent use: roughly 3× the Pro agent limits plus frontier-model access, with usage-based billing beyond the included allowances.",
+      "Individual Pro+ plan for heavier agent use: roughly 3× the Pro Agent limits plus the broader Cursor bundle of frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-07-15",
+    lastUpdated: "2026-08-17",
   },
   {
     id: "cursor-ultra",
@@ -539,11 +539,11 @@ export const subscriptions = [
     monthlyPrice: 200,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Individual Ultra plan for power users: roughly 20× the Pro agent limits and priority access to frontier models, with usage-based billing beyond the included allowances.",
+      "Individual Ultra plan for power users: roughly 20× the Pro Agent limits, priority access to frontier models, and the broader Cursor bundle of MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-07-15",
+    lastUpdated: "2026-08-17",
   },
   {
     id: "cursor-teams",
@@ -556,7 +556,7 @@ export const subscriptions = [
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-17",
   },
   {
     id: "cursor-teams-premium",
@@ -565,11 +565,11 @@ export const subscriptions = [
     monthlyPrice: 120,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Premium team seat with roughly 5× the Standard team agent limits on top of the Teams admin controls and SSO, with usage-based billing beyond the included allowances.",
+      "Premium team seat with roughly 5× the Standard team Agent limits on top of the Teams admin controls and SSO, plus the broader Cursor bundle of frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-07-15",
+    lastUpdated: "2026-08-17",
   },
   {
     id: "zed-personal",

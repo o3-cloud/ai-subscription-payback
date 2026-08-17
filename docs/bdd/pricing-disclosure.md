@@ -54,6 +54,15 @@ Scenario: Claude Code included-value copy names the broader bundle
   Then the Pro copy names Claude Code plus Claude Cowork, Claude Design, Claude Science, and Claude for Microsoft 365
   And the Team copy keeps the collaboration and central-billing framing while referring to the broader Claude bundle
 
+Scenario: Cursor included-value copy names the current pricing-page benefits
+  Given the Cursor Individual, Pro+, Ultra, Teams, and Teams Premium tiers
+  When the visitor views their included-value text
+  Then the Individual copy names extended Agent limits, generous Grok limits, frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing
+  And the Pro+ copy keeps the roughly 3× Pro Agent limits framing while naming the broader Cursor bundle of frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot
+  And the Ultra copy keeps the roughly 20× Pro Agent limits and priority frontier-model access framing while naming the broader Cursor bundle
+  And the Teams copy keeps the centralized billing, admin, and SSO framing for team seats
+  And the Teams Premium copy keeps the stronger team-agent limits framing while naming the broader Cursor bundle
+
 Scenario: The Supermaven tiers disclose their context window and chat-credit caveat
   Given the Supermaven Free Tier, Pro, and Team tiers
   When the visitor views their billing cadence and included-value text

@@ -285,12 +285,12 @@ export const GUIDES = [
     heading: "Cursor vs a local AI box: the cost",
     useCase: [
       "Cursor is the AI IDE/editor family where the decision is usually driven by Individual, Pro+, Ultra, or team spend rather than a one-off tool purchase. This guide compares the higher Cursor tiers against owned local hardware and shows when the recurring bill starts to rival the box.",
-      "It is for developers and teams already leaning on Cursor's agent limits and model access who want to know whether the higher tiers justify buying local inference hardware instead.",
+      "It is for developers and teams already leaning on Cursor's Agent limits, Grok limits, frontier-model access, MCPs, skills/hooks, Cloud Agents, and Bugbot billing who want to know whether the higher tiers justify buying local inference hardware instead.",
     ],
     scenarioLede:
       "A Cursor Pro+ seat plus the Ultra tier against a value-class Strix Halo box.",
     caveats: [
-      "Cursor is an editor-first hosted product with frontier-model access and usage-based billing beyond the included allowances, so the list price is only part of the real spend.",
+      "Cursor is an editor-first hosted product with frontier-model access, agent tooling, and usage-based billing beyond the included allowances, so the list price is only part of the real spend.",
       "A local box cannot replace Cursor's hosted editor experience or agent orchestration; you would be using a different local stack for open-weight models, not the same product.",
       "The cheaper Individual plan is a very different payback story from the heavier Pro+ / Ultra ladder, so the sample scenario intentionally focuses on the high-usage end.",
       "Seat count, billing cadence, and how hard you push the agents all move the break-even month.",

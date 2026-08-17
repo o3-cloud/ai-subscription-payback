@@ -301,6 +301,52 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
   }
 
   assert.match(
+    byId.get("cursor-individual").includedValue,
+    /extended Agent limits/i,
+    "Cursor Individual names the extended Agent limits"
+  );
+  assert.match(
+    byId.get("cursor-individual").includedValue,
+    /generous Grok limits/i,
+    "Cursor Individual names the Grok limits"
+  );
+  assert.match(
+    byId.get("cursor-individual").includedValue,
+    /MCPs, skills\/hooks, Cloud Agents, and Bugbot/i,
+    "Cursor Individual names the current bundled features"
+  );
+  assert.match(
+    byId.get("cursor-pro-plus").includedValue,
+    /roughly 3× the Pro Agent limits/i,
+    "Cursor Pro+ preserves the 3x Pro Agent limits framing"
+  );
+  assert.match(
+    byId.get("cursor-pro-plus").includedValue,
+    /broader Cursor bundle/i,
+    "Cursor Pro+ names the broader bundle"
+  );
+  assert.match(
+    byId.get("cursor-ultra").includedValue,
+    /roughly 20× the Pro Agent limits/i,
+    "Cursor Ultra preserves the 20x Pro Agent limits framing"
+  );
+  assert.match(
+    byId.get("cursor-ultra").includedValue,
+    /priority access to frontier models/i,
+    "Cursor Ultra names priority frontier-model access"
+  );
+  assert.match(
+    byId.get("cursor-teams").includedValue,
+    /centralized billing, admin controls, and SSO/i,
+    "Cursor Teams keeps the admin and SSO framing"
+  );
+  assert.match(
+    byId.get("cursor-teams-premium").includedValue,
+    /roughly 5× the Standard team Agent limits/i,
+    "Cursor Teams Premium preserves the 5x team Agent limits framing"
+  );
+
+  assert.match(
     byId.get("jetbrains-ai-pro").billingCadence,
     /annual/i,
     "JetBrains AI Pro discloses annual billing"
@@ -314,6 +360,13 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     byId.get("tabnine-agentic").includedValue,
     /Context Engine/i,
     "Tabnine Agentic Platform included-value text names the Context Engine"
+  );
+
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(
+    bdd,
+    /Cursor included-value copy names the current pricing-page benefits/i,
+    "pricing BDD documents the Cursor current-benefits copy"
   );
 });
 
