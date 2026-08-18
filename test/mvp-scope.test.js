@@ -56,6 +56,11 @@ test("the repo docs point to the MVP scope source of truth", () => {
   assert.match(readme, /comparison mini-guides/i, "README mentions the guide hub that ships on the homepage");
   assert.match(
     readme,
+    /MINISFORUM MS-S1 MAX 128GB/i,
+    "README summary names the current Strix Halo example lineup"
+  );
+  assert.match(
+    readme,
     /Google AI|Gemini|Jules|Antigravity|GitLab|Devin|Replit|Supermaven/i,
     "README summary names the current subscription lineup"
   );
@@ -68,6 +73,11 @@ test("the repo docs point to the MVP scope source of truth", () => {
     prd,
     /comparison mini-guides/i,
     "PRD problem statement names the guide hub that ships on the homepage"
+  );
+  assert.match(
+    prd,
+    /MINISFORUM MS-S1 MAX 128GB/i,
+    "PRD problem statement names the current Strix Halo example lineup"
   );
   assert.match(
     prd,

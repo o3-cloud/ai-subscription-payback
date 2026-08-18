@@ -14,7 +14,8 @@ Jules, and Antigravity, Devin, Replit, Mistral, Bolt, Lovable, v0, Augment Code,
 Qodo, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus. This project will be
 an affiliate marketing static site
 that promotes local AI inference boxes — especially Mac Studio, NVIDIA DGX
-Spark, and AMD Strix Halo class systems — and helps visitors estimate how long
+Spark, and AMD Strix Halo class systems such as the Framework Desktop AI Max
+385 and MINISFORUM MS-S1 MAX 128GB — and helps visitors estimate how long
 it would take to pay off one of those boxes if they canceled their AI
 subscriptions and financed the hardware instead.
 
@@ -34,7 +35,9 @@ and the fact that all savings numbers are estimates.
 - Provide a fast, free calculator that compares subscription spend against the
   monthly cost of financing a hardware purchase.
 - Compare at minimum Codex and Claude Code against Mac Studio, DGX Spark, and
-  Strix Halo-class systems, with room to add more boxes or subscriptions.
+  Strix Halo-class systems, including named examples such as the Framework
+  Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, with room to add more
+  boxes or subscriptions.
 - Show a clear cost breakdown: subscription spend over time vs. total hardware
   ownership cost, including financing and optional operating costs.
 - Work as a static site suitable for GitHub Pages with no backend.
@@ -65,7 +68,9 @@ and the fact that all savings numbers are estimates.
 1. Land on the page from search, social, or a shared link.
 2. See a clear value proposition: local AI box recommendations plus a payoff
    calculator.
-3. Compare featured hardware cards for Mac Studio, DGX Spark, and Strix Halo.
+3. Compare featured hardware cards for Mac Studio, DGX Spark, and Strix Halo
+   examples such as the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX
+   128GB.
 4. Follow affiliate or reseller links if a product looks attractive.
 5. Enter or accept default assumptions for box price, down payment, APR,
    financing term, electricity rate, and subscription spend.
@@ -78,7 +83,8 @@ and the fact that all savings numbers are estimates.
 
 - **Home / Calculator** (single-page primary experience)
   - Hero: headline + subhead + primary CTA (shop boxes / scroll to calculator).
-  - Featured hardware cards: Mac Studio, DGX Spark, Strix Halo.
+  - Featured hardware cards: Mac Studio, DGX Spark, Strix Halo examples such
+    as the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB.
   - Calculator: inputs panel + results panel + cost-over-time chart.
   - Comparison table: subscriptions vs. hardware profiles.
   - Comparison mini-guides: indexable static pages for high-intent comparison queries linked from the homepage.
