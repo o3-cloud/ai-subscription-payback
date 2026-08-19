@@ -33,7 +33,7 @@ Scenario: The shipped social-card PNG stays in sync with its SVG source
 Scenario: The subscription helper text names every modeled coding-agent brand
   Given the landing page copy under the spend input
   When a visitor scans the field-help text
-  Then it names Google AI, Gemini Spark, Jules, Antigravity, Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE (AI IDE), Kiro, JetBrains AI Pro, Tabnine (Code Assistant Platform / Agentic Platform), Warp, Factory (Droid agents), and Manus (autonomous agent)
+  Then it names Google AI Plus, Google AI Pro, Google AI Ultra, Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE (AI IDE), Kiro, JetBrains AI Pro, Tabnine (Code Assistant Platform / Agentic Platform), Warp, Factory (Droid agents), and Manus (autonomous agent)
 
 Scenario: The homepage metadata stays concise while social metadata stays complete
   Given the landing page and its head metadata

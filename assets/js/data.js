@@ -112,10 +112,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-17";
+export const pricingLastUpdated = "2026-08-19";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-17";
+export const siteLastUpdated = "2026-08-19";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -142,7 +142,7 @@ export const tokenOutputValueAssumptions = {
  * intentionally models only the publicly visible from $100/mo Max 5× scenario
  * until a verifiable public price exists. GitHub Copilot,
  * Cursor, and Zed round out the common IDE/editor assistant plans, and the
- * Google AI tiers (Plus, Pro, Ultra 5x, Ultra 20x) cover the broad Gemini
+ * Google AI tiers (Plus, Pro, Google AI Ultra 5x, Google AI Ultra 20x) cover the broad Gemini
  * subscriptions whose Pro/Ultra tiers bundle the Jules and Google Antigravity
  * coding agents — Ultra ships as a plan family at $99.99/mo (5× AI Pro limits)
  * and $199.99/mo (20× AI Pro limits) — and the
@@ -617,11 +617,11 @@ export const subscriptions = [
     monthlyPrice: 4.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Broad Google AI subscription for one person: higher Gemini app limits and expanded AI access across Google apps. Does not include the Jules or Google Antigravity coding-agent benefits.",
+      "Broad Google AI Plus subscription for one person: 2× higher usage access than Free, Gemini Omni Flash, 200 Google Flow Credits, and 400 GB of cloud storage. Does not include the Jules or Google Antigravity coding-agent benefits.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-07-15",
+    lastUpdated: "2026-08-19",
   },
   {
     id: "google-ai-pro",
@@ -630,37 +630,37 @@ export const subscriptions = [
     monthlyPrice: 19.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Broad Google AI subscription with higher Gemini limits across Google apps, plus Gemini Spark and coding-agent access to Jules and Google Antigravity for one developer.",
+      "Broad Google AI Pro subscription with 4× higher usage access than Free, Gemini 3 Pro / Deep Search and agentic capabilities, 1,000 Google Flow Credits, Jules, entry rate limits to Google Antigravity, and 5 TB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-07-15",
+    lastUpdated: "2026-08-19",
   },
   {
     id: "google-ai-ultra",
-    name: "Google AI",
-    plan: "Ultra 5x",
+    name: "Google AI Ultra",
+    plan: "5x",
     monthlyPrice: 99.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Starting Google AI Ultra tier at 5× higher usage limits vs. AI Pro, with high Gemini limits across Google apps plus Gemini Spark and coding-agent access to Jules and Google Antigravity at the Ultra 5x rate limits.",
+      "Google AI Ultra at 5× higher usage limits vs. AI Pro, with first access to advanced features like Deep Think and Gemini Spark, higher Google Antigravity rate limits, 10,000 Google Flow Credits, and 20 TB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-07-31",
+    lastUpdated: "2026-08-19",
   },
   {
     id: "google-ai-ultra-20x",
-    name: "Google AI",
-    plan: "Ultra 20x",
+    name: "Google AI Ultra",
+    plan: "20x",
     monthlyPrice: 199.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Top Google AI Ultra tier at 20× higher usage limits vs. AI Pro, with the highest Gemini limits across Google apps plus Gemini Spark, the highest Jules limits, and Google Antigravity rate limits of the coding agents.",
+      "Google AI Ultra at 20× higher usage limits vs. AI Pro, with the highest access to Gemini 3 Pro, Deep Search, and agentic capabilities, the highest Google Antigravity rate limits, 25,000 Google Flow Credits, and 20 TB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-07-31",
+    lastUpdated: "2026-08-19",
   },
   {
     id: "amazon-q-developer-free",

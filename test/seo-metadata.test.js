@@ -52,7 +52,7 @@ const metaContent = (attr, value) =>
 // would let a field lose one family silently.
 const assertNamesNewTiers = (text, field) => {
   for (const [label, pattern] of [
-    ["Google AI", /Google AI|Gemini Spark|Jules|Antigravity/i],
+    ["Google AI", /Google AI Plus|Google AI Pro|Google AI Ultra/i],
     ["Replit", /Replit/i],
     ["Mistral", /Mistral/i],
     ["Bolt", /Bolt/i],
@@ -330,10 +330,9 @@ test("the on-page subscription helper text names every modeled coding-agent bran
       .trim() ?? "";
   assert.ok(help, "index.html has a <p class=\"field-help\"> element");
   for (const brand of [
-    "Google AI",
-    "Gemini Spark",
-    "Jules",
-    "Antigravity",
+    "Google AI Plus",
+    "Google AI Pro",
+    "Google AI Ultra",
     "Devin (Windsurf / Devin Desktop)",
     "Amazon Q Developer",
     "Replit Agent",

@@ -19,7 +19,7 @@ Scenario: Supported subscription tiers are listed
   And the GitLab Premium + Duo Agent Platform credits tier is listed
   And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
   And the Zed tiers are listed: Personal, Pro, and Business
-  And the Google AI tiers are listed: Plus, Pro, Ultra 5x, and Ultra 20x
+  And the Google AI tiers are listed: Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x
   And the Amazon Q Developer tiers are listed: Free and Pro
   And the Devin tiers are listed: Free, Pro, Max, and Teams (base + 1 seat)
   And the Devin tiers surface the alias "Devin (Windsurf / Devin Desktop)" without duplicating any rows
@@ -85,13 +85,13 @@ Scenario: Editor-assistant tiers are optional and unchecked by default
   And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
-Scenario: Google AI tiers describe their Gemini Spark and coding-agent benefit
-  Given the Google AI Plus, Pro, Ultra 5x, and Ultra 20x tiers
+Scenario: Google AI tiers describe their current Plus, Pro, and Ultra benefits
+  Given the Google AI Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x tiers
   When the visitor views their included-value text
   Then each is described as a broad Google AI subscription
-  And the Pro, Ultra 5x, and Ultra 20x tiers note the included Gemini Spark, Jules, and Google Antigravity coding-agent access
-  And the Plus tier keeps the broader Gemini-app positioning without the Gemini Spark benefits
-  And the Ultra 5x tier is priced at $99.99/mo (5× AI Pro limits) and the Ultra 20x tier at $199.99/mo (20× AI Pro limits)
+  And the Plus tier highlights 2× usage access, Gemini Omni Flash, Google Flow Credits, and 400 GB of storage without the Jules or Google Antigravity benefits
+  And the Pro tier highlights 4× usage access, Gemini 3 Pro / Deep Search, Jules, Google Antigravity, Google Flow Credits, and 5 TB of storage
+  And the Google AI Ultra 5x and Google AI Ultra 20x tiers keep the current Google AI Ultra product wording while surfacing the 5× and 20× price points
   And all four are optional and unchecked in the default selection
 
 Scenario: Amazon Q Developer tiers disclose their quota caveat

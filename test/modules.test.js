@@ -267,8 +267,8 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     "zed-business": { name: "Zed", monthlyPrice: 30 },
     "google-ai-plus": { name: "Google AI", monthlyPrice: 4.99 },
     "google-ai-pro": { name: "Google AI", monthlyPrice: 19.99 },
-    "google-ai-ultra": { name: "Google AI", monthlyPrice: 99.99 },
-    "google-ai-ultra-20x": { name: "Google AI", monthlyPrice: 199.99 },
+    "google-ai-ultra": { name: "Google AI Ultra", monthlyPrice: 99.99 },
+    "google-ai-ultra-20x": { name: "Google AI Ultra", monthlyPrice: 199.99 },
     "amazon-q-developer-free": { name: "Amazon Q Developer", monthlyPrice: 0 },
     "amazon-q-developer-pro": { name: "Amazon Q Developer", monthlyPrice: 19 },
     "devin-free": { name: "Devin", monthlyPrice: 0 },
@@ -284,6 +284,7 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     Cursor: "https://cursor.com/pricing",
     Zed: "https://zed.dev/pricing",
     "Google AI": "https://gemini.google/subscriptions/",
+    "Google AI Ultra": "https://gemini.google/subscriptions/",
     "Amazon Q Developer": "https://aws.amazon.com/q/developer/pricing/",
     Devin: "https://devin.ai/pricing",
     "JetBrains AI": "https://www.jetbrains.com/store/?section=commercial&billing=yearly",
@@ -558,7 +559,7 @@ test("usage-based tiers disclose their included-credit caveat", async () => {
   }
 });
 
-test("Google AI tiers describe the Gemini Spark / Jules / Antigravity coding-agent benefit", async () => {
+test("Google AI tiers describe the current Plus / Pro / Ultra benefits", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
@@ -568,21 +569,25 @@ test("Google AI tiers describe the Gemini Spark / Jules / Antigravity coding-age
     assert.ok(sub, `missing subscription tier: ${id}`);
     assert.equal(sub.verification, "official", `${id} is marked official`);
     assert.equal(sub.sourceUrl, "https://gemini.google/subscriptions/", `${id} points at the official Gemini subscriptions page`);
-    assert.match(sub.includedValue, /Google AI/, `${id} names the broad Google AI subscription`);
+    assert.match(sub.includedValue, /Google AI|Google AI Ultra/i, `${id} names the broad Google AI subscription`);
     // Optional: none seed the default selection.
     assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
   }
 
-  // Only Pro and the two Ultra tiers bundle the Gemini Spark / Jules / Google Antigravity coding agents.
-  for (const id of ["google-ai-pro", "google-ai-ultra", "google-ai-ultra-20x"]) {
-    assert.match(byId.get(id).includedValue, /Jules/, `${id} names Jules`);
-    assert.match(byId.get(id).includedValue, /Antigravity/, `${id} names Google Antigravity`);
-    assert.match(byId.get(id).includedValue, /Gemini Spark/, `${id} names Gemini Spark`);
-  }
+  // Only Pro and the two Ultra tiers bundle the coding-agent benefits.
+  assert.match(byId.get("google-ai-pro").includedValue, /Jules/, "google-ai-pro names Jules");
+  assert.match(byId.get("google-ai-pro").includedValue, /Antigravity/, "google-ai-pro names Google Antigravity");
+  assert.match(byId.get("google-ai-plus").includedValue, /Does not include the Jules or Google Antigravity coding-agent benefits\./i, "google-ai-plus keeps the lighter Plus positioning");
+  assert.match(byId.get("google-ai-ultra").includedValue, /Google Flow Credits/i, "google-ai-ultra names Google Flow Credits");
+  assert.match(byId.get("google-ai-ultra").includedValue, /Deep Think/i, "google-ai-ultra names Deep Think");
+  assert.match(byId.get("google-ai-ultra").includedValue, /Gemini Spark/i, "google-ai-ultra names Gemini Spark");
+  assert.match(byId.get("google-ai-ultra-20x").includedValue, /Gemini 3 Pro/i, "google-ai-ultra-20x names Gemini 3 Pro");
+  assert.match(byId.get("google-ai-ultra-20x").includedValue, /Deep Search/i, "google-ai-ultra-20x names Deep Search");
+  assert.match(byId.get("google-ai-ultra-20x").includedValue, /Google Flow Credits/i, "google-ai-ultra-20x names Google Flow Credits");
 
   // The Ultra plan family exposes both the $99.99 (5x) and $199.99 (20x) prices.
-  assert.equal(byId.get("google-ai-ultra").monthlyPrice, 99.99, "Ultra 5x is $99.99/mo");
-  assert.equal(byId.get("google-ai-ultra-20x").monthlyPrice, 199.99, "Ultra 20x is $199.99/mo");
+  assert.equal(byId.get("google-ai-ultra").monthlyPrice, 99.99, "Google AI Ultra 5x is $99.99/mo");
+  assert.equal(byId.get("google-ai-ultra-20x").monthlyPrice, 199.99, "Google AI Ultra 20x is $199.99/mo");
   assert.notEqual(
     byId.get("google-ai-ultra").plan,
     byId.get("google-ai-ultra-20x").plan,

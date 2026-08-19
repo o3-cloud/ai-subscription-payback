@@ -254,28 +254,25 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI, GitLab, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
-  // The checklist covers Google AI (Gemini Spark / Jules / Antigravity), GitLab
+test("subscription helper copy names the Google AI Plus, Google AI Pro, Google AI Ultra, GitLab, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
+  // The checklist covers Google AI Plus / Pro / Ultra, GitLab
   // Premium + Duo Agent Platform credits, Devin, Replit Agent, the Bolt and
   // Lovable app builders, v0 by Vercel, Augment Code, Qodo, and the new Amp /
   // TRAE / Kiro / Supermaven / JetBrains AI Pro / Tabnine / Warp tiers, so the helper text and
   // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
-  assert.match(help, /Google AI/i, "helper copy names Google AI");
+  assert.match(help, /Google AI Plus/i, "helper copy names Google AI Plus");
+  assert.match(help, /Google AI Pro/i, "helper copy names Google AI Pro");
+  assert.match(help, /Google AI Ultra/i, "helper copy names Google AI Ultra");
   assert.match(help, /GitLab Premium/i, "helper copy names GitLab Premium");
   assert.match(help, /Duo Agent Platform/i, "helper copy names Duo Agent Platform");
-  assert.match(help, /Gemini Spark/i, "helper copy names Gemini Spark");
-  assert.match(help, /Gemini/i, "helper copy names Gemini");
-  assert.match(help, /Jules/i, "helper copy names Jules");
-  assert.match(help, /Antigravity/i, "helper copy names Antigravity");
   assert.match(help, /Amazon Q Developer/i, "helper copy names Amazon Q Developer");
   assert.match(
     help,
     /Devin \(Windsurf \/ Devin Desktop\)/i,
     "helper copy names the Devin Windsurf / Devin Desktop search label"
   );
-  assert.match(help, /Devin/i, "helper copy names Devin");
   assert.match(help, /Replit/i, "helper copy names Replit");
   assert.match(help, /Replit Agent/i, "helper copy names Replit Agent");
   assert.match(help, /Mistral/i, "helper copy names Mistral");
@@ -303,8 +300,8 @@ test("subscription helper copy names the Google AI, GitLab, Devin, Replit, Mistr
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
   assert.match(
     pricing,
-    /Google AI Pro, Ultra 5x, and Ultra 20x[\s\S]*?Gemini Spark[\s\S]*?Jules[\s\S]*?Antigravity/i,
-    "pricing copy explains the Google AI Ultra family surfaces Gemini Spark and bundles Jules and Antigravity"
+    /Google AI Plus[\s\S]*?Google AI Pro[\s\S]*?Google AI Ultra[\s\S]*?Jules[\s\S]*?Antigravity/i,
+    "pricing copy explains the Google AI paid tiers surface Jules and Antigravity"
   );
   assert.match(pricing, /GitLab Premium/i, "pricing disclosure mentions GitLab Premium");
   assert.match(pricing, /Duo Agent Platform/i, "pricing disclosure mentions Duo Agent Platform");
