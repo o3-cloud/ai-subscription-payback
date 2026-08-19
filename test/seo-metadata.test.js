@@ -72,12 +72,7 @@ const assertNamesNewTiers = (text, field) => {
 
 test("head declares a descriptive title, indexing directives, and a canonical URL", () => {
   const title = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1]?.trim() ?? "";
-  assert.ok(title.length > 10, "document declares a descriptive <title>");
-  assert.match(
-    title,
-    /AI Subscription Payback/i,
-    "document title uses the official site name"
-  );
+  assert.equal(title, "AI Subscription Payback Calculator | Local AI Box ROI");
   assert.match(
     html,
     /<meta[^>]+name="robots"[^>]+content="[^"]*index[^"]*"/i,
@@ -88,18 +83,21 @@ test("head declares a descriptive title, indexing directives, and a canonical UR
     new RegExp(`<link[^>]+rel="canonical"[^>]+href="${SITE_URL}"`, "i"),
     "canonical link points at the site URL"
   );
-  assert.ok(metaContent("name", "description").length > 50, "meta description present");
-  assertNamesNewTiers(metaContent("name", "description"), "meta description");
+  assert.equal(
+    metaContent("name", "description"),
+    "Free calculator for comparing AI coding subscriptions with a local AI box and estimating the break-even month from transparent pricing sources.",
+    "meta description stays concise and search-snippet friendly"
+  );
   assert.equal(
     metaContent("name", "author"),
     "AI Subscription Payback",
     "meta author matches the official site name"
   );
-  // Keywords should surface the Google AI, Replit, Mistral, and Bolt tiers
-  // tiers now that they are modeled, so searchers with that intent can find
-  // the calculator. Assert each family individually (not an OR-alternation),
-  // so dropping any one from the keywords is caught.
-  assertNamesNewTiers(metaContent("name", "keywords"), "keywords");
+  assert.equal(
+    metaContent("name", "keywords"),
+    "AI subscription payback, local AI box ROI, AI coding subscription calculator, break-even month",
+    "keywords stay short and focused"
+  );
 });
 
 test("Open Graph card is complete", () => {
@@ -320,8 +318,9 @@ test("FAQ structured-data answers match the on-page methodology copy", () => {
 });
 
 test("the on-page subscription helper text names every modeled coding-agent brand", () => {
-  // The SEO BDD scenario ("the on-page helper text names each coding agent" in
-  // docs/bdd/seo-and-metadata.md) requires the visible field-help copy under the
+  // The SEO BDD scenario ("the subscription helper text names every modeled
+  // coding-agent brand" in docs/bdd/seo-and-metadata.md) requires the visible
+  // field-help copy under the
   // spend input to enumerate the newly modeled brands individually, so the
   // homepage cannot silently drop one when the plan list changes. Assert each
   // name on its own — a single OR-alternation would let a brand disappear.
@@ -362,8 +361,8 @@ test("the SEO BDD documents the current helper-text and metadata families", () =
   const bdd = read("docs/bdd/seo-and-metadata.md");
   assert.match(
     bdd,
-    /Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers are discoverable in homepage copy and metadata/i,
-    "SEO BDD scenario title must cover the current homepage copy and metadata families"
+    /The subscription helper text names every modeled coding-agent brand/i,
+    "SEO BDD should preserve the helper-text coverage scenario"
   );
   for (const family of [
     "Amazon Q Developer",
@@ -375,13 +374,23 @@ test("the SEO BDD documents the current helper-text and metadata families", () =
   }
   assert.match(
     bdd,
-    /Google AI, Gemini Spark, Jules, Antigravity, Amazon Q Developer, Devin \(Windsurf \/ Devin Desktop\), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo \(Pro Team\), Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine \(Code Assistant Platform \/ Agentic Platform\), Warp, Factory \(Droid agents\), and Manus \(autonomous agent\)/i,
-    "SEO BDD helper-text coverage must list the full current roster"
+    /The homepage metadata stays concise while social metadata stays complete/i,
+    "SEO BDD should cover the concise metadata contract"
   );
   assert.match(
     bdd,
-    /Google AI's Gemini Spark plus Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers/i,
-    "SEO BDD metadata coverage must mention Gemini Spark and Manus"
+    /document title stays short and names the AI Subscription Payback calculator/i,
+    "SEO BDD should mention the concise title"
+  );
+  assert.match(
+    bdd,
+    /meta description gives a brief value proposition/i,
+    "SEO BDD should mention the brief meta description"
+  );
+  assert.match(
+    bdd,
+    /keywords tag stays short and focused/i,
+    "SEO BDD should mention the short keywords contract"
   );
 });
 

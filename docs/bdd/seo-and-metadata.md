@@ -30,11 +30,18 @@ Scenario: The shipped social-card PNG stays in sync with its SVG source
   Then the shipped PNG is pixel-identical to the freshly rasterized SVG
   So that edits to the SVG cannot silently drift from the card platforms show
 
-Scenario: Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers are discoverable in homepage copy and metadata
+Scenario: The subscription helper text names every modeled coding-agent brand
+  Given the landing page copy under the spend input
+  When a visitor scans the field-help text
+  Then it names Google AI, Gemini Spark, Jules, Antigravity, Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE (AI IDE), Kiro, JetBrains AI Pro, Tabnine (Code Assistant Platform / Agentic Platform), Warp, Factory (Droid agents), and Manus (autonomous agent)
+
+Scenario: The homepage metadata stays concise while social metadata stays complete
   Given the landing page and its head metadata
   When a searcher or visitor scans the homepage copy
-  Then the subscription helper text names Google AI, Gemini Spark, Jules, Antigravity, Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo (Pro Team), Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine (Code Assistant Platform / Agentic Platform), Warp, Factory (Droid agents), and Manus (autonomous agent)
-  And the meta description, keywords, Open Graph description, Twitter description, and JSON-LD description all mention Google AI's Gemini Spark plus Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers
+  Then the document title stays short and names the AI Subscription Payback calculator
+  And the meta description gives a brief value proposition for comparing subscriptions against a local AI box
+  And the keywords tag stays short and focused instead of listing every modeled vendor
+  And the Open Graph description, Twitter description, and JSON-LD description still cover the broader modeled tier families
 
 Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
   Given the static site ships from a project subpath with no favicon at the origin root
