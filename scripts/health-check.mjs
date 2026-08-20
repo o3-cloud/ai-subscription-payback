@@ -13,10 +13,13 @@
  *     module and collects every `sourceUrl` / affiliate `url`.
  *  2. Validates each URL syntactically (must be a well-formed http(s) URL).
  *  3. Probes each unique URL with a HEAD request, falling back to GET when the
- *     server does not allow/support HEAD (405/501) or the HEAD attempt errors.
- *  4. Classifies the result: a canonical vendor source that answers 403/429 is
- *     treated as a warning (these official pages are commonly bot-protected),
- *     while other 4xx/5xx responses and network errors are hard failures.
+ *     server does not allow/support HEAD (405/501), when the HEAD attempt
+ *     errors, or when the HEAD response itself looks bot-protected (403/429)
+ *     and a normal GET may still succeed.
+ *  4. Classifies the result: a canonical vendor source that still answers
+ *     403/429 after the GET retry is treated as a warning (these official
+ *     pages are commonly bot-protected), while other 4xx/5xx responses and
+ *     network errors are hard failures.
  *  5. Flags entries whose `lastUpdated` is older than a staleness threshold
  *     (default 45 days) as warnings.
  *  6. Prints a concise report and exits non-zero only when there are hard
@@ -174,6 +177,13 @@ export async function probeUrl(url, { fetchImpl = globalThis.fetch, timeoutMs = 
     const head = await attempt("HEAD");
     if (HEAD_UNSUPPORTED.has(head.status)) {
       return { url, ...(await attempt("GET")) };
+    }
+    if (BOT_PROTECTION_STATUSES.has(head.status)) {
+      try {
+        return { url, ...(await attempt("GET")) };
+      } catch {
+        return { url, ...head };
+      }
     }
     return { url, ...head };
   } catch {

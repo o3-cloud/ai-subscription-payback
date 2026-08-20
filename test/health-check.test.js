@@ -170,6 +170,25 @@ test("probeUrl falls back to GET when HEAD is unsupported (405)", async () => {
   assert.equal(result.ok, true);
 });
 
+test("probeUrl retries GET when HEAD looks bot-protected and GET succeeds", async () => {
+  const seen = [];
+  const fetchImpl = async (url, options) => {
+    seen.push([options.method, options.headers["user-agent"]]);
+    if (options.method === "HEAD") return response(403, { url });
+    return response(200, { url });
+  };
+
+  const result = await probeUrl("https://example.com/bot-protected-head", { fetchImpl });
+
+  assert.deepEqual(seen, [
+    ["HEAD", USER_AGENT],
+    ["GET", USER_AGENT],
+  ]);
+  assert.equal(result.method, "GET");
+  assert.equal(result.ok, true);
+  assert.equal(result.status, 200);
+});
+
 test("probeUrl falls back to GET when HEAD throws, and recovers", async () => {
   const seen = [];
   const fetchImpl = async (url, options) => {
@@ -375,7 +394,7 @@ test("runHealthCheck probes each unique URL once and merges canonical status", a
     },
   });
 
-  assert.equal(calls, 1, "shared URL should be probed exactly once");
+  assert.equal(calls, 2, "shared URL should be fetched with a HEAD probe and a GET retry");
   assert.equal(report.urls.length, 1);
   assert.equal(report.urls[0].sources.length, 2);
   assert.equal(report.urls[0].verdict.level, "warn");
