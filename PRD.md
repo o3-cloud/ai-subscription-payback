@@ -11,7 +11,7 @@ Developers and small teams often pay recurring monthly fees for AI coding,
 app-builder, and agent subscriptions such as Codex, Claude Code, Cursor, GitHub
 Copilot, GitLab Premium + Duo Agent Platform credits, Google AI tiers like Gemini,
 Jules, and Antigravity, Devin, Replit, Mistral, Bolt, Lovable, v0, Augment Code,
-Qodo, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus. This project will be
+Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus. This project will be
 an affiliate marketing static site
 that promotes local AI inference boxes — especially Mac Studio, NVIDIA DGX
 Spark, and AMD Strix Halo class systems such as the Framework Desktop AI Max

@@ -40,6 +40,8 @@ test("llms.txt follows the convention: H1 title then a blockquote summary", () =
   assert.match(summary, /Cursor/i, "the summary names Cursor alongside the other modeled subscription families");
   assert.match(summary, /GitHub Copilot/i, "the summary names GitHub Copilot alongside the other modeled subscription families");
   assert.match(summary, /GitLab Premium/i, "the summary names GitLab Premium alongside the other modeled subscription families");
+  assert.match(summary, /Qodo/i, "the summary names Qodo alongside the other modeled subscription families");
+  assert.match(summary, /CodeRabbit/i, "the summary names CodeRabbit alongside the other modeled subscription families");
   assert.match(summary, /Warp/i, "the summary names Warp alongside the other modeled subscription families");
   assert.match(summary, /Supermaven/i, "the summary names Supermaven alongside the other modeled subscription families");
   assert.match(summary, /Kiro/i, "the summary names Kiro alongside the other modeled subscription families");
@@ -91,7 +93,11 @@ test("llms.txt never references the legacy github.io origin", () => {
 
 test("llms.txt keeps its disclosures honest and source-backed", () => {
   const txt = read("llms.txt");
-  assert.match(txt, /client-side|no backend/i, "states computation is client-side");
+  assert.match(
+    txt,
+    /client-side|no backend/i,
+    "states computation is client-side"
+  );
   assert.match(
     txt,
     /never (change|affect)[^.]*result/i,

@@ -14,7 +14,7 @@ Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, compared against the
 currently modeled AI coding, app-builder, and agent subscriptions (for example
 Codex, Claude Code, Cursor, GitHub Copilot, GitLab Premium + Duo Agent Platform
 credits, Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0, Augment Code,
-Qodo, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus), with comparison mini-guides for common follow-up questions, transparent disclosures, and no backend.
+Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and Manus), with comparison mini-guides for common follow-up questions, transparent disclosures, and no backend.
 
 ## Local development
 

@@ -6,7 +6,7 @@
   <title>AI Subscription Payback Calculator | Local AI Box ROI</title>
   <meta
     name="description"
-    content="Free calculator for comparing AI coding subscriptions with a local AI box and estimating the break-even month from transparent pricing sources."
+    content="Free calculator for comparing AI coding and code-review subscriptions with a local AI box and estimating the break-even month from transparent pricing sources."
   />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#1f5fd6" media="(prefers-color-scheme: light)" />
@@ -15,7 +15,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta
     name="keywords"
-    content="AI subscription payback, local AI box ROI, AI coding subscription calculator, break-even month"
+    content="AI subscription payback, local AI box ROI, AI coding subscription calculator, code-review subscription calculator, break-even month"
   />
   <link rel="canonical" href="https://www.othree.cloud/ai-subscription-payback/" />
   <link rel="sitemap" type="application/xml" href="./sitemap.xml" />
@@ -29,7 +29,7 @@
   <meta property="og:title" content="AI Subscription Payback Calculator | Local AI Box ROI" />
   <meta
     property="og:description"
-    content="Model the break-even point of a financed local AI box versus AI coding subscriptions, including Google AI Plus, Google AI Pro, and Google AI Ultra, Replit Agent, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers."
+    content="Model the break-even point of a financed local AI box versus AI coding and code-review subscriptions, including Google AI Plus, Google AI Pro, and Google AI Ultra, Replit Agent, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers."
   />
   <meta property="og:url" content="https://www.othree.cloud/ai-subscription-payback/" />
   <meta property="og:image" content="https://www.othree.cloud/ai-subscription-payback/assets/img/og-card.png" />
@@ -41,7 +41,7 @@
   <meta name="twitter:title" content="AI Subscription Payback Calculator | Local AI Box ROI" />
   <meta
     name="twitter:description"
-    content="Free calculator: how long until a local AI box is cheaper than paying for Codex, Claude Code, Google AI Plus, Google AI Pro, and Google AI Ultra, Replit Agent, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers?"
+    content="Free calculator: how long until a local AI box is cheaper than paying for Codex, Claude Code, Google AI Plus, Google AI Pro, and Google AI Ultra, Replit Agent, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, and Manus tiers?"
   />
   <meta name="twitter:image" content="https://www.othree.cloud/ai-subscription-payback/assets/img/og-card.png" />
   <meta
@@ -62,7 +62,7 @@
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any (modern web browser)",
         "browserRequirements": "Requires JavaScript",
-        "description": "Free calculator that estimates when a financed local AI inference box becomes cheaper than paying for AI coding subscriptions like Codex, Claude Code, Google AI Plus, Google AI Pro, and Google AI Ultra, Replit Agent, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus.",
+        "description": "Free calculator that estimates when a financed local AI inference box becomes cheaper than paying for AI coding and code-review subscriptions like Codex, Claude Code, Google AI Plus, Google AI Pro, and Google AI Ultra, Replit Agent, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, and Manus.",
         "isAccessibleForFree": true,
         "offers": {
           "@type": "Offer",
@@ -188,7 +188,7 @@
               <label for="custom-spend">Custom monthly subscription spend (USD)</label>
               <input type="number" id="custom-spend" name="customSpend" min="0" step="1" inputmode="decimal" placeholder="Leave blank to total the checked subscriptions" />
             </div>
-            <p class="field-help">Check the plans you pay for — Codex, Claude Code, GitHub Copilot, GitLab Premium (Duo Agent Platform credits), Cursor, Zed, Google AI Plus, Google AI Pro, Google AI Ultra, Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral (Vibe), Bolt (app builder), Lovable (app builder), v0 by Vercel (app builder), Augment Code (Business), Qodo (Pro Team), Amp, TRAE (AI IDE), Kiro (AI IDE/CLI/Web/Mobile), Supermaven, JetBrains AI Pro, Tabnine (Code Assistant Platform / Agentic Platform), Warp (agentic terminal), Factory (Droid agents), and Manus (autonomous agent) tiers are listed. Leave the spend blank to total the checked subscriptions, or enter your own monthly budget and the calculator will use that instead.</p>
+            <p class="field-help">Check the plans you pay for — Codex, Claude Code, GitHub Copilot, GitLab Premium (Duo Agent Platform credits), Cursor, Zed, Google AI Plus, Google AI Pro, Google AI Ultra, Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral (Vibe), Bolt (app builder), Lovable (app builder), v0 by Vercel (app builder), Augment Code (Business), Qodo (Pro Team), CodeRabbit (Pro / Pro Plus), Amp, TRAE (AI IDE), Kiro (AI IDE/CLI/Web/Mobile), Supermaven, JetBrains AI Pro, Tabnine (Code Assistant Platform / Agentic Platform), Warp (agentic terminal), Factory (Droid agents), and Manus (autonomous agent) tiers are listed. Leave the spend blank to total the checked subscriptions, or enter your own monthly budget and the calculator will use that instead.</p>
             <div class="field subscription-filters">
               <div class="field">
                 <label for="subscription-filter">Filter subscriptions</label>
@@ -502,13 +502,19 @@
  (Business) covers Augment Code's coding agent: a flat $100/month covering
  up to 50 seats and $100/month of pooled usage shared across the team,
  with usage beyond the pool billed as metered top-ups; Augment Code's
- Enterprise plan is custom-priced and out of scope here. The Qodo tiers
- (Pro Team, 2,500 / 5,000 / 20,000 credits) cover Qodo's team code-review
+ Enterprise plan is custom-priced and out of scope here. The Qodo tiers (Pro Team, 2,500 / 5,000 / 20,000 credits) cover Qodo's team code-review
  plan: 2,500 pooled credits start at $30/mo, 5,000 pooled credits start at
  $60/mo, and 20,000 pooled credits start at $240/mo at the official
  $0.012/credit rate; credits expire each monthly cycle, there is no annual
  commitment, no rate limits, and overage continues at the same per-credit
- rate subject to a spending cap. The Amp tiers
+ rate subject to a spending cap. The CodeRabbit tiers (Pro and Pro Plus)
+ cover CodeRabbit's agentic PR-review plans: Pro is billed at $24/mo/user
+ annually and adds agentic AI reviews on PRs and CLI, 1-click fixes, MCP
+ connections, agentic chat, and related review features, while Pro Plus is
+ billed at $48/mo/user annually and adds higher limits, multi-repo analysis,
+ issue planner, post-merge actions, tests, merge-conflict handling, and
+ simplification finishing touches; CodeRabbit Security and usage-based
+ add-ons are out of scope here. The Amp tiers
         (Megawatt, Gigawatt) cover Amp's coding agent and are usage-based:
         Megawatt ($20/mo) includes $20 of agent usage and Gigawatt ($200/mo)
         includes $200 of agent usage, with usage beyond the included amount
@@ -568,7 +574,7 @@
         credits are pure usage-based spend and are out of scope here.
  </p>
       <p class="last-updated">
-        Pricing last updated: <time id="pricing-last-updated" datetime="2026-08-19">2026-08-19</time>
+        Pricing last updated: <time id="pricing-last-updated" datetime="2026-08-20">2026-08-20</time>
       </p>
       <ul id="pricing-list" class="pricing-list">
         <li>Pricing details load from data.</li>
@@ -636,7 +642,7 @@
         collected.
       </p>
       <p class="footer-meta">
-        Site last updated: <time id="site-last-updated" datetime="2026-08-19">2026-08-19</time>
+        Site last updated: <time id="site-last-updated" datetime="2026-08-20">2026-08-20</time>
         · <a href="#methodology">Methodology</a>
         · <a href="#affiliate">Disclosures</a>
       </p>

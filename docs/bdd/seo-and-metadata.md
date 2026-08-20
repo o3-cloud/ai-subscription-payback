@@ -30,10 +30,10 @@ Scenario: The shipped social-card PNG stays in sync with its SVG source
   Then the shipped PNG is pixel-identical to the freshly rasterized SVG
   So that edits to the SVG cannot silently drift from the card platforms show
 
-Scenario: The subscription helper text names every modeled coding-agent brand
+Scenario: The subscription helper text names every modeled coding-agent and code-review brand
   Given the landing page copy under the spend input
   When a visitor scans the field-help text
-  Then it names Google AI Plus, Google AI Pro, Google AI Ultra, Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Amp, TRAE (AI IDE), Kiro, JetBrains AI Pro, Tabnine (Code Assistant Platform / Agentic Platform), Warp, Factory (Droid agents), and Manus (autonomous agent)
+  Then it names Google AI Plus, Google AI Pro, Google AI Ultra, Amazon Q Developer, Devin (Windsurf / Devin Desktop), Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Amp, TRAE (AI IDE), Kiro, JetBrains AI Pro, Tabnine (Code Assistant Platform / Agentic Platform), Warp, Factory (Droid agents), and Manus (autonomous agent)
 
 Scenario: The homepage metadata stays concise while social metadata stays complete
   Given the landing page and its head metadata
@@ -41,7 +41,7 @@ Scenario: The homepage metadata stays concise while social metadata stays comple
   Then the document title stays short and names the AI Subscription Payback calculator
   And the meta description gives a brief value proposition for comparing subscriptions against a local AI box
   And the keywords tag stays short and focused instead of listing every modeled vendor
-  And the Open Graph description, Twitter description, and JSON-LD description still cover the broader modeled tier families
+  And the Open Graph description, Twitter description, and JSON-LD description still cover the broader modeled tier families, including the code-review comparator rows
 
 Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
   Given the static site ships from a project subpath with no favicon at the origin root

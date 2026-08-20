@@ -30,6 +30,7 @@ Scenario: Supported subscription tiers are listed
   And the v0 tiers are listed: Free, Plus, and Business
   And the Augment Code tier is listed: Business
   And the Qodo tiers are listed: Pro Team (2,500 credits), Pro Team (5,000 credits), and Pro Team (20,000 credits)
+  And the CodeRabbit tiers are listed: Pro (annual) and Pro Plus (annual)
   And the Kiro tiers are listed: Free, Pro, Pro+, Pro Max, and Power
   And the Supermaven tiers are listed: Free Tier, Pro, and Team
   And the Amp tiers are listed: Megawatt and Gigawatt
@@ -78,11 +79,11 @@ Scenario: Devin Teams pricing preserves the base-fee plus seat math
   And it clarifies that the $120/mo shown is the real cost of the base plus one seat
   And the pricing disclosure paragraph spells out this base-fee plus seat math in visible copy
 
-Scenario: Editor-assistant tiers are optional and unchecked by default
+Scenario: Editor-assistant and code-review tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
+  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their current Plus, Pro, and Ultra benefits
@@ -176,6 +177,15 @@ Scenario: The Qodo Pro Team tiers disclose their credit-metered caveat
   And the copy notes that credits expire each monthly cycle, there is no annual commitment, no rate limits, and overage continues at the same per-credit rate subject to a spending cap
   And all point at the official Qodo pricing page
   And all are optional and unchecked in the default selection
+
+Scenario: The CodeRabbit Pro tiers disclose their annual billing and out-of-scope Security plan
+  Given the CodeRabbit Pro (annual) and Pro Plus (annual) tiers
+  When the visitor views their billing cadence and included-value text
+  Then the Pro plan is priced at $24/mo/user with annual billing and agentic AI reviews on PRs and CLI
+  And the Pro Plus plan is priced at $48/mo/user with annual billing and higher limits, multi-repo analysis, issue planner, post-merge actions, tests, merge-conflict handling, and simplification finishing touches
+  And the copy notes that CodeRabbit Security and usage-based add-ons are out of scope
+  And both point at the official CodeRabbit pricing page
+  And both are optional and unchecked in the default selection
 
 Scenario: Amp tiers disclose their included-agent-usage caveat
   Given the Amp Megawatt and Gigawatt tiers

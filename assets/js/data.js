@@ -112,10 +112,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-19";
+export const pricingLastUpdated = "2026-08-20";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-19";
+export const siteLastUpdated = "2026-08-20";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1029,6 +1029,32 @@ export const subscriptions = [
     sourceLabel: "Official Qodo pricing",
     verification: "official",
     lastUpdated: "2026-08-10",
+  },
+  {
+    id: "coderabbit-pro-annual",
+    name: "CodeRabbit",
+    plan: "Pro (annual)",
+    monthlyPrice: 24,
+    billingCadence: "Billed annually, per user",
+    includedValue:
+      "Agentic AI review plan for PRs and CLI: CodeRabbit Pro includes agentic reviews on pull requests, 1-click fixes, MCP connections, agentic chat, and related review features; CodeRabbit Security and usage-based add-ons are out of scope here.",
+    sourceUrl: "https://www.coderabbit.ai/pricing",
+    sourceLabel: "Official CodeRabbit pricing",
+    verification: "official",
+    lastUpdated: "2026-08-20",
+  },
+  {
+    id: "coderabbit-pro-plus-annual",
+    name: "CodeRabbit",
+    plan: "Pro Plus (annual)",
+    monthlyPrice: 48,
+    billingCadence: "Billed annually, per user",
+    includedValue:
+      "Higher-limit agentic code-review plan for PRs and CLI: CodeRabbit Pro Plus adds higher limits, multi-repo analysis, issue planner, post-merge actions, tests, merge-conflict handling, and simplification finishing touches; CodeRabbit Security and usage-based add-ons are out of scope here.",
+    sourceUrl: "https://www.coderabbit.ai/pricing",
+    sourceLabel: "Official CodeRabbit pricing",
+    verification: "official",
+    lastUpdated: "2026-08-20",
   },
   {
     id: "amp-megawatt",

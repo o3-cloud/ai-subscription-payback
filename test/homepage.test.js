@@ -254,7 +254,7 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
-test("subscription helper copy names the Google AI Plus, Google AI Pro, Google AI Ultra, GitLab, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
+test("subscription helper copy names the Google AI Plus, Google AI Pro, Google AI Ultra, GitLab, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
   // The checklist covers Google AI Plus / Pro / Ultra, GitLab
   // Premium + Duo Agent Platform credits, Devin, Replit Agent, the Bolt and
   // Lovable app builders, v0 by Vercel, Augment Code, Qodo, and the new Amp /
@@ -281,6 +281,7 @@ test("subscription helper copy names the Google AI Plus, Google AI Pro, Google A
   assert.match(help, /v0 by Vercel/i, "helper copy names v0 by Vercel");
   assert.match(help, /Augment Code/i, "helper copy names Augment Code");
   assert.match(help, /Qodo/i, "helper copy names Qodo");
+  assert.match(help, /CodeRabbit/i, "helper copy names CodeRabbit");
   assert.match(help, /Amp/i, "helper copy names Amp");
   assert.match(help, /TRAE \(AI IDE\)/i, "helper copy names TRAE");
   assert.match(help, /Kiro/i, "helper copy names Kiro");
@@ -312,6 +313,7 @@ test("subscription helper copy names the Google AI Plus, Google AI Pro, Google A
   assert.match(pricing, /Vibe/i, "pricing disclosure mentions Mistral Vibe coding");
   assert.match(pricing, /Augment Code/i, "pricing disclosure mentions the Augment Code tier");
   assert.match(pricing, /Qodo/i, "pricing disclosure mentions the Qodo tiers");
+  assert.match(pricing, /CodeRabbit/i, "pricing disclosure mentions the CodeRabbit tiers");
   assert.match(pricing, /Kiro/i, "pricing disclosure mentions Kiro tiers");
   assert.match(pricing, /Supermaven/i, "pricing disclosure mentions Supermaven tiers");
   assert.match(pricing, /1M token context window/i, "pricing disclosure mentions Supermaven's context window");

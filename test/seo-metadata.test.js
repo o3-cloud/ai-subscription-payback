@@ -47,7 +47,7 @@ const metaContent = (attr, value) =>
 
 // The SEO BDD requires the description-style fields to name all of the newly
 // modeled tier families — Google AI, Replit, Mistral, Bolt, Lovable, Augment
-// Code, Qodo, Amp, TRAE, Kiro, Supermaven, Warp, and Manus — not merely one of them. Assert each family
+// Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, and Manus — not merely one of them. Assert each family
 // individually so dropping any one from a field is caught; an OR-alternation
 // would let a field lose one family silently.
 const assertNamesNewTiers = (text, field) => {
@@ -59,6 +59,7 @@ const assertNamesNewTiers = (text, field) => {
     ["Lovable", /Lovable/i],
     ["Augment Code", /Augment Code/i],
     ["Qodo", /Qodo/i],
+    ["CodeRabbit", /CodeRabbit/i],
     ["Amp", /Amp/i],
     ["TRAE", /TRAE/i],
     ["Kiro", /Kiro/i],
@@ -85,7 +86,7 @@ test("head declares a descriptive title, indexing directives, and a canonical UR
   );
   assert.equal(
     metaContent("name", "description"),
-    "Free calculator for comparing AI coding subscriptions with a local AI box and estimating the break-even month from transparent pricing sources.",
+    "Free calculator for comparing AI coding and code-review subscriptions with a local AI box and estimating the break-even month from transparent pricing sources.",
     "meta description stays concise and search-snippet friendly"
   );
   assert.equal(
@@ -95,7 +96,7 @@ test("head declares a descriptive title, indexing directives, and a canonical UR
   );
   assert.equal(
     metaContent("name", "keywords"),
-    "AI subscription payback, local AI box ROI, AI coding subscription calculator, break-even month",
+    "AI subscription payback, local AI box ROI, AI coding subscription calculator, code-review subscription calculator, break-even month",
     "keywords stay short and focused"
   );
 });
@@ -317,9 +318,9 @@ test("FAQ structured-data answers match the on-page methodology copy", () => {
   }
 });
 
-test("the on-page subscription helper text names every modeled coding-agent brand", () => {
+test("the on-page subscription helper text names every modeled coding-agent and code-review brand", () => {
   // The SEO BDD scenario ("the subscription helper text names every modeled
-  // coding-agent brand" in docs/bdd/seo-and-metadata.md) requires the visible
+  // coding-agent and code-review brand" in docs/bdd/seo-and-metadata.md) requires the visible
   // field-help copy under the
   // spend input to enumerate the newly modeled brands individually, so the
   // homepage cannot silently drop one when the plan list changes. Assert each
@@ -360,7 +361,7 @@ test("the SEO BDD documents the current helper-text and metadata families", () =
   const bdd = read("docs/bdd/seo-and-metadata.md");
   assert.match(
     bdd,
-    /The subscription helper text names every modeled coding-agent brand/i,
+    /The subscription helper text names every modeled coding-agent and code-review brand/i,
     "SEO BDD should preserve the helper-text coverage scenario"
   );
   for (const family of [
