@@ -10,6 +10,7 @@ This directory contains one behavior-focused BDD file per feature area for the s
 - [Subscription Selector Filters](./subscription-selector-filters.md)
 - [Calculator Outputs](./calculator-outputs.md)
 - [Pricing Disclosure](./pricing-disclosure.md)
+- [Pricing-Data Health Check](./health-check.md)
 - [Affiliate Disclosure](./affiliate-disclosure.md)
 - [Responsive Design](./responsive-design.md)
 - [Shareable Scenarios](./shareable-scenarios.md)

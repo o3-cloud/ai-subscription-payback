@@ -10,6 +10,7 @@ The behavior specifications now live in `docs/bdd/` as one file per feature area
 - [Subscription Selector Filters](docs/bdd/subscription-selector-filters.md)
 - [Calculator Outputs](docs/bdd/calculator-outputs.md)
 - [Pricing Disclosure](docs/bdd/pricing-disclosure.md)
+- [Pricing-Data Health Check](docs/bdd/health-check.md)
 - [Affiliate Disclosure](docs/bdd/affiliate-disclosure.md)
 - [Responsive Design](docs/bdd/responsive-design.md)
 - [Shareable Scenarios](docs/bdd/shareable-scenarios.md)
