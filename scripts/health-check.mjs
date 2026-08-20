@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { fileURLToPath } from "node:url";
+
 /**
  * Pricing-data health check.
  *
@@ -399,14 +401,26 @@ async function main() {
     affiliates: data.affiliates,
   });
   process.stdout.write(formatReport(report));
-  process.exit(report.hardFailures.length > 0 ? 1 : 0);
+  process.exitCode = report.hardFailures.length > 0 ? 1 : 0;
+}
+
+/**
+ * True when this module was launched directly via `node scripts/health-check.mjs`.
+ * Uses decoded file paths rather than a raw `file://` string so spaces and other
+ * path characters cannot confuse the comparison.
+ * @param {string|undefined} argv1
+ * @param {string} [moduleUrl]
+ * @returns {boolean}
+ */
+export function isDirectInvocation(argv1 = process.argv[1], moduleUrl = import.meta.url) {
+  if (!argv1) return false;
+  return fileURLToPath(moduleUrl) === argv1;
 }
 
 // Run only when invoked directly (`node scripts/health-check.mjs`), not on import.
-const invokedPath = process.argv[1] ? new URL(`file://${process.argv[1]}`).pathname : "";
-if (invokedPath && import.meta.url === new URL(`file://${invokedPath}`).href) {
+if (isDirectInvocation()) {
   main().catch((err) => {
     console.error(err);
-    process.exit(1);
+    process.exitCode = 1;
   });
 }

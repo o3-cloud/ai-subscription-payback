@@ -19,6 +19,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { pathToFileURL } from "node:url";
 
 import {
   STALE_THRESHOLD_DAYS,
@@ -31,6 +32,7 @@ import {
   classifyProbe,
   runHealthCheck,
   formatReport,
+  isDirectInvocation,
 } from "../scripts/health-check.mjs";
 
 // A minimal Response-like object matching what probeUrl reads off fetch().
@@ -66,6 +68,15 @@ const fixture = () => ({
 });
 
 const FIXED_NOW = new Date("2026-07-27T12:00:00Z");
+
+test("isDirectInvocation compares decoded file paths safely", () => {
+  const argv1 = "/tmp/space path/health-check.mjs";
+  const moduleUrl = pathToFileURL(argv1).href;
+
+  assert.equal(isDirectInvocation(argv1, moduleUrl), true);
+  assert.equal(isDirectInvocation("/tmp/other.mjs", moduleUrl), false);
+  assert.equal(isDirectInvocation(undefined, moduleUrl), false);
+});
 
 test("collectUrlEntries gathers URLs from subscriptions, hardware, and affiliates", () => {
   const entries = collectUrlEntries(fixture());
