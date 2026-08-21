@@ -539,6 +539,28 @@ test("the pricing-disclosure BDD explicitly documents Warp's credit caveats", ()
   assert.match(bdd, /\$50\/user\/mo/i);
 });
 
+test("Copilot paid tiers carry bundle overlap warnings for Codex and Claude Code", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+
+  for (const id of ["copilot-pro", "copilot-pro-plus", "copilot-max"]) {
+    const sub = byId.get(id);
+    assert.ok(sub.bundleWarning, `${id} exposes a bundle warning`);
+    assert.match(sub.bundleWarning.text, /AI Credits/i, `${id} warning names AI Credits`);
+    assert.ok(sub.bundleWarning.overlapsWith.includes("codex"), `${id} warning overlaps with Codex`);
+    assert.ok(sub.bundleWarning.overlapsWith.includes("claude-code"), `${id} warning overlaps with Claude Code`);
+  }
+
+  assert.ok(!byId.get("copilot-free").bundleWarning, "Copilot Free does not need a bundle warning");
+});
+
+test("the bundle-overlap BDD documents the selector and results warnings", () => {
+  const bdd = read("docs/bdd/bundle-overlap-caveats.md");
+  assert.match(bdd, /Subscription selector rows show bundle-overlap warnings/i);
+  assert.match(bdd, /results area shows a visible overlap caveat near the spend basis/i);
+  assert.match(bdd, /relevant official pricing pages/i);
+});
+
 test("usage-based tiers disclose their included-credit caveat", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));

@@ -72,6 +72,7 @@ test("scaffold exposes the ids the scripts mount onto", () => {
     "subscription-category",
     "subscription-filter-status",
     "results-status",
+    "bundle-caveat",
     "comparison-body",
     "pricing-list",
     "pricing-last-updated",
@@ -179,6 +180,16 @@ test("results note distinguishes monthly net savings from break-even month", () 
     "results note explains net savings is a monthly cash-flow delta and break-even is a cumulative crossover"
   );
 });
+
+test("results area includes a mount point for bundle overlap caveats", () => {
+  assert.ok(ids.has("bundle-caveat"), "bundle overlap caveat mount point present");
+  assert.match(
+    html,
+    /<p[^>]+id="bundle-caveat"[^>]+hidden/i,
+    "bundle caveat starts hidden until a risky overlap is selected"
+  );
+});
+
 
 test("results area ships an accessible chart and data table", () => {
   // The chart container is a labeled image region with a data-table equivalent

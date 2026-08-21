@@ -114,6 +114,8 @@ function monthlySubscriptionCost(state) {
     : selectedSubscriptionMonthlyCost(state);
 }
 
+const SUBSCRIPTION_BY_ID = new Map(subscriptions.map((sub) => [sub.id, sub]));
+
 /**
  * The spend preset whose value equals the active custom spend, if any. Used to
  * label the comparison basis as a named preset (including the default one)
@@ -129,6 +131,76 @@ function matchingSpendPreset(state) {
 /** The short, human name of a preset ("Power user" from "Power user — $200/mo"). */
 function spendPresetName(preset) {
   return preset.label.split("—")[0].trim();
+}
+
+function bundleOverlapSelection(state) {
+  const selectedIds = new Set(Array.isArray(state.subscriptions) ? state.subscriptions : []);
+  const bundleSelections = subscriptions.filter(
+    (sub) => selectedIds.has(sub.id) && sub.bundleWarning && sub.bundleWarning.overlapsWith?.length
+  );
+
+  if (!bundleSelections.length) return null;
+
+  const overlappingIds = new Set();
+  for (const sub of bundleSelections) {
+    for (const targetId of sub.bundleWarning.overlapsWith) {
+      if (selectedIds.has(targetId)) overlappingIds.add(targetId);
+    }
+  }
+
+  if (!overlappingIds.size) return null;
+
+  const overlaps = [...overlappingIds]
+    .map((id) => SUBSCRIPTION_BY_ID.get(id))
+    .filter(Boolean);
+
+  return { bundles: bundleSelections, overlaps };
+}
+
+function appendLinkedSourceList(doc, parent, entries) {
+  const uniqueEntries = [];
+  for (const entry of entries) {
+    if (!entry?.sourceUrl) continue;
+    if (uniqueEntries.some((known) => known.sourceUrl === entry.sourceUrl)) continue;
+    uniqueEntries.push(entry);
+  }
+
+  uniqueEntries.forEach((entry, index) => {
+    if (index > 0) {
+      parent.appendChild(doc.createTextNode(index === uniqueEntries.length - 1 ? " and " : ", "));
+    }
+    parent.appendChild(externalLink(doc, entry.sourceUrl, entry.sourceLabel || entry.name, false));
+  });
+}
+
+function renderBundleOverlapCaveat(doc, state) {
+  const caveat = doc.getElementById("bundle-caveat");
+  if (!caveat) return;
+
+  caveat.innerHTML = "";
+  caveat.hidden = true;
+
+  if (!state || !Array.isArray(state.subscriptions)) return;
+
+  const overlap = bundleOverlapSelection(state);
+  if (!overlap) return;
+
+  const bundleNames = overlap.bundles.map((sub) => `${subscriptionDisplayName(sub)} — ${sub.plan}`);
+  const overlapNames = overlap.overlaps.map((sub) => `${subscriptionDisplayName(sub)} — ${sub.plan}`);
+
+  const intro = doc.createElement("span");
+  intro.className = "bundle-caveat-intro";
+  intro.textContent =
+    `Bundle overlap warning: ${bundleNames.join(", ")} can share AI-credit access with ${overlapNames.join(", ")}. ` +
+    "Only count those rows separately if you really pay for them separately or expect to cancel them separately. ";
+  caveat.appendChild(intro);
+
+  const sourcesLabel = doc.createElement("span");
+  sourcesLabel.textContent = "Sources: ";
+  caveat.appendChild(sourcesLabel);
+
+  appendLinkedSourceList(doc, caveat, [...overlap.bundles, ...overlap.overlaps]);
+  caveat.hidden = false;
 }
 
 function monthlyElectricityCost(state) {
@@ -508,6 +580,7 @@ function renderResults(doc, state, valid) {
     if (paymentEl) paymentEl.textContent = "—";
     if (savingsEl) savingsEl.textContent = "—";
     if (spendBasis) spendBasis.textContent = "";
+    renderBundleOverlapCaveat(doc, null);
     // Clear any stale summary so an invalid state never leaves a prior
     // "no break-even" (or break-even) message visible in the chart region.
     if (chartHint) {
@@ -549,6 +622,8 @@ function renderResults(doc, state, valid) {
       spendBasis.textContent = `Comparing against ${monthly}/mo from the selected subscriptions.`;
     }
   }
+
+  renderBundleOverlapCaveat(doc, state);
 
   renderChart(doc, result.series, result.breakEvenMonth);
   renderSeries(doc, result.series, result.breakEvenMonth);
@@ -677,6 +752,13 @@ function renderSubscriptionOptions(doc, preselected) {
         ` ${subscriptionDisplayName(sub)} — ${sub.plan} · ${formatCurrency(sub.monthlyPrice)}/mo`
       )
     );
+    if (sub.bundleWarning) {
+      label.appendChild(doc.createElement("br"));
+      const warning = doc.createElement("span");
+      warning.className = "subscription-caveat";
+      warning.textContent = sub.bundleWarning.text;
+      label.appendChild(warning);
+    }
     container.appendChild(label);
   }
 }

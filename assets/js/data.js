@@ -43,6 +43,9 @@
  *   marketed under (e.g. Devin's Windsurf / Devin Desktop). Surfaced alongside
  *   the product name in the calculator UI so shared plans stay discoverable
  *   without duplicating rows.
+ * @property {BundleWarning} [bundleWarning] - optional overlap / savings caveat
+ *   surfaced in the selector and results when this row shares bundled access
+ *   with other plans that are already selected.
  */
 
 /**
@@ -109,6 +112,13 @@
  * @property {string} url - affiliate / reseller destination
  * @property {string} label - call-to-action text
  * @property {boolean} affiliate - true when `url` is a commissioned link
+ */
+
+/**
+ * @typedef {Object} BundleWarning
+ * @property {string} text - short warning shown on the affected selector rows
+ * @property {string[]} overlapsWith - subscription ids that make the warning
+ *   relevant when they are selected alongside the row that carries it
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
@@ -479,6 +489,19 @@ export const subscriptions = [
     sourceLabel: "Official GitHub pricing",
     verification: "official",
     lastUpdated: "2026-07-14",
+    bundleWarning: {
+      text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
+      overlapsWith: [
+        "codex",
+        "claude-code",
+        "claude-pro-annual",
+        "claude-max-5x",
+        "claude-team-standard-monthly",
+        "claude-team-standard-annual",
+        "claude-team-premium-monthly",
+        "claude-team-premium-annual",
+      ],
+    },
   },
   {
     id: "copilot-pro-plus",
@@ -492,6 +515,19 @@ export const subscriptions = [
     sourceLabel: "Official GitHub pricing",
     verification: "official",
     lastUpdated: "2026-07-14",
+    bundleWarning: {
+      text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
+      overlapsWith: [
+        "codex",
+        "claude-code",
+        "claude-pro-annual",
+        "claude-max-5x",
+        "claude-team-standard-monthly",
+        "claude-team-standard-annual",
+        "claude-team-premium-monthly",
+        "claude-team-premium-annual",
+      ],
+    },
   },
   {
     id: "copilot-max",
@@ -505,6 +541,19 @@ export const subscriptions = [
     sourceLabel: "Official GitHub pricing",
     verification: "official",
     lastUpdated: "2026-07-14",
+    bundleWarning: {
+      text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
+      overlapsWith: [
+        "codex",
+        "claude-code",
+        "claude-pro-annual",
+        "claude-max-5x",
+        "claude-team-standard-monthly",
+        "claude-team-standard-annual",
+        "claude-team-premium-monthly",
+        "claude-team-premium-annual",
+      ],
+    },
   },
   {
     id: "cursor-individual",

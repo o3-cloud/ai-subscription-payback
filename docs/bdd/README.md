@@ -8,6 +8,7 @@ This directory contains one behavior-focused BDD file per feature area for the s
 - [Featured Hardware Cards](./featured-hardware-cards.md)
 - [Calculator Inputs](./calculator-inputs.md)
 - [Subscription Selector Filters](./subscription-selector-filters.md)
+- [Bundle Overlap Caveats](./bundle-overlap-caveats.md)
 - [Calculator Outputs](./calculator-outputs.md)
 - [Pricing Disclosure](./pricing-disclosure.md)
 - [Pricing-Data Health Check](./health-check.md)

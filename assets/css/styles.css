@@ -475,6 +475,19 @@ input[aria-invalid="true"] {
   font-weight: 700;
 }
 
+.subscription-caveat {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.results-overlap-caveat {
+  margin: 0.75rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
 .results-note {
   color: var(--color-muted);
   font-size: 0.9rem;
@@ -486,7 +499,7 @@ input[aria-invalid="true"] {
   margin-bottom: 0;
 }
 
-.chart-figure {
+.results-caveat {
   margin: 1.5rem 0 0;
 }
 

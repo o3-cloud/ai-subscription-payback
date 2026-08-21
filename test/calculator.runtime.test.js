@@ -212,6 +212,7 @@ const REQUIRED_IDS = [
   "custom-spend",
   "spend-basis",
   "results-status",
+  "bundle-caveat",
   "comparison-body",
   "pricing-list",
   "pricing-last-updated",
@@ -289,6 +290,9 @@ function buildDocument() {
   const basis = doc.createElement("p");
   basis.id = "spend-basis";
   body.appendChild(basis);
+  const bundleCaveat = doc.createElement("p");
+  bundleCaveat.id = "bundle-caveat";
+  body.appendChild(bundleCaveat);
   for (const metric of ["breakeven", "payment", "savings"]) {
     const el = doc.createElement("span");
     el.setAttribute("data-metric", metric);
@@ -642,6 +646,59 @@ test("initCalculator boots the form from static data and defaults", () => {
   assert.match(
     doc.getElementById("results-status").textContent,
     /^Break-even (not reached within \d+ months\.|reached in Month \d+\.)$/
+  );
+});
+
+test("bundle overlap caveat stays hidden until a bundled plan overlaps with an existing subscription", () => {
+  const { doc } = boot();
+  const caveat = doc.getElementById("bundle-caveat");
+  const form = doc.getElementById("calculator-form");
+  const checkbox = (id) =>
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]')
+      .find((el) => el.value === id);
+
+  assert.ok(caveat.hidden, "no overlap warning should show on the default selection");
+  assert.equal(caveat.textContent, "");
+
+  for (const id of ["codex", "claude-code"]) {
+    checkbox(id).checked = false;
+  }
+  checkbox("copilot-pro").checked = true;
+  form.dispatch("input");
+
+  assert.ok(caveat.hidden, "Copilot alone is not an overlap risk");
+
+  for (const id of ["codex", "claude-code"]) {
+    checkbox(id).checked = true;
+  }
+  form.dispatch("input");
+
+  assert.equal(caveat.hidden, false, "the warning appears once the bundle overlaps");
+  assert.match(
+    doc.querySelectorAll("#bundle-caveat .bundle-caveat-intro")[0]?.textContent || "",
+    /Bundle overlap warning:.*GitHub Copilot.*Codex.*Claude Code/i
+  );
+  assert.ok(
+    doc
+      .querySelectorAll("#bundle-caveat a")
+      .map((el) => el.getAttribute("href"))
+      .includes("https://github.com/features/copilot/plans"),
+    "the warning cites GitHub Copilot plans"
+  );
+  assert.ok(
+    doc
+      .querySelectorAll("#bundle-caveat a")
+      .map((el) => el.getAttribute("href"))
+      .includes("https://chatgpt.com/pricing/"),
+    "the warning cites ChatGPT pricing"
+  );
+  assert.ok(
+    doc
+      .querySelectorAll("#bundle-caveat a")
+      .map((el) => el.getAttribute("href"))
+      .includes("https://claude.com/pricing"),
+    "the warning cites Claude pricing"
   );
 });
 
