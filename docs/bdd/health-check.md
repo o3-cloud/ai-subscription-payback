@@ -23,4 +23,5 @@ Scenario: The health-check report stays concise enough for scheduled runs
 
 > Maintenance tooling: the script lives in `scripts/health-check.mjs`, is kept
 > offline-testable through injected fetch and clock dependencies, and is run on
-> demand via `npm run health-check` plus a scheduled GitHub Actions workflow.
+> demand via `npm run health-check` plus the scheduled
+> `.github/workflows/health-check.yml` GitHub Actions workflow.

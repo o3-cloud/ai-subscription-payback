@@ -12,5 +12,6 @@ test('the health-check BDD documents the maintainer workflow', () => {
   assert.match(bdd, /canonical vendor source/);
   assert.match(bdd, /retries GET when a HEAD probe looks bot-protected/);
   assert.match(bdd, /staleness threshold/);
-  assert.match(bdd, /scheduled GitHub Actions workflow/);
+  assert.match(bdd, /\.github\/workflows\/health-check\.yml/);
+  assert.match(bdd, /scheduled[\s\S]*GitHub Actions workflow/);
 });

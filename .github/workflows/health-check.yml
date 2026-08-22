@@ -1,34 +1,24 @@
-name: Pricing-data health check
+name: Health Check
 
-# Maintainer-facing guard over the hand-curated pricing/affiliate data in
-# assets/js/data.js: it probes every source and CTA URL and flags entries whose
-# last-verified date has gone stale.
-#
-# This is deliberately NOT on push/pull_request. The check makes real outbound
-# requests to vendor and reseller pages, which are commonly bot-protected or
-# transiently unavailable, so gating merges/deploys on it would make CI flaky.
-# Instead it runs on a weekly schedule and on demand. Warnings (bot-protected
-# vendor pages, stale dates) exit zero; only hard failures (dead links, malformed
-# URLs, missing dates) fail the run and surface in the Actions tab.
 on:
   schedule:
-    # Mondays at 08:00 UTC.
-    - cron: "0 8 * * 1"
+    # Run once a day to catch data drift and link rot without flooding the queue.
+    - cron: '17 3 * * *'
   workflow_dispatch:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: health-check
-  cancel-in-progress: true
 
 jobs:
   health-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - run: npm run health-check
+          node-version: '22'
+
+      - name: Run the pricing-data health check
+        run: npm run health-check
