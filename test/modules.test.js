@@ -543,6 +543,32 @@ test("Copilot paid tiers carry bundle overlap warnings for Codex and Claude Code
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
+  assert.match(
+    byId.get("copilot-free").includedValue,
+    /Copilot CLI/i,
+    "Copilot Free names the CLI"
+  );
+  assert.match(
+    byId.get("copilot-pro").includedValue,
+    /Cloud agent/i,
+    "Copilot Pro names Cloud agent"
+  );
+  assert.match(
+    byId.get("copilot-pro").includedValue,
+    /code review/i,
+    "Copilot Pro names code review"
+  );
+  assert.match(
+    byId.get("copilot-pro").includedValue,
+    /model selection/i,
+    "Copilot Pro names model selection"
+  );
+  assert.match(
+    byId.get("copilot-pro").includedValue,
+    /3rd-party agents like Claude Code and Codex/i,
+    "Copilot Pro names third-party agents"
+  );
+
   for (const id of ["copilot-pro", "copilot-pro-plus", "copilot-max"]) {
     const sub = byId.get(id);
     assert.ok(sub.bundleWarning, `${id} exposes a bundle warning`);

@@ -122,10 +122,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-20";
+export const pricingLastUpdated = "2026-08-22";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-20";
+export const siteLastUpdated = "2026-08-22";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -471,11 +471,11 @@ export const subscriptions = [
     monthlyPrice: 0,
     billingCadence: "Free tier",
     includedValue:
-      "2,000 completions/month plus limited chat on lighter models (Haiku 4.5, GPT-5 mini) for a single developer at no cost.",
+      "2,000 completions/month plus limited chat on lighter models (Haiku 4.5, GPT-5 mini), Copilot CLI, and community support for a single developer at no cost.",
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-22",
   },
   {
     id: "copilot-pro",
@@ -484,11 +484,11 @@ export const subscriptions = [
     monthlyPrice: 10,
     billingCadence: "Billed monthly (or $100/yr)",
     includedValue:
-      "Unlimited completions plus $15/mo of GitHub AI Credits toward premium models and 3rd-party agents like Claude Code and Codex; agent usage beyond the credits is metered.",
+      "For everyday coding with agents: Cloud agent, code review, unlimited completions and next edit suggestions, access to 3rd-party agents like Claude Code and Codex, model selection, and $15/mo of GitHub AI Credits; usage beyond the credits is metered.",
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-22",
     bundleWarning: {
       text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
       overlapsWith: [
@@ -514,7 +514,7 @@ export const subscriptions = [
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-22",
     bundleWarning: {
       text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
       overlapsWith: [
@@ -540,7 +540,7 @@ export const subscriptions = [
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-22",
     bundleWarning: {
       text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
       overlapsWith: [
