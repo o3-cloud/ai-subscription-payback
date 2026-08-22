@@ -6,7 +6,9 @@ Scenario: The watchlist tracks DGX Station as a future, unpriced candidate
   When a maintainer reviews the entries
   Then the NVIDIA DGX Station is listed as a future hardware candidate
   And its status states that no public price has been verified yet
-  And it records the official specs (GB300 Grace Blackwell Ultra Desktop Superchip, 748 GB coherent memory, up to 20 petaFLOPS, up to 1T-parameter models)
+  And it records the official specs (GB300 Grace Blackwell Ultra Desktop Superchip, 748 GB coherent memory, up to 20 petaFLOPS, up to 1T-parameter models, 1,600 W total system power)
+  And it records the supported OS (Ubuntu with NVIDIA AI Developer Tools)
+  And it records the Windows positioning for enterprise desks and always-on frontier AI agents
   And it links the official NVIDIA DGX Station source page
 
 Scenario: The watchlist note and this spec stay in sync

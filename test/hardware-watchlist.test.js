@@ -25,6 +25,14 @@ const dgxStationSpecs = [
   /748 GB/i,
   /20 petaFLOPS/i,
   /1T[- ]param/i,
+  /1,600 W/i,
+];
+
+const dgxStationPlatformClaims = [
+  /Ubuntu with NVIDIA AI[\s\S]*Developer Tools/i,
+  /Windows positioning/i,
+  /enterprise desks/i,
+  /always-on frontier AI agents/i,
 ];
 
 // The official DGX Station source page the BDD promises the note links.
@@ -45,6 +53,9 @@ test("the PRD now limits the hardware watchlist to DGX Station", () => {
   assert.match(prd, /future local AI system candidate/i, "PRD frames DGX Station as future hardware");
   assert.match(prd, /do not add a calculator preset/i, "PRD forbids a preset without a sourced price");
   assert.match(prd, /priced `referenceOnly` row/i, "PRD forbids a priced referenceOnly row before pricing exists");
+  assert.match(prd, /1,600 W total system power/i, "PRD records DGX Station power draw");
+  assert.match(prd, /Ubuntu with NVIDIA AI[\s\S]*Developer Tools/i, "PRD records the supported OS");
+  assert.match(prd, /DGX Station for Windows positioning/i, "PRD records the Windows positioning");
   assert.doesNotMatch(prd, /HP ZGX Nano AI Station/i, "PRD no longer treats HP ZGX Nano as a watchlist item");
 });
 
@@ -64,6 +75,10 @@ test("the watchlist note records the official DGX Station specs and source the B
   for (const spec of dgxStationSpecs) {
     assert.match(watchlist, spec, `watchlist note should record the official spec ${spec}`);
     assert.match(watchlistBdd, spec, `BDD should list the same official spec ${spec}`);
+  }
+  for (const claim of dgxStationPlatformClaims) {
+    assert.match(watchlist, claim, `watchlist note should record the platform claim ${claim}`);
+    assert.match(watchlistBdd, claim, `BDD should list the same platform claim ${claim}`);
   }
   assert.match(watchlist, dgxStationSource, "watchlist note links the official DGX Station source page");
 });

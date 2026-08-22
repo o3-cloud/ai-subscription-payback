@@ -13,12 +13,16 @@ source, and the exact blocker (usually "no public price verified yet").
 
 - **Status:** Future hardware candidate — no public price has been verified yet as of 2026-08-16. Do not add a calculator preset or a `referenceOnly` priced
   row until an actual purchase price is sourced.
-- **Why watch it:** NVIDIA positions the DGX Station as a deskside AI
-  supercomputer above the DGX Spark, which is relevant for visitors comparing
-  subscriptions against serious local agent infrastructure.
+- **Why watch it:** NVIDIA positions the DGX Station as a GB300 Grace
+  Blackwell Ultra deskside AI supercomputer for local development,
+  fine-tuning, inference, and long-running AI agents, which is relevant for
+  visitors comparing subscriptions against serious local agent infrastructure.
 - **Official specs:** GB300 Grace Blackwell Ultra Desktop Superchip, 748 GB of
-  coherent memory, up to 20 petaFLOPS of AI compute, and support for models up to
-  1T parameters.
+  coherent memory, up to 20 petaFLOPS of AI compute, support for models up to
+  1T parameters, and 1,600 W total system power.
+- **Supported OS:** Ubuntu with NVIDIA AI Developer Tools.
+- **Windows positioning:** NVIDIA is also positioning DGX Station for Windows
+  for enterprise desks and always-on frontier AI agents.
 - **Source:** <https://www.nvidia.com/en-us/products/workstations/dgx-station/>
   (specs and order/partner positioning only; no public price at last check).
 - **Graduation blocker:** A verifiable purchase price from NVIDIA Marketplace, an

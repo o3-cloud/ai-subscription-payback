@@ -140,6 +140,11 @@ and the fact that all savings numbers are estimates.
   sourced purchase price exists.
 - The official DGX Station page exposes specs and order/partner positioning, but
   no public price has been verified yet.
+- Note the current official positioning: GB300 Grace Blackwell Ultra deskside
+  AI supercomputer, up to 1T-parameter models, 748 GB coherent memory,
+  up to 20 petaFLOPS, 1,600 W total system power, Ubuntu with NVIDIA AI
+  Developer Tools, and DGX Station for Windows positioning for enterprise desks
+  and always-on frontier AI agents.
 - DGX Spark-class retailer-priced trims are modeled directly in the hardware
   data once a public price is verified; the watchlist is reserved for still-
   unpriced future candidates.
