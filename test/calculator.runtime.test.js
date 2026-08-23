@@ -811,6 +811,28 @@ test("comparison table renders billing cadence and included value for every tier
   }
 });
 
+test("comparison table renders the Copilot Max source note beside the provenance", () => {
+  const { doc } = boot();
+  const rows = doc.querySelectorAll("#comparison-body tr");
+  const copilotMaxRow = rows[subscriptions.findIndex((sub) => sub.id === "copilot-max")];
+
+  assert.ok(copilotMaxRow, "expected the Copilot Max comparison row");
+  const sourceCell = copilotMaxRow.children[3];
+  assert.ok(sourceCell, "expected the Copilot Max provenance cell");
+  const sourceNote = sourceCell.children.find((el) => el.className === "source-note");
+  assert.ok(sourceNote, "expected the Copilot Max source note");
+  assert.match(
+    sourceNote.textContent,
+    /comparison table currently shows .*\$200\/mo of AI Credits/i,
+    "Copilot Max source note keeps the comparison-table figure visible"
+  );
+  assert.match(
+    sourceNote.textContent,
+    /FAQ answer .* says \$100\/mo/i,
+    "Copilot Max source note records the FAQ ambiguity"
+  );
+});
+
 test("comparison table renders hardware labels and specs as literal text", () => {
   const original = {
     name: hardware[0].name,

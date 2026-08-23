@@ -55,13 +55,15 @@ Scenario: Claude Code included-value copy names the broader bundle
   Then the Pro copy names Claude Code plus Claude Cowork, Claude Design, Claude Science, and Claude for Microsoft 365
   And the Team copy keeps the collaboration and central-billing framing while referring to the broader Claude bundle
 
-Scenario: GitHub Copilot Pro included-value copy names agents and code review
+Scenario: GitHub Copilot Pro included-value copy names agents, code review, and AI Credit consumption rules
   Given the GitHub Copilot Free, Pro, Pro+, and Max tiers
   When the visitor views the Copilot pricing copy
   Then the Free copy mentions limited chat on lighter models, Copilot CLI, and community support
   And the Pro copy names Cloud agent, code review, model selection, 3rd-party agents like Claude Code and Codex, and GitHub AI Credits
+  And the paid Copilot copies say AI Credits are consumed by chat, agent mode, code review, Copilot cloud agent, Copilot CLI, and Copilot Apps while completions and next edit suggestions stay unlimited
   And the Pro copy keeps the bundle-overlap caveat for users who already pay separately for Codex or Claude Code
   And the Pro+ and Max copies keep their higher-tier agent and credit positioning
+  And the Max copy includes a source note that the comparison table currently shows $200/mo of AI Credits while the FAQ answer says $100/mo
 
 Scenario: Cursor included-value copy names the current pricing-page benefits
   Given the Cursor Individual, Pro+, Ultra, Teams, and Teams Premium tiers

@@ -34,6 +34,7 @@
  * @property {string} includedValue - what a seat/plan at this tier includes
  * @property {string} sourceUrl - where the price was quoted from
  * @property {string} sourceLabel - short provenance for the number (official vendor pricing, …)
+ * @property {string} [sourceNote] - optional maintainer note about source caveats
  * @property {("official"|"retailer"|"estimate")} verification - how the number is
  *   substantiated: an "official" vendor price, a "retailer" / street price, or a
  *   class "estimate". Surfaced as a status badge next to the last-verified date.
@@ -484,7 +485,7 @@ export const subscriptions = [
     monthlyPrice: 10,
     billingCadence: "Billed monthly (or $100/yr)",
     includedValue:
-      "For everyday coding with agents: Cloud agent, code review, unlimited completions and next edit suggestions, access to 3rd-party agents like Claude Code and Codex, model selection, and $15/mo of GitHub AI Credits; usage beyond the credits is metered.",
+      "For everyday coding with agents: Cloud agent, code review, unlimited completions and next edit suggestions, access to 3rd-party agents like Claude Code and Codex, model selection, and $15/mo of GitHub AI Credits. GitHub says AI Credits are consumed by chat, agent mode, code review, Copilot cloud agent, Copilot CLI, and Copilot Apps; completions and next edit suggestions do not use credits. Usage beyond the credits is metered.",
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
@@ -510,7 +511,7 @@ export const subscriptions = [
     monthlyPrice: 39,
     billingCadence: "Billed monthly (or $390/yr)",
     includedValue:
-      "Premium models including Opus, 4×+ the included usage of Pro, and $70/mo of GitHub AI Credits; usage beyond the credits is metered.",
+      "Premium models including Opus, 4×+ the included usage of Pro, and $70/mo of GitHub AI Credits. GitHub says AI Credits are consumed by chat, agent mode, code review, Copilot cloud agent, Copilot CLI, and Copilot Apps; completions and next edit suggestions do not use credits. Usage beyond the credits is metered.",
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
@@ -536,11 +537,13 @@ export const subscriptions = [
     monthlyPrice: 100,
     billingCadence: "Billed monthly",
     includedValue:
-      "Top individual tier: priority model access, 2.9×+ the included usage of Pro+, and $200/mo of GitHub AI Credits; usage beyond the credits is metered.",
+      "Top individual tier: priority model access, 2.9×+ the included usage of Pro+, and $200/mo of GitHub AI Credits. GitHub says AI Credits are consumed by chat, agent mode, code review, Copilot cloud agent, Copilot CLI, and Copilot Apps; completions and next edit suggestions do not use credits. Usage beyond the credits is metered.",
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
     lastUpdated: "2026-08-23",
+    sourceNote:
+      "GitHub's comparison table currently shows Max as including $200/mo of AI Credits, while the FAQ answer on the same page says $100/mo. This calculator keeps the comparison-table figure until GitHub resolves the mismatch.",
     bundleWarning: {
       text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
       overlapsWith: [

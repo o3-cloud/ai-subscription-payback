@@ -951,6 +951,13 @@ function appendSourceProvenance(doc, parent, entry) {
     parent.appendChild(doc.createTextNode(" · "));
   }
   parent.appendChild(externalLink(doc, entry.sourceUrl, "Source", false));
+  if (entry.sourceNote) {
+    parent.appendChild(doc.createTextNode(" · "));
+    const note = doc.createElement("span");
+    note.className = "source-note";
+    note.textContent = entry.sourceNote;
+    parent.appendChild(note);
+  }
   appendFreshness(doc, parent, entry.lastUpdated);
 }
 

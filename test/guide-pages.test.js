@@ -250,6 +250,20 @@ test("Strix Halo guides expose the named Framework Desktop, GMKtec, and MINISFOR
   }
 });
 
+test("the GitHub Copilot guide surfaces the Max AI Credit ambiguity note", () => {
+  const html = read("guides/github-copilot-vs-local-ai-box-cost.html");
+  assert.match(
+    html,
+    /comparison table currently shows Max as including \$200\/mo of AI Credits/i,
+    "the Copilot guide keeps the comparison-table figure visible"
+  );
+  assert.match(
+    html,
+    /FAQ answer .* says \$100\/mo/i,
+    "the Copilot guide records the FAQ ambiguity"
+  );
+});
+
 test("the mini-guides BDD names the second-wave guide families", () => {
   assert.match(miniGuidesBdd, /Cursor/i, "mini-guides BDD names Cursor");
   assert.match(miniGuidesBdd, /GitHub Copilot/i, "mini-guides BDD names GitHub Copilot");

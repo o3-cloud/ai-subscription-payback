@@ -393,6 +393,9 @@ function sourceProvenanceHtml(entry) {
     html += `<span class="source-label">${esc(entry.sourceLabel)}</span> · `;
   }
   html += externalLinkHtml(entry.sourceUrl, "Source", false);
+  if (entry.sourceNote) {
+    html += ` · <span class="source-note">${esc(entry.sourceNote)}</span>`;
+  }
   if (entry.lastUpdated) {
     html +=
       ` · verified <time class="source-updated" datetime="${esc(entry.lastUpdated)}">` +

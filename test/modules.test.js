@@ -568,6 +568,16 @@ test("Copilot paid tiers carry bundle overlap warnings for Codex and Claude Code
     /3rd-party agents like Claude Code and Codex/i,
     "Copilot Pro names third-party agents"
   );
+  assert.match(
+    byId.get("copilot-pro").includedValue,
+    /AI Credits are consumed by chat, agent mode, code review, Copilot cloud agent, Copilot CLI, and Copilot Apps/i,
+    "Copilot Pro names the current AI Credit consumption rules"
+  );
+  assert.match(
+    byId.get("copilot-pro").includedValue,
+    /completions and next edit suggestions do not use credits/i,
+    "Copilot Pro preserves the unlimited completions wording"
+  );
 
   for (const id of ["copilot-pro", "copilot-pro-plus", "copilot-max"]) {
     const sub = byId.get(id);
@@ -576,6 +586,17 @@ test("Copilot paid tiers carry bundle overlap warnings for Codex and Claude Code
     assert.ok(sub.bundleWarning.overlapsWith.includes("codex"), `${id} warning overlaps with Codex`);
     assert.ok(sub.bundleWarning.overlapsWith.includes("claude-code"), `${id} warning overlaps with Claude Code`);
   }
+
+  assert.match(
+    byId.get("copilot-max").sourceNote,
+    /comparison table currently shows .*\$200\/mo of AI Credits/i,
+    "Copilot Max source note keeps the comparison-table figure visible"
+  );
+  assert.match(
+    byId.get("copilot-max").sourceNote,
+    /FAQ answer .* says \$100\/mo/i,
+    "Copilot Max source note records the FAQ ambiguity"
+  );
 
   assert.ok(!byId.get("copilot-free").bundleWarning, "Copilot Free does not need a bundle warning");
 });
