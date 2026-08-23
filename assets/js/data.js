@@ -122,10 +122,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-22";
+export const pricingLastUpdated = "2026-08-23";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-22";
+export const siteLastUpdated = "2026-08-23";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -475,7 +475,7 @@ export const subscriptions = [
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
-    lastUpdated: "2026-08-22",
+    lastUpdated: "2026-08-23",
   },
   {
     id: "copilot-pro",
@@ -488,7 +488,7 @@ export const subscriptions = [
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
-    lastUpdated: "2026-08-22",
+    lastUpdated: "2026-08-23",
     bundleWarning: {
       text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
       overlapsWith: [
@@ -514,7 +514,7 @@ export const subscriptions = [
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
-    lastUpdated: "2026-08-22",
+    lastUpdated: "2026-08-23",
     bundleWarning: {
       text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
       overlapsWith: [
@@ -540,7 +540,7 @@ export const subscriptions = [
     sourceUrl: "https://github.com/features/copilot/plans",
     sourceLabel: "Official GitHub pricing",
     verification: "official",
-    lastUpdated: "2026-08-22",
+    lastUpdated: "2026-08-23",
     bundleWarning: {
       text: "Bundle overlap warning: AI Credits can also pay for Codex and Claude Code, so only count those rows separately if you really pay for them separately.",
       overlapsWith: [
@@ -666,11 +666,11 @@ export const subscriptions = [
     monthlyPrice: 4.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Broad Google AI Plus subscription for one person: 2× higher usage access than Free, Gemini Omni Flash, 200 Google Flow Credits, and 400 GB of cloud storage. Does not include the Jules or Google Antigravity coding-agent benefits.",
+      "Broad Google AI Plus subscription for one person: 2× higher usage access than Free, access to 3.6 Flash, 200 Google Flow Credits, and 400 GB of cloud storage. Does not include the Jules or Google Antigravity coding-agent benefits.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-08-19",
+    lastUpdated: "2026-08-23",
   },
   {
     id: "google-ai-pro",
@@ -679,11 +679,11 @@ export const subscriptions = [
     monthlyPrice: 19.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Broad Google AI Pro subscription with 4× higher usage access than Free, Gemini 3 Pro / Deep Search and agentic capabilities, 1,000 Google Flow Credits, Jules, entry rate limits to Google Antigravity, and 5 TB of cloud storage.",
+      "Broad Google AI Pro subscription with 4× higher usage access than Free, varying access to Gemini 3.1 Pro / Deep Search and agentic capabilities, 1,000 Google Flow Credits, Jules, entry rate limits to Google Antigravity, and 5 TB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-08-19",
+    lastUpdated: "2026-08-23",
   },
   {
     id: "google-ai-ultra",
@@ -696,7 +696,7 @@ export const subscriptions = [
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-08-19",
+    lastUpdated: "2026-08-23",
   },
   {
     id: "google-ai-ultra-20x",
@@ -705,11 +705,11 @@ export const subscriptions = [
     monthlyPrice: 199.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Google AI Ultra at 20× higher usage limits vs. AI Pro, with the highest access to Gemini 3 Pro, Deep Search, and agentic capabilities, the highest Google Antigravity rate limits, 25,000 Google Flow Credits, and 20 TB of cloud storage.",
+      "Google AI Ultra at 20× higher usage limits vs. AI Pro, with the highest access to Gemini 3.1 Pro, Deep Search, and agentic capabilities, the highest Google Antigravity rate limits, 25,000 Google Flow Credits, and 20 TB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-08-19",
+    lastUpdated: "2026-08-23",
   },
   {
     id: "amazon-q-developer-free",

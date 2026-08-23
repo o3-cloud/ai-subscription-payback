@@ -326,7 +326,7 @@ export const GUIDES = [
       "How Google AI Pro and Google AI Ultra compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
     heading: "Google AI Pro and Google AI Ultra vs a local AI box: the cost",
     useCase: [
-      "Google AI is the broad Gemini subscription layer, and the Pro and Ultra tiers are the current paid plans that surface Jules and Google Antigravity access alongside the newer Gemini model and creative-tool benefits. This guide compares those higher Google AI plans against a local AI box and shows where the recurring subscription cost catches up.",
+      "Google AI is the broad Gemini subscription layer, and the Pro and Ultra tiers are the current paid plans that surface Jules and Google Antigravity access alongside the newer Gemini 3.1 Pro / 3.6 Flash wording and creative-tool benefits. This guide compares those higher Google AI plans against a local AI box and shows where the recurring subscription cost catches up.",
       "It is aimed at people using Google AI for both everyday Gemini-app limits and the current Pro/Ultra workflow who want to know whether the higher-tier spend is better replaced by local inference hardware.",
     ],
     scenarioLede:

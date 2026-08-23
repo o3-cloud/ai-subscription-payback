@@ -623,13 +623,15 @@ test("Google AI tiers describe the current Plus / Pro / Ultra benefits", async (
   }
 
   // Only Pro and the two Ultra tiers bundle the coding-agent benefits.
+  assert.match(byId.get("google-ai-plus").includedValue, /3\.6 Flash/i, "google-ai-plus names 3.6 Flash");
+  assert.match(byId.get("google-ai-pro").includedValue, /Gemini 3\.1 Pro/i, "google-ai-pro names Gemini 3.1 Pro");
   assert.match(byId.get("google-ai-pro").includedValue, /Jules/, "google-ai-pro names Jules");
   assert.match(byId.get("google-ai-pro").includedValue, /Antigravity/, "google-ai-pro names Google Antigravity");
   assert.match(byId.get("google-ai-plus").includedValue, /Does not include the Jules or Google Antigravity coding-agent benefits\./i, "google-ai-plus keeps the lighter Plus positioning");
   assert.match(byId.get("google-ai-ultra").includedValue, /Google Flow Credits/i, "google-ai-ultra names Google Flow Credits");
   assert.match(byId.get("google-ai-ultra").includedValue, /Deep Think/i, "google-ai-ultra names Deep Think");
   assert.match(byId.get("google-ai-ultra").includedValue, /Gemini Spark/i, "google-ai-ultra names Gemini Spark");
-  assert.match(byId.get("google-ai-ultra-20x").includedValue, /Gemini 3 Pro/i, "google-ai-ultra-20x names Gemini 3 Pro");
+  assert.match(byId.get("google-ai-ultra-20x").includedValue, /Gemini 3\.1 Pro/i, "google-ai-ultra-20x names Gemini 3.1 Pro");
   assert.match(byId.get("google-ai-ultra-20x").includedValue, /Deep Search/i, "google-ai-ultra-20x names Deep Search");
   assert.match(byId.get("google-ai-ultra-20x").includedValue, /Google Flow Credits/i, "google-ai-ultra-20x names Google Flow Credits");
 

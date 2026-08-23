@@ -98,8 +98,8 @@ Scenario: Google AI tiers describe their current Plus, Pro, and Ultra benefits
   Given the Google AI Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x tiers
   When the visitor views their included-value text
   Then each is described as a broad Google AI subscription
-  And the Plus tier highlights 2× usage access, Gemini Omni Flash, Google Flow Credits, and 400 GB of storage without the Jules or Google Antigravity benefits
-  And the Pro tier highlights 4× usage access, Gemini 3 Pro / Deep Search, Jules, Google Antigravity, Google Flow Credits, and 5 TB of storage
+  And the Plus tier highlights 2× usage access, access to 3.6 Flash, Google Flow Credits, and 400 GB of storage without the Jules or Google Antigravity benefits
+  And the Pro tier highlights 4× usage access, varying access to Gemini 3.1 Pro / Deep Search, Jules, Google Antigravity, Google Flow Credits, and 5 TB of storage
   And the Google AI Ultra 5x and Google AI Ultra 20x tiers keep the current Google AI Ultra product wording while surfacing the 5× and 20× price points
   And all four are optional and unchecked in the default selection
 
