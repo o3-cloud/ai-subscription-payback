@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-23";
+export const pricingLastUpdated = "2026-08-24";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-23";
+export const siteLastUpdated = "2026-08-24";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1397,14 +1397,14 @@ export const hardware = [
     id: "dgx-spark",
     name: "NVIDIA DGX Spark",
     spec: "GB10 Grace Blackwell desktop, 128 GB unified memory",
-    priceLow: 2999,
+    priceLow: 3970.99,
     priceHigh: 6030,
     priceNote:
-      "Estimated street price for the DGX Spark platform class; current named trims extend from the Seeed Studio $3,999 listing and ASUS Ascent GX10 through higher retailer offers such as PNY at $5,199.99, HP ZGX Nano G1n at $5,399.63 and $6,030, Acer at $5,199, GIGABYTE around $4,999.99-$5,999.99, and MSI around $5,339.99-$6,136.99, with availability and bundling varying by reseller.",
+      "Current named retailer trims for the DGX Spark platform class begin with the ASUS Ascent GX10 at $3,970.99 and the Seeed Studio $3,999 listing, then extend through higher retailer offers such as PNY at $5,199.99, HP ZGX Nano G1n at $5,399.63 and $6,030, Acer at $5,199, GIGABYTE around $4,999.99-$5,999.99, and MSI around $5,339.99-$6,136.99, with availability and bundling varying by reseller.",
     sourceUrl: "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
-    sourceLabel: "Estimated retail / street price",
+    sourceLabel: "Current named retailer prices",
     verification: "retailer",
-    lastUpdated: "2026-07-31",
+    lastUpdated: "2026-08-24",
     defaultBoxPrice: 3999,
     powerDraw: 240,
     tokensPerSecond: { low: 8, high: 50 },

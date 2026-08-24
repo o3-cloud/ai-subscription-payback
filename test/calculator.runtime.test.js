@@ -953,7 +953,7 @@ test("DGX Spark featured card summary shows the full retailer trim spread", () =
   const amount = amounts[dgxIndex];
   assert.ok(amount, "DGX Spark card renders a price amount");
   const amountText = amount.childNodes.map((node) => node.textContent).join("");
-  assert.match(amountText, /Price:\s*\$2,999–\$6,030/, "DGX Spark summary price range is current");
+  assert.match(amountText, /Price:\s*\$3,971–\$6,030/, "DGX Spark summary price range is current");
   assert.doesNotMatch(amountText, /\$2,999–\$3,999/, "DGX Spark summary no longer shows the stale narrower range");
 });
 
