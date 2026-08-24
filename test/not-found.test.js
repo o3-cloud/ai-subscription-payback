@@ -89,3 +89,15 @@ test("404.html links use base-qualified absolute paths, not relative ones", () =
     `found relative references that break for deep links: ${relative.join(", ")}`
   );
 });
+
+test("the not-found BDD documents the same 404 fallback contract", () => {
+  const bddPath = fileURLToPath(new URL("docs/bdd/not-found.md", root));
+  assert.ok(existsSync(bddPath), "docs/bdd/not-found.md should exist");
+
+  const bdd = readFileSync(bddPath, "utf8");
+  assert.match(bdd, /Feature:\s+Not Found Fallback/i, "names the dedicated 404 feature");
+  assert.match(bdd, /Page not found/i, "describes the visible fallback page");
+  assert.match(bdd, /noindex/i, "documents the search-indexing contract");
+  assert.match(bdd, /base-qualified absolute paths/i, "documents the deep-link-safe path contract");
+  assert.match(bdd, /bundled favicon/i, "documents the favicon contract");
+});

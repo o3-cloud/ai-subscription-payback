@@ -5,6 +5,7 @@ This directory contains one behavior-focused BDD file per feature area for the s
 ## Files
 - [MVP Scope and Commercial Model](./mvp-scope.md)
 - [Static Site Delivery](./static-site-delivery.md)
+- [Not Found Fallback](./not-found.md)
 - [Featured Hardware Cards](./featured-hardware-cards.md)
 - [Calculator Inputs](./calculator-inputs.md)
 - [Subscription Selector Filters](./subscription-selector-filters.md)

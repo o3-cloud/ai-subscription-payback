@@ -19,17 +19,6 @@ Scenario: Pages remain reachable through direct navigation
   Then the requested content renders without requiring a login
   And the site does not depend on a client-only router to display the first view
 
-Scenario: Unknown paths land on a friendly 404 fallback
-  Given a visitor opens a URL that does not map to a published page
-  When GitHub Pages serves the 404 fallback
-  Then a styled "Page not found" page renders using the shared site stylesheet
-  And it offers a link back to the calculator home
-  And it is marked noindex so it never replaces real content in search
-  And its asset and link references are base-qualified absolute paths so they
-    resolve regardless of how deep the missing URL was
-  And it declares the bundled favicon so the browser does not auto-request a
-    /favicon.ico that would 404 again
-
 Scenario: Client-rendered sections explain their JavaScript dependency
   Given the featured hardware cards and subscription options are populated by
     JavaScript on load
@@ -59,10 +48,10 @@ Scenario: Site-wide last-updated disclosure is visible in the footer
 > URL. The client-rendered sections initialize only when the page is served over
 > `http://`; a `file://` load leaves the page in its no-JS fallback state.
 
-> Not-found handling: a root `404.html` is published alongside `index.html`.
-> GitHub Pages serves it for any unmatched path, so unknown or stale deep links
-> get a styled fallback (base-qualified absolute asset paths, `noindex`) instead
-> of a bare server error page.
+> Not-found handling is documented separately in
+> [Not Found Fallback](./not-found.md). GitHub Pages serves the root `404.html`
+> for any unmatched path, so unknown or stale deep links get a styled fallback
+> instead of a bare server error page.
 
 > The pricing section's own "Pricing last updated" timestamp (pricing freshness)
 > is specified in [Pricing Disclosure](./pricing-disclosure.md).

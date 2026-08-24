@@ -5,6 +5,7 @@ The behavior specifications now live in `docs/bdd/` as one file per feature area
 ## Files
 - [MVP Scope and Commercial Model](docs/bdd/mvp-scope.md)
 - [Static Site Delivery](docs/bdd/static-site-delivery.md)
+- [Not Found Fallback](docs/bdd/not-found.md)
 - [Featured Hardware Cards](docs/bdd/featured-hardware-cards.md)
 - [Calculator Inputs](docs/bdd/calculator-inputs.md)
 - [Subscription Selector Filters](docs/bdd/subscription-selector-filters.md)
