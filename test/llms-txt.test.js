@@ -45,6 +45,8 @@ test("llms.txt follows the convention: H1 title then a blockquote summary", () =
   assert.match(summary, /Warp/i, "the summary names Warp alongside the other modeled subscription families");
   assert.match(summary, /Supermaven/i, "the summary names Supermaven alongside the other modeled subscription families");
   assert.match(summary, /Kiro/i, "the summary names Kiro alongside the other modeled subscription families");
+  assert.match(summary, /JetBrains AI/i, "the summary names JetBrains AI alongside the other modeled subscription families");
+  assert.match(summary, /Tabnine/i, "the summary names Tabnine alongside the other modeled subscription families");
   assert.match(summary, /Factory/i, "the summary names Factory alongside the other modeled subscription families");
   assert.match(summary, /Manus/i, "the summary names Manus alongside the other modeled subscription families");
   assert.match(summary, /v0/i, "the summary names v0 alongside the other modeled subscription families");
