@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-24";
+export const pricingLastUpdated = "2026-08-26";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-24";
+export const siteLastUpdated = "2026-08-26";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -622,6 +622,36 @@ export const subscriptions = [
     sourceLabel: "Official Cursor pricing",
     verification: "official",
     lastUpdated: "2026-08-17",
+  },
+  {
+    id: "grok-supergrok",
+    name: "xAI Grok",
+    plan: "SuperGrok",
+    monthlyPrice: 30,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "General AI subscription comparator for users who already plan to keep Grok in their monthly AI spend; include it here only if buying local hardware would actually replace this paid tier.",
+    sourceUrl: "https://grok.com",
+    sourceLabel: "Official xAI pricing",
+    verification: "official",
+    lastUpdated: "2026-08-26",
+    sourceNote:
+      "xAI's public grok.com payload exposes the tier IDs even when the visible marketing copy is hydrated; this row uses the payload-emitted SuperGrok price ID as the durable source signal.",
+  },
+  {
+    id: "grok-supergrok-pro",
+    name: "xAI Grok",
+    plan: "SuperGrok Pro",
+    monthlyPrice: 300,
+    billingCadence: "Billed monthly",
+    includedValue:
+      "Higher-priced xAI Grok subscription comparator for users whose monthly AI spend already includes this paid tier; keep it out of the comparison unless buying local hardware would replace it.",
+    sourceUrl: "https://grok.com",
+    sourceLabel: "Official xAI pricing",
+    verification: "official",
+    lastUpdated: "2026-08-26",
+    sourceNote:
+      "xAI's public grok.com payload exposes the tier IDs even when the visible marketing copy is hydrated; this row uses the payload-emitted SuperGrok Pro price ID as the durable source signal.",
   },
   {
     id: "zed-personal",

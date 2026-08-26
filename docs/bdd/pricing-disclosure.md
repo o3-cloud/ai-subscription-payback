@@ -18,6 +18,7 @@ Scenario: Supported subscription tiers are listed
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
   And the GitLab Premium + Duo Agent Platform credits tier is listed
   And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
+  And the xAI Grok tiers are listed: SuperGrok and SuperGrok Pro
   And the Zed tiers are listed: Personal, Pro, and Business
   And the Google AI tiers are listed: Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x
   And the Amazon Q Developer tiers are listed: Free and Pro
@@ -74,6 +75,13 @@ Scenario: Cursor included-value copy names the current pricing-page benefits
   And the Teams copy keeps the centralized billing, admin, and SSO framing for team seats
   And the Teams Premium copy keeps the stronger team-agent limits framing while naming the broader Cursor bundle
 
+Scenario: xAI Grok tiers are listed as optional comparators with a source caveat
+  Given the xAI Grok SuperGrok and SuperGrok Pro tiers
+  When the visitor views their included-value text
+  Then the SuperGrok copy notes that xAI's public grok.com payload exposes the tier IDs even when the visible pricing text is hydrated
+  And the SuperGrok Pro copy keeps the same hydrated payload caveat
+  And both tiers are optional and unchecked in the default selection
+
 Scenario: The Supermaven tiers disclose their context window and chat-credit caveat
   Given the Supermaven Free Tier, Pro, and Team tiers
   When the visitor views their billing cadence and included-value text
@@ -93,7 +101,7 @@ Scenario: Editor-assistant and code-review tiers are optional and unchecked by d
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the Codex and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
+  And the GitHub Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their current Plus, Pro, and Ultra benefits

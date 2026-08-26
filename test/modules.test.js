@@ -247,7 +247,7 @@ test("Claude Pro and Team included-value copy names the broader Claude bundle", 
 
 
 
-test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Developer, Devin, JetBrains AI, and Tabnine editor-assistant tiers", async () => {
+test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon Q Developer, Devin, JetBrains AI, and Tabnine editor-assistant tiers", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
@@ -262,6 +262,8 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     "cursor-ultra": { name: "Cursor", monthlyPrice: 200 },
     "cursor-teams": { name: "Cursor", monthlyPrice: 40 },
     "cursor-teams-premium": { name: "Cursor", monthlyPrice: 120 },
+    "grok-supergrok": { name: "xAI Grok", monthlyPrice: 30 },
+    "grok-supergrok-pro": { name: "xAI Grok", monthlyPrice: 300 },
     "zed-personal": { name: "Zed", monthlyPrice: 0 },
     "zed-pro": { name: "Zed", monthlyPrice: 10 },
     "zed-business": { name: "Zed", monthlyPrice: 30 },
@@ -282,6 +284,7 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
   const sourceUrls = {
     "GitHub Copilot": "https://github.com/features/copilot/plans",
     Cursor: "https://cursor.com/pricing",
+    "xAI Grok": "https://grok.com",
     Zed: "https://zed.dev/pricing",
     "Google AI": "https://gemini.google/subscriptions/",
     "Google AI Ultra": "https://gemini.google/subscriptions/",
@@ -346,6 +349,16 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     /roughly 5× the Standard team Agent limits/i,
     "Cursor Teams Premium preserves the 5x team Agent limits framing"
   );
+  assert.match(
+    byId.get("grok-supergrok").sourceNote,
+    /public grok\.com payload exposes the tier IDs/i,
+    "Grok SuperGrok source note records the hydrated payload caveat"
+  );
+  assert.match(
+    byId.get("grok-supergrok-pro").sourceNote,
+    /payload-emitted SuperGrok Pro price ID/i,
+    "Grok SuperGrok Pro source note records the hydrated payload caveat"
+  );
 
   assert.match(
     byId.get("jetbrains-ai-pro").billingCadence,
@@ -368,6 +381,16 @@ test("subscriptions cover the Copilot, Cursor, Zed, Google AI, Amazon Q Develope
     bdd,
     /Cursor included-value copy names the current pricing-page benefits/i,
     "pricing BDD documents the Cursor current-benefits copy"
+  );
+  assert.match(
+    bdd,
+    /xAI Grok tiers are listed: SuperGrok and SuperGrok Pro/i,
+    "pricing BDD documents the Grok tiers"
+  );
+  assert.match(
+    bdd,
+    /public grok\.com payload exposes the tier IDs/i,
+    "pricing BDD documents the Grok source caveat"
   );
 });
 
