@@ -10,6 +10,8 @@
  *  - a healthy 200 URL grades OK
  *  - a canonical vendor source answering 403/429 is downgraded to a warning
  *    (bot protection), while the same status on an affiliate is a hard failure
+ *  - a canonical vendor source answering a transient 5xx on HEAD retries GET
+ *    so an accessible page can still pass
  *  - an affiliate 404 (and a network error) are hard failures
  *  - stale `lastUpdated` handling against a deterministic clock, including the
  *    threshold boundary and missing/invalid dates
@@ -179,6 +181,25 @@ test("probeUrl falls back to GET when HEAD is unsupported (405)", async () => {
   assert.deepEqual(seen, ["HEAD", "GET"]);
   assert.equal(result.method, "GET");
   assert.equal(result.ok, true);
+});
+
+test("probeUrl retries GET when HEAD returns a transient 5xx and GET succeeds", async () => {
+  const seen = [];
+  const fetchImpl = async (url, options) => {
+    seen.push([options.method, options.headers["user-agent"]]);
+    if (options.method === "HEAD") return response(503, { url });
+    return response(200, { url });
+  };
+
+  const result = await probeUrl("https://example.com/head-5xx", { fetchImpl });
+
+  assert.deepEqual(seen, [
+    ["HEAD", USER_AGENT],
+    ["GET", USER_AGENT],
+  ]);
+  assert.equal(result.method, "GET");
+  assert.equal(result.ok, true);
+  assert.equal(result.status, 200);
 });
 
 test("probeUrl retries GET when HEAD looks bot-protected and GET succeeds", async () => {
