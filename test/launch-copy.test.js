@@ -61,6 +61,11 @@ test("launch copy reflects the current featured hardware lineup", () => {
     /Framework Desktop AI Max 385/i,
     "mentions the named Framework Desktop Strix Halo example"
   );
+  assert.match(
+    launchCopy,
+    /MINISFORUM MS-S1 MAX 128GB/i,
+    "mentions the named MINISFORUM Strix Halo example"
+  );
 });
 
 test("each shareable social snippet includes the canonical URL exactly once and keeps the free tone", () => {
@@ -134,7 +139,14 @@ test("the launch-copy BDD stays aligned with the launch copy", () => {
     /AI Box Payback/i,
     "launch-copy BDD must not reference the legacy 'AI Box Payback' name"
   );
-  for (const hardware of ["Mac Studio", "DGX Spark", "Strix Halo", "ASUS Ascent GX10", "Framework Desktop AI Max 385"]) {
+  for (const hardware of [
+    "Mac Studio",
+    "DGX Spark",
+    "Strix Halo",
+    "ASUS Ascent GX10",
+    "Framework Desktop AI Max 385",
+    "MINISFORUM MS-S1 MAX 128GB",
+  ]) {
     assert.ok(
       launchCopyBdd.includes(hardware),
       `launch-copy BDD must name the featured hardware "${hardware}"`

@@ -13,6 +13,7 @@ Scenario: Snippets reflect the current featured hardware lineup
   Then they name the featured lineup (Mac Studio, DGX Spark, and Strix Halo)
   And they name the ASUS Ascent GX10 DGX Spark example
   And they name the Framework Desktop AI Max 385 Strix Halo example
+  And they name the MINISFORUM MS-S1 MAX 128GB Strix Halo example
 
 Scenario: Every shareable snippet includes the canonical URL exactly once
   Given the `##` social snippets meant for sharing (every section except "Posting notes")
@@ -36,7 +37,8 @@ Scenario: Posting notes point at the shared social card and canonical link
   Pages origin (`o3-cloud.github.io`) must never appear in a snippet.
 - The featured hardware lineup mirrors the homepage cards (Mac Studio, DGX Spark
   systems such as the ASUS Ascent GX10, and Strix Halo systems such as the
-  Framework Desktop AI Max 385); refresh the copy whenever that lineup changes.
+  Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB); refresh the
+  copy whenever that lineup changes.
 - Every ready-to-post section — including the Hacker News/community and
   Reddit/forum intros — carries the canonical share link exactly once; only the
   "Posting notes" maintainer guidance omits it.
