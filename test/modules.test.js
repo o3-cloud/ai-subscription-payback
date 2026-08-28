@@ -1270,9 +1270,15 @@ test("Mac Studio matches Apple's official buy-page structured data", async () =>
   const macStudio = hardware.find((h) => h.id === "mac-studio");
   assert.ok(macStudio, "missing mac-studio hardware entry");
 
-  // Configurable low/high from the buy page's AggregateOffer (M4 Max → M3 Ultra).
+  // Configurable low/high from the current preorder buy page (M5 Max → M5 Ultra).
   assert.equal(macStudio.priceLow, 2499);
-  assert.equal(macStudio.priceHigh, 14299);
+  assert.equal(macStudio.priceHigh, 6799);
+  assert.equal(macStudio.spec, "Apple silicon, up to 96 GB unified memory");
+  assert.match(macStudio.priceNote, /M5 Max/i);
+  assert.match(macStudio.priceNote, /M5 Ultra/i);
+  assert.match(macStudio.priceNote, /\$2,499/i);
+  assert.match(macStudio.priceNote, /\$6,799/i);
+  assert.equal(macStudio.lastUpdated, "2026-08-28");
   // Source is the buy/configuration page, not the marketing page.
   assert.equal(
     macStudio.sourceUrl,

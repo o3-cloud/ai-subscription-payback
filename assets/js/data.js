@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-26";
+export const pricingLastUpdated = "2026-08-28";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-26";
+export const siteLastUpdated = "2026-08-28";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1398,15 +1398,15 @@ export const hardware = [
   {
     id: "mac-studio",
     name: "Mac Studio",
-    spec: "Apple silicon, up to 512 GB unified memory",
+    spec: "Apple silicon, up to 96 GB unified memory",
     priceLow: 2499,
-    priceHigh: 14299,
+    priceHigh: 6799,
     priceNote:
-      "Configurable range from the base M4 Max to a fully specced M3 Ultra; unified memory drives most of the price.",
+      "Pre-order lineup spans M5 Max and M5 Ultra systems; Apple's current buy page currently lists configs from the $2,499 entry M5 Max model up to the $6,799 M5 Ultra model.",
     sourceUrl: "https://www.apple.com/shop/buy-mac/mac-studio",
     sourceLabel: "Official Apple configurable pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-28",
     defaultBoxPrice: 2499,
     powerDraw: 270,
     tokensPerSecond: { low: 8, high: 60 },

@@ -309,10 +309,11 @@ Scenario: Mac Studio pricing surfaces an official financing example
   And the example mentions the $208.25/mo for 12 months purchase example and the 36-month Apple Upgrade lease example
   And the example links to the Apple buy/configure page
 
-Scenario: Mac Studio pricing uses the official buy-page range
+Scenario: Mac Studio pricing uses the current Apple preorder lineup
   Given the hardware comparison section
   When the visitor views the Mac Studio card
-  Then the displayed price range comes from Apple's buy/configuration page
+  Then the displayed price range comes from Apple's current buy/configuration page
+  And the range spans the current $2,499-$6,799 preorder lineup for M5 Max and M5 Ultra systems
   And the source link points to the direct buy page for Mac Studio
   And the card offers a trim selector for alternative configurations
   And the featured preload uses the low end of the configurable range
