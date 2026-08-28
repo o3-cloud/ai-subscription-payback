@@ -113,3 +113,13 @@ test("checkbox rows keep a full tap target when labels wrap", () => {
   assert.ok(rule, "stylesheet has a .checkbox rule");
   assert.match(rule, /align-items:\s*flex-start/i, "checkbox rows are top-aligned");
 });
+
+test("filtered subscription rows stay out of layout even though the row is flexboxed", () => {
+  // The filter logic toggles the row's hidden/aria-hidden state, but the row is
+  // also styled as display:flex for alignment. This contract keeps the browser's
+  // hidden state from being overridden so filtered rows disappear visually.
+  const rule =
+    css.match(/#subscription-options\s*\.checkbox\[hidden\][\s\S]*?\}/i)?.[0] ?? "";
+  assert.ok(rule, "stylesheet explicitly hides filtered subscription rows");
+  assert.match(rule, /display:\s*none/i, "hidden rows are removed from layout");
+});

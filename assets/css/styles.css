@@ -439,6 +439,14 @@ input[aria-invalid="true"] {
   font-weight: 500;
 }
 
+/* `display: flex` on the row would otherwise override the browser's default
+   hidden-attribute behavior. Keep filtered rows out of layout even when the
+   label row itself is flexboxed for alignment. */
+#subscription-options .checkbox[hidden],
+#subscription-options .checkbox[aria-hidden="true"] {
+  display: none;
+}
+
 .checkbox input[type="checkbox"] {
   /* Nudge the box onto the text baseline now that the row is top-aligned. */
   margin-top: 0.15rem;
