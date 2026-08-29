@@ -1,6 +1,6 @@
 # BDD — Behavior Index
 
-The behavior specifications now live in `docs/bdd/` as one file per feature area. This file mirrors `docs/bdd/README.md`; keep the two indices in sync when adding, removing, or renaming a BDD.
+This index contains one behavior-focused BDD file per feature area for the static GitHub Pages site. Keep the repo-root `BDD.md` and `docs/bdd/README.md` in sync when editing feature coverage.
 
 ## Files
 - [MVP Scope and Commercial Model](docs/bdd/mvp-scope.md)

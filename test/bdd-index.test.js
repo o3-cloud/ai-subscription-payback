@@ -42,6 +42,8 @@ const dirTargetToFile = (target) => `docs/bdd/${target.replace(/^\.\//, "")}`;
 const rootEntries = parseEntries(read(rootIndexPath));
 const dirEntries = parseEntries(read(dirIndexPath));
 
+const introBlock = (markdown) => markdown.split("\n## Files")[0].replace(/^# BDD — Behavior Index\n\n/, "").trim();
+
 const assertLinkStyles = (entries, expectedPrefix, label) => {
   for (const { title, target } of entries) {
     assert.ok(
@@ -55,6 +57,10 @@ test("both BDD indices list at least the full feature set", () => {
   // Guard against a parser/format change silently emptying either list.
   assert.ok(rootEntries.length >= 10, "root index should list the feature files");
   assert.ok(dirEntries.length >= 10, "dir index should list the feature files");
+});
+
+test("the two BDD indices share the same introductory contract", () => {
+  assert.equal(introBlock(read(rootIndexPath)), introBlock(read(dirIndexPath)), "BDD index intro drifted between BDD.md and docs/bdd/README.md");
 });
 
 test("the two BDD indices list identical titles in the same order", () => {
