@@ -1589,7 +1589,7 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
     ],
     [
       "minisforum-ms-s1-max-mini-pc",
-      3719,
+      3799,
       "128GB RAM + 2TB SSD",
       "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
       "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",

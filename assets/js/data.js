@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-28";
+export const pricingLastUpdated = "2026-08-29";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-28";
+export const siteLastUpdated = "2026-08-29";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1669,15 +1669,15 @@ export const hardware = [
     id: "minisforum-ms-s1-max-mini-pc",
     name: "MINISFORUM MS-S1 MAX 128GB Max AI Compute Edition",
     spec: "Ryzen AI Max+ 395, 128GB RAM + 2TB SSD",
-    priceLow: 3719,
-    priceHigh: 3719,
+    priceLow: 3799,
+    priceHigh: 3799,
     priceNote:
-      "Official MINISFORUM store price snapshot for the 128GB / 2TB MS-S1 MAX configuration; the product page also shows a compare-at price, so treat the listed amount as the current street price snapshot.",
+      "Official MINISFORUM store sale price snapshot for the 128GB / 2TB MS-S1 MAX configuration; the product page also shows a $4,749 regular compare-at price, so treat the listed amount as the current street price snapshot.",
     sourceUrl: "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
     sourceLabel: "Official MINISFORUM product page",
     verification: "official",
-    lastUpdated: "2026-08-16",
-    defaultBoxPrice: 3719,
+    lastUpdated: "2026-08-29",
+    defaultBoxPrice: 3799,
     powerDraw: 140,
     exampleOf: "strix-halo",
   },
