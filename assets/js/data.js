@@ -664,7 +664,7 @@ export const subscriptions = [
     sourceUrl: "https://zed.dev/pricing",
     sourceLabel: "Official Zed pricing",
     verification: "official",
-    lastUpdated: "2026-07-16",
+    lastUpdated: "2026-08-29",
   },
   {
     id: "zed-pro",
@@ -677,7 +677,7 @@ export const subscriptions = [
     sourceUrl: "https://zed.dev/pricing",
     sourceLabel: "Official Zed pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-29",
   },
   {
     id: "zed-business",
@@ -690,7 +690,7 @@ export const subscriptions = [
     sourceUrl: "https://zed.dev/pricing",
     sourceLabel: "Official Zed pricing",
     verification: "official",
-    lastUpdated: "2026-07-14",
+    lastUpdated: "2026-08-29",
   },
   {
     id: "google-ai-plus",
