@@ -39,7 +39,8 @@ Scenario: The disclosures stay honest and source-backed
   subscription families; when new rows land in the calculator data, refresh the
   summary so it names the current coverage, including additions like GitLab,
   Cursor, GitHub Copilot, Google AI, Replit, Qodo, CodeRabbit, Kiro, JetBrains
-  AI, Tabnine, Factory, and Manus.
+  AI, Tabnine, Factory, Manus, xAI Grok / SuperGrok, Amazon Q Developer, Zed,
+  and Devin / Windsurf.
 - Like every SEO artifact, it uses the custom production domain
   `https://www.othree.cloud/ai-subscription-payback/` as the single source of
   truth for origins; the legacy `o3-cloud.github.io` origin must never appear.
