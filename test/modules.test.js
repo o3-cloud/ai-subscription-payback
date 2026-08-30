@@ -1559,15 +1559,17 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "https://frame.work/desktop",
       "Framework",
       "Framework Desktop AI Max 385",
+      "2026-07-17",
     ],
     [
       "gmktec-evo-x2",
-      1999.99,
+      2199.99,
       "64 GB RAM + 1 TB SSD",
       "https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc",
       "https://www.gmktec.com/collections/all",
       "GMKtec",
       "GMKtec EVO-X2 AI Mini PC",
+      "2026-08-30",
     ],
     [
       "gmktec-evo-x3",
@@ -1577,6 +1579,7 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "https://www.gmktec.com/collections/all",
       "GMKtec",
       "GMKtec EVO-X3 AI Mini PC",
+      "2026-07-16",
     ],
     [
       "minisforum-ms-s1-max-64gb",
@@ -1586,6 +1589,7 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "https://store.minisforum.com/products/minisforum-ms-s1-max-64gb",
       "MINISFORUM",
       "MINISFORUM MS-S1 MAX 64GB Local AI Pilot Edition",
+      "2026-08-16",
     ],
     [
       "minisforum-ms-s1-max-mini-pc",
@@ -1595,15 +1599,18 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
       "MINISFORUM",
       "MINISFORUM MS-S1 MAX 128GB Max AI Compute Edition",
+      "2026-08-29",
     ],
   ];
 
-  for (const [id, price, memoryStorage, sourceUrl, affiliateUrl, vendor, name] of examples) {
+
+  for (const [id, price, memoryStorage, sourceUrl, affiliateUrl, vendor, name, lastUpdated] of examples) {
     const box = byId.get(id);
     assert.ok(box, `missing ${id} hardware entry`);
     assert.equal(box.name, name, `${id} uses the expected product name`);
     assert.equal(box.priceLow, price, `${id} priceLow`);
     assert.equal(box.priceHigh, price, `${id} priceHigh`);
+    assert.equal(box.lastUpdated, lastUpdated, `${id} last verified date`);
     const expectedSpec = id.startsWith("framework-")
       ? `Ryzen AI Max 385, ${memoryStorage}`
       : `Ryzen AI Max+ 395, ${memoryStorage}`;

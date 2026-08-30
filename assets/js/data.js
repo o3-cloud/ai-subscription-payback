@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-29";
+export const pricingLastUpdated = "2026-08-30";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-29";
+export const siteLastUpdated = "2026-08-30";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1619,16 +1619,16 @@ export const hardware = [
     id: "gmktec-evo-x2",
     name: "GMKtec EVO-X2 AI Mini PC",
     spec: "Ryzen AI Max+ 395, 64 GB RAM + 1 TB SSD",
-    priceLow: 1999.99,
-    priceHigh: 1999.99,
+    priceLow: 2199.99,
+    priceHigh: 2199.99,
     priceNote:
-      "Named Ryzen AI Max+ 395 SKU at the lower-memory end of the Strix Halo class; exact GMKtec list price for the 64 GB / 1 TB configuration.",
+      "Official GMKtec product-page snapshot price for the 64 GB / 1 TB configuration at the lower-memory end of the Strix Halo class.",
     sourceUrl:
       "https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc",
     sourceLabel: "Official GMKtec product page",
     verification: "official",
-    lastUpdated: "2026-07-16",
-    defaultBoxPrice: 1999.99,
+    lastUpdated: "2026-08-30",
+    defaultBoxPrice: 2199.99,
     powerDraw: 140,
     exampleOf: "strix-halo",
   },
