@@ -629,6 +629,12 @@ test("initCalculator boots the form from static data and defaults", () => {
     doc.getElementById("assumptions-list").children.length,
     assumptions.length
   );
+  assert.ok(
+    Array.from(doc.querySelectorAll("#assumptions-list li")).some((li) =>
+      li.textContent.includes("LM Studio Bionic") && li.textContent.includes("custom monthly spend")
+    ),
+    "renders the hybrid local/cloud-spillover assumption"
+  );
   assert.equal(
     doc.querySelectorAll("#cost-table tbody tr").length,
     horizonMonths,

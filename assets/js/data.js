@@ -1994,6 +1994,7 @@ export const assumptions = [
   "Subscriptions are compared at their monthly per-seat price. Annually billed tiers use the effective monthly cost (annual price ÷ 12), so the comparison stays month-by-month even when a plan is paid yearly up front.",
   "Hardware is financed: principal is (box price − down payment), repaid over the term at the given APR as a fixed monthly loan payment.",
   `Electricity cost = power draw (kW) × hours per day × ${daysPerMonth} days × rate per kWh.`,
+  "Hybrid local workflows like LM Studio Bionic can still incur cloud-token spillover; model that recurring spend with the custom monthly spend field instead of treating it as a separate subscription.",
   `Optional maintenance adds ${optionalCostRates.maintenanceAnnualRate * 100}% of the box price per year, spread evenly across the months.`,
   `Optional sales tax adds ${optionalCostRates.salesTaxRate * 100}% of the box price as a one-time upfront cost.`,
   `Optional resale value credits ${optionalCostRates.resaleValueRate * 100}% of the box price against ownership cost at the end of the horizon.`,

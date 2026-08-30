@@ -60,5 +60,8 @@ mention the calculator is free, and point people at the main page URL.
 - Keep the link in the post pointed at the canonical production URL
   `https://www.othree.cloud/ai-subscription-payback/` and avoid adding tracking
   parameters.
+- If you mention local-first tools, describe LM Studio Bionic as a hybrid
+  local/cloud workflow with optional cloud-token spillover, not as a separate
+  monthly subscription.
 - If you update pricing assumptions or featured hardware, refresh the copy so it
   still matches the current product names and positioning.

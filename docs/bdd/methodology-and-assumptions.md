@@ -18,6 +18,12 @@ Scenario: User can see what is excluded
   Then the page states which costs are excluded by default
   And the page states when those costs can be toggled on
 
+Scenario: Hybrid local workflows can model cloud spillover with custom spend
+  Given a visitor uses a hybrid local workflow such as LM Studio Bionic
+  When they read the methodology and calculator help
+  Then the page explains that hosted cloud-token spillover is entered through custom monthly spend
+  And it does not describe LM Studio Bionic as a cancelable flat subscription
+
 Scenario: Methodology matches displayed outputs
   Given a break-even result is shown
   When the visitor compares the result to the methodology
