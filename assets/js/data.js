@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-30";
+export const pricingLastUpdated = "2026-08-31";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-30";
+export const siteLastUpdated = "2026-08-31";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1644,7 +1644,7 @@ export const hardware = [
       "https://www.gmktec.com/products/gmktec-evo-x3-ai-mini-pc-amd-ryzen-ai-max-395",
     sourceLabel: "Official GMKtec product page",
     verification: "official",
-    lastUpdated: "2026-07-16",
+    lastUpdated: "2026-08-31",
     defaultBoxPrice: 3799.99,
     powerDraw: 140,
     exampleOf: "strix-halo",

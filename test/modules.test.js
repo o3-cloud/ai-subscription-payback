@@ -1579,7 +1579,7 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "https://www.gmktec.com/collections/all",
       "GMKtec",
       "GMKtec EVO-X3 AI Mini PC",
-      "2026-07-16",
+      "2026-08-31",
     ],
     [
       "minisforum-ms-s1-max-64gb",
