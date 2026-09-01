@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-08-31";
+export const pricingLastUpdated = "2026-09-01";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-08-31";
+export const siteLastUpdated = "2026-09-01";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -755,7 +755,7 @@ export const subscriptions = [
     sourceUrl: "https://aws.amazon.com/q/developer/pricing/",
     sourceLabel: "Official AWS pricing",
     verification: "official",
-    lastUpdated: "2026-07-17",
+    lastUpdated: "2026-09-01",
   },
   {
     id: "amazon-q-developer-pro",
@@ -768,7 +768,7 @@ export const subscriptions = [
     sourceUrl: "https://aws.amazon.com/q/developer/pricing/",
     sourceLabel: "Official AWS pricing",
     verification: "official",
-    lastUpdated: "2026-07-17",
+    lastUpdated: "2026-09-01",
   },
   {
     id: "devin-free",
@@ -782,7 +782,7 @@ export const subscriptions = [
     sourceUrl: "https://devin.ai/pricing",
     sourceLabel: "Official Devin pricing",
     verification: "official",
-    lastUpdated: "2026-07-17",
+    lastUpdated: "2026-09-01",
   },
   {
     id: "devin-pro",
@@ -796,7 +796,7 @@ export const subscriptions = [
     sourceUrl: "https://devin.ai/pricing",
     sourceLabel: "Official Devin pricing",
     verification: "official",
-    lastUpdated: "2026-07-17",
+    lastUpdated: "2026-09-01",
   },
   {
     id: "devin-max",
@@ -810,7 +810,7 @@ export const subscriptions = [
     sourceUrl: "https://devin.ai/pricing",
     sourceLabel: "Official Devin pricing",
     verification: "official",
-    lastUpdated: "2026-07-17",
+    lastUpdated: "2026-09-01",
   },
   {
     id: "devin-teams",
@@ -824,7 +824,7 @@ export const subscriptions = [
     sourceUrl: "https://devin.ai/pricing",
     sourceLabel: "Official Devin pricing",
     verification: "official",
-    lastUpdated: "2026-07-17",
+    lastUpdated: "2026-09-01",
   },
   {
     id: "replit-starter",
@@ -1588,7 +1588,7 @@ export const hardware = [
       "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html",
     sourceLabel: "Derived range from named SKUs",
     verification: "estimate",
-    lastUpdated: "2026-07-17",
+    lastUpdated: "2026-09-01",
     defaultBoxPrice: 1099,
     powerDraw: 140,
     tokensPerSecond: { low: 5, high: 40 },
@@ -1610,7 +1610,7 @@ export const hardware = [
     sourceUrl: "https://frame.work/products/desktop-diy-amd-aimax300/configuration/new",
     sourceLabel: "Official Framework configuration page",
     verification: "official",
-    lastUpdated: "2026-07-17",
+    lastUpdated: "2026-09-01",
     defaultBoxPrice: 1099,
     powerDraw: 140,
     exampleOf: "strix-halo",

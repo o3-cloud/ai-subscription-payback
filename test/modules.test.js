@@ -1559,7 +1559,7 @@ test("Strix Halo examples are modeled as official purchasable SKUs", async () =>
       "https://frame.work/desktop",
       "Framework",
       "Framework Desktop AI Max 385",
-      "2026-07-17",
+      "2026-09-01",
     ],
     [
       "gmktec-evo-x2",
