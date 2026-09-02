@@ -699,7 +699,7 @@ export const subscriptions = [
     monthlyPrice: 4.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Broad Google AI Plus subscription for one person: 2× higher usage access than Free, access to 3.6 Flash, 200 Google Flow Credits, and 400 GB of cloud storage. Does not include the Jules or Google Antigravity coding-agent benefits.",
+      "Broad Google AI Plus subscription for one person: 2× higher usage access than Free, access to Gemini Omni Flash and custom tool creation, Daily Brief, Nano Banana in Search, 200 Google Flow Credits, and 400 GB of cloud storage. Does not include the Jules or Google Antigravity coding-agent benefits.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
@@ -712,7 +712,7 @@ export const subscriptions = [
     monthlyPrice: 19.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Broad Google AI Pro subscription with 4× higher usage access than Free, varying access to Gemini 3.1 Pro / Deep Search and agentic capabilities, 1,000 Google Flow Credits, Jules, entry rate limits to Google Antigravity, and 5 TB of cloud storage.",
+      "Broad Google AI Pro subscription with 4× higher usage access than Free, varying access to Gemini 3.1 Pro / Deep Search and agentic capabilities, 1,000 Google Flow Credits, Jules, entry rate limits to Google Antigravity, Google Home Premium Standard, YouTube Premium Lite, and 5 TB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",

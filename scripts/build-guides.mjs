@@ -326,14 +326,14 @@ export const GUIDES = [
       "How Google AI Pro and Google AI Ultra compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
     heading: "Google AI Pro and Google AI Ultra vs a local AI box: the cost",
     useCase: [
-      "Google AI is the broad Gemini subscription layer, and the Pro and Ultra tiers are the current paid plans that surface Jules and Google Antigravity access alongside the newer Gemini 3.1 Pro / 3.6 Flash wording and creative-tool benefits. This guide compares those higher Google AI plans against a local AI box and shows where the recurring subscription cost catches up.",
-      "It is aimed at people using Google AI for both everyday Gemini-app limits and the current Pro/Ultra workflow who want to know whether the higher-tier spend is better replaced by local inference hardware.",
+      "Google AI is the broad Gemini subscription layer, and the Plus, Pro, and Ultra tiers are the current paid plans that surface the Gemini Omni Flash / Daily Brief / Nano Banana bundle on Plus and the Jules / Google Antigravity / Google Home Premium / YouTube Premium Lite bundle on Pro alongside the newer Gemini 3.1 Pro / 3.6 Flash wording. This guide compares those higher Google AI plans against a local AI box and shows where the recurring subscription cost catches up.",
+      "It is aimed at people using Google AI for both everyday Gemini-app limits and the current Pro/Ultra workflow who want to know whether the higher-tier spend is better replaced by local inference hardware instead of the hosted bundle perks.",
     ],
     scenarioLede:
       "A Google AI Pro subscription plus the Google AI Ultra tier against a value-class Strix Halo box.",
     caveats: [
       "Google AI is a hosted service with broad Gemini-app limits plus current Pro/Ultra benefits on the relevant tiers, so the list price is really buying access and managed capacity rather than just tokens.",
-      "A local box cannot reproduce Google's hosted Gemini, Jules, or Antigravity stack; it only substitutes a local model workflow for the spending side of the equation.",
+      "A local box cannot reproduce Google's hosted Gemini, Jules, Antigravity, Home Premium, or YouTube Premium Lite bundle; it only substitutes a local model workflow for the spending side of the equation.",
       "The cheaper Plus tier does not include the same Pro/Ultra coding-agent benefits, so the sample focuses on Pro and Ultra where the payback question is more relevant.",
       "As always, the exact break-even month shifts with seat count, billing cadence, and how heavily you use the agents.",
     ],

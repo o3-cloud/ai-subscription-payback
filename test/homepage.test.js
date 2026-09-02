@@ -310,11 +310,14 @@ test("subscription helper copy names the Google AI Plus, Google AI Pro, Google A
 
   const pricing =
     html.match(/<section[^>]*id="pricing"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? "";
-  assert.match(
-    pricing,
-    /Google AI Plus[\s\S]*?Google AI Pro[\s\S]*?Google AI Ultra[\s\S]*?Jules[\s\S]*?Antigravity/i,
-    "pricing copy explains the Google AI paid tiers surface Jules and Antigravity"
-  );
+  assert.match(pricing, /Gemini Omni Flash/i, "pricing copy names Gemini Omni Flash");
+  assert.match(pricing, /Daily Brief/i, "pricing copy names Daily Brief");
+  assert.match(pricing, /Nano Banana/i, "pricing copy names Nano Banana in Search");
+  assert.match(pricing, /Jules/i, "pricing copy names Jules");
+  assert.match(pricing, /Antigravity/i, "pricing copy names Google Antigravity");
+  assert.match(pricing, /Google Home Premium Standard/i, "pricing copy names Google Home Premium Standard");
+  assert.match(pricing, /YouTube Premium Lite/i, "pricing copy names YouTube Premium Lite");
+  assert.match(pricing, /not fully replaceable/i, "pricing disclosure notes the bundled Google AI value is not fully replaceable by local hardware");
   assert.match(pricing, /GitLab Premium/i, "pricing disclosure mentions GitLab Premium");
   assert.match(pricing, /Duo Agent Platform/i, "pricing disclosure mentions Duo Agent Platform");
   assert.match(pricing, /Devin/i, "pricing disclosure mentions Devin tiers");
