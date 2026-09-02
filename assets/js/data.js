@@ -1672,7 +1672,7 @@ export const hardware = [
     priceLow: 3799,
     priceHigh: 3799,
     priceNote:
-      "Official MINISFORUM store sale price snapshot for the 128GB / 2TB MS-S1 MAX configuration; the product page also shows a $4,749 regular compare-at price, so treat the listed amount as the current street price snapshot.",
+      "Official MINISFORUM store sale price snapshot for the 128GB / 2TB MS-S1 MAX configuration; the product page also shows a $4,749 regular compare-at price, and the selected 128GB / 2TB configuration shows an estimated shipping time of Mid September, so treat the listed amount as the current street price snapshot.",
     sourceUrl: "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
     sourceLabel: "Official MINISFORUM product page",
     verification: "official",
@@ -1680,6 +1680,12 @@ export const hardware = [
     defaultBoxPrice: 3799,
     powerDraw: 140,
     exampleOf: "strix-halo",
+    financingExample: {
+      summary:
+        "MINISFORUM's product page shows a 0% APR plan badge and a PayPal message starting at $204.67/month or as low as 0% APR for the 128GB / 2TB configuration.",
+      sourceUrl: "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
+      sourceLabel: "MINISFORUM financing example",
+    },
   },
   {
     id: "rtx-pro-6000-blackwell",

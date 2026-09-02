@@ -1124,6 +1124,32 @@ test("Mac Studio surfaces Apple's financing example on the featured card", () =>
   assert.equal(link.getAttribute("href"), "https://www.apple.com/shop/buy-mac/mac-studio");
 });
 
+test("MINISFORUM financing example appears in the pricing list", () => {
+  const { doc } = boot();
+  const minisforumLink = Array.from(doc.querySelectorAll("#pricing-list .hardware-card-financing a")).find(
+    (link) => link.getAttribute("href") === "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc"
+  );
+
+  assert.ok(minisforumLink, "expected a financing note for the MINISFORUM MS-S1 MAX pricing entry");
+  const minisforumFinancing = minisforumLink.parentElement;
+  assert.ok(minisforumFinancing, "the MINISFORUM financing link should sit inside a financing note");
+  assert.match(
+    minisforumFinancing.textContent,
+    /Official vendor financing example/i,
+    "the MINISFORUM pricing-list entry should surface the financing example"
+  );
+  assert.match(
+    minisforumFinancing.textContent,
+    /0% APR plan badge/i,
+    "the MINISFORUM pricing-list entry should cite the 0% APR plan badge"
+  );
+  assert.match(
+    minisforumFinancing.textContent,
+    /starting at \$204\.67\/month/i,
+    "the MINISFORUM pricing-list entry should cite the PayPal monthly example"
+  );
+});
+
 test("featured hardware preload button loads the calculator scenario", async () => {
   const { doc, win } = boot();
   const loadButton = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[0];

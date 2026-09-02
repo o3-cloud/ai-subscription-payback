@@ -1275,10 +1275,18 @@ function renderPricing(doc) {
     }
     for (const box of hardware) {
       const li = doc.createElement("li");
-      li.textContent = `${box.name} (${box.spec}): ${priceRange(
-        box.priceLow,
-        box.priceHigh
-      )}. ${box.priceNote} `;
+      li.appendChild(
+        doc.createTextNode(`${box.name} (${box.spec}): ${priceRange(box.priceLow, box.priceHigh)}. ${box.priceNote} `)
+      );
+      if (box.financingExample) {
+        const financing = doc.createElement("p");
+        financing.className = "hardware-card-note hardware-card-financing";
+        financing.textContent = `Official vendor financing example: ${box.financingExample.summary} `;
+        financing.appendChild(
+          externalLink(doc, box.financingExample.sourceUrl, box.financingExample.sourceLabel, false)
+        );
+        li.appendChild(financing);
+      }
       appendSourceProvenance(doc, li, box);
       appendAffiliateLink(doc, li, box.id);
       list.appendChild(li);

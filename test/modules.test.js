@@ -1317,6 +1317,41 @@ test("Mac Studio carries an official vendor financing example", async () => {
   );
 });
 
+test("MINISFORUM MS-S1 MAX carries an official vendor financing example", async () => {
+  const { hardware } = await import(new URL("data.js", jsDir));
+  const minisforum = hardware.find((h) => h.id === "minisforum-ms-s1-max-mini-pc");
+  assert.ok(minisforum, "missing minisforum-ms-s1-max-mini-pc hardware entry");
+
+  assert.match(
+    minisforum.priceNote,
+    /Estimated shipping time of Mid September/i,
+    "MINISFORUM price note should carry the shipping-time caveat"
+  );
+  assert.ok(minisforum.financingExample, "MINISFORUM should expose a financing example");
+  assert.match(
+    minisforum.financingExample.summary,
+    /0% APR plan badge/i,
+    "MINISFORUM financing example should cite the 0% APR plan badge"
+  );
+  assert.match(
+    minisforum.financingExample.summary,
+    /starting at \$204\.67\/month/i,
+    "MINISFORUM financing example should cite the PayPal monthly example"
+  );
+  assert.equal(
+    minisforum.financingExample.sourceUrl,
+    minisforum.sourceUrl,
+    "MINISFORUM financing example should point at the same product page"
+  );
+});
+
+test("the pricing-disclosure BDD documents the MINISFORUM financing example", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /MINISFORUM MS-S1 MAX pricing surfaces an official financing example/i);
+  assert.match(bdd, /0% APR plan badge/i);
+  assert.match(bdd, /starting-at \$204\.67\/month PayPal example/i);
+});
+
 test("featured hardware cards use real product-photo assets instead of SVG illustrations", async () => {
   const { featuredHardware } = await import(new URL("data.js", jsDir));
 

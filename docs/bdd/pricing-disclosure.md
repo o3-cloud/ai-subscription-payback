@@ -310,6 +310,13 @@ Scenario: Mac Studio pricing surfaces an official financing example
   And the example mentions the $208.25/mo for 12 months purchase example and the 36-month Apple Upgrade lease example
   And the example links to the Apple buy/configure page
 
+Scenario: MINISFORUM MS-S1 MAX pricing surfaces an official financing example
+  Given the hardware comparison section
+  When the visitor views the MINISFORUM MS-S1 MAX 128GB Max AI Compute Edition row
+  Then it includes MINISFORUM's official example financing copy beneath the price note
+  And the example mentions the 0% APR plan badge and the starting-at $204.67/month PayPal example
+  And the example links to the MINISFORUM product page
+
 Scenario: Mac Studio pricing uses the current Apple preorder lineup
   Given the hardware comparison section
   When the visitor views the Mac Studio card
