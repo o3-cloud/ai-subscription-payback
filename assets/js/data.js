@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-09-01";
+export const pricingLastUpdated = "2026-09-03";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-09-01";
+export const siteLastUpdated = "2026-09-03";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -837,7 +837,7 @@ export const subscriptions = [
     sourceUrl: "https://replit.com/pricing",
     sourceLabel: "Official Replit pricing",
     verification: "official",
-    lastUpdated: "2026-07-19",
+    lastUpdated: "2026-09-03",
   },
   {
     id: "replit-core-monthly",
@@ -850,7 +850,7 @@ export const subscriptions = [
     sourceUrl: "https://replit.com/pricing",
     sourceLabel: "Official Replit pricing",
     verification: "official",
-    lastUpdated: "2026-07-19",
+    lastUpdated: "2026-09-03",
   },
   {
     id: "replit-core-annual",
@@ -863,7 +863,7 @@ export const subscriptions = [
     sourceUrl: "https://replit.com/pricing",
     sourceLabel: "Official Replit pricing",
     verification: "official",
-    lastUpdated: "2026-07-19",
+    lastUpdated: "2026-09-03",
   },
   {
     id: "replit-pro-monthly",
@@ -876,7 +876,7 @@ export const subscriptions = [
     sourceUrl: "https://replit.com/pricing",
     sourceLabel: "Official Replit pricing",
     verification: "official",
-    lastUpdated: "2026-07-19",
+    lastUpdated: "2026-09-03",
   },
   {
     id: "replit-pro-annual",
@@ -889,7 +889,7 @@ export const subscriptions = [
     sourceUrl: "https://replit.com/pricing",
     sourceLabel: "Official Replit pricing",
     verification: "official",
-    lastUpdated: "2026-07-19",
+    lastUpdated: "2026-09-03",
   },
   {
     id: "mistral-free",
@@ -1474,7 +1474,7 @@ export const hardware = [
     sourceUrl: "https://www.newegg.com/asus-ascent-gx10-mini-pc/p/N82E16859110044",
     sourceLabel: "Newegg street price",
     verification: "retailer",
-    lastUpdated: "2026-07-19",
+    lastUpdated: "2026-09-03",
     defaultBoxPrice: 3970.99,
     powerDraw: 240,
     exampleOf: "dgx-spark",
