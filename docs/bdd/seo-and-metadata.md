@@ -99,6 +99,8 @@ Scenario: Posting notes point at the social card and a clean canonical link
   single source of truth for every SEO origin; the legacy project GitHub Pages
   origin (`o3-cloud.github.io`) must never appear in an indexable artifact, so
   it cannot compete with the custom domain for canonical or ranking signals.
+  The root `CNAME` file pins `www.othree.cloud` in the published Pages artifact
+  so the HTTPS certificate stays bound to the canonical host.
 - FAQ structured-data answers intentionally mirror the visible Methodology & FAQ
   copy, per search-engine rich-result guidelines that on-page and structured
   answers must match.

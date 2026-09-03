@@ -19,6 +19,7 @@ const exists = (rel) => existsSync(fileURLToPath(new URL(rel, root)));
 
 // Must match the canonical URL the SEO surface (sitemap, robots, head) uses.
 const SITE_URL = "https://www.othree.cloud/ai-subscription-payback/";
+const CUSTOM_DOMAIN = "www.othree.cloud";
 const WORKFLOW = ".github/workflows/deploy.yml";
 
 test("a GitHub Pages deployment workflow exists", () => {
@@ -79,6 +80,16 @@ test(".nojekyll disables Jekyll processing so files serve as committed", () => {
   assert.ok(exists(".nojekyll"), ".nojekyll marker is missing from the site root");
 });
 
+test("the custom domain is pinned by a root CNAME for GitHub Pages", () => {
+  assert.ok(exists("CNAME"), "CNAME is missing from the site root");
+  const cname = read("CNAME").trim();
+  assert.equal(
+    cname,
+    CUSTOM_DOMAIN,
+    "CNAME should point at the production custom domain host"
+  );
+});
+
 test("the README documents the Pages deployment location and process", () => {
   assert.ok(exists("README.md"), "README.md is missing");
   const readme = read("README.md");
@@ -90,6 +101,7 @@ test("the README documents the Pages deployment location and process", () => {
     /merging to `main`[\s\S]*publishes the site/i,
     "README explains that a push to main publishes the site"
   );
+  assert.match(readme, /root `CNAME`/i, "README mentions the root CNAME marker");
 });
 
 test("the README documents serving over HTTP for local development", () => {

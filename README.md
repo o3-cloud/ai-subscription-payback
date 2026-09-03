@@ -64,6 +64,11 @@ Because the artifact is the repository root and the site uses relative
 `.nojekyll` marker at the root disables GitHub's Jekyll processing so files are
 served exactly as committed.
 
+A root `CNAME` file pins the production custom domain
+(`www.othree.cloud`) so GitHub Pages can keep issuing the TLS certificate for
+the live site. Without it, the custom domain can fall back to an invalid HTTPS
+configuration and fail the browser handshake.
+
 A root `404.html` is published too; GitHub Pages serves it for any unmatched
 path, so unknown or stale deep links get a styled, `noindex` fallback that links
 back to the calculator. Its asset/link references are base-qualified absolute

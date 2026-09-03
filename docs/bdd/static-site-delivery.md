@@ -41,7 +41,10 @@ Scenario: Site-wide last-updated disclosure is visible in the footer
 > Deployment: GitHub Pages publishing is gated by repository eligibility. The
 > workflow enables Pages automatically on the first successful run, and because
 > the repository is public it is eligible for Pages on any plan, so each push to
-> `main` publishes the site.
+> `main` publishes the site. The repository also ships a root `CNAME` file so
+> GitHub Pages keeps the production custom domain (`www.othree.cloud`) attached
+> to the published artifact and can provision the HTTPS certificate for the live
+> site.
 
 > Local development: serve the repository root over HTTP (e.g. `npx serve .` or
 > `python3 -m http.server`) rather than opening `index.html` from a `file://`
