@@ -32,6 +32,13 @@ Scenario: The guide hub publishes the second-wave comparison pages
   And each link opens a static comparison page on the canonical origin
   And the guide set stays aligned with sitemap.xml and llms.txt
 
+Scenario: The guide hub publishes the third-wave comparison pages
+  Given the visitor opens the homepage guide hub
+  When they read the published comparison links
+  Then the page includes indexable guide links for xAI Grok, GitLab Duo, and Warp
+  And each link opens a static comparison page on the canonical origin
+  And the guide set stays aligned with sitemap.xml and llms.txt
+
 Scenario: The guides are indexed and discoverable by crawlers
   Given a crawler fetches the sitemap
   When it reads the URL list

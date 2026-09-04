@@ -35,7 +35,7 @@ const expectedGuideLinks = () =>
   }));
 
 test("the comparison-guide generator and committed files stay in sync", () => {
-  assert.equal(GUIDES.length, 14, "expected fourteen comparison mini-guides");
+  assert.equal(GUIDES.length, 17, "expected seventeen comparison mini-guides");
   for (const guide of generated) {
     assert.ok(exists(guide.path), `${guide.path} is missing`);
     const committed = read(guide.path);
@@ -264,11 +264,14 @@ test("the GitHub Copilot guide surfaces the Max AI Credit ambiguity note", () =>
   );
 });
 
-test("the mini-guides BDD names the second-wave guide families", () => {
+test("the mini-guides BDD names the second-wave and third-wave guide families", () => {
   assert.match(miniGuidesBdd, /Cursor/i, "mini-guides BDD names Cursor");
   assert.match(miniGuidesBdd, /GitHub Copilot/i, "mini-guides BDD names GitHub Copilot");
   assert.match(miniGuidesBdd, /Google AI/i, "mini-guides BDD names Google AI");
   assert.match(miniGuidesBdd, /Replit Agent/i, "mini-guides BDD names Replit Agent");
+  assert.match(miniGuidesBdd, /xAI Grok/i, "mini-guides BDD names xAI Grok");
+  assert.match(miniGuidesBdd, /GitLab Duo/i, "mini-guides BDD names GitLab Duo");
+  assert.match(miniGuidesBdd, /Warp/i, "mini-guides BDD names Warp");
   assert.match(miniGuidesBdd, /sitemap\.xml/i, "mini-guides BDD ties the guide set back to the sitemap");
   assert.match(miniGuidesBdd, /llms\.txt/i, "mini-guides BDD ties the guide set back to llms.txt");
 });

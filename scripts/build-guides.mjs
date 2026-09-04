@@ -359,6 +359,69 @@ export const GUIDES = [
       "If your usage stays near the free or lower-credit levels, the hardware case gets much weaker very quickly.",
     ],
   },
+  {
+    slug: "grok-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["grok-supergrok", "grok-supergrok-pro"],
+    title: "xAI Grok vs a Local AI Box — Cost Comparison",
+    description:
+      "How xAI Grok's SuperGrok and SuperGrok Pro tiers compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "xAI Grok vs a local AI box: the cost",
+    useCase: [
+      "xAI Grok is a good example of a monthly AI bill that can swing from a mid-tier personal plan to a much heavier power-user tier. This guide compares the SuperGrok and SuperGrok Pro spend against owning a local inference box and asks when that monthly outlay starts to rival hardware ownership.",
+      "It is written for people already expecting Grok to stay part of their monthly AI stack and who want to know whether replacing that recurring bill with local hardware would actually make sense on cost alone.",
+    ],
+    scenarioLede:
+      "A Grok user spanning SuperGrok and SuperGrok Pro against a value-class Strix Halo box.",
+    caveats: [
+      "xAI's paid tiers are hosted services with model access and product features that a local box cannot reproduce, so the comparison is about dollars spent rather than identical capability.",
+      "The SuperGrok and SuperGrok Pro plans sit at very different price points; the sample scenario intentionally bundles the heavier monthly spend so the crossover is easier to see.",
+      "A local box still brings its own costs — power, maintenance, quantization choices, and model management — that a subscription does not.",
+      "If your actual Grok usage is closer to the lighter plan, the payback month moves out quickly.",
+    ],
+  },
+  {
+    slug: "gitlab-duo-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["gitlab-premium-duo"],
+    title: "GitLab Duo vs a Local AI Box — Cost Comparison",
+    description:
+      "How GitLab Premium plus Duo Agent Platform credits compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "GitLab Duo vs a local AI box: the cost",
+    useCase: [
+      "GitLab now packages Premium with Duo Agent Platform credits, so the real monthly spend is the seat plus the AI usage allowance. This guide compares that recurring per-user cost against owning a local inference box and asks when a hardware purchase would be cheaper.",
+      "It is aimed at developers and teams who already treat GitLab Premium and Duo as part of their workflow and want to know whether replacing that stack with local hardware would actually save money.",
+    ],
+    scenarioLede:
+      "A GitLab Premium seat with Duo Agent Platform credits against a value-class Strix Halo box.",
+    caveats: [
+      "GitLab Premium is billed annually per user, and the Duo Agent Platform value is bundled into GitLab Credits rather than an unlimited AI seat, so the list price is only part of the cost picture.",
+      "A local box cannot replace GitLab's hosted product or team controls; it only substitutes a different model stack for the spending side of the equation.",
+      "The included credits matter most when usage is moderate; if a team goes well beyond the allowance, the real monthly spend can rise above the sticker price.",
+      "This is a cost comparison, not a claim of feature parity with GitLab's cloud workflow.",
+    ],
+  },
+  {
+    slug: "warp-vs-local-ai-box-cost",
+    hardwareId: "strix-halo",
+    subs: ["warp-build", "warp-max", "warp-business"],
+    title: "Warp Build, Max, and Business vs a Local AI Box — Cost Comparison",
+    description:
+      "How Warp Build, Max, and Business compare to owning a local AI inference box. Source-backed price snapshot and a sample break-even scenario.",
+    heading: "Warp Build, Max, and Business vs a local AI box: the cost",
+    useCase: [
+      "Warp spans an entry Build plan, a much heavier Max plan, and a per-seat Business tier, so it can represent both individual and team AI-terminal spend. This guide compares that mixed Warp monthly cost against owning local hardware and shows when the aggregate bill starts to look like a box instead.",
+      "It is written for users and teams who are already paying for Warp across multiple tiers and want to know whether the combined recurring spend would be cheaper to replace with owned hardware.",
+    ],
+    scenarioLede:
+      "A mixed Warp spend across Build, Max, and Business against a value-class Strix Halo box.",
+    caveats: [
+      "Warp's Build, Max, and Business plans all include different amounts of AI usage and cloud-agent capacity, so the monthly spend depends on how much of the included value you actually consume.",
+      "A local box cannot replace Warp's hosted terminal workflow, cloud agents, or team controls; it only gives you a different local model stack.",
+      "The entry Build plan is a much lighter spend than Max, while Business adds per-seat team pricing, so the sample intentionally bundles the higher-usage mix rather than the cheapest single plan.",
+      "If your Warp usage stays near the lighter end, the hardware payback moves farther out.",
+    ],
+  },
 ];
 
 /* ------------------------------- rendering ------------------------------- */

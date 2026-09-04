@@ -33,6 +33,9 @@ The site is a single static page hosted on GitHub Pages at https://www.othree.cl
 - [GitHub Copilot vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/github-copilot-vs-local-ai-box-cost.html): Cost comparison of GitHub Copilot's paid tiers versus local hardware.
 - [Google AI Pro and Google AI Ultra vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/google-ai-jules-antigravity-vs-local-ai-box-cost.html): Cost comparison of Google AI Pro and Google AI Ultra versus local hardware.
 - [Replit Agent vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/replit-agent-vs-local-ai-box-cost.html): Cost comparison of Replit Agent's paid tiers versus local hardware.
+- [xAI Grok vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/grok-vs-local-ai-box-cost.html): Cost comparison of xAI Grok's paid tiers versus local hardware.
+- [GitLab Duo vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/gitlab-duo-vs-local-ai-box-cost.html): Cost comparison of GitLab Premium plus Duo credits versus local hardware.
+- [Warp vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/warp-vs-local-ai-box-cost.html): Cost comparison of Warp's paid tiers versus local hardware.
 
 ## Optional
 
