@@ -123,10 +123,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-09-03";
+export const pricingLastUpdated = "2026-09-04";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-09-03";
+export const siteLastUpdated = "2026-09-04";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1694,11 +1694,11 @@ export const hardware = [
     priceLow: 18199,
     priceHigh: 23999,
     priceNote:
-      "Retailer-derived range from in-stock Newegg listings for full RTX PRO 6000 Blackwell 96 GB workstations (e.g. ABS AI Workstation configurations observed at ~$18,199 and ~$23,999, varying by CPU/config). This is a build-required workstation / component class — not a compact appliance like DGX Spark — and its ~600 W-class GPU pushes full-system power draw well above the mini-PC boxes, so `powerDraw` records the GPU-class figure while a complete build under load draws more. Listed for high-end context; it is not a featured card and never seeds the calculator.",
+      "Rechecked on 2026-09-04 from in-stock Newegg listings for full RTX PRO 6000 Blackwell 96 GB workstations (e.g. ABS AI Workstation configurations observed around ~$18,199 and ~$23,999, varying by CPU/config). This is a build-required workstation / component class — not a compact appliance like DGX Spark — and its ~600 W-class GPU pushes full-system power draw well above the mini-PC boxes, so `powerDraw` records the GPU-class figure while a complete build under load draws more. Listed for high-end context; it is not a featured card and never seeds the calculator.",
     sourceUrl: "https://www.newegg.com/p/pl?d=RTX+PRO+6000+Blackwell",
     sourceLabel: "Newegg street price",
     verification: "retailer",
-    lastUpdated: "2026-07-20",
+    lastUpdated: "2026-09-04",
     defaultBoxPrice: 18199,
     powerDraw: 600,
     referenceOnly: true,
