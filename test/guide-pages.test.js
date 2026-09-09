@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 
 import { buildGuides, GUIDES, guideModel, SITE_URL } from "../scripts/build-guides.mjs";
 import { serializeState, formatRate, formatCurrency } from "../assets/js/state.js";
-import { tokenOutputValueAssumptions } from "../assets/js/data.js";
+import { siteLastUpdated, tokenOutputValueAssumptions } from "../assets/js/data.js";
 
 const root = new URL("../", import.meta.url);
 const read = (rel) => readFileSync(fileURLToPath(new URL(rel, root)), "utf8");
@@ -26,6 +26,13 @@ const miniGuidesBdd = read("docs/bdd/mini-guides.md");
 const generated = buildGuides();
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeHtml = (value) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 const formatInteger = (value) => new Intl.NumberFormat("en-US").format(value);
 
 const expectedGuideLinks = () =>
@@ -109,6 +116,29 @@ test("each mini-guide carries the required SEO and content structure", () => {
       html,
       new RegExp(`<meta[^>]+name="description"[^>]+content="${escapeRegExp(guideDef.description)}"`, "i"),
       `${guide.path} has a unique description`
+    );
+    const escapedTitle = escapeRegExp(escapeHtml(guideDef.title));
+    assert.match(html, new RegExp(`<title>${escapedTitle}<\\/title>`, "i"), `${guide.path} pins its exact document title`);
+    assert.match(
+      html,
+      new RegExp(`<meta[^>]+property="og:title"[^>]+content="${escapedTitle}"`, "i"),
+      `${guide.path} pins its exact Open Graph title`
+    );
+    assert.match(
+      html,
+      new RegExp(`<meta[^>]+name="twitter:title"[^>]+content="${escapedTitle}"`, "i"),
+      `${guide.path} pins its exact Twitter title`
+    );
+    const jsonLdBlocks = [...html.matchAll(/<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)]
+      .map((match) => JSON.parse(match[1]));
+    const techArticle = jsonLdBlocks
+      .flatMap((block) => (Array.isArray(block["@graph"]) ? block["@graph"] : [block]))
+      .find((item) => item["@type"] === "TechArticle");
+    assert.ok(techArticle, `${guide.path} exposes a TechArticle JSON-LD object`);
+    assert.equal(
+      techArticle.dateModified,
+      siteLastUpdated,
+      `${guide.path} exposes the source freshness date in TechArticle JSON-LD`
     );
     // Guides ship from the guides/ subpath, so — like the homepage — they must
     // declare a favicon or the browser auto-requests a 404 /favicon.ico.

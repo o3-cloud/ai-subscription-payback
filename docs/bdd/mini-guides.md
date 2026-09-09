@@ -50,4 +50,11 @@ Scenario: Guide pages ship a favicon on the guides/ subpath
   When the document head is parsed
   Then the page declares a <link rel="icon"> pointing at the bundled favicon asset
   So the browser uses the shipped icon instead of requesting /favicon.ico
+
+Scenario: Guide pages pin exact SEO titles and source freshness
+  Given the guide generator publishes the current guide roster
+  When a crawler parses each guide page
+  Then the document title, Open Graph title, and Twitter title exactly match that guide's source title
+  And the TechArticle JSON-LD dateModified exactly matches the source site freshness date
+  So a renamed title or stale generated freshness value cannot pass through generator and snapshot parity alone
 ```
