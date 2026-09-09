@@ -377,6 +377,7 @@ Scenario: High-end reference workstation classes are listed without becoming fea
   When the visitor looks for an RTX PRO 6000 Blackwell workstation class
   Then the pricing data includes the RTX PRO 6000 Blackwell workstation as a retailer-derived reference class
   And it shows the 96 GB GDDR7 ECC VRAM spec with a build-required workstation caveat
+  And it shows the rechecked $18,199–$23,999 retailer range dated 2026-09-04
   And the reference class does not appear among the featured hardware cards
 
 Scenario: Prices are described as estimates

@@ -1707,7 +1707,7 @@ test("RTX PRO 6000 Blackwell is modeled as a reference-only high-end workstation
   assert.match(box.priceNote, /build-required|workstation/i, "flags the build caveat");
   assert.match(box.priceNote, /power draw/i, "makes the power assumption explicit");
   assert.equal(box.sourceUrl, "https://www.newegg.com/p/pl?d=RTX+PRO+6000+Blackwell");
-  assert.match(box.lastUpdated, /^\d{4}-\d{2}-\d{2}$/);
+  assert.equal(box.lastUpdated, "2026-09-04");
 
   // Its comparison-table CTA still resolves through the affiliate map.
   const cta = getAffiliate(box.id);
