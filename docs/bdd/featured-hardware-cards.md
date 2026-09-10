@@ -72,4 +72,13 @@ Scenario: Strix Halo cards are backed by named purchasable SKUs
   Then the guide lists concrete Framework Desktop, GMKtec EVO-X2, GMKtec EVO-X3, MINISFORUM MS-S1 MAX 64GB, and MINISFORUM MS-S1 MAX 128GB examples
   And each example includes vendor, memory or storage, source, price, and last-verified date
   And the generic Strix Halo class estimate is described as a range derived from those named SKUs
+
+Scenario: Hardware pricing and power scope are explicit
+  Given the comparison table and featured hardware cards
+  When the visitor reads a hardware price or power value
+  Then the row identifies whether the price is official MSRP, retailer street price, a derived estimate, or component-only
+  And the provenance identifies seller, SKU, configuration, region, and verification date
+  And power is labeled as whole-system or GPU-only with typical and peak semantics
+  And a component-only price is not presented as a turnkey system cost without a build-cost model
+  And the default calculator price basis is visible before a hardware preset is chosen
 ```

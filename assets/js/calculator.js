@@ -1006,6 +1006,30 @@ function appendSourceProvenance(doc, parent, entry) {
     parent.appendChild(doc.createTextNode(" · "));
   }
   parent.appendChild(externalLink(doc, entry.sourceUrl, "Source", false));
+  if (entry.priceBasis) {
+    const basis = doc.createElement("span");
+    basis.className = "price-basis";
+    basis.textContent = ` · price basis: ${entry.priceBasis}`;
+    parent.appendChild(basis);
+  }
+  if (entry.priceProvenance) {
+    const provenance = doc.createElement("span");
+    provenance.className = "price-provenance";
+    provenance.textContent = ` · ${entry.priceProvenance.seller}; ${entry.priceProvenance.configuration}; ${entry.priceProvenance.region}`;
+    parent.appendChild(provenance);
+  }
+  if (entry.powerProfile) {
+    const power = doc.createElement("span");
+    power.className = "power-scope";
+    power.textContent = ` · power: ${entry.powerProfile.scope}, typical ${entry.powerProfile.typical} W, peak ${entry.powerProfile.peak} W`;
+    parent.appendChild(power);
+  }
+  if (entry.buildCostModel?.required) {
+    const build = doc.createElement("span");
+    build.className = "build-cost-warning";
+    build.textContent = ` · ${entry.buildCostModel.note}`;
+    parent.appendChild(build);
+  }
   if (entry.sourceNote) {
     parent.appendChild(doc.createTextNode(" · "));
     const note = doc.createElement("span");

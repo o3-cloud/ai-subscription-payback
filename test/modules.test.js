@@ -111,6 +111,38 @@ test("every pricing entry carries a source URL and a last-updated date", async (
   }
 });
 
+test("hardware pricing provenance and power scope are explicit", async () => {
+  const { hardware } = await import(new URL("data.js", jsDir));
+  const allowedBases = new Set(["msrp", "retailer-street", "derived-estimate", "component"]);
+  const allowedScopes = new Set(["whole-system", "gpu-only"]);
+
+  for (const box of hardware) {
+    assert.ok(allowedBases.has(box.priceBasis), `${box.id} needs an explicit price basis`);
+    const provenance = box.priceProvenance;
+    assert.equal(provenance.sourceType, box.verification);
+    for (const key of ["seller", "sku", "configuration", "region", "verifiedAt"]) {
+      assert.equal(typeof provenance[key], "string", `${box.id} needs ${key} provenance`);
+      assert.ok(provenance[key].length > 0, `${box.id} ${key} provenance is empty`);
+    }
+    assert.equal(provenance.verifiedAt, box.lastUpdated);
+    assert.ok(allowedScopes.has(box.powerProfile.scope), `${box.id} needs a power scope`);
+    assert.equal(typeof box.powerProfile.typical, "number");
+    assert.equal(typeof box.powerProfile.peak, "number");
+  }
+
+  const component = hardware.find((box) => box.id === "rtx-pro-6000-blackwell");
+  assert.equal(component.priceBasis, "component");
+  assert.equal(component.powerProfile.scope, "gpu-only");
+  assert.equal(component.buildCostModel.required, true);
+  assert.equal(component.buildCostModel.included, false);
+
+  const turnkey = hardware.filter((box) => !box.referenceOnly);
+  assert.ok(turnkey.every((box) => box.priceBasis !== "component"));
+  assert.match(read("index.html"), /Default calculator price basis/i);
+  assert.match(read("docs/bdd/featured-hardware-cards.md"), /Hardware pricing and power scope are explicit/i);
+});
+
+
 test("the site- and pricing-wide dates stay at least as fresh as every entry", async () => {
   // `siteLastUpdated`/`pricingLastUpdated` are what visitors and crawlers read
   // as the freshness of the whole site. Individual entries carry their own

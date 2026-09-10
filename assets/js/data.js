@@ -37,6 +37,11 @@
  * @property {string} sourceUrl - where the price was quoted from
  * @property {string} sourceLabel - short provenance for the number (official vendor pricing, …)
  * @property {string} [sourceNote] - optional maintainer note about source caveats
+ * @property {HardwarePriceProvenance} priceProvenance - structured seller, SKU,
+ *   configuration, region, and verification metadata for the displayed price
+ * @property {("msrp"|"retailer-street"|"derived-estimate"|"component")} priceBasis
+ *   - what the displayed price represents
+ * @property {HardwarePowerProfile} powerProfile - scoped power semantics
  * @property {("official"|"retailer"|"estimate")} verification - how the number is
  *   substantiated: an "official" vendor price, a "retailer" / street price, or a
  *   class "estimate". Surfaced as a status badge next to the last-verified date.
@@ -86,6 +91,24 @@
  *   not promoted to a featured product card (e.g. a build-required workstation /
  *   component class with no compact-appliance product photo). Kept out of
  *   `featuredHardware`, so it never seeds the calculator or renders a card.
+ */
+
+/**
+ * @typedef {Object} HardwarePriceProvenance
+ * @property {("official"|"retailer"|"estimate")} sourceType
+ * @property {string} seller
+ * @property {string} sku
+ * @property {string} configuration
+ * @property {string} region
+ * @property {string} verifiedAt
+ */
+
+/**
+ * @typedef {Object} HardwarePowerProfile
+ * @property {("whole-system"|"gpu-only")} scope
+ * @property {number|null} idle
+ * @property {number} typical
+ * @property {number} peak
  */
 
 /**
@@ -1706,6 +1729,40 @@ export const hardware = [
     referenceOnly: true,
   },
 ];
+
+// Normalize every hardware row into an explicit audit contract. The legacy
+// fields remain the compact display/calculator inputs, while these fields make
+// component prices and GPU-only wattage impossible to misread as turnkey data.
+for (const entry of hardware) {
+  entry.priceBasis = entry.referenceOnly
+    ? "component"
+    : entry.verification === "official"
+      ? "msrp"
+      : entry.verification === "retailer"
+        ? "retailer-street"
+        : "derived-estimate";
+  entry.priceProvenance = {
+    sourceType: entry.verification,
+    seller: entry.sourceLabel,
+    sku: entry.id,
+    configuration: entry.spec,
+    region: "US",
+    verifiedAt: entry.lastUpdated,
+  };
+  entry.powerProfile = {
+    scope: entry.referenceOnly ? "gpu-only" : "whole-system",
+    idle: null,
+    typical: entry.powerDraw ?? 0,
+    peak: entry.powerDraw ?? 0,
+  };
+  if (entry.referenceOnly) {
+    entry.buildCostModel = {
+      required: true,
+      included: false,
+      note: "Component price only; add a complete system build before using as a turnkey ownership cost.",
+    };
+  }
+}
 
 /**
  * The top-level boxes shown as cards in the "Featured hardware to compare"
