@@ -88,6 +88,7 @@ Scenario: Reset restores the default hardware trim
   When the visitor resets the calculator form
   Then every featured hardware trim selector returns to its documented default
   And no featured hardware card remains marked active
+  And the featured hardware status returns to "Choose a system to load its assumptions into the calculator."
 
 Scenario: Featured hardware cards expose a sustained throughput range for guide-value math
   Given a featured hardware card on the homepage

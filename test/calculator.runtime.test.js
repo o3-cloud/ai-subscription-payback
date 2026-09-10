@@ -1508,6 +1508,11 @@ test("resetting the form restores the default hardware trim and clears the activ
   assert.equal(active.length, 0, "reset clears the active highlight");
   const resetSelect = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
   assert.equal(resetSelect.value, trims[0].id, "reset restores the documented default trim");
+  assert.equal(
+    doc.getElementById("featured-hardware-status").textContent,
+    "Choose a system to load its assumptions into the calculator.",
+    "reset restores the default featured-hardware prompt"
+  );
 });
 
 test("initCalculator renders the real results state for valid inputs", () => {

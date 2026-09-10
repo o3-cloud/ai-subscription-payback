@@ -1603,6 +1603,8 @@ export function initCalculator(doc, win) {
       renderSubscriptionOptions(doc);
       clearSubscriptionFilters(doc);
       applyState(doc, defaults);
+      const featuredStatus = doc.getElementById("featured-hardware-status");
+      if (featuredStatus) featuredStatus.textContent = "";
       // Rebuild the cards after restoring calculator defaults so a previously
       // selected non-default trim cannot remain visible in the selector.
       hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
