@@ -104,10 +104,19 @@ class StubNode {
     this.listeners.set(type, list);
   }
 
-  /** Test helper: fire listeners; awaits any async handlers. */
+  /** Test helper: fire listeners with the cancelable event surface used by forms. */
   dispatch(type) {
     const list = this.listeners.get(type) || [];
-    return Promise.all(list.map((fn) => fn({ type, target: this })));
+    const event = {
+      type,
+      target: this,
+      defaultPrevented: false,
+      preventDefault() {
+        this.defaultPrevented = true;
+      },
+    };
+    this.lastEvent = event;
+    return Promise.all(list.map((fn) => fn(event)));
   }
 }
 
@@ -1502,6 +1511,11 @@ test("resetting the form restores the default hardware trim and clears the activ
   await modelSize.dispatch("input");
 
   await doc.getElementById("calculator-form").dispatch("reset");
+  assert.equal(
+    doc.getElementById("calculator-form").lastEvent.defaultPrevented,
+    true,
+    "reset owns restoration instead of allowing native defaults to race it"
+  );
   const active = doc.querySelectorAll(
     '#featured-hardware-cards .hardware-card[data-active="true"]'
   );
