@@ -307,6 +307,20 @@ main > section {
   font-size: 0.85rem;
 }
 
+.hardware-card-fit-advisory {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.85rem;
+}
+
+.model-fit-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
 /* Per-card configuration/trim picker for boxes sold across a price range. */
 .hardware-card-trim {
   display: flex;

@@ -82,6 +82,8 @@
  *   separately from the site's advisory heuristic when an official ceiling exists
  * @property {string} [modelFit] - conservative, human-readable model-fit guidance
  *   for the featured card; advisory only, not a benchmark promise
+ * @property {HardwareMemoryProfile} memoryProfile - structured memory facts used
+ *   for advisory model-fit calculations; never a benchmark claim
  * @property {HardwareImage} [image] - product photo shown on the featured card
  * @property {HardwareFinancingExample} [financingExample] - optional vendor
  *   financing context shown on the card when an official monthly-payment example
@@ -91,6 +93,15 @@
  *   not promoted to a featured product card (e.g. a build-required workstation /
  *   component class with no compact-appliance product photo). Kept out of
  *   `featuredHardware`, so it never seeds the calculator or renders a card.
+ */
+
+/**
+ * @typedef {Object} HardwareMemoryProfile
+ * @property {number} capacityGB - advertised capacity
+ * @property {("unified"|"allocatable-accelerator"|"discrete-vram")} type
+ * @property {number|null} allocatableGB - usable model-memory estimate, when known
+ * @property {string} allocatableBasis - why the value is or is not available
+ * @property {string} source - source of the capacity claim
  */
 
 /**
@@ -1734,6 +1745,20 @@ export const hardware = [
 // fields remain the compact display/calculator inputs, while these fields make
 // component prices and GPU-only wattage impossible to misread as turnkey data.
 for (const entry of hardware) {
+  const capacityMatch = entry.spec.match(/(\d+(?:\.\d+)?)\s*GB/i);
+  const capacityGB = capacityMatch ? Number(capacityMatch[1]) : null;
+  const type = /VRAM/i.test(entry.spec)
+    ? "discrete-vram"
+    : /unified|LPDDR/i.test(entry.spec)
+      ? "unified"
+      : "allocatable-accelerator";
+  entry.memoryProfile = {
+    capacityGB,
+    type,
+    allocatableGB: null,
+    allocatableBasis: "Advisory fit uses a conservative runtime reservation; no measured usable-memory claim is published here.",
+    source: entry.sourceUrl,
+  };
   entry.priceBasis = entry.referenceOnly
     ? "component"
     : entry.verification === "official"

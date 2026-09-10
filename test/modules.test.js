@@ -39,6 +39,19 @@ test("data.js exports the datasets the UI renders", async () => {
   assert.match(data.siteLastUpdated, ISO_DATE);
 });
 
+test("hardware exposes typed memory metadata for model-fit advisories", async () => {
+  const { hardware, featuredHardware } = await import(new URL("data.js", jsDir));
+  const types = new Set(["unified", "allocatable-accelerator", "discrete-vram"]);
+  for (const entry of hardware) {
+    assert.ok(entry.memoryProfile, `${entry.id} lacks memoryProfile`);
+    assert.ok(types.has(entry.memoryProfile.type), `${entry.id} has invalid memory type`);
+    assert.ok(Number.isFinite(entry.memoryProfile.capacityGB) && entry.memoryProfile.capacityGB > 0, `${entry.id} lacks capacity`);
+    assert.equal(entry.memoryProfile.source, entry.sourceUrl);
+  }
+  assert.equal(featuredHardware.find((entry) => entry.id === "dgx-spark").memoryProfile.type, "unified");
+  assert.equal(hardware.find((entry) => entry.id === "rtx-pro-6000-blackwell").memoryProfile.type, "discrete-vram");
+});
+
 test("data.js exposes only the token-value model the guides actually consume", async () => {
   const data = await import(new URL("data.js", jsDir));
 
@@ -2026,6 +2039,18 @@ test("analytics.js emits aggregate events and honors Do Not Track", async () => 
   };
   analyticsModule.createAnalytics(dntWin).trackPageview();
   assert.equal(dntCalls.length, 0);
+});
+
+test("state.js model-fit advisories are conservative and quantization-sensitive", async () => {
+  const { evaluateModelFit } = await import(new URL("state.js", jsDir));
+  const hardware = { memoryProfile: { capacityGB: 64, type: "unified" } };
+  assert.equal(evaluateModelFit(hardware, { modelSizeB: 7, quantization: "int4" }).status, "fits");
+  assert.equal(evaluateModelFit(hardware, { modelSizeB: 70, quantization: "fp16" }).status, "does-not-fit");
+  assert.notEqual(
+    evaluateModelFit(hardware, { modelSizeB: 30, quantization: "int4" }).status,
+    evaluateModelFit(hardware, { modelSizeB: 30, quantization: "fp16" }).status
+  );
+  assert.equal(evaluateModelFit(hardware, { modelSizeB: 30, quantization: "unsupported" }).status, "unknown");
 });
 
 test("state.js validation and formatting behave", async () => {

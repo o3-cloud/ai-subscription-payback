@@ -40,6 +40,7 @@ import {
   formatBreakEven,
   PAYMENT_TIMING_FIELD,
   PAYMENT_TIMING_MODES,
+  evaluateModelFit,
 } from "./state.js";
 import { createAnalytics } from "./analytics.js";
 
@@ -1260,6 +1261,15 @@ function renderFeaturedHardware(doc, win, analytics) {
       card.appendChild(fit);
     }
 
+    const selectedModelSize = Number(doc.getElementById("model-size")?.value || 30);
+    const selectedQuantization = doc.getElementById("model-quantization")?.value || "int4";
+    const advisory = evaluateModelFit(box, { modelSizeB: selectedModelSize, quantization: selectedQuantization });
+    const advisoryFit = doc.createElement("p");
+    advisoryFit.className = "hardware-card-fit-advisory";
+    advisoryFit.setAttribute("data-fit-status", advisory.status);
+    advisoryFit.textContent = `Advisory fit for ${selectedModelSize}B ${selectedQuantization}: ${advisory.status}. ${advisory.reason}`;
+    card.appendChild(advisoryFit);
+
     // A range card lets the visitor pick a trim before loading; a single-price
     // card has one trim and renders no selector (keeping its prior behavior).
     const trims = hardwareTrims(box);
@@ -1589,6 +1599,12 @@ export function initCalculator(doc, win) {
       update(doc, win);
     });
   }
+
+  const modelSize = doc.getElementById("model-size");
+  const modelQuantization = doc.getElementById("model-quantization");
+  const rerenderFit = () => renderFeaturedHardware(doc, win, analytics);
+  modelSize?.addEventListener("input", rerenderFit);
+  modelQuantization?.addEventListener("change", rerenderFit);
 
   wireShare(doc, win, analytics);
   analytics.trackPageview();

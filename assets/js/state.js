@@ -30,6 +30,25 @@ export const CUSTOM_SPEND_FIELD = "customSpend";
 export const PAYMENT_TIMING_FIELD = "paymentTiming";
 export const PAYMENT_TIMING_MODES = ["effective-monthly", "actual-cash-flow"];
 
+/** Memory multipliers for an advisory, not-guaranteed fit estimate. */
+export const MODEL_QUANTIZATION_BYTES = { fp16: 2, int8: 1, int4: 0.5 };
+
+/** Estimate model fit without making a throughput or quality claim. */
+export function evaluateModelFit(hardware, model) {
+  const capacity = hardware?.memoryProfile?.capacityGB;
+  const bytesPerParameter = MODEL_QUANTIZATION_BYTES[model?.quantization];
+  const size = Number(model?.modelSizeB);
+  if (!Number.isFinite(capacity) || capacity <= 0 || !Number.isFinite(size) || size <= 0 || !bytesPerParameter) {
+    return { status: "unknown", requiredGB: null, availableGB: null, reason: "Select a positive model size, supported quantization, and hardware with structured memory data." };
+  }
+  const contextMultiplier = 1 + Math.min(Math.max(Number(model.contextLength) || 4096, 1024), 32768) / 65536;
+  const requiredGB = size * bytesPerParameter * contextMultiplier * 1.12;
+  const availableGB = capacity * 0.8;
+  if (requiredGB <= availableGB * 0.8) return { status: "fits", requiredGB, availableGB, reason: "The estimate fits within a conservative memory budget." };
+  if (requiredGB <= availableGB) return { status: "conditional", requiredGB, availableGB, reason: "Borderline estimate: runtime overhead, context, and offload behavior may change the result." };
+  return { status: "does-not-fit", requiredGB, availableGB, reason: "The estimated model memory exceeds the conservative available budget." };
+}
+
 /**
  * Validate the optional custom monthly spend. Blank is valid (the calculator
  * falls back to the checked subscriptions); any provided value must be a

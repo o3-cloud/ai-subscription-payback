@@ -59,6 +59,15 @@ Scenario: Featured hardware cards include practical model-fit guidance
   And where a vendor publishes an official workload claim, the card shows it as a separate vendor-attributed line distinct from the heuristic
   And for DGX Spark, the official line distinguishes NVIDIA's 200B-parameter inference claim, 70B-parameter fine-tuning claim, and 405B two-system claim from the site's conservative guidance
 
+Scenario: Hardware memory metadata and selected-model fit are explicit
+  Given a hardware record and a selected model size and quantization
+  When the calculator evaluates model fit
+  Then the record exposes numeric advertised capacity and a memory type of unified, allocatable accelerator, or discrete VRAM
+  And the result is an advisory fits, conditional, does-not-fit, or unknown status based on a conservative available-memory budget
+  And changing quantization or model size changes the advisory result when the memory requirement changes
+  And the interface labels the result as an advisory and does not call it a benchmark
+  And vendor workload ceilings remain separate from measured throughput and advisory fit results
+
 Scenario: Featured hardware cards expose a sustained throughput range for guide-value math
   Given a featured hardware card on the homepage
   When the maintainer inspects the data model
