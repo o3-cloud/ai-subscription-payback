@@ -76,6 +76,13 @@ Scenario: Model-fit rerenders preserve the loaded hardware trim
   And the same card remains marked active
   And the updated advisory fit is shown for the new model-fit controls
 
+Scenario: URL-preloaded trims survive model-fit rerenders
+  Given the visitor opens a share URL containing a non-default featured hardware trim
+  When the visitor changes the advisory model size or quantization
+  Then the URL-selected trim remains selected
+  And its loaded price and power draw remain unchanged
+  And the matching card remains marked active
+
 Scenario: Reset restores the default hardware trim
   Given the visitor has loaded a non-default featured hardware trim into the calculator
   When the visitor resets the calculator form

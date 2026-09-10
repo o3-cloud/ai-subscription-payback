@@ -1438,6 +1438,44 @@ test("a hardware preset from the URL renders with its card already active", () =
   assert.equal(cards[2].getAttribute("data-active"), null);
 });
 
+test("a URL-preloaded non-default trim survives model-fit rerenders", async () => {
+  const strixIndex = featuredHardware.findIndex((box) => box.id === "strix-halo");
+  const strixTrims = hardwareTrims(featuredHardware[strixIndex]);
+  const chosenTrim = strixTrims.at(-1);
+  const { doc } = boot(
+    `?boxPrice=${chosenTrim.boxPrice}&powerDraw=${chosenTrim.powerDraw}`
+  );
+  const expectedPrice = String(chosenTrim.boxPrice);
+  const expectedPower = String(chosenTrim.powerDraw);
+
+  let select = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
+  let cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  assert.equal(select.value, chosenTrim.id, "URL hydration selects the matching non-default trim");
+  assert.equal(cards[strixIndex].getAttribute("data-active"), "true");
+
+  const modelSize = doc.getElementById("model-size");
+  modelSize.value = "70";
+  await modelSize.dispatch("input");
+
+  select = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
+  cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  assert.equal(select.value, chosenTrim.id, "model-size rerender keeps the URL-selected trim");
+  assert.equal(String(doc.getElementById("box-price").value), expectedPrice);
+  assert.equal(String(doc.getElementById("power-draw").value), expectedPower);
+  assert.equal(cards[strixIndex].getAttribute("data-active"), "true");
+
+  const quantization = doc.getElementById("model-quantization");
+  quantization.value = "fp16";
+  await quantization.dispatch("change");
+
+  select = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
+  cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  assert.equal(select.value, chosenTrim.id, "quantization rerender keeps the URL-selected trim");
+  assert.equal(String(doc.getElementById("box-price").value), expectedPrice);
+  assert.equal(String(doc.getElementById("power-draw").value), expectedPower);
+  assert.equal(cards[strixIndex].getAttribute("data-active"), "true");
+});
+
 test("default boot leaves every hardware card inactive", () => {
   const { doc } = boot();
   const active = doc.querySelectorAll(
