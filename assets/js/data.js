@@ -2025,6 +2025,8 @@ export function getAffiliate(id) {
 
 /** Default calculator inputs used to populate the form on load. */
 export const defaults = {
+  modelSize: 30,
+  modelQuantization: "int4",
   boxPrice: 3000,
   downPayment: 500,
   apr: 9.9,

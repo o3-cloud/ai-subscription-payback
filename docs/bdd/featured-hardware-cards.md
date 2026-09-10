@@ -90,6 +90,13 @@ Scenario: Reset restores the default hardware trim
   And no featured hardware card remains marked active
   And the featured hardware status returns to "Choose a system to load its assumptions into the calculator."
 
+Scenario: Reset restores the default model-fit advisory controls
+  Given the visitor has changed the model size or quantization controls
+  When the visitor resets the calculator form
+  Then the model size returns to the documented default of 30B
+  And the quantization returns to the documented default of INT4
+  And the featured hardware advisory copy is rendered from those default controls
+
 Scenario: Featured hardware cards expose a sustained throughput range for guide-value math
   Given a featured hardware card on the homepage
   When the maintainer inspects the data model

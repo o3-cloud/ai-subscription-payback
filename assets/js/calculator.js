@@ -1414,6 +1414,15 @@ function renderAssumptions(doc) {
 }
 
 function applyState(doc, state) {
+  const modelSize = doc.getElementById("model-size");
+  if (modelSize && state.modelSize !== undefined && state.modelSize !== "") {
+    modelSize.value = String(state.modelSize);
+  }
+  const modelQuantization = doc.getElementById("model-quantization");
+  if (modelQuantization && state.modelQuantization !== undefined && state.modelQuantization !== "") {
+    modelQuantization.value = String(state.modelQuantization);
+  }
+
   for (const [key, id] of Object.entries(FIELD_IDS)) {
     const el = doc.getElementById(id);
     if (!el) continue;

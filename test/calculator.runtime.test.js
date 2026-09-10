@@ -1509,6 +1509,9 @@ test("resetting the form restores the default hardware trim and clears the activ
   const modelSize = doc.getElementById("model-size");
   modelSize.value = "70";
   await modelSize.dispatch("input");
+  const modelQuantization = doc.getElementById("model-quantization");
+  modelQuantization.value = "fp16";
+  await modelQuantization.dispatch("change");
 
   await doc.getElementById("calculator-form").dispatch("reset");
   assert.equal(
@@ -1527,6 +1530,13 @@ test("resetting the form restores the default hardware trim and clears the activ
     "Choose a system to load its assumptions into the calculator.",
     "reset restores the default featured-hardware prompt"
   );
+  assert.equal(doc.getElementById("model-size").value, String(defaults.modelSize));
+  assert.equal(doc.getElementById("model-quantization").value, defaults.modelQuantization);
+  const advisories = doc.querySelectorAll("#featured-hardware-cards .hardware-card-fit-advisory");
+  assert.equal(advisories.length, featuredHardware.length, "reset rerenders every hardware advisory");
+  for (const advisory of advisories) {
+    assert.match(advisory.textContent, /Advisory fit for 30B int4:/i, "reset rerenders advisory copy from model-fit defaults");
+  }
 });
 
 test("initCalculator renders the real results state for valid inputs", () => {
