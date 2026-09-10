@@ -38,6 +38,8 @@ import {
   buildShareUrl,
   formatCurrency,
   formatBreakEven,
+  PAYMENT_TIMING_FIELD,
+  PAYMENT_TIMING_MODES,
 } from "./state.js";
 import { createAnalytics } from "./analytics.js";
 
@@ -51,6 +53,7 @@ const FIELD_IDS = {
   powerDraw: "power-draw",
   hoursPerDay: "hours-per-day",
   customSpend: "custom-spend",
+  paymentTiming: "payment-timing",
   maintenance: "opt-maintenance",
   resale: "opt-resale",
   taxes: "opt-taxes",
@@ -112,6 +115,24 @@ function monthlySubscriptionCost(state) {
   return hasCustomSpend(state)
     ? Number(state.customSpend)
     : selectedSubscriptionMonthlyCost(state);
+}
+
+function annualPrice(sub) {
+  if (!/annual/i.test(sub.billingCadence || "") || /no annual commitment/i.test(sub.billingCadence || "")) return null;
+  if (Number.isFinite(sub.annualPrice)) return sub.annualPrice;
+  const match = String(sub.billingCadence).match(/\$([\d,]+(?:\.\d+)?)\s*(?:up front|per user\/year)/i);
+  return match ? Number(match[1].replace(/,/g, "")) : sub.monthlyPrice * 12;
+}
+
+function subscriptionCashFlowAtMonth(state, month) {
+  if (hasCustomSpend(state)) return Number(state.customSpend);
+  const selected = new Set(Array.isArray(state.subscriptions) ? state.subscriptions : []);
+  return subscriptions.reduce((total, sub) => {
+    if (!selected.has(sub.id)) return total;
+    const annual = annualPrice(sub);
+    if (!annual) return total + sub.monthlyPrice;
+    return total + (month === 1 || (month > 12 && (month - 1) % 12 === 0) ? annual : 0);
+  }, 0);
 }
 
 const SUBSCRIPTION_BY_ID = new Map(subscriptions.map((sub) => [sub.id, sub]));
@@ -449,6 +470,9 @@ function renderSeries(doc, series, breakEvenMonth) {
  * @returns {{ breakEvenMonth: number|null, monthlyPayment: number|null, monthlyNetSavings: number|null, series: Array<{month:number, subscriptionCost:number, ownershipCost:number, monthlySubscriptionCost:number, monthlyOwnershipCost:number}> }}
  */
 export function computeResult(state) {
+  const timing = PAYMENT_TIMING_MODES.includes(state[PAYMENT_TIMING_FIELD])
+    ? state[PAYMENT_TIMING_FIELD]
+    : "effective-monthly";
   const subscriptionMonthlyCost = monthlySubscriptionCost(state);
   const boxPrice = clamp(toNumber(state.boxPrice));
   const downPayment = clamp(toNumber(state.downPayment), 0, boxPrice);
@@ -461,10 +485,14 @@ export function computeResult(state) {
   const resale = resaleCredit(state);
   const series = [];
   let breakEvenMonth = null;
+  let cumulativeSubscriptionCost = 0;
 
   for (let month = 1; month <= horizonMonths; month += 1) {
     const loanMonthsPaid = Math.min(month, term);
-    const cumulativeSubscriptionCost = subscriptionMonthlyCost * month;
+    const subscriptionPayment = timing === "actual-cash-flow"
+      ? subscriptionCashFlowAtMonth(state, month)
+      : subscriptionMonthlyCost;
+    cumulativeSubscriptionCost += subscriptionPayment;
     const cumulativeOwnershipCost =
       upfrontCost +
       monthlyElectricityCost(state) * month +
@@ -477,6 +505,7 @@ export function computeResult(state) {
       subscriptionCost: cumulativeSubscriptionCost,
       ownershipCost: cumulativeOwnershipCost,
       monthlySubscriptionCost: subscriptionMonthlyCost,
+      subscriptionPayment,
       monthlyOwnershipCost: month <= term ? recurringMonthlyCost : recurringMonthlyCost - monthlyPayment,
     });
 
@@ -488,7 +517,11 @@ export function computeResult(state) {
   return {
     breakEvenMonth,
     monthlyPayment,
-    monthlyNetSavings,
+    monthlyNetSavings: timing === "actual-cash-flow"
+      ? subscriptionCashFlowAtMonth(state, 1) - recurringMonthlyCost
+      : monthlyNetSavings,
+    paymentTiming: timing,
+    annualRenewalMonth: 13,
     series,
   };
 }
@@ -501,8 +534,10 @@ function readState(doc) {
     if (!el) continue;
     if (el.type === "checkbox") {
       state[key] = el.checked;
+    } else if (key === PAYMENT_TIMING_FIELD) {
+      state[key] = el.value;
     } else {
-      // Trim first so a whitespace-only entry reads as empty (absent/default)
+      // Trim first so a whitespace-only entry reads as empty (absent)
       // rather than Number("  ") === 0, matching the share-param parsing.
       const raw = typeof el.value === "string" ? el.value : String(el.value ?? "");
       const trimmed = raw.trim();
@@ -570,6 +605,8 @@ function renderResults(doc, state, valid) {
 
   const chartHint = doc.querySelector("#cost-chart .chart-hint");
   const spendBasis = doc.getElementById("spend-basis");
+  const paymentMode = doc.getElementById("payment-mode");
+  const paymentTiming = doc.getElementById("payment-timing");
 
   if (!valid) {
     if (status) {
@@ -580,6 +617,7 @@ function renderResults(doc, state, valid) {
     if (paymentEl) paymentEl.textContent = "—";
     if (savingsEl) savingsEl.textContent = "—";
     if (spendBasis) spendBasis.textContent = "";
+    if (paymentMode) paymentMode.textContent = "";
     renderBundleOverlapCaveat(doc, null);
     // Clear any stale summary so an invalid state never leaves a prior
     // "no break-even" (or break-even) message visible in the chart region.
@@ -621,6 +659,23 @@ function renderResults(doc, state, valid) {
     } else {
       spendBasis.textContent = `Comparing against ${monthly}/mo from the selected subscriptions.`;
     }
+  }
+
+  if (paymentTiming) paymentTiming.value = result.paymentTiming;
+  if (paymentMode) {
+    const annualPlans = !hasCustomSpend(state)
+      ? subscriptions
+          .filter((sub) => Array.isArray(state.subscriptions) && state.subscriptions.includes(sub.id))
+          .map((sub) => {
+            const annual = annualPrice(sub);
+            return annual ? `${sub.name} ${sub.plan}: ${formatCurrency(annual)} upfront, renews month 13` : null;
+          })
+          .filter(Boolean)
+      : [];
+    const annualNote = annualPlans.length ? ` ${annualPlans.join("; ")}.` : "";
+    paymentMode.textContent = result.paymentTiming === "actual-cash-flow"
+      ? `Payment timing: actual cash flow — annual plans are charged upfront at month 1 and renew in month 13, 25, and so on.${annualNote}`
+      : `Payment timing: effective monthly — annual plans are spread across 12 months.${annualNote}`;
   }
 
   renderBundleOverlapCaveat(doc, state);
@@ -1330,6 +1385,10 @@ function applyState(doc, state) {
     } else if (state[key] !== undefined && state[key] !== "") {
       el.value = state[key];
     }
+  }
+  const timing = doc.getElementById("payment-timing");
+  if (timing && PAYMENT_TIMING_MODES.includes(state[PAYMENT_TIMING_FIELD])) {
+    timing.value = state[PAYMENT_TIMING_FIELD];
   }
 }
 

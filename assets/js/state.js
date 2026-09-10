@@ -26,6 +26,10 @@ export const BOOLEAN_FIELDS = ["maintenance", "resale", "taxes"];
  */
 export const CUSTOM_SPEND_FIELD = "customSpend";
 
+/** Payment timing choices for subscription comparisons. */
+export const PAYMENT_TIMING_FIELD = "paymentTiming";
+export const PAYMENT_TIMING_MODES = ["effective-monthly", "actual-cash-flow"];
+
 /**
  * Validate the optional custom monthly spend. Blank is valid (the calculator
  * falls back to the checked subscriptions); any provided value must be a
@@ -87,6 +91,9 @@ export function serializeState(state) {
   if (state[CUSTOM_SPEND_FIELD] !== undefined) {
     params.set(CUSTOM_SPEND_FIELD, String(state[CUSTOM_SPEND_FIELD]));
   }
+  if (PAYMENT_TIMING_MODES.includes(state[PAYMENT_TIMING_FIELD])) {
+    params.set(PAYMENT_TIMING_FIELD, state[PAYMENT_TIMING_FIELD]);
+  }
   if (Array.isArray(state.subscriptions)) {
     params.set("subs", state.subscriptions.join(","));
   }
@@ -104,6 +111,7 @@ const SHARE_PARAM_KEYS = [
   ...Object.keys(NUMERIC_FIELDS),
   ...BOOLEAN_FIELDS,
   CUSTOM_SPEND_FIELD,
+  PAYMENT_TIMING_FIELD,
   "subs",
 ];
 
@@ -216,6 +224,9 @@ export function parseState(search, defaults = {}) {
       const num = Number(normalized);
       if (Number.isFinite(num)) state[CUSTOM_SPEND_FIELD] = num;
     }
+  }
+  if (PAYMENT_TIMING_MODES.includes(params.get(PAYMENT_TIMING_FIELD))) {
+    state[PAYMENT_TIMING_FIELD] = params.get(PAYMENT_TIMING_FIELD);
   }
   if (params.has("subs")) {
     const rawSubs = params.get("subs") ?? "";

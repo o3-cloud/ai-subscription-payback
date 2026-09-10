@@ -31,6 +31,8 @@
  *   so the comparison stays month-by-month regardless of billing cadence.
  * @property {string} billingCadence - how the tier is billed (monthly, annual up
  *   front, per seat, …) in plain language
+ * @property {number} [annualPrice] - the total charged at the start of an annual
+ *   billing cycle; when omitted, annual cadence falls back to monthlyPrice × 12
  * @property {string} includedValue - what a seat/plan at this tier includes
  * @property {string} sourceUrl - where the price was quoted from
  * @property {string} sourceLabel - short provenance for the number (official vendor pricing, …)
@@ -1957,6 +1959,7 @@ export const defaults = {
   // calculator.js). Keep this value in step with a `spendPresets` entry so the
   // preset label logic can recognize the default.
   customSpend: 200,
+  paymentTiming: "effective-monthly",
   maintenance: false,
   resale: false,
   taxes: false,
@@ -1997,7 +2000,7 @@ export const optionalCostRates = {
 
 /** Human-readable assumptions surfaced in the methodology section. */
 export const assumptions = [
-  "Subscriptions are compared at their monthly per-seat price. Annually billed tiers use the effective monthly cost (annual price ÷ 12), so the comparison stays month-by-month even when a plan is paid yearly up front.",
+  "Subscriptions can be compared as an effective monthly equivalent or as actual cash flow. In actual cash-flow mode, annual plans charge their full annual total at month 1 and again at each 12-month renewal; monthly plans charge each month.",
   "Hardware is financed: principal is (box price − down payment), repaid over the term at the given APR as a fixed monthly loan payment.",
   `Electricity cost = power draw (kW) × hours per day × ${daysPerMonth} days × rate per kWh.`,
   "Hybrid local workflows like LM Studio Bionic can still incur cloud-token spillover; model that recurring spend with the custom monthly spend field instead of treating it as a separate subscription.",

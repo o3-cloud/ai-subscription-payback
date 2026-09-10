@@ -41,6 +41,13 @@ Scenario: Comparison basis reflects the active subscription spend
   Then the results identify which monthly subscription budget is being compared
   And the chart summary matches the selected comparison basis
 
+Scenario: Annual subscription payment timing is explicit
+  Given the visitor selects effective monthly or actual cash-flow comparison
+  When the calculation runs
+  Then the results identify the selected payment-timing mode
+  And annual plans expose their full upfront total and their month-13 renewal timing
+  And actual cash-flow mode charges annual plans only at the start of each annual cycle
+
 Scenario: Month-by-month table is collapsed by default
   Given a computed result is displayed
   When the visitor views the results area

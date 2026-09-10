@@ -211,7 +211,8 @@ const REQUIRED_IDS = [
   "spend-preset",
   "custom-spend",
   "spend-basis",
-  "results-status",
+  "payment-mode",
+  "payment-timing",
   "bundle-caveat",
   "comparison-body",
   "pricing-list",
@@ -259,6 +260,9 @@ function buildDocument() {
   const preset = doc.createElement("select");
   preset.id = "spend-preset";
   form.appendChild(preset);
+  const paymentTiming = doc.createElement("select");
+  paymentTiming.id = "payment-timing";
+  form.appendChild(paymentTiming);
   for (const id of ["opt-maintenance", "opt-resale", "opt-taxes"]) {
     const input = doc.createElement("input");
     input.id = id;
@@ -290,6 +294,9 @@ function buildDocument() {
   const basis = doc.createElement("p");
   basis.id = "spend-basis";
   body.appendChild(basis);
+  const paymentMode = doc.createElement("p");
+  paymentMode.id = "payment-mode";
+  body.appendChild(paymentMode);
   const bundleCaveat = doc.createElement("p");
   bundleCaveat.id = "bundle-caveat";
   body.appendChild(bundleCaveat);
@@ -513,6 +520,44 @@ test("computeResult finds break-even and supports optional assumptions", () => {
   );
 });
 
+test("computeResult models annual upfront payments and renewals separately from monthly equivalents", () => {
+  const input = {
+    subscriptions: ["claude-pro-annual"],
+    boxPrice: 0,
+    downPayment: 0,
+    apr: 0,
+    term: 12,
+    electricityRate: 0,
+    powerDraw: 0,
+    hoursPerDay: 0,
+    maintenance: false,
+    resale: false,
+    taxes: false,
+  };
+  const effective = computeResult({ ...input, paymentTiming: "effective-monthly" });
+  const cash = computeResult({ ...input, paymentTiming: "actual-cash-flow" });
+
+  assert.equal(effective.paymentTiming, "effective-monthly");
+  assert.deepEqual(
+    effective.series.slice(0, 2).map((point) => point.subscriptionPayment),
+    [17, 17]
+  );
+  assert.equal(cash.paymentTiming, "actual-cash-flow");
+  assert.equal(cash.annualRenewalMonth, 13);
+  assert.deepEqual(
+    cash.series.slice(0, 13).map((point) => point.subscriptionPayment),
+    [200, ...Array(11).fill(0), 200]
+  );
+
+  const monthlyQodo = computeResult({ ...input, subscriptions: ["qodo-pro-team-2500"], paymentTiming: "actual-cash-flow" });
+  assert.deepEqual(
+    monthlyQodo.series.slice(0, 2).map((point) => point.subscriptionPayment),
+    [30, 30],
+    "monthly plans that mention no annual commitment remain monthly"
+  );
+});
+
+
 test("initCalculator wires up every DOM hook the UI depends on", () => {
   const { doc } = boot();
   for (const id of REQUIRED_IDS) {
@@ -551,6 +596,8 @@ test("initCalculator boots the form from static data and defaults", () => {
   );
   assert.equal(doc.getElementById("custom-spend").value, 200);
   assert.equal(doc.getElementById("spend-preset").value, "");
+  assert.equal(doc.getElementById("payment-timing").value, "effective-monthly");
+  assert.match(doc.getElementById("payment-mode").textContent, /effective monthly/i);
   assert.equal(
     doc.getElementById("spend-basis").textContent,
     "Comparing against the Power user preset ($200/mo)."
@@ -654,6 +701,15 @@ test("initCalculator boots the form from static data and defaults", () => {
     /^Break-even (not reached within \d+ months\.|reached in Month \d+\.)$/
   );
 });
+
+test("actual cash-flow mode hydrates through the share URL and renders annual commitments", () => {
+  const { doc } = boot("?paymentTiming=actual-cash-flow&subs=claude-pro-annual&customSpend=");
+  assert.equal(doc.getElementById("payment-timing").value, "actual-cash-flow");
+  assert.match(doc.getElementById("payment-mode").textContent, /actual cash flow/i);
+  assert.match(doc.getElementById("payment-mode").textContent, /\$200 upfront/i);
+  assert.match(doc.getElementById("payment-mode").textContent, /month 13/i);
+});
+
 
 test("bundle overlap caveat stays hidden until a bundled plan overlaps with an existing subscription", () => {
   const { doc } = boot();
