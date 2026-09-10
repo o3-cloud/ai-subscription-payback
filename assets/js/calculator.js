@@ -1184,6 +1184,9 @@ function renderFeaturedHardware(doc, win, analytics) {
   const status = doc.getElementById("featured-hardware-status");
   if (!container) return null;
 
+  // Model-fit controls rerender the cards, but must not discard a hardware
+  // preset that is already loaded into the calculator.
+  const loadedHardware = matchLoadedHardware(doc);
   container.innerHTML = "";
 
   const cards = [];
@@ -1293,7 +1296,10 @@ function renderFeaturedHardware(doc, win, analytics) {
         option.textContent = `${trim.name} — ${formatCurrency(trim.boxPrice)}`;
         select.appendChild(option);
       }
-      select.value = defaultTrim.id;
+      select.value =
+        loadedHardware?.boxId === box.id
+          ? loadedHardware.trimId
+          : defaultTrim.id;
       field.appendChild(select);
       card.appendChild(field);
     }
@@ -1345,6 +1351,8 @@ function renderFeaturedHardware(doc, win, analytics) {
   if (status && !status.textContent.trim()) {
     status.textContent = "Choose a system to load its assumptions into the calculator.";
   }
+
+  setActiveHardwareCard(cards, loadedHardware);
 
   return cards;
 }
@@ -1555,7 +1563,7 @@ export function initCalculator(doc, win) {
     defaults
   );
 
-  const hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
+  let hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
   renderSubscriptionOptions(doc, initialState.subscriptions);
   renderSubscriptionFilters(doc);
   renderSpendPresets(doc);
@@ -1602,7 +1610,9 @@ export function initCalculator(doc, win) {
 
   const modelSize = doc.getElementById("model-size");
   const modelQuantization = doc.getElementById("model-quantization");
-  const rerenderFit = () => renderFeaturedHardware(doc, win, analytics);
+  const rerenderFit = () => {
+    hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
+  };
   modelSize?.addEventListener("input", rerenderFit);
   modelQuantization?.addEventListener("change", rerenderFit);
 

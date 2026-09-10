@@ -223,6 +223,8 @@ const REQUIRED_IDS = [
   "featured-hardware",
   "featured-hardware-cards",
   "featured-hardware-status",
+  "model-size",
+  "model-quantization",
   "cost-chart",
   "cost-table",
 ];
@@ -347,6 +349,15 @@ function buildDocument() {
   const featuredCards = doc.createElement("div");
   featuredCards.id = "featured-hardware-cards";
   featured.appendChild(featuredCards);
+
+  const modelSize = doc.createElement("input");
+  modelSize.id = "model-size";
+  modelSize.value = "30";
+  body.appendChild(modelSize);
+  const modelQuantization = doc.createElement("select");
+  modelQuantization.id = "model-quantization";
+  modelQuantization.value = "int4";
+  body.appendChild(modelQuantization);
 
   const chart = doc.createElement("div");
   chart.id = "cost-chart";
@@ -1375,6 +1386,46 @@ test("preloading a hardware card marks it active and clears the others", async (
   assert.equal(cards[1].getAttribute("data-active"), null, "prior active card is cleared");
 });
 
+test("model-fit rerenders preserve the loaded trim and active card", async () => {
+  const { doc } = boot();
+  const strixIndex = featuredHardware.findIndex((box) => box.id === "strix-halo");
+  const strixTrims = hardwareTrims(featuredHardware[strixIndex]);
+  const chosenTrim = strixTrims.at(-1);
+  const initialSelect = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
+  const initialButton = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[strixIndex];
+
+  initialSelect.value = chosenTrim.id;
+  await initialButton.dispatch("click");
+  const expectedPrice = String(chosenTrim.boxPrice);
+  const expectedPower = String(chosenTrim.powerDraw);
+
+  const modelSize = doc.getElementById("model-size");
+  modelSize.value = "70";
+  await modelSize.dispatch("input");
+
+  let liveSelect = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
+  let liveCards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  assert.equal(liveSelect.value, chosenTrim.id, "model-size rerender keeps the selected trim");
+  assert.equal(doc.getElementById("box-price").value, expectedPrice);
+  assert.equal(doc.getElementById("power-draw").value, expectedPower);
+  assert.equal(liveCards[strixIndex].getAttribute("data-active"), "true");
+  const advisoryAfterSize = doc.querySelectorAll("#featured-hardware-cards .hardware-card-fit-advisory")[strixIndex];
+  assert.match(advisoryAfterSize.textContent, /70B/);
+
+  const quantization = doc.getElementById("model-quantization");
+  quantization.value = "fp16";
+  await quantization.dispatch("change");
+
+  liveSelect = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
+  liveCards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  assert.equal(liveSelect.value, chosenTrim.id, "quantization rerender keeps the selected trim");
+  assert.equal(doc.getElementById("box-price").value, expectedPrice);
+  assert.equal(doc.getElementById("power-draw").value, expectedPower);
+  assert.equal(liveCards[strixIndex].getAttribute("data-active"), "true");
+  const advisoryAfterQuantization = doc.querySelectorAll("#featured-hardware-cards .hardware-card-fit-advisory")[strixIndex];
+  assert.match(advisoryAfterQuantization.textContent, /fp16/i);
+});
+
 test("a hardware preset from the URL renders with its card already active", () => {
   const box = hardware.find((entry) => entry.id === "asus-ascent-gx10");
   const { doc } = boot(
@@ -1400,6 +1451,10 @@ test("resetting the form clears the active hardware card", async () => {
   const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
   await doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[0].dispatch("click");
   assert.equal(cards[0].getAttribute("data-active"), "true");
+
+  const modelSize = doc.getElementById("model-size");
+  modelSize.value = "70";
+  await modelSize.dispatch("input");
 
   await doc.getElementById("calculator-form").dispatch("reset");
   const active = doc.querySelectorAll(

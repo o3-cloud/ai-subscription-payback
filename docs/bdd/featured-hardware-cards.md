@@ -68,6 +68,14 @@ Scenario: Hardware memory metadata and selected-model fit are explicit
   And the interface labels the result as an advisory and does not call it a benchmark
   And vendor workload ceilings remain separate from measured throughput and advisory fit results
 
+Scenario: Model-fit rerenders preserve the loaded hardware trim
+  Given the visitor has loaded a non-default featured hardware trim into the calculator
+  When the visitor changes the advisory model size or quantization
+  Then the featured hardware cards rerender with the same trim selected
+  And the calculator's loaded price and power draw remain unchanged
+  And the same card remains marked active
+  And the updated advisory fit is shown for the new model-fit controls
+
 Scenario: Featured hardware cards expose a sustained throughput range for guide-value math
   Given a featured hardware card on the homepage
   When the maintainer inspects the data model
