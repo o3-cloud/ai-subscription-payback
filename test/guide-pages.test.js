@@ -301,7 +301,9 @@ test("the mini-guides BDD names the second-wave and third-wave guide families", 
   assert.match(miniGuidesBdd, /Replit Agent/i, "mini-guides BDD names Replit Agent");
   assert.match(miniGuidesBdd, /xAI Grok/i, "mini-guides BDD names xAI Grok");
   assert.match(miniGuidesBdd, /GitLab Duo/i, "mini-guides BDD names GitLab Duo");
-  assert.match(miniGuidesBdd, /Warp/i, "mini-guides BDD names Warp");
+  assert.match(miniGuidesBdd, /Warp Build/i, "mini-guides BDD names Warp Build");
+  assert.match(miniGuidesBdd, /Warp Max/i, "mini-guides BDD names Warp Max");
+  assert.match(miniGuidesBdd, /Warp Business/i, "mini-guides BDD names Warp Business");
   assert.match(miniGuidesBdd, /sitemap\.xml/i, "mini-guides BDD ties the guide set back to the sitemap");
   assert.match(miniGuidesBdd, /llms\.txt/i, "mini-guides BDD ties the guide set back to llms.txt");
 });
