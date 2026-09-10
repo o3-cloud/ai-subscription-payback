@@ -1446,11 +1446,18 @@ test("default boot leaves every hardware card inactive", () => {
   assert.equal(active.length, 0, "no card is active until a system is loaded");
 });
 
-test("resetting the form clears the active hardware card", async () => {
+test("resetting the form restores the default hardware trim and clears the active card", async () => {
   const { doc } = boot();
   const cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
-  await doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[0].dispatch("click");
-  assert.equal(cards[0].getAttribute("data-active"), "true");
+  const strixIndex = featuredHardware.findIndex((box) => box.id === "strix-halo");
+  const strix = featuredHardware[strixIndex];
+  const trims = hardwareTrims(strix);
+  const chosenTrim = trims.at(-1);
+  const trimSelect = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
+  trimSelect.value = chosenTrim.id;
+  await doc.querySelectorAll("#featured-hardware-cards .hardware-card-use")[strixIndex].dispatch("click");
+  assert.equal(cards[strixIndex].getAttribute("data-active"), "true");
+  assert.equal(trimSelect.value, chosenTrim.id);
 
   const modelSize = doc.getElementById("model-size");
   modelSize.value = "70";
@@ -1461,6 +1468,8 @@ test("resetting the form clears the active hardware card", async () => {
     '#featured-hardware-cards .hardware-card[data-active="true"]'
   );
   assert.equal(active.length, 0, "reset clears the active highlight");
+  const resetSelect = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select")[strixIndex];
+  assert.equal(resetSelect.value, trims[0].id, "reset restores the documented default trim");
 });
 
 test("initCalculator renders the real results state for valid inputs", () => {

@@ -76,6 +76,12 @@ Scenario: Model-fit rerenders preserve the loaded hardware trim
   And the same card remains marked active
   And the updated advisory fit is shown for the new model-fit controls
 
+Scenario: Reset restores the default hardware trim
+  Given the visitor has loaded a non-default featured hardware trim into the calculator
+  When the visitor resets the calculator form
+  Then every featured hardware trim selector returns to its documented default
+  And no featured hardware card remains marked active
+
 Scenario: Featured hardware cards expose a sustained throughput range for guide-value math
   Given a featured hardware card on the homepage
   When the maintainer inspects the data model

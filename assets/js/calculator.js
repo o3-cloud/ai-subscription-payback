@@ -1603,6 +1603,9 @@ export function initCalculator(doc, win) {
       renderSubscriptionOptions(doc);
       clearSubscriptionFilters(doc);
       applyState(doc, defaults);
+      // Rebuild the cards after restoring calculator defaults so a previously
+      // selected non-default trim cannot remain visible in the selector.
+      hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
       setActiveHardwareCard(hardwareCards, matchLoadedHardware(doc));
       update(doc, win);
     });
