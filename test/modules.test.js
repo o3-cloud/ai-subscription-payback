@@ -299,9 +299,9 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
   // Curated from the official plans pages named in the issue.
   const expected = {
     "copilot-free": { name: "GitHub Copilot", monthlyPrice: 0 },
-    "copilot-pro": { name: "GitHub Copilot", monthlyPrice: 10 },
-    "copilot-pro-plus": { name: "GitHub Copilot", monthlyPrice: 39 },
-    "copilot-max": { name: "GitHub Copilot", monthlyPrice: 100 },
+    "copilot-pro": { name: "GitHub Copilot", monthlyPrice: 15 },
+    "copilot-pro-plus": { name: "GitHub Copilot", monthlyPrice: 70 },
+    "copilot-max": { name: "GitHub Copilot", monthlyPrice: 200 },
     "cursor-individual": { name: "Cursor", monthlyPrice: 20 },
     "cursor-pro-plus": { name: "Cursor", monthlyPrice: 60 },
     "cursor-ultra": { name: "Cursor", monthlyPrice: 200 },
@@ -667,6 +667,35 @@ test("Copilot paid tiers carry bundle overlap warnings for Codex and Claude Code
   );
 
   assert.ok(!byId.get("copilot-free").bundleWarning, "Copilot Free does not need a bundle warning");
+});
+
+test("Copilot subscription prices, annual cadence, and AI Credit allowances stay distinct", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((s) => [s.id, s]));
+  const expected = {
+    "copilot-pro": { price: 15, annual: 150, credits: 15 },
+    "copilot-pro-plus": { price: 70, annual: 700, credits: 70 },
+    "copilot-max": { price: 200, annual: null, credits: 200 },
+  };
+
+  for (const [id, values] of Object.entries(expected)) {
+    const sub = byId.get(id);
+    assert.equal(sub.monthlyPrice, values.price, `${id} subscription price`);
+    assert.match(sub.includedValue, new RegExp(`\\$${values.credits}\\/mo of GitHub AI Credits`));
+    assert.match(sub.includedValue, /Usage beyond the credits is metered/i);
+    if (values.annual) {
+      assert.match(sub.billingCadence, new RegExp(`\\$${values.annual}\\/yr.*annually`, "i"));
+    } else {
+      assert.match(sub.billingCadence, /Billed monthly/i);
+    }
+  }
+});
+
+test("the pricing-disclosure BDD pins current Copilot prices and credit separation", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /Pro is listed at \$15\/mo, Pro\+ at \$70\/mo, and Max at \$200\/mo/i);
+  assert.match(bdd, /included AI Credit amounts are described separately/i);
+  assert.match(bdd, /beyond the included AI Credits is identified as metered overage/i);
 });
 
 test("the bundle-overlap BDD documents the selector and results warnings", () => {

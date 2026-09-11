@@ -66,6 +66,13 @@ Scenario: GitHub Copilot Pro included-value copy names agents, code review, and 
   And the Pro+ and Max copies keep their higher-tier agent and credit positioning
   And the Max copy includes a source note that the comparison table currently shows $200/mo of AI Credits while the FAQ answer says $100/mo
 
+Scenario: GitHub Copilot subscription prices are separated from included AI Credits
+  Given the current official GitHub Copilot individual plans
+  When the visitor views the Copilot pricing rows
+  Then Pro is listed at $15/mo, Pro+ at $70/mo, and Max at $200/mo
+  And the included AI Credit amounts are described separately from each subscription price
+  And usage beyond the included AI Credits is identified as metered overage
+
 Scenario: Cursor included-value copy names the current pricing-page benefits
   Given the Cursor Individual, Pro+, Ultra, Teams, and Teams Premium tiers
   When the visitor views their included-value text

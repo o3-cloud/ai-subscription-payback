@@ -518,8 +518,8 @@ export const subscriptions = [
     id: "copilot-pro",
     name: "GitHub Copilot",
     plan: "Pro",
-    monthlyPrice: 10,
-    billingCadence: "Billed monthly (or $100/yr)",
+    monthlyPrice: 15,
+    billingCadence: "Billed monthly; $150/yr when billed annually",
     includedValue:
       "For everyday coding with agents: Cloud agent, code review, unlimited completions and next edit suggestions, access to 3rd-party agents like Claude Code and Codex, model selection, and $15/mo of GitHub AI Credits. GitHub says AI Credits are consumed by chat, agent mode, code review, Copilot cloud agent, Copilot CLI, and Copilot Apps; completions and next edit suggestions do not use credits. Usage beyond the credits is metered.",
     sourceUrl: "https://github.com/features/copilot/plans",
@@ -544,8 +544,8 @@ export const subscriptions = [
     id: "copilot-pro-plus",
     name: "GitHub Copilot",
     plan: "Pro+",
-    monthlyPrice: 39,
-    billingCadence: "Billed monthly (or $390/yr)",
+    monthlyPrice: 70,
+    billingCadence: "Billed monthly; $700/yr when billed annually",
     includedValue:
       "Premium models including Opus, 4×+ the included usage of Pro, and $70/mo of GitHub AI Credits. GitHub says AI Credits are consumed by chat, agent mode, code review, Copilot cloud agent, Copilot CLI, and Copilot Apps; completions and next edit suggestions do not use credits. Usage beyond the credits is metered.",
     sourceUrl: "https://github.com/features/copilot/plans",
@@ -570,7 +570,7 @@ export const subscriptions = [
     id: "copilot-max",
     name: "GitHub Copilot",
     plan: "Max",
-    monthlyPrice: 100,
+    monthlyPrice: 200,
     billingCadence: "Billed monthly",
     includedValue:
       "Top individual tier: priority model access, 2.9×+ the included usage of Pro+, and $200/mo of GitHub AI Credits. GitHub says AI Credits are consumed by chat, agent mode, code review, Copilot cloud agent, Copilot CLI, and Copilot Apps; completions and next edit suggestions do not use credits. Usage beyond the credits is metered.",
