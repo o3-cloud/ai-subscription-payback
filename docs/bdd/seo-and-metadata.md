@@ -62,6 +62,10 @@ Scenario: No-JavaScript visitors and crawlers receive a useful default compariso
   When JavaScript is available
   Then the interactive calculator replaces its dynamic mounts without removing the static guides and methodology content
 
+  And the snapshot's subscription prices and billing cadence match the source pricing data
+  And its representative hardware price ranges and specifications match the source hardware data
+  And its default result, assumptions, projection horizon, and both freshness timestamps match the calculator defaults and shared data constants
+
 Scenario: The calculator is described as structured data
   Given the landing page includes JSON-LD structured data
   When a search engine parses it

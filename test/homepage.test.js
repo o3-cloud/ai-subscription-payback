@@ -10,6 +10,16 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import {
+  defaults,
+  daysPerMonth,
+  featuredHardware,
+  horizonMonths,
+  pricingLastUpdated,
+  siteLastUpdated,
+  subscriptions,
+} from "../assets/js/data.js";
+import { computeResult } from "../assets/js/calculator.js";
 
 const root = new URL("../", import.meta.url);
 const html = readFileSync(fileURLToPath(new URL("index.html", root)), "utf8");
@@ -21,6 +31,15 @@ const attrValues = (attr) =>
 const idList = attrValues("id");
 const ids = new Set(idList);
 const metrics = new Set(attrValues("data-metric"));
+
+const formatCurrency = (value) =>
+  `$${Number(value).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+
+const staticSnapshot = () =>
+  html.match(/<noscript>\s*(<section[^>]+id="static-first-view"[\s\S]*?<\/section>)\s*<\/noscript>/i)?.[1] ?? "";
+
+const snapshotRows = (snapshot) =>
+  [...snapshot.matchAll(/<li>([\s\S]*?)<\/li>/gi)].map((match) => match[1]);
 
 test("index.html is a valid HTML document", () => {
   assert.match(html, /^\s*<!DOCTYPE html>/i, "starts with a doctype");
@@ -137,8 +156,7 @@ test("client-rendered sections ship a helpful, non-generic no-JS fallback", () =
 });
 
 test("no-JS visitors receive a server-delivered default comparison snapshot", () => {
-  const snapshot =
-    html.match(/<noscript>\s*(<section[^>]+id="static-first-view"[\s\S]*?<\/section>)\s*<\/noscript>/i)?.[1] ?? "";
+  const snapshot = staticSnapshot();
   assert.ok(snapshot, "static first-view snapshot is inside noscript");
   for (const text of [
     "Representative subscriptions",
@@ -166,6 +184,62 @@ test("no-JS visitors receive a server-delivered default comparison snapshot", ()
     "snapshot explains which interactive features require JavaScript"
   );
   assert.match(snapshot, /<time[^>]+datetime="2026-09-04">2026-09-04<\/time>/i, "snapshot includes freshness metadata");
+});
+
+test("no-JS comparison snapshot stays source-backed and matches calculator defaults", () => {
+  const snapshot = staticSnapshot();
+  assert.ok(snapshot, "static first-view snapshot is available");
+  const rows = snapshotRows(snapshot);
+
+  for (const id of ["codex", "claude-code", "copilot-pro"]) {
+    const tier = subscriptions.find((entry) => entry.id === id);
+    assert.ok(tier, `source data contains ${id}`);
+    const displayedPlan = tier.plan.split(" ")[0];
+    const row = rows.find((entry) => entry.includes(`${tier.name} — ${displayedPlan}`));
+    assert.ok(row, `${id} name and plan are in its snapshot row`);
+    assert.ok(row.includes(`${formatCurrency(tier.monthlyPrice)}/mo`), `${id} price is in its snapshot row`);
+    assert.ok(row.toLowerCase().includes(tier.billingCadence.split(/[;,]/)[0].toLowerCase()), `${id} cadence is in its snapshot row`);
+  }
+
+  const hardwareLabels = { "mac-studio": "Mac Studio", "dgx-spark": "NVIDIA DGX Spark", "strix-halo": "Strix Halo systems" };
+  for (const id of ["mac-studio", "dgx-spark", "strix-halo"]) {
+    const box = featuredHardware.find((entry) => entry.id === id);
+    assert.ok(box, `source data contains ${id}`);
+    const row = rows.find((entry) => entry.includes(`<strong>${hardwareLabels[id]}</strong>`));
+    assert.ok(row, `${id} has its own snapshot row`);
+    assert.ok(row.includes(formatCurrency(box.priceLow)), `${id} lower price is in its snapshot row`);
+    assert.ok(row.includes(formatCurrency(box.priceHigh)), `${id} upper price is in its snapshot row`);
+    const representativeSpec = box.spec.split(",").at(-1).trim();
+    assert.ok(row.includes(representativeSpec), `${id} representative specification is in its snapshot row`);
+  }
+
+  const result = computeResult(defaults);
+  assert.match(snapshot, new RegExp(`Using \\$${defaults.customSpend}\\/mo of subscription spend`, "i"));
+  assert.ok(snapshot.includes(String(result.breakEvenMonth)), "snapshot uses the calculated break-even month");
+  assert.ok(snapshot.includes(formatCurrency(result.monthlyPayment)), "snapshot uses the calculated monthly payment");
+  assert.ok(snapshot.includes(formatCurrency(result.monthlyNetSavings)), "snapshot uses the calculated monthly net savings");
+  assert.ok(snapshot.includes(`${defaults.powerDraw} W`), "snapshot uses the default power draw");
+  assert.ok(snapshot.includes(`${defaults.hoursPerDay} hours/day`), "snapshot uses the default hours per day");
+  assert.ok(snapshot.includes(`a $${defaults.boxPrice.toLocaleString("en-US")} box`), "snapshot uses the default box price");
+  assert.ok(snapshot.includes(`$${defaults.downPayment.toLocaleString("en-US")} down`), "snapshot uses the default down payment");
+  assert.ok(snapshot.includes(`${defaults.apr}% APR`), "snapshot uses the default APR");
+  assert.ok(snapshot.includes(`for ${defaults.term} months`), "snapshot uses the default financing term");
+  assert.ok(snapshot.includes("Maintenance, resale value, and sales tax are excluded unless enabled."), "snapshot states optional defaults are off");
+  assert.ok(snapshot.includes(`${daysPerMonth} days/month`), "snapshot uses the shared days-per-month assumption");
+  assert.ok(snapshot.includes(`within a ${horizonMonths}-month horizon`), "snapshot uses the shared projection horizon");
+  assert.match(snapshot, new RegExp(`datetime="${pricingLastUpdated}"`), "snapshot uses pricingLastUpdated");
+  assert.match(snapshot, new RegExp(`datetime="${siteLastUpdated}"`), "snapshot uses siteLastUpdated");
+});
+
+test("JavaScript enhancement replaces static mounts without hiding guides or methodology", () => {
+  const snapshot = staticSnapshot();
+  assert.match(html, /id="featured-hardware-cards"[\s\S]*?class="data-fallback"[\s\S]*?JavaScript/i);
+  assert.match(html, /id="subscription-options"[\s\S]*?class="data-fallback"[\s\S]*?JavaScript/i);
+  assert.match(html, /id="guides"[\s\S]*?comparison guides/i);
+  assert.match(html, /id="methodology"[\s\S]*?How is break-even calculated/i);
+  assert.ok(snapshot.includes("comparison guides"), "static snapshot links to the guide surface");
+  assert.ok(html.indexOf('id="guides"') > html.indexOf("</noscript>"), "guides remain outside the no-JS snapshot");
+  assert.ok(html.indexOf('id="methodology"') > html.indexOf("</noscript>"), "methodology remains outside the no-JS snapshot");
 });
 
 test("primary nav Hardware link targets the wired-up featured section", () => {
