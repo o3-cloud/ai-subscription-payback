@@ -136,6 +136,38 @@ test("client-rendered sections ship a helpful, non-generic no-JS fallback", () =
   );
 });
 
+test("no-JS visitors receive a server-delivered default comparison snapshot", () => {
+  const snapshot =
+    html.match(/<noscript>\s*(<section[^>]+id="static-first-view"[\s\S]*?<\/section>)\s*<\/noscript>/i)?.[1] ?? "";
+  assert.ok(snapshot, "static first-view snapshot is inside noscript");
+  for (const text of [
+    "Representative subscriptions",
+    "Codex",
+    "Claude Code",
+    "GitHub Copilot",
+    "Featured hardware",
+    "Mac Studio",
+    "NVIDIA DGX Spark",
+    "Strix Halo",
+    "Illustrative default result",
+    "Break-even month",
+    "$115.25",
+    "$66.15",
+    "Default assumptions",
+    "Pricing last updated",
+    "Site last updated",
+    "comparison guides",
+  ]) {
+    assert.ok(snapshot.includes(text), `snapshot includes ${text}`);
+  }
+  assert.match(
+    snapshot,
+    /JavaScript is required to edit inputs[\s\S]*recalculate results[\s\S]*copy shareable links/i,
+    "snapshot explains which interactive features require JavaScript"
+  );
+  assert.match(snapshot, /<time[^>]+datetime="2026-09-04">2026-09-04<\/time>/i, "snapshot includes freshness metadata");
+});
+
 test("primary nav Hardware link targets the wired-up featured section", () => {
   // The nav must point at the section calculator.js actually populates, not the
   // removed orphan anchor.

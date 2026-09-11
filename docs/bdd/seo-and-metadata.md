@@ -50,6 +50,18 @@ Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
   And that favicon asset exists in the repository
   So that the browser uses it instead of requesting a 404 /favicon.ico
 
+Scenario: No-JavaScript visitors and crawlers receive a useful default comparison
+  Given a crawler or visitor requests the landing page without executing JavaScript
+  When the server-delivered HTML is read
+  Then it includes representative subscription rows with prices and billing cadence
+  And it includes representative Mac Studio, NVIDIA DGX Spark, and Strix Halo hardware summaries
+  And it includes a clearly labeled illustrative default result with break-even, payment, and savings values
+  And it includes the default assumptions and pricing/site freshness dates
+  And it explains that editing, filtering, recalculation, hardware preloads, and share-link copying require JavaScript
+  And it links visitors to the source-backed comparison guides
+  When JavaScript is available
+  Then the interactive calculator replaces its dynamic mounts without removing the static guides and methodology content
+
 Scenario: The calculator is described as structured data
   Given the landing page includes JSON-LD structured data
   When a search engine parses it
