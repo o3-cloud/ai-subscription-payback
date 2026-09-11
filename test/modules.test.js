@@ -1797,6 +1797,8 @@ test("state.js round-trips calculator state through the URL helpers", async () =
   const input = {
     boxPrice: 3000,
     apr: 9.9,
+    modelSize: 70,
+    modelQuantization: "fp16",
     maintenance: true,
     customSpend: 75,
     subscriptions: ["codex"],
@@ -1804,6 +1806,8 @@ test("state.js round-trips calculator state through the URL helpers", async () =
   const parsed = state.parseState(state.serializeState(input));
   assert.equal(parsed.boxPrice, 3000);
   assert.equal(parsed.apr, 9.9);
+  assert.equal(parsed.modelSize, 70);
+  assert.equal(parsed.modelQuantization, "fp16");
   assert.equal(parsed.maintenance, true);
   assert.equal(parsed.customSpend, 75);
   assert.deepEqual(parsed.subscriptions, ["codex"]);

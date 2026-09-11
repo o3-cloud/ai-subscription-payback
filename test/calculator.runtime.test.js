@@ -1631,9 +1631,11 @@ test("opening a query-string share link hydrates state without rewriting the URL
 });
 
 test("initCalculator hydrates state from a hash-based share link", () => {
-  const { doc } = boot("", { hash: "#boxPrice=4200&subs=codex" });
+  const { doc } = boot("", { hash: "#boxPrice=4200&modelSize=70&modelQuantization=fp16&subs=codex" });
 
   assert.equal(doc.getElementById("box-price").value, 4200);
+  assert.equal(String(doc.getElementById("model-size").value), "70");
+  assert.equal(doc.getElementById("model-quantization").value, "fp16");
   const checked = doc
     .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
     .map((el) => el.value);

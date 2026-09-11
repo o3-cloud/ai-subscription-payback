@@ -83,4 +83,10 @@ Scenario: Reset restores the default scenario
   And the result recomputes from the defaults
   And the shareable link reflects the default scenario
   And no featured hardware card is marked active
+
+Scenario: Shared links preserve model-fit advisory controls
+  Given the visitor has selected a model size and quantization
+  When the visitor shares the calculator and opens the link
+  Then the model size and quantization are restored
+  And featured hardware advisory copy is evaluated from those restored controls
 ```

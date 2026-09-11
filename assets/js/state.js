@@ -30,6 +30,11 @@ export const CUSTOM_SPEND_FIELD = "customSpend";
 export const PAYMENT_TIMING_FIELD = "paymentTiming";
 export const PAYMENT_TIMING_MODES = ["effective-monthly", "actual-cash-flow"];
 
+/** Shareable advisory model controls. */
+export const MODEL_SIZE_FIELD = "modelSize";
+export const MODEL_QUANTIZATION_FIELD = "modelQuantization";
+export const MODEL_QUANTIZATIONS = ["int4", "int8", "fp16"];
+
 /** Memory multipliers for an advisory, not-guaranteed fit estimate. */
 export const MODEL_QUANTIZATION_BYTES = { fp16: 2, int8: 1, int4: 0.5 };
 
@@ -113,6 +118,12 @@ export function serializeState(state) {
   if (PAYMENT_TIMING_MODES.includes(state[PAYMENT_TIMING_FIELD])) {
     params.set(PAYMENT_TIMING_FIELD, state[PAYMENT_TIMING_FIELD]);
   }
+  if (state[MODEL_SIZE_FIELD] !== undefined && state[MODEL_SIZE_FIELD] !== "") {
+    params.set(MODEL_SIZE_FIELD, String(state[MODEL_SIZE_FIELD]));
+  }
+  if (MODEL_QUANTIZATIONS.includes(state[MODEL_QUANTIZATION_FIELD])) {
+    params.set(MODEL_QUANTIZATION_FIELD, state[MODEL_QUANTIZATION_FIELD]);
+  }
   if (Array.isArray(state.subscriptions)) {
     params.set("subs", state.subscriptions.join(","));
   }
@@ -131,6 +142,8 @@ const SHARE_PARAM_KEYS = [
   ...BOOLEAN_FIELDS,
   CUSTOM_SPEND_FIELD,
   PAYMENT_TIMING_FIELD,
+  MODEL_SIZE_FIELD,
+  MODEL_QUANTIZATION_FIELD,
   "subs",
 ];
 
@@ -152,6 +165,16 @@ function hasMeaningfulShareParams(raw) {
 
     if (BOOLEAN_FIELDS.includes(key)) {
       if (value === "0" || value === "1") return true;
+      continue;
+    }
+
+    if (key === MODEL_QUANTIZATION_FIELD) {
+      if (MODEL_QUANTIZATIONS.includes(value)) return true;
+      continue;
+    }
+
+    if (key === MODEL_SIZE_FIELD) {
+      if (value !== "" && Number.isFinite(Number(value)) && Number(value) > 0) return true;
       continue;
     }
 
@@ -246,6 +269,15 @@ export function parseState(search, defaults = {}) {
   }
   if (PAYMENT_TIMING_MODES.includes(params.get(PAYMENT_TIMING_FIELD))) {
     state[PAYMENT_TIMING_FIELD] = params.get(PAYMENT_TIMING_FIELD);
+  }
+  if (params.has(MODEL_SIZE_FIELD)) {
+    const raw = params.get(MODEL_SIZE_FIELD) ?? "";
+    const normalized = raw.trim();
+    const num = Number(normalized);
+    if (normalized !== "" && Number.isFinite(num) && num > 0) state[MODEL_SIZE_FIELD] = num;
+  }
+  if (MODEL_QUANTIZATIONS.includes(params.get(MODEL_QUANTIZATION_FIELD))) {
+    state[MODEL_QUANTIZATION_FIELD] = params.get(MODEL_QUANTIZATION_FIELD);
   }
   if (params.has("subs")) {
     const rawSubs = params.get("subs") ?? "";

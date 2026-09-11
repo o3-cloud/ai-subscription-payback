@@ -40,6 +40,8 @@ import {
   formatBreakEven,
   PAYMENT_TIMING_FIELD,
   PAYMENT_TIMING_MODES,
+  MODEL_SIZE_FIELD,
+  MODEL_QUANTIZATION_FIELD,
   evaluateModelFit,
 } from "./state.js";
 import { createAnalytics } from "./analytics.js";
@@ -529,6 +531,11 @@ export function computeResult(state) {
 
 function readState(doc) {
   const state = { subscriptions: [] };
+
+  const modelSize = doc.getElementById("model-size");
+  if (modelSize) state[MODEL_SIZE_FIELD] = Number(modelSize.value);
+  const modelQuantization = doc.getElementById("model-quantization");
+  if (modelQuantization) state[MODEL_QUANTIZATION_FIELD] = modelQuantization.value;
 
   for (const [key, id] of Object.entries(FIELD_IDS)) {
     const el = doc.getElementById(id);
