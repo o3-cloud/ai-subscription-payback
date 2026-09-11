@@ -1655,6 +1655,75 @@ test("sharing immediately after opening a query-string link canonicalizes the UR
   assert.equal(doc.getElementById("share-status").textContent, "Link copied to clipboard.");
 });
 
+test("bootstrap ignores a non-share fragment when hydrating a query-string link", () => {
+  const { doc, win } = boot("?boxPrice=4200&subs=codex", { hash: "#section=pricing" });
+
+  assert.equal(doc.getElementById("box-price").value, 4200);
+  assert.deepEqual(
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+      .map((el) => el.value),
+    ["codex"]
+  );
+  assert.equal(win._historyUrls.length, 0, "initial hydration does not rewrite the URL");
+});
+
+test("bootstrap and immediate Share fall back from a malformed hash to the query string", async () => {
+  const { doc, win } = boot("?boxPrice=4200&subs=codex", { hash: "#boxPrice=abc" });
+
+  assert.equal(doc.getElementById("box-price").value, 4200);
+  assert.deepEqual(
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+      .map((el) => el.value),
+    ["codex"]
+  );
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  const sharedUrl = new URL(win._clipboardWrites[0]);
+  assert.equal(sharedUrl.search, "");
+  assert.equal(new URLSearchParams(sharedUrl.hash.slice(1)).get("boxPrice"), "4200");
+  assert.equal(new URLSearchParams(sharedUrl.hash.slice(1)).get("subs"), "codex");
+  assert.doesNotMatch(sharedUrl.hash, /abc/);
+  assert.equal(win._historyUrls.at(-1), win._clipboardWrites[0]);
+  assert.equal(win.location.hash, sharedUrl.hash);
+});
+
+test("immediate Share preserves all hydrated legacy query-string fields", async () => {
+  const query =
+    "?boxPrice=4200&downPayment=500&apr=7.5&term=24&electricityRate=0.2&powerDraw=100&hoursPerDay=8" +
+    "&customSpend=125&paymentTiming=actual-cash-flow&modelSize=70&modelQuantization=fp16" +
+    "&maintenance=1&resale=1&taxes=1&subs=codex";
+  const { doc, win } = boot(query);
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  const params = new URLSearchParams(new URL(win._clipboardWrites[0]).hash.slice(1));
+  assert.equal(new URL(win._clipboardWrites[0]).search, "");
+  assert.equal(win._historyUrls.at(-1), win._clipboardWrites[0]);
+  assert.equal(win.location.hash, new URL(win._clipboardWrites[0]).hash);
+  for (const [key, value] of [
+    ["boxPrice", "4200"],
+    ["downPayment", "500"],
+    ["apr", "7.5"],
+    ["term", "24"],
+    ["electricityRate", "0.2"],
+    ["powerDraw", "100"],
+    ["hoursPerDay", "8"],
+    ["customSpend", "125"],
+    ["paymentTiming", "actual-cash-flow"],
+    ["modelSize", "70"],
+    ["modelQuantization", "fp16"],
+    ["maintenance", "1"],
+    ["resale", "1"],
+    ["taxes", "1"],
+    ["subs", "codex"],
+  ]) {
+    assert.equal(params.get(key), value, `${key} survives canonicalization`);
+  }
+});
+
 test("initCalculator hydrates state from a hash-based share link", () => {
   const { doc } = boot("", { hash: "#boxPrice=4200&modelSize=70&modelQuantization=fp16&subs=codex" });
 

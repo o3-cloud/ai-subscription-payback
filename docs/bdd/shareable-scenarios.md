@@ -104,6 +104,18 @@ Scenario: A malformed share fragment falls back to the query string
   Then the calculator ignores the malformed hash fragment
   And it restores the scenario from the query string instead
 
+Scenario: Bootstrap and Share preserve fallback state after a malformed fragment
+  Given the address bar contains "?boxPrice=4200&subs=codex#boxPrice=abc"
+  When the page loads and the visitor immediately clicks Share
+  Then the calculator hydrates from the query string
+  And the copied hash contains "boxPrice=4200" and "subs=codex"
+  And the copied hash does not contain the malformed value
+
+Scenario: The first Share preserves the full legacy query-string scenario
+  Given an older query-string link contains numeric, boolean, payment-timing, model-fit, and subscription fields
+  When the page loads and the visitor immediately clicks Share
+  Then the canonical hash preserves every valid configured field
+
 Scenario: Comma-separated subscription ids tolerate incidental whitespace
   Given a shared URL carries a subscription list such as "subs=codex,%20claude-code,%20"
   When the page loads
