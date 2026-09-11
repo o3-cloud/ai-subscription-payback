@@ -19,6 +19,15 @@ Scenario: The initial render preserves the clean landing URL
   And the visible calculator state remains unchanged
   And the Share button can still generate the canonical hash-based share URL on demand
 
+Scenario: The first Share canonicalizes a legacy query-string link
+  Given the visitor opens an older "?"-style calculator scenario link
+  When the page loads
+  Then the address bar is not rewritten during initial hydration
+  When the visitor immediately clicks Share
+  Then the copied URL contains the hydrated scenario in the hash fragment
+  And the copied URL has no query string
+  And the address bar matches the copied canonical hash-based URL
+
 Scenario: An empty subscription selection round-trips
   Given the visitor has deselected every subscription plan
   And cleared the custom spend field

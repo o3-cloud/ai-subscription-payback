@@ -1630,6 +1630,31 @@ test("opening a query-string share link hydrates state without rewriting the URL
   );
 });
 
+test("sharing immediately after opening a query-string link canonicalizes the URL", async () => {
+  const { doc, win } = boot("?boxPrice=4200&subs=codex");
+
+  assert.equal(win._historyUrls.length, 0, "initial hydration does not rewrite the URL");
+  assert.equal(doc.getElementById("box-price").value, 4200);
+  assert.deepEqual(
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+      .map((el) => el.value),
+    ["codex"]
+  );
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  assert.equal(win._clipboardWrites.length, 1, "copies the hydrated scenario once");
+  const sharedUrl = new URL(win._clipboardWrites[0]);
+  assert.equal(sharedUrl.origin + sharedUrl.pathname, "https://payback.example/");
+  assert.equal(sharedUrl.search, "", "the first Share replaces the legacy query string");
+  assert.match(sharedUrl.hash, /boxPrice=4200/);
+  assert.match(sharedUrl.hash, /subs=codex/);
+  assert.equal(win._historyUrls.at(-1), win._clipboardWrites[0]);
+  assert.equal(win.location.hash, sharedUrl.hash);
+  assert.equal(doc.getElementById("share-status").textContent, "Link copied to clipboard.");
+});
+
 test("initCalculator hydrates state from a hash-based share link", () => {
   const { doc } = boot("", { hash: "#boxPrice=4200&modelSize=70&modelQuantization=fp16&subs=codex" });
 
