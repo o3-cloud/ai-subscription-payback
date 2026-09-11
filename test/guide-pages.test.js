@@ -262,7 +262,7 @@ test("each mini-guide carries the required SEO and content structure", () => {
   }
 });
 
-test("Strix Halo guides expose the named Framework Desktop, GMKtec, and MINISFORUM purchasable examples", () => {
+test("Strix Halo guides expose the named Framework Desktop, GMKtec, MINISFORUM, and AMD Ryzen AI Halo purchasable examples", () => {
   for (const slug of [
     "claude-code-vs-local-ai-box-cost",
     "codex-vs-local-ai-box-cost",
@@ -275,6 +275,8 @@ test("Strix Halo guides expose the named Framework Desktop, GMKtec, and MINISFOR
     assert.match(html, /GMKtec EVO-X3 AI Mini PC/i, `${slug} lists EVO-X3`);
     assert.match(html, /MINISFORUM MS-S1 MAX 64GB Local AI Pilot Edition/i, `${slug} lists the MINISFORUM 64GB trim`);
     assert.match(html, /MINISFORUM MS-S1 MAX 128GB Max AI Compute Edition/i, `${slug} lists the MINISFORUM 128GB trim`);
+    assert.match(html, /AMD Ryzen AI Halo/i, `${slug} lists AMD Ryzen AI Halo`);
+    assert.match(html, /2026-09-04/i, `${slug} preserves the AMD trim freshness date`);
     assert.match(html, /64 GB RAM \+ 1 TB SSD/i, `${slug} names the EVO-X2 memory/storage config`);
     assert.match(html, /128 GB RAM \+ 2 TB SSD/i, `${slug} names the EVO-X3 memory/storage config`);
   }

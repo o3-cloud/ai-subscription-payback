@@ -1652,6 +1652,26 @@ export const hardware = [
     exampleOf: "strix-halo",
   },
   {
+    id: "amd-ryzen-ai-halo",
+    name: "AMD Ryzen AI Halo",
+    spec: "Ryzen AI Max+ 395, 128 GB LPDDR5x unified memory",
+    priceLow: 3999,
+    priceHigh: 3999,
+    priceNote:
+      "AMD's listed developer-platform price for the Ryzen AI Halo with Ryzen AI Max+ 395, 128 GB memory, and 60 FP16 TFLOPS; vendor performance figures are claims, not calculator benchmarks.",
+    sourceUrl: "https://www.amd.com/en/products/processors/desktops/ryzen/ryzen-ai-halo.html",
+    sourceLabel: "Official AMD product page",
+    verification: "official",
+    lastUpdated: "2026-09-04",
+    defaultBoxPrice: 3999,
+    powerDraw: 120,
+    officialModelFit:
+      "AMD's published platform specification lists up to 60 FP16 TFLOPS. This is an AMD performance claim, not a benchmark of sustained throughput on any given model or quantization.",
+    modelFit:
+      "Practical local model fit: 30B-class quantized models and 70B-class quantized experiments with the 128 GB unified-memory configuration.",
+    exampleOf: "strix-halo",
+  },
+  {
     id: "gmktec-evo-x2",
     name: "GMKtec EVO-X2 AI Mini PC",
     spec: "Ryzen AI Max+ 395, 64 GB RAM + 1 TB SSD",
@@ -1976,6 +1996,12 @@ export const affiliates = {
     vendor: "Framework",
     url: "https://frame.work/desktop",
     label: "Explore Framework Desktop",
+    affiliate: false,
+  },
+  "amd-ryzen-ai-halo": {
+    vendor: "AMD",
+    url: "https://www.amd.com/en/products/processors/desktops/ryzen/ryzen-ai-halo.html",
+    label: "Explore AMD Ryzen AI Halo",
     affiliate: false,
   },
   "gmktec-evo-x2": {

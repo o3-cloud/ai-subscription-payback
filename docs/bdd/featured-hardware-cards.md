@@ -31,6 +31,15 @@ Scenario: DGX Spark exposes named retailer trims and a matching summary range
   And the card summary price range spans the selectable DGX Spark-class trims
   And each named trim keeps the DGX Spark card's source provenance and loads its retailer-sourced price
 
+Scenario: AMD Ryzen AI Halo is a separately priced Strix Halo trim
+  Given the Strix Halo featured hardware card
+  When the visitor opens its configuration drop-down
+  Then the selector includes an AMD Ryzen AI Halo trim priced at $3,999
+  And the pricing list identifies AMD's official product page as its source
+  And the calculator loads the trim's 128 GB unified-memory configuration and 120 W representative power assumption
+  And the pricing data records AMD's 60 FP16 TFLOPS figure as a vendor claim separate from the calculator's conservative model-fit guidance
+  And the pricing-list purchase call to action points to AMD's official product page and is not an affiliate link
+
 Scenario: Featured hardware cards include affiliate calls to action
   Given a featured hardware card
   When the visitor views the card

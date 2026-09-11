@@ -1284,6 +1284,40 @@ test("hardware features the Mac Studio, DGX Spark, Strix Halo, and Framework Des
   }
 });
 
+test("AMD Ryzen AI Halo is modeled as an official separately priced Strix Halo trim", async () => {
+  const { hardware, getAffiliate } = await import(new URL("data.js", jsDir));
+  const halo = hardware.find((entry) => entry.id === "amd-ryzen-ai-halo");
+  assert.ok(halo, "missing AMD Ryzen AI Halo hardware entry");
+  assert.equal(halo.exampleOf, "strix-halo");
+  assert.equal(halo.priceLow, 3999);
+  assert.equal(halo.priceHigh, 3999);
+  assert.equal(halo.spec, "Ryzen AI Max+ 395, 128 GB LPDDR5x unified memory");
+  assert.equal(halo.sourceUrl, "https://www.amd.com/en/products/processors/desktops/ryzen/ryzen-ai-halo.html");
+  assert.equal(halo.verification, "official");
+  assert.equal(halo.lastUpdated, "2026-09-04");
+  assert.equal(halo.defaultBoxPrice, 3999);
+  assert.equal(halo.powerDraw, 120);
+  assert.match(halo.priceNote, /60 FP16 TFLOPS/i);
+  assert.match(halo.officialModelFit, /60 FP16 TFLOPS/i);
+  assert.match(halo.modelFit, /70B-class quantized/i);
+  assert.equal(halo.memoryProfile.capacityGB, 128);
+  assert.equal(halo.memoryProfile.type, "unified");
+  assert.deepEqual(getAffiliate(halo.id), {
+    vendor: "AMD",
+    url: halo.sourceUrl,
+    label: "Explore AMD Ryzen AI Halo",
+    affiliate: false,
+  });
+});
+
+test("the featured-hardware BDD documents the AMD Ryzen AI Halo trim contract", () => {
+  const bdd = read("docs/bdd/featured-hardware-cards.md");
+  assert.match(bdd, /AMD Ryzen AI Halo is a separately priced Strix Halo trim/i);
+  assert.match(bdd, /priced at \$3,999/i);
+  assert.match(bdd, /60 FP16 TFLOPS figure as a vendor claim separate/i);
+  assert.match(bdd, /not an affiliate link/i);
+});
+
 test("featured hardware cards carry conservative model-fit guidance", async () => {
   const { featuredHardware } = await import(new URL("data.js", jsDir));
 
@@ -1510,6 +1544,7 @@ test("featured hardware trims seed the documented default preload", async () => 
     strixTrims.map((trim) => trim.id),
     [
       "framework-desktop-ai-max-385-32gb",
+      "amd-ryzen-ai-halo",
       "gmktec-evo-x2",
       "gmktec-evo-x3",
       "minisforum-ms-s1-max-64gb",
