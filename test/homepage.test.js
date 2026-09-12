@@ -379,6 +379,9 @@ test("subscription helper copy names the Google AI Plus, Google AI Pro, Google A
   // pricing copy must surface them too.
   const help = html.match(/<p class="field-help">([\s\S]*?)<\/p>/i)?.[1] ?? "";
   assert.ok(help, "index.html has a subscription field-help paragraph");
+  assert.match(help, /ChatGPT Go/i, "helper copy names ChatGPT Go");
+  assert.match(help, /ChatGPT Plus \/ Codex bundle/i, "helper copy names the ChatGPT Plus / Codex bundle");
+  assert.match(help, /ChatGPT Pro/i, "helper copy names ChatGPT Pro");
   assert.match(help, /Google AI Plus/i, "helper copy names Google AI Plus");
   assert.match(help, /Google AI Pro/i, "helper copy names Google AI Pro");
   assert.match(help, /Google AI Ultra/i, "helper copy names Google AI Ultra");

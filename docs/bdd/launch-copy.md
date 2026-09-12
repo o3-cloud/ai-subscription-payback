@@ -22,6 +22,12 @@ Scenario: Every shareable snippet includes the canonical URL exactly once
   And it carries no other link, tracking parameters, or the legacy `*.github.io` origin
   And each snippet keeps the transparent, free-calculator tone
 
+Scenario: Launch snippets describe the Codex bundle accurately
+  Given the ready-to-post launch copy in docs/launch-copy.md
+  When a maintainer reads the subscription examples
+  Then Codex is described as part of the ChatGPT Plus / Codex bundle
+  And no snippet describes Codex as a standalone subscription
+
 Scenario: Posting notes point at the shared social card and canonical link
   Given the "Posting notes" section of docs/launch-copy.md
   When a maintainer prepares a post

@@ -339,6 +339,9 @@ test("the on-page subscription helper text names every modeled coding-agent and 
       .trim() ?? "";
   assert.ok(help, "index.html has a <p class=\"field-help\"> element");
   for (const brand of [
+    "ChatGPT Go",
+    "ChatGPT Plus / Codex bundle",
+    "ChatGPT Pro",
     "Google AI Plus",
     "Google AI Pro",
     "Google AI Ultra",

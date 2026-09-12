@@ -101,6 +101,17 @@ test("each shareable social snippet includes the canonical URL exactly once and 
   }
 });
 
+test("launch copy describes Codex as part of the ChatGPT bundle", () => {
+  assert.match(launchCopy, /ChatGPT Plus \/ Codex bundle/i);
+  assert.doesNotMatch(launchCopy, /standalone subscription/i);
+  assert.doesNotMatch(launchCopy, /subscriptions such as Codex\b/i);
+  assert.match(
+    launchCopyBdd,
+    /Codex is described as part of the ChatGPT Plus \/ Codex bundle/i,
+    "launch-copy BDD must document the bundled Codex behavior"
+  );
+});
+
 // The "Posting notes" maintainer guidance is excluded from the shareable-snippet
 // URL check above, so it gets its own assertion: the notes must name the exact
 // canonical production URL rather than only saying "keep the link canonical", so
