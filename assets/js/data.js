@@ -159,10 +159,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-09-04";
+export const pricingLastUpdated = "2026-09-12";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-09-04";
+export const siteLastUpdated = "2026-09-12";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -290,16 +290,40 @@ export const tokenOutputValueAssumptions = {
 export const subscriptions = [
   {
     id: "codex",
-    name: "Codex",
-    plan: "Individual",
+    name: "ChatGPT",
+    plan: "Plus / Codex bundle",
     monthlyPrice: 20,
     billingCadence: "Billed monthly",
-    includedValue: "Individual Codex plan for a single developer.",
+    includedValue: "ChatGPT Plus subscription with Codex access for one developer; Codex is included in the ChatGPT bundle rather than sold as a standalone subscription.",
     sourceUrl: "https://chatgpt.com/pricing/",
     sourceLabel: "Official OpenAI pricing",
     verification: "official",
-    lastUpdated: "2026-08-16",
+    lastUpdated: "2026-09-12",
     defaultSelected: true,
+  },
+  {
+    id: "chatgpt-go",
+    name: "ChatGPT",
+    plan: "Go",
+    monthlyPrice: 8,
+    billingCadence: "Billed monthly",
+    includedValue: "Lower-cost ChatGPT plan with Codex access and usage limits below ChatGPT Plus.",
+    sourceUrl: "https://chatgpt.com/pricing/",
+    sourceLabel: "Official OpenAI pricing",
+    verification: "official",
+    lastUpdated: "2026-09-12",
+  },
+  {
+    id: "chatgpt-pro",
+    name: "ChatGPT",
+    plan: "Pro",
+    monthlyPrice: 100,
+    billingCadence: "Billed monthly — from $100/mo",
+    includedValue: "Higher-usage ChatGPT plan with expanded Codex access; the official pricing page presents Pro as starting from $100/month.",
+    sourceUrl: "https://chatgpt.com/pricing/",
+    sourceLabel: "Official OpenAI pricing",
+    verification: "official",
+    lastUpdated: "2026-09-12",
   },
   {
     id: "gitlab-premium-duo",

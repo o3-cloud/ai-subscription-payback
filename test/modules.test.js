@@ -39,6 +39,23 @@ test("data.js exports the datasets the UI renders", async () => {
   assert.match(data.siteLastUpdated, ISO_DATE);
 });
 
+test("ChatGPT tiers expose current prices and clarify the Codex bundle", async () => {
+  const { subscriptions } = await import(new URL("data.js", jsDir));
+  const byId = new Map(subscriptions.map((subscription) => [subscription.id, subscription]));
+  const codexBundle = byId.get("codex");
+  assert.equal(codexBundle.name, "ChatGPT");
+  assert.equal(codexBundle.plan, "Plus / Codex bundle");
+  assert.equal(codexBundle.monthlyPrice, 20);
+  assert.match(codexBundle.includedValue, /rather than sold as a standalone subscription/i);
+  assert.equal(byId.get("chatgpt-go").monthlyPrice, 8);
+  assert.equal(byId.get("chatgpt-pro").monthlyPrice, 100);
+  for (const id of ["codex", "chatgpt-go", "chatgpt-pro"]) {
+    assert.equal(byId.get(id).sourceUrl, "https://chatgpt.com/pricing/");
+    assert.equal(byId.get(id).lastUpdated, "2026-09-12");
+    assert.ok(!byId.get(id).defaultSelected || id === "codex", `${id} default selection is intentional`);
+  }
+});
+
 test("hardware exposes typed memory metadata for model-fit advisories", async () => {
   const { hardware, featuredHardware } = await import(new URL("data.js", jsDir));
   const types = new Set(["unified", "allocatable-accelerator", "discrete-vram"]);

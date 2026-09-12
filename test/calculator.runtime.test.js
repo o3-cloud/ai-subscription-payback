@@ -907,6 +907,21 @@ test("comparison table renders billing cadence and included value for every tier
   }
 });
 
+test("comparison table renders the current ChatGPT pricing ladder", () => {
+  const { doc } = boot();
+  const rows = doc.querySelectorAll("#pricing-list li");
+  const expected = [
+    ["ChatGPT", "Plus / Codex bundle", "$20/mo"],
+    ["ChatGPT", "Go", "$8/mo"],
+    ["ChatGPT", "Pro", "$100/mo"],
+  ];
+  for (const [name, plan, price] of expected) {
+    const row = rows.find((entry) => entry.textContent.includes(`${name} — ${plan}`));
+    assert.ok(row, `${plan} pricing row is rendered`);
+    assert.ok(row.textContent.includes(price), `${plan} price is rendered`);
+  }
+});
+
 test("comparison table renders the Copilot Max source note beside the provenance", () => {
   const { doc } = boot();
   const rows = doc.querySelectorAll("#comparison-body tr");

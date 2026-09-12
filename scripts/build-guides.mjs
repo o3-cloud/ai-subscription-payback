@@ -133,11 +133,11 @@ export const GUIDES = [
     title:
       "Codex vs a Local AI Box — Cost Comparison",
     description:
-      "Does a single $20/mo Codex subscription justify buying a local AI inference box? A source-backed price snapshot and a sample scenario with the honest answer.",
+      "Does a single $20/mo ChatGPT Plus / Codex bundle justify buying a local AI inference box? A source-backed price snapshot and a sample scenario with the honest answer.",
     heading: "Codex vs a local AI box: the cost",
     useCase: [
-      "A single Codex plan is one of the cheapest ways to get an AI coding assistant, which makes the payback maths for a local box unusually demanding. This guide compares a Codex seat against owning an affordable inference box — and is honest about when that box does not pay for itself.",
-      "It is for the individual Codex user wondering whether owned hardware is really cheaper than $20 a month.",
+      "A single ChatGPT Plus / Codex bundle is one of the cheapest ways to get an AI coding assistant, which makes the payback maths for a local box unusually demanding. This guide compares the bundle against owning an affordable inference box — and is honest about when that box does not pay for itself.",
+      "It is for the individual ChatGPT Plus / Codex bundle user wondering whether owned hardware is really cheaper than $20 a month.",
     ],
     scenarioLede:
       "A single Codex seat against a value-class Strix Halo box.",
