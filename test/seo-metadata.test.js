@@ -46,12 +46,15 @@ const metaContent = (attr, value) =>
   )?.[1] ?? "";
 
 // The SEO BDD requires the description-style fields to name all of the newly
-// modeled tier families — Google AI, Replit, Mistral, Bolt, Lovable, Augment
+// modeled tier families — ChatGPT, Google AI, Replit, Mistral, Bolt, Lovable, Augment
 // Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, and Manus — not merely one of them. Assert each family
 // individually so dropping any one from a field is caught; an OR-alternation
 // would let a field lose one family silently.
 const assertNamesNewTiers = (text, field) => {
   for (const [label, pattern] of [
+    ["ChatGPT Go", /ChatGPT Go/i],
+    ["ChatGPT Plus / Codex bundle", /ChatGPT Plus \/ Codex bundle/i],
+    ["ChatGPT Pro", /ChatGPT Pro/i],
     ["Google AI", /Google AI Plus|Google AI Pro|Google AI Ultra/i],
     ["Replit", /Replit/i],
     ["Mistral", /Mistral/i],

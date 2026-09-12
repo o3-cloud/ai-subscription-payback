@@ -5,7 +5,7 @@ Scenario: Launch scope is explicit
   Given a maintainer or visitor reviews the MVP scope
   When they read the scope document
   Then it names the launch-boundary hardware classes as Mac Studio, DGX Spark, and Strix Halo
-  And it names the baseline subscription comparisons as Codex and Claude Code
+  And it names the baseline subscription comparisons as the ChatGPT Plus / Codex bundle and Claude Code
   And it says the homepage also links comparison mini-guides for common follow-up questions
   And it states that the site is a static GitHub Pages experience with no backend
 

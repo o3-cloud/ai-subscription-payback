@@ -10,7 +10,7 @@ Scenario: Default inputs produce a result on load
 
 Scenario: Select subscriptions to compare
   Given the calculator is visible
-  When the visitor selects Codex and Claude Code
+  When the visitor selects the ChatGPT Plus / Codex bundle and Claude Code
   Then both subscriptions are included in the monthly subscription cost
 
 Scenario: Choose a custom monthly subscription spend
