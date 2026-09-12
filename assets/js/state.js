@@ -159,7 +159,7 @@ function hasMeaningfulShareParams(raw) {
 
     if (key === CUSTOM_SPEND_FIELD) {
       if (value === "") return true;
-      if (Number.isFinite(Number(value))) return true;
+      if (Number.isFinite(Number(value)) && Number(value) >= 0) return true;
       continue;
     }
 

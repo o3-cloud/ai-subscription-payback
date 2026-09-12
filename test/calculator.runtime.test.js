@@ -1690,6 +1690,27 @@ test("bootstrap and immediate Share fall back from a malformed hash to the query
   assert.equal(win.location.hash, sharedUrl.hash);
 });
 
+test("negative custom-spend hashes fall back to a valid query-string scenario", async () => {
+  const { doc, win } = boot("?boxPrice=4200&subs=codex", { hash: "#customSpend=-1" });
+
+  assert.equal(doc.getElementById("box-price").value, 4200);
+  assert.deepEqual(
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+      .map((el) => el.value),
+    ["codex"]
+  );
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  const sharedUrl = new URL(win._clipboardWrites[0]);
+  const params = new URLSearchParams(sharedUrl.hash.slice(1));
+  assert.equal(params.get("boxPrice"), "4200");
+  assert.equal(params.get("subs"), "codex");
+  assert.notEqual(params.get("customSpend"), "-1");
+  assert.equal(sharedUrl.search, "");
+});
+
 test("immediate Share preserves all hydrated legacy query-string fields", async () => {
   const query =
     "?boxPrice=4200&downPayment=500&apr=7.5&term=24&electricityRate=0.2&powerDraw=100&hoursPerDay=8" +
