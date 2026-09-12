@@ -49,8 +49,10 @@
     content="AI Subscription Payback — calculate when a local AI inference box beats your AI coding subscriptions."
   />
 
-  <!-- Structured data: the app itself plus the on-page methodology FAQ, so the
-       calculator and its Q&A copy are eligible for rich results in search. -->
+  <!-- Structured data describes the calculator itself. The visible methodology
+       FAQ remains useful page content but is not marked as FAQPage structured
+       data because this commercial site is outside Google's current FAQ rich-
+       result eligibility. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -69,35 +71,6 @@
           "price": "0",
           "priceCurrency": "USD"
         }
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "How is break-even calculated?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "For each month we compare the running total of subscription spend against the total cost of owning the box — the financed hardware payments (principal plus interest), plus electricity and any optional operating costs you enable. The break-even month is the first month where cumulative ownership cost drops below cumulative subscription cost."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What assumptions are used?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "The model uses maintainer-curated default assumptions for subscription prices, box price, down payment, financing APR and term, electricity rate, power draw, and hours of use per day. The current defaults are listed on the page and can be adjusted in the calculator."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What costs are excluded by default?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "By default the model excludes maintenance/depreciation, hardware resale value, and sales tax. Each can be toggled on in the Optional assumptions section of the calculator. The model is cost-only — it does not rate model quality or coding performance, and it is not financial advice."
-            }
-          }
-        ]
       }
     ]
   }

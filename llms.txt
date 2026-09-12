@@ -10,7 +10,7 @@ The site is a single static page hosted on GitHub Pages at https://www.othree.cl
 
 ## Methodology and assumptions
 
-- [Methodology & FAQ](https://www.othree.cloud/ai-subscription-payback/#methodology): How the payback is computed, what costs are included, and the assumptions and limits behind the estimate. The on-page FAQ is also published as FAQPage structured data.
+- [Methodology & FAQ](https://www.othree.cloud/ai-subscription-payback/#methodology): How the payback is computed, what costs are included, and the assumptions and limits behind the estimate. The FAQ is visible page content; the JSON-LD describes the calculator without unsupported FAQPage rich-result markup.
 
 ## Disclosures
 

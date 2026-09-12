@@ -70,8 +70,8 @@ Scenario: The calculator is described as structured data
   Given the landing page includes JSON-LD structured data
   When a search engine parses it
   Then the app is described as a free WebApplication
-  And the on-page methodology questions are exposed as a FAQPage
-  And each FAQ answer matches the answer copy shown on the page
+  And the visible methodology questions remain available as ordinary page content
+  And the JSON-LD does not claim FAQPage rich-result eligibility for this commercial calculator
 
 Scenario: The custom domain is the single source of truth for SEO origins
   Given the site is served from the custom domain
@@ -117,9 +117,10 @@ Scenario: Posting notes point at the social card and a clean canonical link
   it cannot compete with the custom domain for canonical or ranking signals.
   The root `CNAME` file pins `www.othree.cloud` in the published Pages artifact
   so the HTTPS certificate stays bound to the canonical host.
-- FAQ structured-data answers intentionally mirror the visible Methodology & FAQ
-  copy, per search-engine rich-result guidelines that on-page and structured
-  answers must match.
+- The visible Methodology & FAQ copy remains available to visitors, but the
+  commercial calculator intentionally does not emit `FAQPage` JSON-LD because
+  current Google FAQ rich-result eligibility does not cover this site. The
+  JSON-LD retains the free `WebApplication` description instead.
 - `sitemap.xml` `<lastmod>` tracks the site-wide last-updated date
   (`siteLastUpdated` in `assets/js/data.js`).
 - Launch-copy snippets in `docs/launch-copy.md` must stay aligned with the

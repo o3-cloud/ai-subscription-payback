@@ -256,16 +256,18 @@ test("the head declares a favicon so browsers never fall back to a 404 /favicon.
   );
 });
 
-/** Extract and parse the single JSON-LD block in the head. */
-const jsonLd = () => {
-  const block = html.match(
-    /<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i
-  )?.[1];
-  assert.ok(block, "index.html has a JSON-LD script");
-  return JSON.parse(block);
+/** Extract and parse every JSON-LD block in the head. */
+const jsonLdBlocks = () => {
+  const blocks = [...html.matchAll(
+    /<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi
+  )].map((match) => JSON.parse(match[1]));
+  assert.ok(blocks.length > 0, "index.html has a JSON-LD script");
+  return blocks;
 };
 
-test("JSON-LD parses and describes the app plus its FAQ", () => {
+const jsonLd = () => jsonLdBlocks()[0];
+
+test("JSON-LD parses and describes the free calculator without unsupported FAQ markup", () => {
   const graph = jsonLd()["@graph"];
   assert.ok(Array.isArray(graph), "JSON-LD uses an @graph array");
 
@@ -276,24 +278,22 @@ test("JSON-LD parses and describes the app plus its FAQ", () => {
   assert.equal(app.offers.price, "0");
   assertNamesNewTiers(app.description, "WebApplication description");
 
-  const faq = graph.find((n) => n["@type"] === "FAQPage");
-  assert.ok(faq, "graph includes a FAQPage node");
-  assert.ok(
-    Array.isArray(faq.mainEntity) && faq.mainEntity.length >= 3,
-    "FAQPage exposes at least three questions"
+  const hasFaqType = (value) => {
+    if (Array.isArray(value)) return value.includes("FAQPage");
+    return value === "FAQPage";
+  };
+  assert.equal(
+    jsonLdBlocks().some((block) =>
+      (block["@graph"] ?? [block]).some((node) => hasFaqType(node["@type"]))
+    ),
+    false,
+    "commercial calculator does not claim unsupported FAQ rich-result eligibility"
   );
-  for (const q of faq.mainEntity) {
-    assert.equal(q["@type"], "Question");
-    assert.ok(q.name.length > 0, "question has a name");
-    assert.ok(q.acceptedAnswer.text.length > 0, "question has an answer");
-  }
 });
 
-test("FAQ structured-data answers match the on-page methodology copy", () => {
-  // Rich-result guidelines require the JSON-LD answers to mirror visible text;
-  // spot-check a distinctive phrase from each on-page answer.
-  // Strip inline tags and collapse whitespace so phrases that wrap across lines
-  // or straddle a <strong> in the source still match as running prose.
+test("the visible methodology FAQ remains complete without FAQ structured data", () => {
+  // The FAQ remains useful page content even though it is intentionally not
+  // advertised as eligible for FAQ rich results.
   const methodology = (
     html.match(/<section[^>]*id="methodology"[^>]*>([\s\S]*?)<\/section>/i)?.[1] ?? ""
   )
@@ -302,20 +302,28 @@ test("FAQ structured-data answers match the on-page methodology copy", () => {
     .trim();
   assert.ok(methodology, "index.html has a #methodology section");
 
-  const faq = jsonLd()["@graph"].find((n) => n["@type"] === "FAQPage");
-  const answers = faq.mainEntity.map((q) => q.acceptedAnswer.text).join(" ");
-
   for (const phrase of [
     "first month where cumulative ownership cost drops below",
     "maintenance/depreciation, hardware resale",
   ]) {
-    assert.ok(answers.includes(phrase), `FAQ answer missing phrase: "${phrase}"`);
     assert.match(
       methodology,
       new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"),
       `on-page methodology missing phrase: "${phrase}"`
     );
   }
+  assert.match(methodology, /How is break-even calculated\?/i);
+  assert.match(methodology, /What assumptions are used\?/i);
+  assert.match(methodology, /Current default assumptions/i);
+  assert.match(methodology, /Assumptions load from data\./i);
+  assert.match(methodology, /What costs are excluded by default\?/i);
+});
+
+test("llms.txt does not repeat the retired FAQ structured-data claim", () => {
+  const llms = read("llms.txt");
+  assert.doesNotMatch(llms, /published as FAQPage structured data/i);
+  assert.match(llms, /visible page content/i);
+  assert.match(llms, /without unsupported FAQPage rich-result markup/i);
 });
 
 test("the on-page subscription helper text names every modeled coding-agent and code-review brand", () => {
