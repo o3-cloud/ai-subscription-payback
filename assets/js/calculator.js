@@ -649,10 +649,14 @@ function renderResults(doc, state, valid) {
       result.monthlyNetSavings === null ? "—" : formatCurrency(result.monthlyNetSavings);
   }
   if (status) {
+    const breakEven = result.breakEvenMonth === null
+      ? `not reached within ${horizonMonths} months`
+      : formatBreakEven(result.breakEvenMonth);
+    const monthlySavings = result.monthlyNetSavings === null
+      ? "not available"
+      : formatCurrency(result.monthlyNetSavings);
     status.textContent =
-      result.breakEvenMonth === null
-        ? `Break-even not reached within ${horizonMonths} months.`
-        : `Break-even reached in ${formatBreakEven(result.breakEvenMonth)}.`;
+      `Break-even month: ${breakEven}; monthly net savings: ${monthlySavings}.`;
   }
   if (spendBasis) {
     const monthly = formatCurrency(monthlySubscriptionCost(state));

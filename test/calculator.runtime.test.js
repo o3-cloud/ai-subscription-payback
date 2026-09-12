@@ -618,6 +618,11 @@ test("initCalculator boots the form from static data and defaults", () => {
   assert.equal(doc.getElementById("spend-preset").value, "");
   assert.equal(doc.getElementById("payment-timing").value, "effective-monthly");
   assert.match(doc.getElementById("payment-mode").textContent, /effective monthly/i);
+  assert.match(
+    doc.getElementById("results-status").textContent,
+    /^Break-even month: .+; monthly net savings: .+\.$/,
+    "result status concisely announces the key metrics"
+  );
   assert.equal(
     doc.getElementById("spend-basis").textContent,
     "Comparing against the Power user preset ($200/mo)."
@@ -718,7 +723,7 @@ test("initCalculator boots the form from static data and defaults", () => {
   );
   assert.match(
     doc.getElementById("results-status").textContent,
-    /^Break-even (not reached within \d+ months\.|reached in Month \d+\.)$/
+    /^Break-even month: .+; monthly net savings: .+\.$/
   );
 });
 
@@ -1543,7 +1548,7 @@ test("initCalculator renders the real results state for valid inputs", () => {
   const { doc } = boot();
   assert.equal(
     doc.getElementById("results-status").textContent,
-    "Break-even reached in Month 8."
+    "Break-even month: Month 8; monthly net savings: $66."
   );
   assert.equal(
     doc.getElementById("spend-basis").textContent,
@@ -1890,7 +1895,7 @@ test("a live edit re-validates and updates the results status", async () => {
   assert.equal(doc.getElementById("apr-error"), null, "removes the field error");
   assert.equal(
     doc.getElementById("results-status").textContent,
-    "Break-even reached in Month 7."
+    "Break-even month: Month 7; monthly net savings: $72."
   );
   // Recovery restores the break-even summary in the chart hint.
   assert.equal(chartHint.textContent, "Break-even reached in Month 7.");

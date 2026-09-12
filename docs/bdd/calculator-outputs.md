@@ -78,6 +78,12 @@ Scenario: Results update live
   When the visitor changes any input
   Then the displayed result and chart update to match
 
+Scenario: Result status summarizes key changes
+  Given a computed result is displayed
+  When the visitor changes any input
+  Then a concise status announces the break-even month and monthly net savings
+  And the full results region is not announced as one live block
+
 Scenario: Capability caveat is shown with the results
   Given the visitor views the calculator results area
   When they read the results panel

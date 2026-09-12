@@ -309,11 +309,11 @@
 
         <!-- Results -->
         <div class="results-panel">
-          <div id="results" class="results" role="region" aria-live="polite" aria-atomic="true" aria-labelledby="results-title">
+          <div id="results" class="results" role="region" aria-labelledby="results-title">
             <h3 id="results-title">Results</h3>
-            <p id="spend-basis" class="results-basis" aria-live="polite"></p>
-            <p id="payment-mode" class="results-basis" aria-live="polite"></p>
-            <p id="bundle-caveat" class="results-overlap-caveat" role="note" aria-live="polite" hidden></p>
+            <p id="spend-basis" class="results-basis"></p>
+            <p id="payment-mode" class="results-basis"></p>
+            <p id="bundle-caveat" class="results-overlap-caveat" role="note" hidden></p>
 
             <dl class="result-metrics">
               <div class="metric">
@@ -337,7 +337,7 @@
               crossover over time.
             </p>
 
-            <p id="results-status" class="results-status">
+            <p id="results-status" class="results-status" role="status" aria-live="polite" aria-atomic="true">
               Enter values to see the payback timeline.
             </p>
           </div>

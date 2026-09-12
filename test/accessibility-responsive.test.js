@@ -3,7 +3,7 @@
  *
  * Dependency-free assertions over index.html and the stylesheet that pin the
  * signals the BDD specs (docs/bdd/accessibility.md, docs/bdd/responsive-design.md)
- * promise: a polite+atomic results region, a keyboard-focusable and labeled
+ * promise: a concise polite+atomic result status, a keyboard-focusable and labeled
  * comparison table, an advertised color-scheme, and the CSS media rules plus
  * full-width inputs that keep the layout usable across themes, motion
  * preferences, and phone-width viewports. No DOM or browser required.
@@ -25,14 +25,27 @@ const css = readFileSync(
 const elementWithId = (id) =>
   html.match(new RegExp(`<[^>]*\\bid="${id}"[^>]*>`, "i"))?.[0] ?? "";
 
-test("results region announces updates politely and atomically", () => {
-  // Screen readers must re-read the whole results block on change, not just the
-  // one metric that mutated — so aria-live is polite and aria-atomic is true.
+test("results use a concise polite atomic status instead of a live region", () => {
+  // The large results block must not be live: announcing its chart, caveats, and
+  // month-by-month table on every input change is excessive. A small status node
+  // carries the concise update instead.
   const results = elementWithId("results");
   assert.ok(results, "index.html has an #results element");
   assert.match(results, /role="region"/i, "results is a landmark region");
-  assert.match(results, /aria-live="polite"/i, "results announces politely");
-  assert.match(results, /aria-atomic="true"/i, "results announces atomically");
+  assert.doesNotMatch(results, /aria-live=/i, "results wrapper is not a live region");
+  assert.doesNotMatch(results, /aria-atomic=/i, "results wrapper is not atomic");
+  for (const id of ["spend-basis", "payment-mode", "bundle-caveat"]) {
+    assert.doesNotMatch(
+      elementWithId(id),
+      /aria-live=/i,
+      `#${id} does not create a competing live announcement`
+    );
+  }
+
+  const status = elementWithId("results-status");
+  assert.match(status, /role="status"/i, "concise result status has status role");
+  assert.match(status, /aria-live="polite"/i, "result status announces politely");
+  assert.match(status, /aria-atomic="true"/i, "result status announces atomically");
 });
 
 test("comparison table wrapper is keyboard-focusable and labeled", () => {

@@ -6,10 +6,12 @@ Scenario: Inputs are labeled
   When the visitor inspects the form
   Then every control has a visible label
 
-Scenario: Result updates are announced
+Scenario: Concise result updates are announced without screen-reader noise
   Given the calculator result has changed
   When the page updates the output
-  Then assistive technology receives a polite update announcement
+  Then the large results region is not a live region
+  And a dedicated status node receives a concise polite atomic update
+  And the update includes the break-even month and monthly net savings
 
 Scenario: Color contrast is sufficient
   Given the site is rendered in light or dark mode
