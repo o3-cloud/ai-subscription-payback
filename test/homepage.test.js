@@ -191,14 +191,15 @@ test("no-JS comparison snapshot stays source-backed and matches calculator defau
   assert.ok(snapshot, "static first-view snapshot is available");
   const rows = snapshotRows(snapshot);
 
-  for (const id of ["codex", "claude-code", "copilot-pro"]) {
+  for (const id of ["codex", "chatgpt-go", "chatgpt-pro", "claude-code", "copilot-pro"]) {
     const tier = subscriptions.find((entry) => entry.id === id);
     assert.ok(tier, `source data contains ${id}`);
     const displayedPlan = tier.plan.split(" ")[0];
     const row = rows.find((entry) => entry.includes(`${tier.name} — ${displayedPlan}`));
     assert.ok(row, `${id} name and plan are in its snapshot row`);
     assert.ok(row.includes(`${formatCurrency(tier.monthlyPrice)}/mo`), `${id} price is in its snapshot row`);
-    assert.ok(row.toLowerCase().includes(tier.billingCadence.split(/[;,]/)[0].toLowerCase()), `${id} cadence is in its snapshot row`);
+    const cadence = tier.billingCadence.match(/billed (?:monthly|annually)/i)?.[0] ?? tier.billingCadence.split(/[;,—]/)[0];
+    assert.ok(row.toLowerCase().includes(cadence.toLowerCase()), `${id} cadence is in its snapshot row`);
   }
 
   const hardwareLabels = { "mac-studio": "Mac Studio", "dgx-spark": "NVIDIA DGX Spark", "strix-halo": "Strix Halo systems" };

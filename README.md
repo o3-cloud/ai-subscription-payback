@@ -12,7 +12,7 @@ In short: the site is an affiliate-first static Pages experience centered on
 Mac Studio, DGX Spark, and Strix Halo class systems such as the Framework
 Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, compared against the
 currently modeled AI coding, app-builder, and agent subscriptions (for example
-Codex, Claude Code, Cursor, GitHub Copilot, GitLab Premium + Duo Agent Platform
+ChatGPT Go, the ChatGPT Plus / Codex bundle, ChatGPT Pro, Claude Code, Cursor, GitHub Copilot, GitLab Premium + Duo Agent Platform
 credits, xAI Grok, Zed, Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0,
 Augment Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and
 Manus), with comparison mini-guides for common follow-up questions,

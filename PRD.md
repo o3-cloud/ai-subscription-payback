@@ -8,7 +8,8 @@
 ## Problem Statement
 
 Developers and small teams often pay recurring monthly fees for AI coding,
-app-builder, and agent subscriptions such as Codex, Claude Code, Cursor, GitHub
+app-builder, and agent subscriptions such as ChatGPT Go, the ChatGPT Plus / Codex
+bundle, ChatGPT Pro, Claude Code, Cursor, GitHub
 Copilot, GitLab Premium + Duo Agent Platform credits, xAI Grok, Zed, Google AI tiers
 like Gemini, Jules, and Antigravity, Devin, Replit, Mistral, Bolt, Lovable, v0,
 Augment Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and
@@ -35,7 +36,7 @@ and the fact that all savings numbers are estimates.
   reseller links.
 - Provide a fast, free calculator that compares subscription spend against the
   monthly cost of financing a hardware purchase.
-- Compare at minimum Codex and Claude Code against Mac Studio, DGX Spark, and
+- Compare at minimum the ChatGPT Plus / Codex bundle and Claude Code against Mac Studio, DGX Spark, and
   Strix Halo-class systems, including named examples such as the Framework
   Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, with room to add more
   boxes or subscriptions.

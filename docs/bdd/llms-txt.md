@@ -27,6 +27,12 @@ Scenario: The disclosures stay honest and source-backed
   Then they state the calculator runs client-side with no backend
   And they state affiliate links never change the calculator's results
   And they state pricing is a manually maintained snapshot to verify with vendors
+
+Scenario: The summary names the current ChatGPT pricing ladder
+  Given the opening llms.txt summary
+  When an AI agent reads the modeled subscription coverage
+  Then it names ChatGPT Go, the ChatGPT Plus / Codex bundle, and ChatGPT Pro
+  And it does not describe Codex as a standalone subscription
 ```
 
 ## Notes

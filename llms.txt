@@ -1,6 +1,6 @@
 # AI Subscription Payback
 
-> Free, static calculator that estimates how long until buying a local AI inference box (Mac Studio, NVIDIA DGX Spark, or Strix Halo / Ryzen AI Max class) is cheaper than paying for AI coding and code-review subscriptions like Codex, Claude Code, Cursor, GitHub Copilot, GitLab Premium + Duo Agent Platform credits, Google AI Plus / Pro / Ultra, Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Amp, TRAE, Supermaven, JetBrains AI Pro, Tabnine, Warp, Kiro, Factory, Manus, v0, xAI Grok / SuperGrok, Amazon Q Developer, Zed, and Devin / Windsurf.
+> Free, static calculator that estimates how long until buying a local AI inference box (Mac Studio, NVIDIA DGX Spark, or Strix Halo / Ryzen AI Max class) is cheaper than paying for AI coding and code-review subscriptions like ChatGPT Go, the ChatGPT Plus / Codex bundle, ChatGPT Pro, Claude Code, Cursor, GitHub Copilot, GitLab Premium + Duo Agent Platform credits, Google AI Plus / Pro / Ultra, Replit Agent, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Amp, TRAE, Supermaven, JetBrains AI Pro, Tabnine, Warp, Kiro, Factory, Manus, v0, xAI Grok / SuperGrok, Amazon Q Developer, Zed, and Devin / Windsurf.
 
 The site is a single static page hosted on GitHub Pages at https://www.othree.cloud/ai-subscription-payback/. All computation runs client-side in the browser — there is no backend or API. It is affiliate-funded, and affiliate relationships never change the calculator's math or results. Pricing figures are hand-maintained snapshots with a visible "last updated" date; always confirm current prices with the vendor before buying.
 
@@ -22,7 +22,7 @@ The site is a single static page hosted on GitHub Pages at https://www.othree.cl
 - [NVIDIA DGX Spark price & payback](https://www.othree.cloud/ai-subscription-payback/guides/dgx-spark-price-payback.html): DGX Spark price and payback versus AI coding subscriptions.
 - [Mac Studio as an AI coding workstation](https://www.othree.cloud/ai-subscription-payback/guides/mac-studio-ai-coding-workstation.html): Cost comparison of a Mac Studio local box against subscription spend.
 - [Claude Code vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/claude-code-vs-local-ai-box-cost.html): Cost comparison of Claude Code subscriptions versus owning local hardware.
-- [Codex vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/codex-vs-local-ai-box-cost.html): Cost comparison of Codex subscriptions versus owning local hardware.
+- [ChatGPT Plus / Codex bundle vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/codex-vs-local-ai-box-cost.html): Cost comparison of the ChatGPT Plus / Codex bundle versus owning local hardware.
 - [Strix Halo / Ryzen AI Max workstation](https://www.othree.cloud/ai-subscription-payback/guides/strix-halo-ryzen-ai-max-workstation.html): Cost comparison of a Strix Halo / Ryzen AI Max local box against subscription spend.
 - [Kiro vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/kiro-vs-local-ai-box-cost.html): Cost comparison of Kiro's paid plans versus local hardware.
 - [Supermaven vs a local AI box](https://www.othree.cloud/ai-subscription-payback/guides/supermaven-vs-local-ai-box-cost.html): Cost comparison of Supermaven's paid plans versus local hardware.

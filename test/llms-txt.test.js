@@ -37,6 +37,9 @@ test("llms.txt follows the convention: H1 title then a blockquote summary", () =
   );
   const summary = lines.find((line) => line.startsWith("> "));
   assert.match(summary, /calculator/i, "the summary describes the calculator");
+  assert.match(summary, /ChatGPT Go/i, "the summary names ChatGPT Go");
+  assert.match(summary, /ChatGPT Plus \/ Codex bundle/i, "the summary names the bundled Codex offering");
+  assert.match(summary, /ChatGPT Pro/i, "the summary names ChatGPT Pro");
   assert.match(summary, /Cursor/i, "the summary names Cursor alongside the other modeled subscription families");
   assert.match(summary, /GitHub Copilot/i, "the summary names GitHub Copilot alongside the other modeled subscription families");
   assert.match(summary, /GitLab Premium/i, "the summary names GitLab Premium alongside the other modeled subscription families");

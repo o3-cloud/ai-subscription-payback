@@ -15,7 +15,8 @@ Scenario: Supported subscription tiers are listed
   Then ChatGPT Go is listed at $8/mo
   And ChatGPT Plus is listed at $20/mo with Codex access as a bundled benefit
   And ChatGPT Pro is listed from $100/mo
-  And the former Codex individual row is clearly labeled as the ChatGPT Plus / Codex bundle rather than a standalone Codex subscription
+  And the ChatGPT row is clearly labeled as the ChatGPT Plus / Codex bundle rather than a standalone Codex subscription
+  And each ChatGPT row uses the official OpenAI pricing source, official verification status, and its row-level last-verified date
   And the Claude Code tiers are listed: Pro monthly, Pro annual, Max 5×, Team standard seat (monthly and annual), and Team premium seat (monthly and annual)
   And the public Claude pricing page also exposes Max 20×, but the calculator keeps it out of the priced rows until a durable standalone public price is available
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max

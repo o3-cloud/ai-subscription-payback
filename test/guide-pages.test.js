@@ -310,6 +310,17 @@ test("the mini-guides BDD names the second-wave and third-wave guide families", 
   assert.match(miniGuidesBdd, /llms\.txt/i, "mini-guides BDD ties the guide set back to llms.txt");
 });
 
+test("the ChatGPT bundle guide keeps its source-backed identity", () => {
+  const html = read("guides/codex-vs-local-ai-box-cost.html");
+  assert.match(html, /ChatGPT Plus \/ Codex bundle vs a local AI box/i);
+  assert.match(html, /<td>ChatGPT<\/td>[\s\S]*<td>Plus \/ Codex bundle<\/td>[\s\S]*\$20\/mo/i);
+  assert.match(html, /Official OpenAI pricing/i);
+  assert.match(html, /data-verification="official"/i);
+  assert.match(html, /href="https:\/\/chatgpt\.com\/pricing\/"/i);
+  assert.match(html, /datetime="2026-09-12"/i);
+  assert.match(miniGuidesBdd, /ChatGPT Plus \/ Codex bundle, not a standalone Codex subscription/i);
+});
+
 test("the sitemap lists every published guide URL", () => {
   for (const { href } of expectedGuideLinks()) {
     assert.match(sitemap, new RegExp(`<loc>${escapeRegExp(href)}</loc>`), `${href} is missing from sitemap.xml`);

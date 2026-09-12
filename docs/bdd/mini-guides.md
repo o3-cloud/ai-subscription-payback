@@ -13,6 +13,8 @@ Scenario: Each mini-guide answers a concrete comparison query
   When they read the page from top to bottom
   Then the page includes a short use-case summary
   And it includes a source-backed price/spec snapshot
+  And each relevant subscription row shows its source label, verification status, source URL, and last-verified date
+  And the Codex guide labels its subscription row as the ChatGPT Plus / Codex bundle, not a standalone Codex subscription
   And it includes a sample payback scenario with break-even metrics
   And the sample scenario prose states the scenario's electricity rate (cent precision)
   And it includes a 24/7 yearly token-output value estimate

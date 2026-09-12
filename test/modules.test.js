@@ -50,8 +50,11 @@ test("ChatGPT tiers expose current prices and clarify the Codex bundle", async (
   assert.equal(byId.get("chatgpt-go").monthlyPrice, 8);
   assert.equal(byId.get("chatgpt-pro").monthlyPrice, 100);
   for (const id of ["codex", "chatgpt-go", "chatgpt-pro"]) {
+    assert.equal(byId.get(id).sourceLabel, "Official OpenAI pricing");
+    assert.equal(byId.get(id).verification, "official");
     assert.equal(byId.get(id).sourceUrl, "https://chatgpt.com/pricing/");
     assert.equal(byId.get(id).lastUpdated, "2026-09-12");
+    assert.match(byId.get(id).billingCadence, /billed monthly/i);
     assert.ok(!byId.get(id).defaultSelected || id === "codex", `${id} default selection is intentional`);
   }
 });
