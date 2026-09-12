@@ -1915,6 +1915,34 @@ test("state.js round-trips calculator state through the URL helpers", async () =
     "an invalid numeric hash fragment must not shadow a valid query-string share link"
   );
 
+  const mixedInvalidHash = state.readShareParams({
+    hash: "#boxPrice=4200&apr=abc",
+    search: "?boxPrice=1000&apr=5",
+  });
+  assert.equal(
+    mixedInvalidHash,
+    "boxPrice=1000&apr=5",
+    "one malformed known field invalidates the whole hash payload"
+  );
+
+  const mixedNegativeSpendHash = state.readShareParams({
+    hash: "#boxPrice=4200&customSpend=-1",
+    search: "?boxPrice=1000&customSpend=75",
+  });
+  assert.equal(
+    mixedNegativeSpendHash,
+    "boxPrice=1000&customSpend=75",
+    "a negative custom spend invalidates an otherwise populated hash payload"
+  );
+
+  const mixedHashOnly = state.readShareParams({ hash: "#boxPrice=4200&term=999" });
+  assert.equal(mixedHashOnly, "", "a mixed invalid hash is rejected without a query fallback");
+  assert.equal(
+    state.parseState("customSpend=-1", { customSpend: 75 }).customSpend,
+    75,
+    "direct state parsing also ignores negative custom spend values"
+  );
+
   const blankCustomSpendHash = state.readShareParams({
     hash: "#customSpend=",
     search: "?customSpend=75",

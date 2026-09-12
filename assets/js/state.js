@@ -150,43 +150,62 @@ const SHARE_PARAM_KEYS = [
 function hasMeaningfulShareParams(raw) {
   if (!raw) return false;
   const params = new URLSearchParams(raw);
+  let meaningful = false;
   for (const key of SHARE_PARAM_KEYS) {
     if (!params.has(key)) continue;
 
-    if (key === "subs") return true;
+    if (key === "subs") {
+      meaningful = true;
+      continue;
+    }
 
     const value = (params.get(key) ?? "").trim();
 
     if (key === CUSTOM_SPEND_FIELD) {
-      if (value === "") return true;
-      if (Number.isFinite(Number(value)) && Number(value) >= 0) return true;
-      continue;
+      if (value === "") {
+        meaningful = true;
+        continue;
+      }
+      if (Number.isFinite(Number(value)) && Number(value) >= 0) {
+        meaningful = true;
+        continue;
+      }
+      return false;
     }
 
     if (BOOLEAN_FIELDS.includes(key)) {
-      if (value === "0" || value === "1") return true;
-      continue;
+      if (value === "0" || value === "1") {
+        meaningful = true;
+        continue;
+      }
+      return false;
     }
 
     if (key === MODEL_QUANTIZATION_FIELD) {
-      if (MODEL_QUANTIZATIONS.includes(value)) return true;
-      continue;
+      if (MODEL_QUANTIZATIONS.includes(value)) {
+        meaningful = true;
+        continue;
+      }
+      return false;
     }
 
     if (key === MODEL_SIZE_FIELD) {
-      if (value !== "" && Number.isFinite(Number(value)) && Number(value) > 0) return true;
-      continue;
+      if (value !== "" && Number.isFinite(Number(value)) && Number(value) > 0) {
+        meaningful = true;
+        continue;
+      }
+      return false;
     }
 
     const bounds = NUMERIC_FIELDS[key];
-    if (value === "") continue;
+    if (value === "") return false;
     const num = Number(value);
-    if (!Number.isFinite(num)) continue;
-    if (bounds.min !== undefined && num < bounds.min) continue;
-    if (bounds.max !== undefined && num > bounds.max) continue;
-    return true;
+    if (!Number.isFinite(num)) return false;
+    if (bounds.min !== undefined && num < bounds.min) return false;
+    if (bounds.max !== undefined && num > bounds.max) return false;
+    meaningful = true;
   }
-  return false;
+  return meaningful;
 }
 
 export function readShareParams(location = {}) {
@@ -250,7 +269,14 @@ export function parseState(search, defaults = {}) {
       // behavior below.
       if (normalized !== "") {
         const num = Number(normalized);
-        if (Number.isFinite(num)) state[key] = num;
+        const bounds = NUMERIC_FIELDS[key];
+        if (
+          Number.isFinite(num) &&
+          (bounds.min === undefined || num >= bounds.min) &&
+          (bounds.max === undefined || num <= bounds.max)
+        ) {
+          state[key] = num;
+        }
       }
     }
   }
@@ -264,7 +290,7 @@ export function parseState(search, defaults = {}) {
       state[CUSTOM_SPEND_FIELD] = "";
     } else {
       const num = Number(normalized);
-      if (Number.isFinite(num)) state[CUSTOM_SPEND_FIELD] = num;
+      if (Number.isFinite(num) && num >= 0) state[CUSTOM_SPEND_FIELD] = num;
     }
   }
   if (PAYMENT_TIMING_MODES.includes(params.get(PAYMENT_TIMING_FIELD))) {

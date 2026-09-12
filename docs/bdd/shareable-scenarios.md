@@ -104,12 +104,26 @@ Scenario: A malformed share fragment falls back to the query string
   Then the calculator ignores the malformed hash fragment
   And it restores the scenario from the query string instead
 
+Scenario: A mixed valid-and-invalid share fragment is rejected as a whole
+  Given the address bar contains a hash with one valid field and one malformed known field, such as "#boxPrice=4200&apr=abc" or "#boxPrice=4200&customSpend=-1"
+  And the same URL may contain a valid query-string scenario
+  When the page loads
+  Then the malformed hash does not partially hydrate the calculator
+  And a valid query-string scenario wins over the entire malformed hash
+  And when there is no valid query fallback, the calculator uses defaults instead
+
 Scenario: Bootstrap and Share preserve fallback state after a malformed fragment
   Given the address bar contains "?boxPrice=4200&subs=codex#boxPrice=abc"
   When the page loads and the visitor immediately clicks Share
   Then the calculator hydrates from the query string
   And the copied hash contains "boxPrice=4200" and "subs=codex"
   And the copied hash does not contain the malformed value
+
+Scenario: Share omits invalid fields from a sanitized scenario
+  Given a shared URL contains a mixed valid-and-invalid hash scenario
+  When the page loads and the visitor immediately clicks Share
+  Then the copied hash contains only valid canonical fields
+  And it does not contain malformed, out-of-range, or negative values from the original URL
 
 Scenario: The first Share preserves the full legacy query-string scenario
   Given an older query-string link contains numeric, boolean, payment-timing, model-fit, and subscription fields

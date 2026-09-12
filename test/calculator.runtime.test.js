@@ -1690,6 +1690,38 @@ test("bootstrap and immediate Share fall back from a malformed hash to the query
   assert.equal(win.location.hash, sharedUrl.hash);
 });
 
+test("mixed malformed hashes fall back as a whole and Share emits only valid query state", async () => {
+  const { doc, win } = boot("?boxPrice=1000&apr=5&subs=codex", {
+    hash: "#boxPrice=4200&apr=abc&customSpend=-1",
+  });
+
+  assert.equal(doc.getElementById("box-price").value, 1000);
+  assert.equal(doc.getElementById("apr").value, 5);
+  assert.deepEqual(
+    doc
+      .querySelectorAll('#subscription-options input[type="checkbox"]:checked')
+      .map((el) => el.value),
+    ["codex"]
+  );
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  const sharedUrl = new URL(win._clipboardWrites[0]);
+  const params = new URLSearchParams(sharedUrl.hash.slice(1));
+  assert.equal(params.get("boxPrice"), "1000");
+  assert.equal(params.get("apr"), "5");
+  assert.equal(params.get("subs"), "codex");
+  assert.notEqual(params.get("customSpend"), "-1");
+  assert.equal(sharedUrl.search, "");
+});
+
+test("hash-only mixed malformed state is rejected instead of partially hydrated", () => {
+  const { doc } = boot("", { hash: "#boxPrice=4200&term=999" });
+
+  assert.notEqual(doc.getElementById("box-price").value, 4200);
+  assert.notEqual(doc.getElementById("term").value, 999);
+});
+
 test("negative custom-spend hashes fall back to a valid query-string scenario", async () => {
   const { doc, win } = boot("?boxPrice=4200&subs=codex", { hash: "#customSpend=-1" });
 
