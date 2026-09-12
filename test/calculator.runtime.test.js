@@ -381,6 +381,7 @@ function buildDocument() {
 function buildWindow(search = "", options = {}) {
   const clipboardWrites = [];
   const historyUrls = [];
+  const shareCalls = [];
   const plausibleCalls = [];
   const win = {
     location: {
@@ -395,6 +396,13 @@ function buildWindow(search = "", options = {}) {
     },
     navigator: {
       doNotTrack: options.dnt,
+      share:
+        options.share === "supported" || options.share === "fails"
+          ? async (payload) => {
+              shareCalls.push(payload);
+              if (options.share === "fails") throw new Error("share dismissed");
+            }
+          : undefined,
       // options.clipboard: "missing" drops the Clipboard API entirely (plain
       // HTTP / older webviews); "fails" exposes a writeText that rejects
       // (denied permission / unfocused page). Both must fall back to execCommand.
@@ -424,6 +432,7 @@ function buildWindow(search = "", options = {}) {
       plausibleCalls.push(args);
     },
     _clipboardWrites: clipboardWrites,
+    _shareCalls: shareCalls,
     _historyUrls: historyUrls,
     _plausibleCalls: plausibleCalls,
   };
@@ -2071,6 +2080,34 @@ test("the share button serializes current state into a shareable URL", async () 
     doc.getElementById("share-status").textContent,
     "Link copied to clipboard."
   );
+});
+
+test("share prefers the native Web Share API with a useful scenario summary", async () => {
+  const { doc, win } = boot("", { share: "supported" });
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  assert.equal(win._shareCalls.length, 1, "uses the native share sheet once");
+  assert.equal(win._clipboardWrites.length, 0, "native sharing does not copy separately");
+  const payload = win._shareCalls[0];
+  assert.equal(payload.url, win._historyUrls.at(-1), "shares the canonical address-bar URL");
+  assert.equal(payload.title, "AI Subscription Payback");
+  assert.match(payload.text, /selected subscriptions:/i);
+  assert.match(payload.text, /hardware price:\s*\$/i);
+  assert.match(payload.text, /monthly savings:/i);
+  assert.match(payload.text, /payback:/i);
+  assert.equal(doc.getElementById("share-status").textContent, "Scenario shared.");
+});
+
+test("a rejected native share falls back to clipboard copying", async () => {
+  const { doc, win } = boot("", { share: "fails" });
+
+  await doc.getElementById("share-button").dispatch("click");
+
+  assert.equal(win._shareCalls.length, 1, "attempts native sharing first");
+  assert.equal(win._clipboardWrites.length, 1, "falls back to the Clipboard API");
+  assert.equal(win._clipboardWrites[0], win._historyUrls.at(-1));
+  assert.equal(doc.getElementById("share-status").textContent, "Link copied to clipboard.");
 });
 
 test("share falls back to execCommand when the Clipboard API is missing", async () => {

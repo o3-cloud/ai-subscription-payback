@@ -49,7 +49,16 @@ Scenario: Share link is available
   When the visitor views the results area
   Then a shareable link or copy button is visible
   And the share action mirrors the current calculator state in the address bar
-  And the share action uses the browser clipboard when available and falls back to a legacy copy path before showing failure text
+  And the share action prefers the native Web Share API when available
+  And native sharing includes the selected subscriptions, hardware price, monthly savings, and payback status in a concise summary
+  And the share action uses the browser clipboard when native sharing is unavailable or rejected and falls back to a legacy copy path before showing failure text
+
+Scenario: Native sharing preserves the canonical scenario URL
+  Given a computed result is displayed in a browser that supports the Web Share API
+  When the visitor clicks Share
+  Then the native share payload contains the canonical hash-based scenario URL
+  And the native share payload URL matches the address bar
+  And the native share payload includes a concise summary of the current result
 
 Scenario: Share controls sit near the results summary
   Given a computed result is displayed

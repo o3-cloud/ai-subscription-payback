@@ -1534,6 +1534,38 @@ function copyViaExecCommand(doc, text) {
   return copied;
 }
 
+function buildShareSummary(state) {
+  const selected = subscriptions
+    .filter((subscription) => Array.isArray(state.subscriptions) && state.subscriptions.includes(subscription.id))
+    .map((subscription) => `${subscription.name} ${subscription.plan}`)
+    .join(", ") || "none";
+  const result = computeResult(state);
+  const savings = result.monthlyNetSavings === null
+    ? "not available"
+    : formatCurrency(result.monthlyNetSavings);
+  const payback = result.breakEvenMonth === null
+    ? `not reached within ${horizonMonths} months`
+    : formatBreakEven(result.breakEvenMonth);
+  return `Selected subscriptions: ${selected}; hardware price: ${formatCurrency(state.boxPrice)}; monthly savings: ${savings}; payback: ${payback}.`;
+}
+
+async function shareNatively(win, url, summary) {
+  const share = win.navigator && win.navigator.share;
+  if (typeof share !== "function") return false;
+  try {
+    await share.call(win.navigator, {
+      title: "AI Subscription Payback",
+      text: summary,
+      url,
+    });
+    return true;
+  } catch {
+    // A dismissed or rejected share sheet should continue through the copy
+    // fallbacks so the visitor can still share the canonical URL.
+    return false;
+  }
+}
+
 function wireShare(doc, win, analytics) {
   const button = doc.getElementById("share-button");
   const status = doc.getElementById("share-status");
@@ -1557,6 +1589,12 @@ function wireShare(doc, win, analytics) {
     // left a bare "#calculator"-style hash there.
     if (win.history && win.history.replaceState) {
       win.history.replaceState(null, "", url);
+    }
+
+    const shared = valid && (await shareNatively(win, url, buildShareSummary(readState(doc))));
+    if (shared) {
+      if (status) status.textContent = "Scenario shared.";
+      return;
     }
 
     const copied = await copyToClipboard(doc, win, url);
