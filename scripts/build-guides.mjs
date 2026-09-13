@@ -142,10 +142,10 @@ export const GUIDES = [
     scenarioLede:
       "A single ChatGPT Plus / Codex bundle against a value-class Strix Halo box.",
     caveats: [
-      "At a single $20/mo seat, a financed box's monthly payments dwarf the subscription, so on cost alone the box does not pay off within the horizon — the local case only strengthens at heavier or multi-seat spend.",
+      "At a single $20/mo ChatGPT Plus / Codex bundle, a financed box's monthly payments dwarf the subscription, so on cost alone the box does not pay off within the horizon — the local case only strengthens at heavier or multi-seat spend.",
       "Codex runs hosted OpenAI models; a local box runs open-weight models with a different agent, so you are trading capability as well as cost.",
       "A box adds up-front cost, power, maintenance, and depreciation that a subscription doesn't — worth counting before switching.",
-      "Change the scenario in the calculator: add heavier tiers or more seats and the break-even point can appear where a single Codex seat never reaches it.",
+      "Change the scenario in the calculator: add heavier tiers or more seats and the break-even point can appear where a single ChatGPT Plus / Codex bundle never reaches it.",
     ],
   },
   {

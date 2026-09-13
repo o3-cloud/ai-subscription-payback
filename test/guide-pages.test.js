@@ -318,6 +318,9 @@ test("the ChatGPT bundle guide keeps its source-backed identity", () => {
   assert.match(html, /data-verification="official"/i);
   assert.match(html, /href="https:\/\/chatgpt\.com\/pricing\/"/i);
   assert.match(html, /datetime="2026-09-12"/i);
+  assert.match(html, /single \$20\/mo ChatGPT Plus \/ Codex bundle/i);
+  assert.match(html, /where a single ChatGPT Plus \/ Codex bundle never reaches it/i);
+  assert.doesNotMatch(html, /single Codex seat|single \$20\/mo seat/i);
   assert.match(miniGuidesBdd, /ChatGPT Plus \/ Codex bundle, not a standalone Codex subscription/i);
 });
 
