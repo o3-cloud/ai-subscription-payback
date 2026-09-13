@@ -600,6 +600,33 @@ test("initCalculator wires up every DOM hook the UI depends on", () => {
   }
 });
 
+test("ROG NUC featured card uses its single trim and exposes both price and spec provenance", () => {
+  const { doc } = boot();
+  const card = Array.from(doc.querySelectorAll("#featured-hardware-cards .hardware-card")).find((entry) =>
+    Array.from(entry.children).some((child) =>
+      child.className === "hardware-card-title" && child.textContent.includes("RTX 5080 Laptop")
+    )
+  );
+  assert.ok(card, "ROG NUC featured card is rendered");
+  const trimSelect = Array.from(card.children).filter((child) => child.className === "field hardware-card-trim");
+  assert.equal(trimSelect.length, 0);
+  const actions = Array.from(card.children).find((child) => child.className === "hardware-card-actions");
+  const useButton = Array.from(actions.children).find((child) => child.className.includes("hardware-card-use"));
+  assert.equal(useButton ? 1 : 0, 1);
+  const source = Array.from(card.children).find((child) => child.className === "hardware-card-source");
+  const sourceLinks = Array.from(source.children).filter((child) => child.tagName === "A");
+  assert.ok(sourceLinks.some((link) => link.getAttribute("href").includes("microcenter.com/product/713317")));
+  assert.ok(sourceLinks.some((link) => link.getAttribute("href").includes("rog.asus.com/desktops/mini-pc/rog-nuc-16")));
+  const cta = Array.from(actions.children).find((child) => child.className.includes("hardware-card-cta"));
+  assert.equal(cta.getAttribute("href"), "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/");
+  assert.doesNotMatch(cta.getAttribute("rel") || "", /sponsored/);
+
+  useButton.dispatch("click");
+  assert.equal(doc.getElementById("box-price").value, "3799.99");
+  assert.equal(doc.getElementById("power-draw").value, "330");
+  assert.match(doc.getElementById("featured-hardware-status").textContent, /RTX 5080 Laptop workstations loaded/i);
+});
+
 test("initCalculator boots the form from static data and defaults", () => {
   const { doc, win } = boot();
 

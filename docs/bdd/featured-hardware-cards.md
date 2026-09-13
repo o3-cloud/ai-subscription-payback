@@ -8,14 +8,24 @@ Scenario: Featured hardware cards are visible on the home page
   And each card shows a vendor-sourced product photo with descriptive alt text at the top
   And each card includes a current price or price range
 
-Scenario: RTX 5080 Laptop workstation trim keeps GPU VRAM separate from system memory
+Scenario: RTX 5080 Laptop single-trim card keeps GPU VRAM separate from system memory
   Given the RTX 5080 Laptop workstation featured hardware card
-  When the visitor opens its configuration drop-down
-  Then the selector includes an ASUS ROG NUC 16 RTX 5080 Laptop GPU trim priced at $3,799.99
+  When the visitor views the ASUS ROG NUC 16 card
+  Then the card has one ASUS ROG NUC 16 RTX 5080 Laptop GPU trim priced at $3,799.99
+  And the card does not render a configuration drop-down because it has only one trim
+  And its single preload action loads the $3,799.99 price and 330 W power draw
   And the trim records 16 GB discrete GDDR7 VRAM separately from its 64 GB DDR5 system memory
   And the price is labeled as a Micro Center retailer street price
-  And the ASUS specifications source is retained for the hardware and memory facts
+  And the displayed price links directly to the Micro Center product page
+  And a separate ASUS specifications link is retained for the hardware and memory facts
   And the card gives conservative model-fit guidance that does not treat system RAM as GPU VRAM
+
+Scenario: RTX 5080 Laptop keeps its official ASUS CTA separate from retailer price provenance
+  Given the RTX 5080 Laptop workstation featured hardware card
+  When the visitor views its purchase action
+  Then the ASUS ROG NUC 16 CTA points to the canonical ASUS product page
+  And the CTA is marked as a canonical vendor source rather than an affiliate link
+  And the Micro Center price link remains the source of the displayed $3,799.99 price
 
 Scenario: Mac Studio surfaces Apple's official financing example
   Given the Mac Studio featured card

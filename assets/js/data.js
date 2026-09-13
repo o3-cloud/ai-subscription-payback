@@ -1807,8 +1807,8 @@ export const hardware = [
     priceHigh: 3799.99,
     priceNote:
       "The named ASUS ROG NUC 16 trim is a current Micro Center street-price snapshot for a 64 GB DDR5 / 2 TB configuration; lower or higher memory and storage trims may vary.",
-    sourceUrl: "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/",
-    sourceLabel: "ASUS specifications with Micro Center street price",
+    sourceUrl: "https://microcenter.com/product/713317/asus-nuc-16-ai-gaming-mini-pc?storeid=191",
+    sourceLabel: "Micro Center street price",
     verification: "retailer",
     lastUpdated: "2026-09-13",
     defaultBoxPrice: 3799.99,

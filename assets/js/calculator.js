@@ -1018,6 +1018,10 @@ function appendSourceProvenance(doc, parent, entry) {
     parent.appendChild(doc.createTextNode(" · "));
   }
   parent.appendChild(externalLink(doc, entry.sourceUrl, "Source", false));
+  if (entry.memorySourceUrl && entry.memorySourceUrl !== entry.sourceUrl) {
+    parent.appendChild(doc.createTextNode(" · "));
+    parent.appendChild(externalLink(doc, entry.memorySourceUrl, "Hardware and memory specifications", false));
+  }
   if (entry.priceBasis) {
     const basis = doc.createElement("span");
     basis.className = "price-basis";

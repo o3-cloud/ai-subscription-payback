@@ -101,6 +101,7 @@ test("ROG NUC 16 keeps retailer price, GPU VRAM, and system memory distinct", as
   assert.equal(trim.priceHigh, 3799.99);
   assert.equal(trim.verification, "retailer");
   assert.match(trim.sourceUrl, /microcenter\.com\/product\/713317/);
+  assert.equal(trim.sourceLabel, "Micro Center street price");
   assert.match(trim.memorySourceUrl, /rog\.asus\.com\/desktops\/mini-pc\/rog-nuc-16/);
   assert.equal(trim.gpuVramGB, 16);
   assert.equal(trim.systemMemoryGB, 64);
@@ -110,6 +111,21 @@ test("ROG NUC 16 keeps retailer price, GPU VRAM, and system memory distinct", as
   assert.deepEqual(hardwareTrims(box).map(({ id, boxPrice }) => ({ id, boxPrice })), [
     { id: "asus-rog-nuc-16-rtx-5080", boxPrice: 3799.99 },
   ]);
+  const { getAffiliate } = await import(new URL("data.js", jsDir));
+  assert.deepEqual(getAffiliate(box.id), {
+    vendor: "ASUS ROG",
+    url: "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/",
+    label: "Explore ASUS ROG NUC 16",
+    affiliate: false,
+  });
+});
+
+test("featured hardware BDD documents the ROG single-trim provenance and CTA contract", () => {
+  const bdd = read("docs/bdd/featured-hardware-cards.md");
+  assert.match(bdd, /does not render a configuration drop-down because it has only one trim/i);
+  assert.match(bdd, /displayed price links directly to the Micro Center product page/i);
+  assert.match(bdd, /separate ASUS specifications link/i);
+  assert.match(bdd, /canonical vendor source rather than an affiliate link/i);
 });
 
  test("data.js exposes only the token-value model the guides actually consume", async () => {
