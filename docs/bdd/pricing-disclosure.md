@@ -111,7 +111,7 @@ Scenario: Devin Teams pricing preserves the base-fee plus seat math
 Scenario: Editor-assistant and code-review tiers are optional and unchecked by default
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
-  Then only the Codex and Claude Code Pro (monthly) tiers are checked
+  Then only the ChatGPT Plus / Codex bundle and Claude Code Pro (monthly) tiers are checked
   And the GitHub Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 

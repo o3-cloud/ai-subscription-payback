@@ -43,6 +43,12 @@ Scenario: The homepage metadata stays concise while social metadata stays comple
   And the keywords tag stays short and focused instead of listing every modeled vendor
   And the Open Graph description, Twitter description, and JSON-LD description still cover the broader modeled tier families, including the code-review comparator rows
 
+Scenario: Homepage launch copy names the ChatGPT bundle consistently
+  Given the homepage presents the calculator and its published comparison guides
+  When a visitor reads the hero, guide link, social metadata, or social-card artwork
+  Then the ChatGPT Plus / Codex bundle is named as a bundle
+  And no launch surface describes Codex as a standalone subscription or seat
+
 Scenario: The landing page declares a favicon and avoids a /favicon.ico 404
   Given the static site ships from a project subpath with no favicon at the origin root
   When a browser loads the landing page

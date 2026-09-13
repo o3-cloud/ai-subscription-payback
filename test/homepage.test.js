@@ -372,6 +372,14 @@ test("primary navigation targets exist as sections", () => {
   }
 });
 
+test("homepage launch copy consistently names the ChatGPT Plus / Codex bundle", () => {
+  assert.match(html, /ChatGPT Plus \/ Codex bundle and Claude Code/i, "hero names the bundle");
+  assert.match(html, /ChatGPT Plus \/ Codex bundle vs a local AI box/i, "guide link names the bundle");
+  assert.match(html, /\$20\/mo bundle justifies hardware/i, "guide link uses bundle wording");
+  assert.doesNotMatch(html, /like Codex and Claude Code/i, "hero has no standalone Codex wording");
+  assert.doesNotMatch(html, /Codex seat/i, "guide link has no standalone Codex seat wording");
+});
+
 test("subscription helper copy names the Google AI Plus, Google AI Pro, Google AI Ultra, GitLab, Devin, Replit, Mistral, Bolt, Lovable, v0 by Vercel, Augment Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, JetBrains AI Pro, Tabnine, Warp, Factory, and Manus tiers", () => {
   // The checklist covers Google AI Plus / Pro / Ultra, GitLab
   // Premium + Duo Agent Platform credits, Devin, Replit Agent, the Bolt and

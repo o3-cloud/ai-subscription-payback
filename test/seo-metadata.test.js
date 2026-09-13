@@ -152,6 +152,17 @@ test("Twitter card carries its own title, description, and image", () => {
   );
 });
 
+test("homepage social metadata does not present Codex as a standalone subscription", () => {
+  const descriptions = [
+    metaContent("property", "og:description"),
+    metaContent("name", "twitter:description"),
+    html.match(/"description":\s*"([^"]+)/i)?.[1] ?? "",
+  ];
+  for (const description of descriptions) {
+    assert.doesNotMatch(description, /ChatGPT Plus \/ Codex bundle, ChatGPT Pro, Codex, Claude Code/i);
+  }
+});
+
 test("the social-card asset exists", () => {
   assert.ok(exists("assets/img/og-card.png"), "assets/img/og-card.png is missing");
 });
