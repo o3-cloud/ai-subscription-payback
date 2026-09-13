@@ -23,6 +23,7 @@ Scenario: Share and outbound clicks are tracked as aggregate events
   When the visitor copies a shareable scenario link or clicks an outbound source or affiliate link
   Then the site records an aggregate share or outbound click event
   And the calculator results remain unchanged
+  And outbound links recreated after a calculator model-fit update remain tracked
 
 Scenario: Tracking can be opted out with Do Not Track
   Given the browser Do Not Track signal is enabled

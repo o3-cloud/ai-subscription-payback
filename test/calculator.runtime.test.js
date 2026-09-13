@@ -1581,6 +1581,29 @@ test("a ROG NUC hardware preset from the URL preserves its active card and prove
   assertRogProvenance();
 });
 
+test("rerendered ROG NUC CTA keeps outbound analytics wired", async () => {
+  const { doc, win } = boot("?boxPrice=3799.99&powerDraw=330");
+  const modelSize = doc.getElementById("model-size");
+  modelSize.value = "70";
+  await modelSize.dispatch("input");
+
+  const rogIndex = featuredHardware.findIndex((box) => box.id === "rtx-5080-laptop");
+  const card = doc.querySelectorAll("#featured-hardware-cards .hardware-card")[rogIndex];
+  const actions = Array.from(card.children).find((child) => child.className === "hardware-card-actions");
+  const cta = Array.from(actions.children).find((child) => child.className.includes("hardware-card-cta"));
+  await cta.dispatch("click");
+
+  assert.ok(
+    win._plausibleCalls.some(
+      ([name, options]) =>
+        name === "Outbound Link: Click" &&
+        options?.props?.url === "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/" &&
+        options?.props?.affiliate === false
+    ),
+    "the recreated canonical ASUS CTA remains tracked as a non-affiliate link"
+  );
+});
+
 test("a URL-preloaded non-default trim survives model-fit rerenders", async () => {
   const strixIndex = featuredHardware.findIndex((box) => box.id === "strix-halo");
   const strixTrims = hardwareTrims(featuredHardware[strixIndex]);

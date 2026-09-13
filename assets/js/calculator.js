@@ -1465,7 +1465,8 @@ function applyState(doc, state) {
  * pricing sections. Links funnel through `externalLink`, which marks affiliate
  * links with `rel="... sponsored"`, so we can tag each click as affiliate or
  * not without threading extra state through the render helpers. These sections
- * render once at boot, so a single pass is enough.
+ * render at boot and can be rebuilt when model-fit controls change, so callers
+ * must invoke this after every render of the link-bearing sections.
  */
 function wireOutboundLinks(doc, analytics) {
   const links = [
@@ -1672,6 +1673,7 @@ export function initCalculator(doc, win) {
       // Rebuild the cards after restoring calculator defaults so a previously
       // selected non-default trim cannot remain visible in the selector.
       hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
+      wireOutboundLinks(doc, analytics);
       setActiveHardwareCard(hardwareCards, matchLoadedHardware(doc));
       update(doc, win);
     });
@@ -1681,6 +1683,7 @@ export function initCalculator(doc, win) {
   const modelQuantization = doc.getElementById("model-quantization");
   const rerenderFit = () => {
     hardwareCards = renderFeaturedHardware(doc, win, analytics) || [];
+    wireOutboundLinks(doc, analytics);
   };
   modelSize?.addEventListener("input", rerenderFit);
   modelQuantization?.addEventListener("change", rerenderFit);
