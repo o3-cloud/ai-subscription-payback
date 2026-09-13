@@ -122,10 +122,12 @@ test("ROG NUC 16 keeps retailer price, GPU VRAM, and system memory distinct", as
 
 test("featured hardware BDD documents the ROG single-trim provenance and CTA contract", () => {
   const bdd = read("docs/bdd/featured-hardware-cards.md");
+  assert.match(bdd, /Mac Studio, DGX Spark, Strix Halo, and ASUS ROG NUC 16 class cards are visible/i);
   assert.match(bdd, /does not render a configuration drop-down because it has only one trim/i);
-  assert.match(bdd, /displayed price links directly to the Micro Center product page/i);
+  assert.match(bdd, /source link for the displayed price points directly to the Micro Center product page/i);
   assert.match(bdd, /separate ASUS specifications link/i);
   assert.match(bdd, /canonical vendor source rather than an affiliate link/i);
+  assert.match(bdd, /affiliate, reseller, or canonical vendor button/i);
 });
 
  test("data.js exposes only the token-value model the guides actually consume", async () => {

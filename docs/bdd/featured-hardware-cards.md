@@ -4,7 +4,7 @@
 Scenario: Featured hardware cards are visible on the home page
   Given the homepage loads
   When the visitor views the hero or featured products section
-  Then Mac Studio, DGX Spark, and Strix Halo class cards are visible
+  Then Mac Studio, DGX Spark, Strix Halo, and ASUS ROG NUC 16 class cards are visible
   And each card shows a vendor-sourced product photo with descriptive alt text at the top
   And each card includes a current price or price range
 
@@ -16,7 +16,7 @@ Scenario: RTX 5080 Laptop single-trim card keeps GPU VRAM separate from system m
   And its single preload action loads the $3,799.99 price and 330 W power draw
   And the trim records 16 GB discrete GDDR7 VRAM separately from its 64 GB DDR5 system memory
   And the price is labeled as a Micro Center retailer street price
-  And the displayed price links directly to the Micro Center product page
+  And the source link for the displayed price points directly to the Micro Center product page
   And a separate ASUS specifications link is retained for the hardware and memory facts
   And the card gives conservative model-fit guidance that does not treat system RAM as GPU VRAM
 
@@ -59,10 +59,10 @@ Scenario: AMD Ryzen AI Halo is a separately priced Strix Halo trim
   And the pricing data records AMD's 60 FP16 TFLOPS figure as a vendor claim separate from the calculator's conservative model-fit guidance
   And the pricing-list purchase call to action points to AMD's official product page and is not an affiliate link
 
-Scenario: Featured hardware cards include affiliate calls to action
+Scenario: Featured hardware cards include labeled calls to action
   Given a featured hardware card
   When the visitor views the card
-  Then the card includes a clearly labeled affiliate or reseller button
+  Then the card includes a clearly labeled affiliate, reseller, or canonical vendor button
   And the button opens a currently reachable vendor or retailer destination
 
 Scenario: Featured hardware cards can drive the calculator
