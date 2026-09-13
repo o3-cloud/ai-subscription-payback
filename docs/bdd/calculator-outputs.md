@@ -1,5 +1,9 @@
 # Feature: Calculator Outputs
 
+The results basis must identify which monthly-spend source is active: a non-blank
+custom budget overrides the checked plans and labels those plans as reference-only;
+an empty custom budget falls back to the total of the checked plans.
+
 ```gherkin
 Scenario: Break-even month is shown
   Given valid subscription and hardware inputs

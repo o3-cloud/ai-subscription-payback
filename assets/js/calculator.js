@@ -666,10 +666,10 @@ function renderResults(doc, state, valid) {
       // is never mislabelled as a figure the visitor typed themselves.
       const preset = matchingSpendPreset(state);
       spendBasis.textContent = preset
-        ? `Comparing against the ${spendPresetName(preset)} preset (${monthly}/mo).`
-        : `Comparing against your custom ${monthly}/mo subscription spend.`;
+        ? `Using custom budget: ${monthly}/mo (${spendPresetName(preset)} preset); selected plans are reference-only.`
+        : `Using custom budget: ${monthly}/mo; selected plans are reference-only.`;
     } else {
-      spendBasis.textContent = `Comparing against ${monthly}/mo from the selected subscriptions.`;
+      spendBasis.textContent = `Using selected subscriptions: ${monthly}/mo.`;
     }
   }
 

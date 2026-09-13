@@ -35,14 +35,14 @@ Scenario: An empty subscription selection round-trips
   Then the shared URL keeps an explicit empty subscription selection
   And the shared URL keeps an explicit blank custom spend
   And reloading the URL leaves no subscription plans selected
-  And the calculator compares against $0/mo from the selected subscriptions
+  And the results basis says "Using selected subscriptions: $0/mo."
 
 Scenario: A shared query-string URL keeps an explicit blank custom spend
   Given a visitor opens an older "?"-style link such as "?subs=&customSpend="
   When the page loads
   Then the blank custom spend survives the query-string round trip
   And no subscription plans are selected
-  And the calculator compares against $0/mo from the selected subscriptions
+  And the results basis says "Using selected subscriptions: $0/mo."
 
 Scenario: Share link is available
   Given a computed result is displayed

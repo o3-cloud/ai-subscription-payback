@@ -634,7 +634,7 @@ test("initCalculator boots the form from static data and defaults", () => {
   );
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against the Power user preset ($200/mo)."
+    "Using custom budget: $200/mo (Power user preset); selected plans are reference-only."
   );
 
   // Default numeric inputs hydrated from data.js defaults.
@@ -996,7 +996,7 @@ test("default selected subscriptions stay preselected under the power-user prese
   assert.deepEqual(checked, ["codex", "claude-code"]);
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against the Power user preset ($200/mo)."
+    "Using custom budget: $200/mo (Power user preset); selected plans are reference-only."
   );
 });
 
@@ -1013,7 +1013,30 @@ test("preset spend selector fills the custom spend input", async () => {
   assert.equal(select.value, String(spendPresets.at(-1).value));
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against the Power user preset ($200/mo)."
+    "Using custom budget: $200/mo (Power user preset); selected plans are reference-only."
+  );
+});
+
+test("custom spend basis stays synchronized with the calculation instead of selected plans", async () => {
+  const { doc } = boot();
+  const customSpend = doc.getElementById("custom-spend");
+
+  customSpend.value = "80";
+  await doc.getElementById("calculator-form").dispatch("input");
+
+  assert.equal(
+    doc.getElementById("spend-basis").textContent,
+    "Using custom budget: $80/mo; selected plans are reference-only."
+  );
+  assert.equal(
+    computeResult({ ...defaults, subscriptions: ["codex", "claude-code"], customSpend: 80 }).series[0].subscriptionCost,
+    80,
+    "the computed subscription series uses the custom budget"
+  );
+  assert.equal(
+    computeResult({ ...defaults, subscriptions: ["codex", "claude-code"], customSpend: "" }).series[0].subscriptionCost,
+    40,
+    "clearing the custom budget returns computation to selected plans"
   );
 });
 
@@ -1576,7 +1599,7 @@ test("initCalculator renders the real results state for valid inputs", () => {
   );
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against the Power user preset ($200/mo)."
+    "Using custom budget: $200/mo (Power user preset); selected plans are reference-only."
   );
   assert.equal(doc.querySelector('[data-metric="breakeven"]').textContent, "Month 8");
   assert.match(doc.querySelector('[data-metric="payment"]').textContent, /^\$\d/);
@@ -1946,7 +1969,7 @@ test("custom spend validates like the other numeric inputs", async () => {
   assert.equal(doc.getElementById("custom-spend-error"), null);
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against $40/mo from the selected subscriptions."
+    "Using selected subscriptions: $40/mo."
   );
 });
 
@@ -1961,7 +1984,7 @@ test("whitespace-only custom spend falls back to the selected subscriptions", as
   assert.equal(doc.getElementById("custom-spend-error"), null);
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against $40/mo from the selected subscriptions."
+    "Using selected subscriptions: $40/mo."
   );
   const params = new URLSearchParams(win._historyUrls.at(-1).split("#")[1]);
   assert.equal(params.get("customSpend"), "");
@@ -2199,7 +2222,7 @@ test("an explicitly empty subscription selection survives share and reload", asy
   assert.equal(params.get("customSpend"), "", "the shared URL keeps a blank custom spend");
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against $0/mo from the selected subscriptions."
+    "Using selected subscriptions: $0/mo."
   );
 
   const reloaded = boot(`?${shared.hash.slice(1)}`);
@@ -2209,7 +2232,7 @@ test("an explicitly empty subscription selection survives share and reload", asy
   assert.deepEqual(restored, [], "reloading the shared URL keeps zero subscriptions selected");
   assert.equal(
     reloaded.doc.getElementById("spend-basis").textContent,
-    "Comparing against $0/mo from the selected subscriptions."
+    "Using selected subscriptions: $0/mo."
   );
 });
 
@@ -2226,7 +2249,7 @@ test("a shared query-string URL with a blank custom spend falls back to $0/mo", 
   assert.deepEqual(checked, [], "no subscription plans are selected");
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against $0/mo from the selected subscriptions."
+    "Using selected subscriptions: $0/mo."
   );
 });
 
@@ -2237,7 +2260,7 @@ test("a shared query-string URL treats whitespace-only numeric params as absent"
   assert.equal(doc.getElementById("custom-spend").value, "");
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against $40/mo from the selected subscriptions."
+    "Using selected subscriptions: $40/mo."
   );
 });
 
@@ -2410,7 +2433,7 @@ test("resetting the form restores inputs, subscriptions, results, and hash to de
 
   assert.equal(
     doc.getElementById("spend-basis").textContent,
-    "Comparing against the Power user preset ($200/mo)."
+    "Using custom budget: $200/mo (Power user preset); selected plans are reference-only."
   );
 
   // The shareable hash is back to the default scenario.

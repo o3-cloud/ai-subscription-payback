@@ -14,10 +14,17 @@ Scenario: Select subscriptions to compare
   Then both subscriptions are included in the monthly subscription cost
 
 Scenario: Choose a custom monthly subscription spend
-  Given the calculator is visible
+  Given the calculator is visible and the selected plans total a different monthly amount
   When the visitor selects a preset or types a custom subscription budget
   Then the custom spend field drives the comparison basis
+  And the results basis identifies the custom budget as active and says selected plans are reference-only
   And the preset selector stays in sync with the typed amount when it matches a preset
+
+Scenario: Selected subscriptions drive the comparison when custom spend is blank
+  Given the calculator is visible and the custom spend field is empty
+  When the visitor selects subscription plans
+  Then the results basis identifies the selected subscription total as active
+  And the displayed basis matches the computed comparison result
 
 Scenario: Invalid custom subscription spend is rejected
   Given the calculator is visible
