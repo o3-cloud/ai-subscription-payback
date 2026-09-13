@@ -15,8 +15,10 @@ Scenario: Supported subscription tiers are listed
   Then ChatGPT Go is listed at $8/mo
   And ChatGPT Plus is listed at $20/mo with Codex access as a bundled benefit
   And ChatGPT Pro is listed from $100/mo
+  And ChatGPT Pro 20× is listed at $200/mo
   And the ChatGPT row is clearly labeled as the ChatGPT Plus / Codex bundle rather than a standalone Codex subscription
   And each ChatGPT row uses the official OpenAI pricing source, official verification status, and its row-level last-verified date
+  And ChatGPT Pro 20× states that new sign-ups and upgrades are temporarily paused while existing subscriptions continue renewing
   And the Claude Code tiers are listed: Pro monthly, Pro annual, Max 5×, Team standard seat (monthly and annual), and Team premium seat (monthly and annual)
   And Claude Max 20× is listed at $200/mo with its usage-limit caveats
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
@@ -59,6 +61,14 @@ Scenario: Claude Code included-value copy names the broader bundle
   When the visitor views their included-value text
   Then the Pro copy names Claude Code plus Claude Cowork, Claude Design, Claude Science, and Claude for Microsoft 365
   And the Team copy keeps the collaboration and central-billing framing while referring to the broader Claude bundle
+
+Scenario: ChatGPT Pro 20× availability is disclosed without removing its comparison value
+  Given the ChatGPT Pro 20× pricing row
+  When the visitor views the pricing disclosure
+  Then it is listed at $200/mo with 20× usage access
+  And it states that new sign-ups and upgrades are temporarily paused
+  And it states that existing subscriptions continue renewing
+  And the row remains an optional, unchecked comparison tier with official OpenAI provenance
 
 Scenario: GitHub Copilot Pro included-value copy names agents, code review, and AI Credit consumption rules
   Given the GitHub Copilot Free, Pro, Pro+, and Max tiers
@@ -113,7 +123,7 @@ Scenario: Editor-assistant and code-review tiers are optional and unchecked by d
   Given the subscriptions-to-compare list
   When the calculator loads with its default selection
   Then only the ChatGPT Plus / Codex bundle and Claude Code Pro (monthly) tiers are checked
-  And the GitHub Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
+  And the ChatGPT Pro 20×, GitHub Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon Q Developer, Devin, Replit, Mistral, Bolt, Lovable, Augment Code, Qodo, CodeRabbit, Kiro, Supermaven, JetBrains AI, Tabnine, Warp, Factory, and Manus tiers are present but unchecked
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their current Plus, Pro, and Ultra benefits

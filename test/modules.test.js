@@ -49,6 +49,13 @@ test("ChatGPT tiers expose current prices and clarify the Codex bundle", async (
   assert.match(codexBundle.includedValue, /rather than sold as a standalone subscription/i);
   assert.equal(byId.get("chatgpt-go").monthlyPrice, 8);
   assert.equal(byId.get("chatgpt-pro").monthlyPrice, 100);
+  const pro20x = byId.get("chatgpt-pro-20x");
+  assert.equal(pro20x.plan, "Pro 20×");
+  assert.equal(pro20x.monthlyPrice, 200);
+  assert.match(pro20x.includedValue, /20× usage/i);
+  assert.match(pro20x.availabilityNote, /new sign-ups and upgrades are temporarily paused/i);
+  assert.match(pro20x.availabilityNote, /existing subscriptions continue renewing/i);
+  assert.equal(pro20x.defaultSelected, undefined);
   for (const id of ["codex", "chatgpt-go", "chatgpt-pro"]) {
     assert.equal(byId.get(id).sourceLabel, "Official OpenAI pricing");
     assert.equal(byId.get(id).verification, "official");
@@ -57,6 +64,18 @@ test("ChatGPT tiers expose current prices and clarify the Codex bundle", async (
     assert.match(byId.get(id).billingCadence, /billed monthly/i);
     assert.ok(!byId.get(id).defaultSelected || id === "codex", `${id} default selection is intentional`);
   }
+  assert.equal(pro20x.sourceLabel, "Official OpenAI Pro tiers documentation");
+  assert.equal(pro20x.verification, "official");
+  assert.equal(pro20x.sourceUrl, "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers");
+  assert.equal(pro20x.lastUpdated, "2026-09-12");
+  assert.match(pro20x.billingCadence, /billed monthly/i);
+});
+
+test("the pricing-disclosure BDD documents the paused ChatGPT Pro 20× tier", () => {
+  const bdd = read("docs/bdd/pricing-disclosure.md");
+  assert.match(bdd, /ChatGPT Pro 20× is listed at \$200\/mo/);
+  assert.match(bdd, /new sign-ups and upgrades are temporarily paused while existing subscriptions continue renewing/i);
+  assert.match(bdd, /ChatGPT Pro 20× availability is disclosed without removing its comparison value/);
 });
 
 test("hardware exposes typed memory metadata for model-fit advisories", async () => {
