@@ -115,8 +115,17 @@ export function collectUrlEntries({ subscriptions = [], hardware = [], affiliate
  */
 export function ageInDays(isoDate, now = new Date()) {
   if (typeof isoDate !== "string") return null;
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
+  if (!match) return null;
   const parsed = new Date(`${isoDate}T00:00:00Z`);
   if (Number.isNaN(parsed.getTime())) return null;
+  if (
+    parsed.getUTCFullYear() !== Number(match[1]) ||
+    parsed.getUTCMonth() + 1 !== Number(match[2]) ||
+    parsed.getUTCDate() !== Number(match[3])
+  ) {
+    return null;
+  }
   return Math.floor((now.getTime() - parsed.getTime()) / MS_PER_DAY);
 }
 

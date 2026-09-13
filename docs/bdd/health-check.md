@@ -12,6 +12,7 @@ Scenario: The maintainer-facing health check validates pricing, hardware, and af
   And it retries GET when a HEAD probe looks bot-protected or returns a transient server error so an accessible vendor page can still pass
   And it downgrades canonical vendor timeouts and bot-protected pages to warnings instead of failing the run
   And it flags entries older than the staleness threshold as warnings
+  And it treats malformed calendar dates such as `2026-02-31` as invalid data
   And it exits non-zero only when hard failures are present
 
 Scenario: The health-check report stays concise enough for scheduled runs

@@ -299,6 +299,8 @@ test("ageInDays measures whole days against a fixed clock and rejects bad dates"
   assert.equal(ageInDays("2026-07-20", FIXED_NOW), 7);
   assert.equal(ageInDays("2026-06-27", FIXED_NOW), 30);
   assert.equal(ageInDays("not-a-date", FIXED_NOW), null);
+  assert.equal(ageInDays("2026-02-31", FIXED_NOW), null);
+  assert.equal(ageInDays("2026-04-31", FIXED_NOW), null);
   assert.equal(ageInDays(undefined, FIXED_NOW), null);
 });
 
