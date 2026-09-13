@@ -57,6 +57,7 @@ test("llms.txt follows the convention: H1 title then a blockquote summary", () =
   assert.match(summary, /Amazon Q Developer/i, "the summary names Amazon Q Developer alongside the other modeled subscription families");
   assert.match(summary, /Zed/i, "the summary names Zed alongside the other modeled subscription families");
   assert.match(summary, /Devin|Windsurf/i, "the summary names Devin/Windsurf alongside the other modeled subscription families");
+  assert.match(summary, /ASUS ROG NUC 16 RTX 5080 Laptop/i, "the summary names the current ROG workstation class");
 });
 
 test("llms.txt links the calculator, methodology, and both disclosures", () => {

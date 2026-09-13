@@ -51,6 +51,8 @@ test("launch copy reflects the current featured hardware lineup", () => {
   assert.match(launchCopy, /Mac Studio/i, "keeps Mac Studio in the launch copy");
   assert.match(launchCopy, /DGX Spark/i, "keeps DGX Spark in the launch copy");
   assert.match(launchCopy, /Strix Halo/i, "keeps Strix Halo in the launch copy");
+  assert.match(launchCopy, /ASUS ROG NUC 16/i, "mentions the ASUS ROG NUC 16 featured workstation");
+  assert.match(launchCopy, /RTX 5080 Laptop/i, "mentions the RTX 5080 Laptop GPU class");
   assert.match(
     launchCopy,
     /ASUS Ascent GX10/i,
@@ -65,6 +67,11 @@ test("launch copy reflects the current featured hardware lineup", () => {
     launchCopy,
     /MINISFORUM MS-S1 MAX 128GB/i,
     "mentions the named MINISFORUM Strix Halo example"
+  );
+  assert.match(
+    launchCopyBdd,
+    /ASUS ROG NUC 16 RTX 5080 Laptop workstation example/i,
+    "launch-copy BDD documents the current ROG workstation example"
   );
 });
 

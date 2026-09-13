@@ -8,9 +8,9 @@ mention the calculator is free, and point people at the main page URL.
 > How long until a local AI box beats your coding subscriptions?
 > I built a free payback calculator for the ChatGPT Plus / Codex bundle, Claude
 > Code, and local hardware
-> like the Mac Studio, DGX Spark systems such as the ASUS Ascent GX10, and Strix
-> Halo systems such as the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX
-> 128GB.
+> like the Mac Studio, DGX Spark systems such as the ASUS Ascent GX10, Strix Halo
+> systems such as the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB,
+> and the ASUS ROG NUC 16 RTX 5080 Laptop workstation.
 > https://www.othree.cloud/ai-subscription-payback/
 
 ## LinkedIn
@@ -21,8 +21,9 @@ mention the calculator is free, and point people at the main page URL.
 > It models the break-even point for the ChatGPT Plus / Codex bundle, Claude Code,
 > and similar monthly
 > subscriptions versus systems like the Mac Studio, DGX Spark class hardware
-> such as the ASUS Ascent GX10, and Strix Halo class hardware such as the
-> Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB.
+> such as the ASUS Ascent GX10, Strix Halo class hardware such as the Framework
+> Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, and the ASUS ROG NUC 16 RTX
+> 5080 Laptop workstation.
 >
 > The site is transparent about pricing sources, affiliate relationships, and the
 > assumptions behind the math.
@@ -46,10 +47,11 @@ mention the calculator is free, and point people at the main page URL.
 > Sharing a free payback calculator for local AI boxes vs. AI coding
 > subscriptions.
 >
-> It compares the modeled cost of buying hardware like the Mac Studio, DGX
-> Spark class systems such as the ASUS Ascent GX10, or Strix Halo class systems
-> such as the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB against
-> subscriptions such as the ChatGPT Plus / Codex bundle and Claude Code.
+> It compares the modeled cost of buying hardware like the Mac Studio, DGX Spark
+> class systems such as the ASUS Ascent GX10, Strix Halo class systems such as
+> the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, or the ASUS
+> ROG NUC 16 RTX 5080 Laptop workstation against subscriptions such as the
+> ChatGPT Plus / Codex bundle and Claude Code.
 >
 > The site includes pricing sources, FAQ/methodology copy, and affiliate
 > disclosures.

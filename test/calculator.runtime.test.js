@@ -1555,6 +1555,32 @@ test("a hardware preset from the URL renders with its card already active", () =
   assert.equal(cards[2].getAttribute("data-active"), null);
 });
 
+test("a ROG NUC hardware preset from the URL preserves its active card and provenance after rerender", async () => {
+  const rogIndex = featuredHardware.findIndex((box) => box.id === "rtx-5080-laptop");
+  const { doc } = boot("?boxPrice=3799.99&powerDraw=330");
+  let cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  assert.equal(cards[rogIndex].getAttribute("data-active"), "true", "ROG card is active from URL state");
+
+  const assertRogProvenance = () => {
+    const card = doc.querySelectorAll("#featured-hardware-cards .hardware-card")[rogIndex];
+    const source = Array.from(card.children).find((child) => child.className === "hardware-card-source");
+    const links = Array.from(source.children).filter((child) => child.tagName === "A");
+    assert.ok(links.some((link) => link.getAttribute("href").includes("microcenter.com/product/713317")));
+    assert.ok(links.some((link) => link.getAttribute("href").includes("rog.asus.com/desktops/mini-pc/rog-nuc-16")));
+    const actions = Array.from(card.children).find((child) => child.className === "hardware-card-actions");
+    const cta = Array.from(actions.children).find((child) => child.className.includes("hardware-card-cta"));
+    assert.equal(cta.getAttribute("href"), "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/");
+  };
+
+  assertRogProvenance();
+  const modelSize = doc.getElementById("model-size");
+  modelSize.value = "70";
+  await modelSize.dispatch("input");
+  cards = doc.querySelectorAll("#featured-hardware-cards .hardware-card");
+  assert.equal(cards[rogIndex].getAttribute("data-active"), "true", "rerender keeps the ROG card active");
+  assertRogProvenance();
+});
+
 test("a URL-preloaded non-default trim survives model-fit rerenders", async () => {
   const strixIndex = featuredHardware.findIndex((box) => box.id === "strix-halo");
   const strixTrims = hardwareTrims(featuredHardware[strixIndex]);

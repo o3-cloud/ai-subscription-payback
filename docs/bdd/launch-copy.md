@@ -10,10 +10,11 @@ Scenario: The launch-copy document leads with the official site name
 Scenario: Snippets reflect the current featured hardware lineup
   Given the shareable social snippets in docs/launch-copy.md
   When a maintainer reads the hardware examples
-  Then they name the featured lineup (Mac Studio, DGX Spark, and Strix Halo)
+  Then they name the featured lineup (Mac Studio, DGX Spark, Strix Halo, and ASUS ROG NUC 16 RTX 5080 Laptop)
   And they name the ASUS Ascent GX10 DGX Spark example
   And they name the Framework Desktop AI Max 385 Strix Halo example
   And they name the MINISFORUM MS-S1 MAX 128GB Strix Halo example
+  And they name the ASUS ROG NUC 16 RTX 5080 Laptop workstation example
 
 Scenario: Every shareable snippet includes the canonical URL exactly once
   Given the `##` social snippets meant for sharing (every section except "Posting notes")
@@ -42,9 +43,9 @@ Scenario: Posting notes point at the shared social card and canonical link
   `https://www.othree.cloud/ai-subscription-payback/`; the legacy project GitHub
   Pages origin (`o3-cloud.github.io`) must never appear in a snippet.
 - The featured hardware lineup mirrors the homepage cards (Mac Studio, DGX Spark
-  systems such as the ASUS Ascent GX10, and Strix Halo systems such as the
-  Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB); refresh the
-  copy whenever that lineup changes.
+  systems such as the ASUS Ascent GX10, Strix Halo systems such as the Framework
+  Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, and the ASUS ROG NUC 16 RTX
+  5080 Laptop workstation); refresh the copy whenever that lineup changes.
 - Every ready-to-post section — including the Hacker News/community and
   Reddit/forum intros — carries the canonical share link exactly once; only the
   "Posting notes" maintainer guidance omits it.
