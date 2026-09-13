@@ -519,13 +519,13 @@ test("subscription helper copy names the Google AI Plus, Google AI Pro, Google A
   );
   assert.match(
     pricing,
-    /from \$100\/mo Max 5× scenario/i,
-    "pricing disclosure says only the public Max 5x scenario is modeled"
+    /Max 20× usage option at \$200\/mo/i,
+    "pricing disclosure states the Max 20x monthly price"
   );
   assert.match(
     pricing,
-    /until a\s+verifiable public price exists/i,
-    "pricing disclosure explains why Claude Max 20x is excluded"
+    /five-hour session resets, weekly limits, and discretionary caps/i,
+    "pricing disclosure explains Max 20x usage limits"
   );
   assert.match(
     pricing,

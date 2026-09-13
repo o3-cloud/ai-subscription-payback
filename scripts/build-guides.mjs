@@ -107,7 +107,7 @@ export const GUIDES = [
   {
     slug: "claude-code-vs-local-ai-box-cost",
     hardwareId: "strix-halo",
-    subs: ["claude-max-5x"],
+    subs: ["claude-max-20x"],
     title:
       "Claude Code vs a Local AI Box — Cost Comparison",
     description:
@@ -118,7 +118,7 @@ export const GUIDES = [
       "It is written for the heavy Claude Code user deciding whether recurring spend or owned hardware is the better deal on cost alone.",
     ],
     scenarioLede:
-      "A Claude Code Max 5× plan against a value-class Strix Halo box.",
+      "A Claude Code Max 20× plan against a value-class Strix Halo box.",
     caveats: [
       "This is the crucial caveat: a local box cannot run Claude. Claude's weights are closed, so you would run open-weight models with a different coding agent — the box replaces the spend, not the exact capability.",
       "A Claude Code subscription buys frontier hosted models and continuous upgrades; the value is model quality and agentic coding, not just tokens.",

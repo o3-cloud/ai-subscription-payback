@@ -18,7 +18,7 @@ Scenario: Supported subscription tiers are listed
   And the ChatGPT row is clearly labeled as the ChatGPT Plus / Codex bundle rather than a standalone Codex subscription
   And each ChatGPT row uses the official OpenAI pricing source, official verification status, and its row-level last-verified date
   And the Claude Code tiers are listed: Pro monthly, Pro annual, Max 5×, Team standard seat (monthly and annual), and Team premium seat (monthly and annual)
-  And the public Claude pricing page also exposes Max 20×, but the calculator keeps it out of the priced rows until a durable standalone public price is available
+  And Claude Max 20× is listed at $200/mo with its usage-limit caveats
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
   And the GitLab Premium + Duo Agent Platform credits tier is listed
   And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
@@ -48,11 +48,11 @@ Scenario: Supported subscription tiers are listed
   And the Manus tiers are listed: Standard, Customizable, and Extended
   And each tier is distinguishable by its plan name even when it shares a product name
 
-Scenario: Claude Code Max 20× is exposed but not modeled until a durable public price exists
+Scenario: Claude Code Max 20× is modeled with its usage-limit caveats
   Given the Claude Code pricing section
   When the visitor reads the disclosure
-  Then it states that the public Claude pricing page exposes Max 20× as a usage option
-  And it explains that the calculator only models the publicly visible from $100/mo Max 5× scenario until a verifiable public price exists
+  Then it lists Max 20× at $200/mo billed monthly
+  And it explains the five-hour session reset, weekly limits, and discretionary caps
 
 Scenario: Claude Code included-value copy names the broader bundle
   Given the Claude Code Pro and Team tiers

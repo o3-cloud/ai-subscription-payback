@@ -184,10 +184,9 @@ export const tokenOutputValueAssumptions = {
  * Public subscription tiers people run AI coding assistants on. Codex keeps its
  * single individual plan; Claude Code carries the full public ladder (Pro, Max,
  * and Team seats) so a visitor can compare their real tier. Anthropic's public
- * pricing page also exposes a Max 20× usage option, but it does not publish a
- * durable standalone monthly price in the visible copy, so the calculator
- * intentionally models only the publicly visible from $100/mo Max 5× scenario
- * until a verifiable public price exists. GitHub Copilot,
+ * pricing page exposes Max 20× at $200/mo. The Max tiers have five-hour session
+ * resets, weekly limits, and discretionary caps, so their usage allowances are
+ * not unlimited. GitHub Copilot,
  * Cursor, and Zed round out the common IDE/editor assistant plans, and the
  * Google AI tiers (Plus, Pro, Google AI Ultra 5x, Google AI Ultra 20x) cover the broad Gemini
  * subscriptions whose Pro/Ultra tiers bundle the Jules and Google Antigravity
@@ -377,6 +376,19 @@ export const subscriptions = [
     sourceLabel: "Official Anthropic pricing",
     verification: "official",
     lastUpdated: "2026-08-16",
+  },
+  {
+    id: "claude-max-20x",
+    name: "Claude Code",
+    plan: "Max 20×",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly — $200/mo",
+    includedValue:
+      "Roughly 20× the Pro usage limits for the heaviest Claude Code sessions; usage resets every five hours and remains subject to weekly limits and discretionary caps in Anthropic's Max plan.",
+    sourceUrl: "https://support.claude.com/en/articles/11049741-what-is-the-max-plan",
+    sourceLabel: "Official Anthropic Max plan documentation",
+    verification: "official",
+    lastUpdated: "2026-09-12",
   },
   {
     id: "claude-team-standard-monthly",

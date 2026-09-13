@@ -209,6 +209,7 @@ test("subscriptions cover the Codex and Claude Code public tiers", async () => {
     "claude-code": 20, // Pro monthly
     "claude-pro-annual": 17,
     "claude-max-5x": 100,
+    "claude-max-20x": 200,
     "claude-team-standard-monthly": 25,
     "claude-team-standard-annual": 20,
     "claude-team-premium-monthly": 125,
@@ -225,34 +226,24 @@ test("subscriptions cover the Codex and Claude Code public tiers", async () => {
   }
 });
 
-test("Claude Max 20x is documented as exposed but unmodeled until a durable public price exists", async () => {
+test("Claude Max 20x is modeled at $200 with its usage limits", async () => {
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
-  assert.equal(byId.has("claude-max-20x"), false, "no priced Claude Max 20x row is modeled yet");
+  assert.ok(byId.has("claude-max-20x"), "priced Claude Max 20x row is modeled");
+  assert.equal(byId.get("claude-max-20x").monthlyPrice, 200);
 
-  const data = read("assets/js/data.js");
-  assert.match(
-    data,
-    /Max 20× usage option/i,
-    "data.js records that Claude Max 20x is exposed on the public pricing page"
-  );
-  assert.match(
-    data,
-    /from \$100\/mo Max 5× scenario/i,
-    "data.js records that only the public Max 5x scenario is modeled"
-  );
-  assert.match(
-    data,
-    /until a verifiable public price exists/i,
-    "data.js explains why Claude Max 20x is excluded"
-  );
+  const max20 = byId.get("claude-max-20x");
+  assert.equal(max20.billingCadence, "Billed monthly — $200/mo");
+  assert.match(max20.includedValue, /five hours/i);
+  assert.match(max20.includedValue, /weekly/i);
+  assert.match(max20.includedValue, /discretionary/i);
 
   const bdd = read("docs/bdd/pricing-disclosure.md");
   assert.match(
     bdd,
-    /public Claude pricing page also exposes Max 20×/i,
-    "pricing BDD documents the exposed-but-unpriced Max 20x option"
+    /Claude Max 20× is listed at \$200\/mo/i,
+    "pricing BDD documents the modeled Max 20x price"
   );
 });
 
