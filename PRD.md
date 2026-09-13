@@ -16,8 +16,9 @@ Augment Code, Qodo, CodeRabbit, Amp, TRAE, Kiro, Supermaven, Warp, Factory, and
 Manus. This project will be
 an affiliate marketing static site
 that promotes local AI inference boxes — especially Mac Studio, NVIDIA DGX
-Spark, and AMD Strix Halo class systems such as the Framework Desktop AI Max
-385 and MINISFORUM MS-S1 MAX 128GB — and helps visitors estimate how long
+Spark, AMD Strix Halo class systems such as the Framework Desktop AI Max
+385 and MINISFORUM MS-S1 MAX 128GB, and the ASUS ROG NUC 16 RTX 5080 Laptop
+workstation — and helps visitors estimate how long
 it would take to pay off one of those boxes if they canceled their AI
 subscriptions and financed the hardware instead.
 
@@ -72,7 +73,7 @@ and the fact that all savings numbers are estimates.
    calculator.
 3. Compare featured hardware cards for Mac Studio, DGX Spark, and Strix Halo
    examples such as the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX
-   128GB.
+   128GB, and the ASUS ROG NUC 16 RTX 5080 Laptop workstation.
 4. Follow affiliate or reseller links if a product looks attractive.
 5. Enter or accept default assumptions for box price, down payment, APR,
    financing term, electricity rate, and subscription spend.
@@ -86,7 +87,8 @@ and the fact that all savings numbers are estimates.
 - **Home / Calculator** (single-page primary experience)
   - Hero: headline + subhead + primary CTA (shop boxes / scroll to calculator).
   - Featured hardware cards: Mac Studio, DGX Spark, Strix Halo examples such
-    as the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB.
+    as the Framework Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, and
+    the ASUS ROG NUC 16 RTX 5080 Laptop workstation.
   - Calculator: inputs panel + results panel + cost-over-time chart.
   - Comparison table: subscriptions vs. hardware profiles.
   - Comparison mini-guides: indexable static pages for high-intent comparison queries linked from the homepage.

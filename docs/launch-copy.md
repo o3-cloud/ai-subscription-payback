@@ -36,7 +36,9 @@ mention the calculator is free, and point people at the main page URL.
 > coding subscriptions with buying a local inference box.
 >
 > It shows the modeled break-even month, highlights pricing sources, and keeps
-> affiliate disclosures separate from the calculator math.
+> affiliate disclosures separate from the calculator math. It compares hardware
+> like the Mac Studio, DGX Spark and Strix Halo systems, and the ASUS ROG NUC 16
+> RTX 5080 Laptop workstation.
 >
 > Feedback welcome on the assumptions and launch copy.
 >

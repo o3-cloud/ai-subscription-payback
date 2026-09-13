@@ -75,6 +75,23 @@ test("launch copy reflects the current featured hardware lineup", () => {
   );
 });
 
+test("each shareable social snippet names the current featured lineup", () => {
+  for (const { heading, body } of shareSnippets) {
+    const normalizedBody = body.replace(/>/g, " ").replace(/\s+/g, " ").toLowerCase();
+    for (const hardware of [
+      "Mac Studio",
+      "DGX Spark",
+      "Strix Halo",
+      "ASUS ROG NUC 16 RTX 5080 Laptop",
+    ]) {
+      assert.ok(
+        normalizedBody.includes(hardware.toLowerCase()),
+        `${heading} snippet must name ${hardware}`
+      );
+    }
+  }
+});
+
 test("each shareable social snippet includes the canonical URL exactly once and keeps the free tone", () => {
   assert.ok(
     shareSnippets.length > 0,

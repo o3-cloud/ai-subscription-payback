@@ -9,8 +9,9 @@ step and no framework.
 The launch scope, commercial model, and non-goals are documented in the
 [PRD](./PRD.md) and the dedicated [MVP scope BDD](./docs/bdd/mvp-scope.md).
 In short: the site is an affiliate-first static Pages experience centered on
-Mac Studio, DGX Spark, and Strix Halo class systems such as the Framework
-Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, compared against the
+Mac Studio, DGX Spark, Strix Halo class systems such as the Framework
+Desktop AI Max 385 and MINISFORUM MS-S1 MAX 128GB, and the ASUS ROG NUC 16
+RTX 5080 Laptop workstation, compared against the
 currently modeled AI coding, app-builder, and agent subscriptions (for example
 ChatGPT Go, the ChatGPT Plus / Codex bundle, ChatGPT Pro, Claude Code, Cursor, GitHub Copilot, GitLab Premium + Duo Agent Platform
 credits, xAI Grok, Zed, Google AI, Devin, Replit, Mistral, Bolt, Lovable, v0,
