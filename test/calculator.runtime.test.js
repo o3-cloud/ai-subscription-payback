@@ -914,12 +914,16 @@ test("comparison table renders the current ChatGPT pricing ladder", () => {
     ["ChatGPT", "Plus / Codex bundle", "$20/mo"],
     ["ChatGPT", "Go", "$8/mo"],
     ["ChatGPT", "Pro", "$100/mo"],
+    ["ChatGPT", "Pro 20×", "$200/mo"],
   ];
   for (const [name, plan, price] of expected) {
     const row = rows.find((entry) => entry.textContent.includes(`${name} — ${plan}`));
     assert.ok(row, `${plan} pricing row is rendered`);
     assert.ok(row.textContent.includes(price), `${plan} price is rendered`);
   }
+  const pro20x = rows.find((entry) => entry.textContent.includes("ChatGPT — Pro 20×"));
+  assert.match(pro20x.textContent, /new sign-ups and upgrades are temporarily paused/i);
+  assert.match(pro20x.textContent, /existing subscriptions continue renewing/i);
 });
 
 test("comparison table renders the Copilot Max source note beside the provenance", () => {

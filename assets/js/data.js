@@ -34,6 +34,7 @@
  * @property {number} [annualPrice] - the total charged at the start of an annual
  *   billing cycle; when omitted, annual cadence falls back to monthlyPrice × 12
  * @property {string} includedValue - what a seat/plan at this tier includes
+ * @property {string} [availabilityNote] - current sign-up or availability caveat
  * @property {string} sourceUrl - where the price was quoted from
  * @property {string} sourceLabel - short provenance for the number (official vendor pricing, …)
  * @property {string} [sourceNote] - optional maintainer note about source caveats
@@ -321,6 +322,19 @@ export const subscriptions = [
     includedValue: "Higher-usage ChatGPT plan with expanded Codex access; the official pricing page presents Pro as starting from $100/month.",
     sourceUrl: "https://chatgpt.com/pricing/",
     sourceLabel: "Official OpenAI pricing",
+    verification: "official",
+    lastUpdated: "2026-09-12",
+  },
+  {
+    id: "chatgpt-pro-20x",
+    name: "ChatGPT",
+    plan: "Pro 20×",
+    monthlyPrice: 200,
+    billingCadence: "Billed monthly — $200/mo",
+    includedValue: "Higher-usage ChatGPT plan with 20× usage access and expanded Codex access; usage allowances vary by model and task.",
+    availabilityNote: "New sign-ups and upgrades are temporarily paused; existing subscriptions continue renewing.",
+    sourceUrl: "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers",
+    sourceLabel: "Official OpenAI Pro tiers documentation",
     verification: "official",
     lastUpdated: "2026-09-12",
   },

@@ -788,7 +788,7 @@ function subscriptionCategory(sub) {
  */
 function subscriptionSearchIndex(sub) {
   const category = subscriptionCategory(sub);
-  return [subscriptionDisplayName(sub), sub.plan, sub.includedValue, category]
+  return [subscriptionDisplayName(sub), sub.plan, sub.includedValue, sub.availabilityNote, category]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
@@ -1102,6 +1102,7 @@ function renderComparison(doc) {
     const planCell = doc.createElement("td");
     planCell.appendChild(doc.createTextNode(sub.plan));
     appendPlanDetail(doc, planCell, "plan-included", sub.includedValue);
+    appendPlanDetail(doc, planCell, "plan-availability", sub.availabilityNote);
     row.appendChild(planCell);
 
     // Price cell keeps the monthly comparison value as the headline and shows
@@ -1376,7 +1377,8 @@ function renderPricing(doc) {
       const li = doc.createElement("li");
       li.textContent =
         `${sub.name} — ${sub.plan}: ${formatCurrency(sub.monthlyPrice)}/mo ` +
-        `(${sub.billingCadence}). ${sub.includedValue} `;
+        `(${sub.billingCadence}). ${sub.includedValue} ` +
+        `${sub.availabilityNote ? `${sub.availabilityNote} ` : ""}`;
       appendSourceProvenance(doc, li, sub);
       appendAffiliateLink(doc, li, sub.id);
       list.appendChild(li);
