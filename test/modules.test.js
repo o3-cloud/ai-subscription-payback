@@ -706,6 +706,10 @@ test("Copilot subscription prices, annual cadence, and AI Credit allowances stay
 test("the pricing-disclosure BDD pins current Copilot prices and credit separation", () => {
   const bdd = read("docs/bdd/pricing-disclosure.md");
   assert.match(bdd, /Pro is listed at \$10\/mo, Pro\+ at \$39\/mo, and Max at \$100\/mo/i);
+  assert.match(
+    bdd,
+    /Pro includes \$15\/mo of GitHub AI Credits, Pro\+ includes \$70\/mo, and Max includes \$200\/mo/i
+  );
   assert.match(bdd, /included AI Credit amounts are described separately/i);
   assert.match(bdd, /beyond the included AI Credits is identified as metered overage/i);
 });
