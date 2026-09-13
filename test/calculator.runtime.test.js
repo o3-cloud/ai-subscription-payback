@@ -625,6 +625,14 @@ test("ROG NUC featured card uses its single trim and exposes both price and spec
   assert.equal(doc.getElementById("box-price").value, "3799.99");
   assert.equal(doc.getElementById("power-draw").value, "330");
   assert.match(doc.getElementById("featured-hardware-status").textContent, /RTX 5080 Laptop workstations loaded/i);
+
+  const rerenderedSource = Array.from(card.children).find((child) => child.className === "hardware-card-source");
+  const rerenderedSourceLinks = Array.from(rerenderedSource.children).filter((child) => child.tagName === "A");
+  assert.ok(rerenderedSourceLinks.some((link) => link.getAttribute("href").includes("microcenter.com/product/713317")));
+  assert.ok(rerenderedSourceLinks.some((link) => link.getAttribute("href").includes("rog.asus.com/desktops/mini-pc/rog-nuc-16")));
+  const rerenderedActions = Array.from(card.children).find((child) => child.className === "hardware-card-actions");
+  const rerenderedCta = Array.from(rerenderedActions.children).find((child) => child.className.includes("hardware-card-cta"));
+  assert.equal(rerenderedCta.getAttribute("href"), "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/");
 });
 
 test("initCalculator boots the form from static data and defaults", () => {
