@@ -66,13 +66,34 @@ test("hardware exposes typed memory metadata for model-fit advisories", async ()
     assert.ok(entry.memoryProfile, `${entry.id} lacks memoryProfile`);
     assert.ok(types.has(entry.memoryProfile.type), `${entry.id} has invalid memory type`);
     assert.ok(Number.isFinite(entry.memoryProfile.capacityGB) && entry.memoryProfile.capacityGB > 0, `${entry.id} lacks capacity`);
-    assert.equal(entry.memoryProfile.source, entry.sourceUrl);
+    assert.equal(entry.memoryProfile.source, entry.memorySourceUrl ?? entry.sourceUrl);
   }
   assert.equal(featuredHardware.find((entry) => entry.id === "dgx-spark").memoryProfile.type, "unified");
   assert.equal(hardware.find((entry) => entry.id === "rtx-pro-6000-blackwell").memoryProfile.type, "discrete-vram");
 });
 
-test("data.js exposes only the token-value model the guides actually consume", async () => {
+test("ROG NUC 16 keeps retailer price, GPU VRAM, and system memory distinct", async () => {
+  const { hardware, featuredHardware, hardwareTrims } = await import(new URL("data.js", jsDir));
+  const box = featuredHardware.find((entry) => entry.id === "rtx-5080-laptop");
+  const trim = hardware.find((entry) => entry.id === "asus-rog-nuc-16-rtx-5080");
+  assert.ok(box, "ROG NUC 16 class is featured");
+  assert.ok(trim, "ROG NUC 16 retailer trim exists");
+  assert.equal(trim.priceLow, 3799.99);
+  assert.equal(trim.priceHigh, 3799.99);
+  assert.equal(trim.verification, "retailer");
+  assert.match(trim.sourceUrl, /microcenter\.com\/product\/713317/);
+  assert.match(trim.memorySourceUrl, /rog\.asus\.com\/desktops\/mini-pc\/rog-nuc-16/);
+  assert.equal(trim.gpuVramGB, 16);
+  assert.equal(trim.systemMemoryGB, 64);
+  assert.equal(trim.memoryProfile.capacityGB, 16);
+  assert.equal(trim.memoryProfile.type, "discrete-vram");
+  assert.match(trim.modelFit, /does not increase GPU VRAM/i);
+  assert.deepEqual(hardwareTrims(box).map(({ id, boxPrice }) => ({ id, boxPrice })), [
+    { id: "asus-rog-nuc-16-rtx-5080", boxPrice: 3799.99 },
+  ]);
+});
+
+ test("data.js exposes only the token-value model the guides actually consume", async () => {
   const data = await import(new URL("data.js", jsDir));
 
   assert.ok(
@@ -1498,7 +1519,7 @@ test("featured hardware trims seed the documented default preload", async () => 
 
   // Only the top-level class cards are featured; named SKUs are trims, not cards.
   const featuredIds = featuredHardware.map((box) => box.id);
-  assert.deepEqual(featuredIds, ["mac-studio", "dgx-spark", "strix-halo"]);
+  assert.deepEqual(featuredIds, ["mac-studio", "dgx-spark", "strix-halo", "rtx-5080-laptop"]);
   assert.ok(
     featuredHardware.every((box) => !box.exampleOf),
     "featured cards never include example SKUs"

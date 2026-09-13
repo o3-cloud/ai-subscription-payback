@@ -73,6 +73,9 @@
  * @property {string} [exampleOf] - id of the parent box this entry is a named SKU of; excluded from `featuredHardware` and surfaced as a trim instead
  * @property {number} [defaultBoxPrice] - price used when this box seeds the form
  * @property {number} [powerDraw] - representative power draw under load (W)
+ * @property {number} [gpuVramGB] - discrete GPU VRAM capacity when separate from system memory
+ * @property {number} [systemMemoryGB] - system RAM capacity when separate from GPU VRAM
+ * @property {string} [memorySourceUrl] - source for memory facts when different from the price source
  * @property {TokenThroughput} [tokensPerSecond] - sustained single-stream output
  *   generation throughput (tokens/sec) for a representative local coding model on
  *   this class of box, as a deliberately wide lower/upper estimate. Featured boxes
@@ -159,10 +162,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-09-12";
+export const pricingLastUpdated = "2026-09-13";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-09-12";
+export const siteLastUpdated = "2026-09-13";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1783,6 +1786,52 @@ export const hardware = [
     },
   },
   {
+    id: "rtx-5080-laptop",
+    name: "RTX 5080 Laptop workstations",
+    spec: "Discrete RTX 5080 Laptop GPU systems, up to 16 GB GDDR7 VRAM and 128 GB DDR5 system memory",
+    priceLow: 3799.99,
+    priceHigh: 3799.99,
+    priceNote:
+      "The named ASUS ROG NUC 16 trim is a current Micro Center street-price snapshot for a 64 GB DDR5 / 2 TB configuration; lower or higher memory and storage trims may vary.",
+    sourceUrl: "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/",
+    sourceLabel: "ASUS specifications with Micro Center street price",
+    verification: "retailer",
+    lastUpdated: "2026-09-13",
+    defaultBoxPrice: 3799.99,
+    powerDraw: 330,
+    gpuVramGB: 16,
+    systemMemoryGB: 64,
+    memorySourceUrl: "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/",
+    tokensPerSecond: { low: 20, high: 90 },
+    modelFit:
+      "Practical local model fit: small coding models (7B-14B) on the discrete GPU, with larger quantized models limited by the 16 GB discrete VRAM budget; the 64 GB system RAM does not increase GPU VRAM.",
+    image: {
+      src: "assets/img/rog-nuc-16.jpg",
+      alt: "ASUS ROG NUC 16 mini PC product photo showing the compact black gaming workstation.",
+    },
+  },
+  {
+    id: "asus-rog-nuc-16-rtx-5080",
+    name: "ASUS ROG NUC 16 — RTX 5080 Laptop GPU, 64 GB / 2 TB",
+    spec: "Intel Core Ultra 9 386H, RTX 5080 Laptop GPU with 16 GB GDDR7 VRAM, 64 GB DDR5 system memory, 2 TB SSD",
+    priceLow: 3799.99,
+    priceHigh: 3799.99,
+    priceNote:
+      "Micro Center street-price snapshot for the 64 GB / 2 TB ASUS ROG NUC 16 configuration; this is a retailer price, not ASUS MSRP.",
+    sourceUrl: "https://microcenter.com/product/713317/asus-nuc-16-ai-gaming-mini-pc?storeid=191",
+    sourceLabel: "Micro Center street price",
+    verification: "retailer",
+    lastUpdated: "2026-09-13",
+    defaultBoxPrice: 3799.99,
+    powerDraw: 330,
+    gpuVramGB: 16,
+    systemMemoryGB: 64,
+    memorySourceUrl: "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/",
+    modelFit:
+      "Practical local model fit: 7B-14B coding model bucket on the discrete GPU; larger quantized models remain limited by 16 GB VRAM, and system RAM does not increase GPU VRAM.",
+    exampleOf: "rtx-5080-laptop",
+  },
+  {
     id: "rtx-pro-6000-blackwell",
     name: "NVIDIA RTX PRO 6000 Blackwell workstation",
     spec: "Discrete Blackwell GPU workstation, 96 GB GDDR7 ECC VRAM",
@@ -1805,8 +1854,8 @@ export const hardware = [
 // component prices and GPU-only wattage impossible to misread as turnkey data.
 for (const entry of hardware) {
   const capacityMatch = entry.spec.match(/(\d+(?:\.\d+)?)\s*GB/i);
-  const capacityGB = capacityMatch ? Number(capacityMatch[1]) : null;
-  const type = /VRAM/i.test(entry.spec)
+  const capacityGB = entry.gpuVramGB ?? (capacityMatch ? Number(capacityMatch[1]) : null);
+  const type = entry.gpuVramGB != null || /VRAM/i.test(entry.spec)
     ? "discrete-vram"
     : /unified|LPDDR/i.test(entry.spec)
       ? "unified"
@@ -1816,7 +1865,7 @@ for (const entry of hardware) {
     type,
     allocatableGB: null,
     allocatableBasis: "Advisory fit uses a conservative runtime reservation; no measured usable-memory claim is published here.",
-    source: entry.sourceUrl,
+    source: entry.memorySourceUrl ?? entry.sourceUrl,
   };
   entry.priceBasis = entry.referenceOnly
     ? "component"
@@ -2065,6 +2114,12 @@ export const affiliates = {
     vendor: "MINISFORUM",
     url: "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc",
     label: "View MINISFORUM listing",
+    affiliate: false,
+  },
+  "rtx-5080-laptop": {
+    vendor: "ASUS ROG",
+    url: "https://rog.asus.com/desktops/mini-pc/rog-nuc-16/",
+    label: "Explore ASUS ROG NUC 16",
     affiliate: false,
   },
   "rtx-pro-6000-blackwell": {

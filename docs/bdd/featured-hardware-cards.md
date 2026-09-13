@@ -8,6 +8,15 @@ Scenario: Featured hardware cards are visible on the home page
   And each card shows a vendor-sourced product photo with descriptive alt text at the top
   And each card includes a current price or price range
 
+Scenario: RTX 5080 Laptop workstation trim keeps GPU VRAM separate from system memory
+  Given the RTX 5080 Laptop workstation featured hardware card
+  When the visitor opens its configuration drop-down
+  Then the selector includes an ASUS ROG NUC 16 RTX 5080 Laptop GPU trim priced at $3,799.99
+  And the trim records 16 GB discrete GDDR7 VRAM separately from its 64 GB DDR5 system memory
+  And the price is labeled as a Micro Center retailer street price
+  And the ASUS specifications source is retained for the hardware and memory facts
+  And the card gives conservative model-fit guidance that does not treat system RAM as GPU VRAM
+
 Scenario: Mac Studio surfaces Apple's official financing example
   Given the Mac Studio featured card
   When the visitor views the card

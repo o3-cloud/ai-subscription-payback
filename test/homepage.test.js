@@ -183,7 +183,7 @@ test("no-JS visitors receive a server-delivered default comparison snapshot", ()
     /JavaScript is required to edit inputs[\s\S]*recalculate results[\s\S]*copy shareable links/i,
     "snapshot explains which interactive features require JavaScript"
   );
-  assert.match(snapshot, /<time[^>]+datetime="2026-09-12">2026-09-12<\/time>/i, "snapshot includes freshness metadata");
+  assert.match(snapshot, /<time[^>]+datetime="2026-09-13">2026-09-13<\/time>/i, "snapshot includes freshness metadata");
 });
 
 test("no-JS comparison snapshot stays source-backed and matches calculator defaults", () => {
@@ -202,8 +202,8 @@ test("no-JS comparison snapshot stays source-backed and matches calculator defau
     assert.ok(row.toLowerCase().includes(cadence.toLowerCase()), `${id} cadence is in its snapshot row`);
   }
 
-  const hardwareLabels = { "mac-studio": "Mac Studio", "dgx-spark": "NVIDIA DGX Spark", "strix-halo": "Strix Halo systems" };
-  for (const id of ["mac-studio", "dgx-spark", "strix-halo"]) {
+  const hardwareLabels = { "mac-studio": "Mac Studio", "dgx-spark": "NVIDIA DGX Spark", "strix-halo": "Strix Halo systems", "rtx-5080-laptop": "RTX 5080 Laptop workstations" };
+  for (const id of ["mac-studio", "dgx-spark", "strix-halo", "rtx-5080-laptop"]) {
     const box = featuredHardware.find((entry) => entry.id === id);
     assert.ok(box, `source data contains ${id}`);
     const row = rows.find((entry) => entry.includes(`<strong>${hardwareLabels[id]}</strong>`));
