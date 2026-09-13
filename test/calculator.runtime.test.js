@@ -944,6 +944,23 @@ test("comparison table renders the Copilot Max source note beside the provenance
   );
 });
 
+test("pricing list renders Copilot subscription prices separately from AI Credits", () => {
+  const { doc } = boot();
+  const rows = doc.querySelectorAll("#pricing-list li");
+  const expected = [
+    ["Pro", "$10/mo", "$15/mo of GitHub AI Credits"],
+    ["Pro+", "$39/mo", "$70/mo of GitHub AI Credits"],
+    ["Max", "$100/mo", "$200/mo of GitHub AI Credits"],
+  ];
+  for (const [plan, price, credits] of expected) {
+    const row = rows.find((entry) => entry.textContent.includes(`GitHub Copilot — ${plan}`));
+    assert.ok(row, `${plan} pricing row is rendered`);
+    assert.ok(row.textContent.includes(price), `${plan} subscription price is rendered`);
+    assert.ok(row.textContent.includes(credits), `${plan} AI Credit allowance is rendered separately`);
+    assert.match(row.textContent, /Usage beyond the credits is metered/i, `${plan} metered overage is disclosed`);
+  }
+});
+
 test("comparison table renders hardware labels and specs as literal text", () => {
   const original = {
     name: hardware[0].name,

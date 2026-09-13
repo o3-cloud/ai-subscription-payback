@@ -73,7 +73,8 @@ Scenario: GitHub Copilot Pro included-value copy names agents, code review, and 
 Scenario: GitHub Copilot subscription prices are separated from included AI Credits
   Given the current official GitHub Copilot individual plans
   When the visitor views the Copilot pricing rows
-  Then Pro is listed at $15/mo, Pro+ at $70/mo, and Max at $200/mo
+  Then Pro is listed at $10/mo, Pro+ at $39/mo, and Max at $100/mo
+  And Pro includes $15/mo of GitHub AI Credits, Pro+ includes $70/mo, and Max includes $200/mo
   And the included AI Credit amounts are described separately from each subscription price
   And usage beyond the included AI Credits is identified as metered overage
 
