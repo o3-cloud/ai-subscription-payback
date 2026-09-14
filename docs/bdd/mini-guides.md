@@ -67,4 +67,10 @@ Scenario: Committed guides cannot drift from canonical hardware prices
   And a stale guide path and differing line are reported when an artifact drifts
   And the command exits successfully only when all generated guides match
   So a stale hardware price cannot remain in a committed static guide unnoticed
+
+Scenario: Cursor guide prose uses the current plan names
+  Given the Cursor pricing data models Hobby, Pro, Pro+, Ultra, and Teams
+  When the Cursor comparison guide is generated
+  Then its use-case and caveat copy names Hobby and Pro instead of the retired Individual plan
+  And the committed Cursor guide contains no reference to the retired Individual plan name
 ```

@@ -331,6 +331,15 @@ test("the ChatGPT bundle guide keeps its source-backed identity", () => {
   assert.match(miniGuidesBdd, /ChatGPT Plus \/ Codex bundle, not a standalone Codex subscription/i);
 });
 
+test("the Cursor guide uses the current Hobby and Pro plan names", () => {
+  const html = read("guides/cursor-vs-local-ai-box-cost.html");
+  assert.match(html, /Hobby, Pro, Pro\+, Ultra, or team tiers/i);
+  assert.match(html, /free Hobby and cheaper Pro plans/i);
+  assert.doesNotMatch(html, /\bIndividual\b/i, "the guide does not retain the retired Cursor Individual plan name");
+  assert.match(miniGuidesBdd, /Cursor guide prose uses the current plan names/i);
+  assert.match(miniGuidesBdd, /retired Individual plan name/i);
+});
+
 test("the sitemap lists every published guide URL", () => {
   for (const { href } of expectedGuideLinks()) {
     assert.match(sitemap, new RegExp(`<loc>${escapeRegExp(href)}</loc>`), `${href} is missing from sitemap.xml`);
