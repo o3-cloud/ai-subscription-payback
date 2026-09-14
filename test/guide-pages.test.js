@@ -319,20 +319,35 @@ test("the mini-guides BDD names the second-wave and third-wave guide families", 
 
 test("the Google AI guide preserves current Gemini wording", () => {
   const html = read("guides/google-ai-jules-antigravity-vs-local-ai-box-cost.html");
+  const useCaseSummary = html.match(/<p class="section-intro">[\s\S]*?<\/p>/i)?.[0] ?? "";
   assert.match(
-    html,
+    useCaseSummary,
     /current Gemini 3 Pro \/ 3\.6 Flash wording/i,
-    "the committed Google AI guide names the current Gemini model wording"
+    "the committed Google AI guide names the current Gemini model wording in its use-case summary"
   );
   assert.doesNotMatch(
-    html,
+    useCaseSummary,
     /Gemini 3\.1 Pro/i,
-    "the committed Google AI guide excludes the retired Gemini 3.1 Pro wording"
+    "the committed Google AI guide excludes the retired Gemini 3.1 Pro wording from its use-case summary"
+  );
+
+  const bddScenario = miniGuidesBdd.match(
+    /Scenario: The Google AI guide uses current Gemini wording[\s\S]*?(?=\nScenario:|$)/i
+  )?.[0] ?? "";
+  assert.match(
+    bddScenario,
+    /Gemini 3 Pro/i,
+    "the Google AI BDD names the current Gemini 3 Pro wording"
   );
   assert.match(
-    miniGuidesBdd,
-    /Scenario: The Google AI guide uses current Gemini wording[\s\S]*Gemini 3 Pro[\s\S]*Gemini 3\.6 Flash[\s\S]*Gemini 3\.1 Pro/i,
-    "the BDD names the current and retired Gemini wording contract"
+    bddScenario,
+    /Gemini 3\.6 Flash/i,
+    "the Google AI BDD names the current Gemini 3.6 Flash wording"
+  );
+  assert.match(
+    bddScenario,
+    /Gemini 3\.1 Pro/i,
+    "the Google AI BDD names the retired Gemini 3.1 Pro wording that must be absent"
   );
 });
 
