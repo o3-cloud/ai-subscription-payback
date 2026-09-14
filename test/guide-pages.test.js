@@ -317,6 +317,25 @@ test("the mini-guides BDD names the second-wave and third-wave guide families", 
   assert.match(miniGuidesBdd, /llms\.txt/i, "mini-guides BDD ties the guide set back to llms.txt");
 });
 
+test("the Google AI guide preserves current Gemini wording", () => {
+  const html = read("guides/google-ai-jules-antigravity-vs-local-ai-box-cost.html");
+  assert.match(
+    html,
+    /current Gemini 3 Pro \/ 3\.6 Flash wording/i,
+    "the committed Google AI guide names the current Gemini model wording"
+  );
+  assert.doesNotMatch(
+    html,
+    /Gemini 3\.1 Pro/i,
+    "the committed Google AI guide excludes the retired Gemini 3.1 Pro wording"
+  );
+  assert.match(
+    miniGuidesBdd,
+    /Scenario: The Google AI guide uses current Gemini wording[\s\S]*Gemini 3 Pro[\s\S]*Gemini 3\.6 Flash[\s\S]*Gemini 3\.1 Pro/i,
+    "the BDD names the current and retired Gemini wording contract"
+  );
+});
+
 test("the ChatGPT bundle guide keeps its source-backed identity", () => {
   const html = read("guides/codex-vs-local-ai-box-cost.html");
   assert.match(html, /ChatGPT Plus \/ Codex bundle vs a local AI box/i);

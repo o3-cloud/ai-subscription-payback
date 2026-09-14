@@ -73,4 +73,11 @@ Scenario: Cursor guide prose uses the current plan names
   When the Cursor comparison guide is generated
   Then its use-case and caveat copy names Hobby and Pro instead of the retired Individual plan
   And the committed Cursor guide contains no reference to the retired Individual plan name
+
+Scenario: The Google AI guide uses current Gemini wording
+  Given the Google AI comparison guide is generated
+  When a visitor reads its use-case summary
+  Then it names the current Gemini 3 Pro and Gemini 3.6 Flash wording
+  And it contains no reference to the retired Gemini 3.1 Pro wording
+  And the committed guide artifact matches those current-wording requirements
 ```
