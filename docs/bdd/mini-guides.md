@@ -59,4 +59,12 @@ Scenario: Guide pages pin exact SEO titles and source freshness
   Then the document title, Open Graph title, and Twitter title exactly match that guide's source title
   And the TechArticle JSON-LD dateModified exactly matches the source site freshness date
   So a renamed title or stale generated freshness value cannot pass through generator and snapshot parity alone
+
+Scenario: Committed guides cannot drift from canonical hardware prices
+  Given the calculator's hardware data is the source of truth for guide prices and scenario hashes
+  When the maintainer runs `npm run check-guides`
+  Then every committed guide matches the output of the guide generator
+  And a stale guide path and differing line are reported when an artifact drifts
+  And the command exits successfully only when all generated guides match
+  So a stale hardware price cannot remain in a committed static guide unnoticed
 ```

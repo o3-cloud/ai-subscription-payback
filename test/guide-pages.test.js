@@ -13,6 +13,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { buildGuides, GUIDES, guideModel, SITE_URL } from "../scripts/build-guides.mjs";
+import { findStaleGuides } from "../scripts/check-guides.mjs";
 import { serializeState, formatRate, formatCurrency } from "../assets/js/state.js";
 import { siteLastUpdated, tokenOutputValueAssumptions } from "../assets/js/data.js";
 
@@ -43,6 +44,12 @@ const expectedGuideLinks = () =>
 
 test("the comparison-guide generator and committed files stay in sync", () => {
   assert.equal(GUIDES.length, 17, "expected seventeen comparison mini-guides");
+  assert.deepEqual(findStaleGuides(generated), [], "the CI guide drift check should be green");
+  assert.deepEqual(
+    findStaleGuides([{ path: "guides/__missing-guide__.html", html: "" }]),
+    [{ path: "guides/__missing-guide__.html", detail: "committed file is missing" }],
+    "the CI guide drift check diagnoses deleted guide artifacts"
+  );
   for (const guide of generated) {
     assert.ok(exists(guide.path), `${guide.path} is missing`);
     const committed = read(guide.path);

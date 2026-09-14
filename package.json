@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "node scripts/run-tests.mjs",
+    "check-guides": "node scripts/check-guides.mjs",
     "health-check": "node scripts/health-check.mjs"
   }
 }
