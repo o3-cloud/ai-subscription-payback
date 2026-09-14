@@ -28,6 +28,11 @@ Scenario: Methodology matches displayed outputs
   Given a break-even result is shown
   When the visitor compares the result to the methodology
   Then the result is consistent with the documented formula
+
+Scenario: Break-even includes exact cumulative-cost equality
+  Given cumulative ownership cost exactly equals cumulative subscription cost in a month
+  When the calculator evaluates the payback series
+  Then that month is reported as the first break-even month
 ```
 
 ## Model clarifications
@@ -60,9 +65,9 @@ stay consistent with the methodology copy.
    + (electricity + maintenance) × m`, less the resale credit at the final month.
 - **Cumulative subscription cost** at month _m_ = `monthlySubscription × m`.
 - **Break-even month** is the first month within the 60-month horizon where
-  cumulative subscription cost reaches cumulative ownership cost. If that never
-  happens within the horizon, the result reports that break-even is not reached
-  rather than showing a month.
+  cumulative ownership cost reaches or falls below cumulative subscription cost.
+  If that never happens within the horizon, the result reports that break-even is
+  not reached rather than showing a month.
 - **Monthly net savings** compares monthly subscription spend against the
   recurring monthly cost of ownership (loan payment + electricity + maintenance);
   a negative value means owning the box costs more each month.

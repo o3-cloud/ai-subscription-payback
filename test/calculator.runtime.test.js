@@ -549,6 +549,27 @@ test("computeResult finds break-even and supports optional assumptions", () => {
   );
 });
 
+test("computeResult treats exact cumulative-cost equality as break-even", () => {
+  const result = computeResult({
+    subscriptions: [],
+    customSpend: 10,
+    boxPrice: 110,
+    downPayment: 0,
+    apr: 0,
+    term: 10,
+    electricityRate: 0,
+    powerDraw: 0,
+    hoursPerDay: 0,
+    maintenance: false,
+    resale: false,
+    taxes: false,
+  });
+
+  assert.equal(result.series[10].ownershipCost, 110);
+  assert.equal(result.series[10].subscriptionCost, 110);
+  assert.equal(result.breakEvenMonth, 11);
+});
+
 test("computeResult models annual upfront payments and renewals separately from monthly equivalents", () => {
   const input = {
     subscriptions: ["claude-pro-annual"],

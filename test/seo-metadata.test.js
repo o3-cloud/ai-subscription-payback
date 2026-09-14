@@ -317,7 +317,7 @@ test("the visible methodology FAQ remains complete without FAQ structured data",
   assert.ok(methodology, "index.html has a #methodology section");
 
   for (const phrase of [
-    "first month where cumulative ownership cost drops below",
+    "first month where cumulative ownership cost reaches or falls below",
     "maintenance/depreciation, hardware resale",
   ]) {
     assert.match(
