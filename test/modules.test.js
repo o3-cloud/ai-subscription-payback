@@ -371,16 +371,17 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
     "copilot-pro": { name: "GitHub Copilot", monthlyPrice: 10 },
     "copilot-pro-plus": { name: "GitHub Copilot", monthlyPrice: 39 },
     "copilot-max": { name: "GitHub Copilot", monthlyPrice: 100 },
+    "cursor-hobby": { name: "Cursor", monthlyPrice: 0 },
     "cursor-individual": { name: "Cursor", monthlyPrice: 20 },
     "cursor-pro-plus": { name: "Cursor", monthlyPrice: 60 },
     "cursor-ultra": { name: "Cursor", monthlyPrice: 200 },
     "cursor-teams": { name: "Cursor", monthlyPrice: 40 },
-    "cursor-teams-premium": { name: "Cursor", monthlyPrice: 120 },
     "grok-supergrok": { name: "xAI Grok", monthlyPrice: 30 },
     "grok-supergrok-pro": { name: "xAI Grok", monthlyPrice: 300 },
     "zed-personal": { name: "Zed", monthlyPrice: 0 },
     "zed-pro": { name: "Zed", monthlyPrice: 10 },
     "zed-business": { name: "Zed", monthlyPrice: 30 },
+    "google-ai-free": { name: "Google AI", monthlyPrice: 0 },
     "google-ai-plus": { name: "Google AI", monthlyPrice: 4.99 },
     "google-ai-pro": { name: "Google AI", monthlyPrice: 19.99 },
     "google-ai-ultra": { name: "Google AI Ultra", monthlyPrice: 99.99 },
@@ -418,20 +419,25 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
     assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
   }
 
+  assert.equal(byId.get("cursor-individual").plan, "Pro", "Cursor's $20 row is the current Pro plan");
+  assert.equal(byId.get("cursor-teams").monthlyPrice, 40, "Cursor Teams is $40 per user per month");
+  assert.match(byId.get("cursor-hobby").includedValue, /limited Agent requests/i, "Cursor Hobby names its limited Agent allowance");
+  assert.equal(byId.has("cursor-teams-premium"), false, "retired Cursor Teams Premium is not modeled");
+
   assert.match(
     byId.get("cursor-individual").includedValue,
     /extended Agent limits/i,
-    "Cursor Individual names the extended Agent limits"
+    "Cursor Pro names the extended Agent limits"
   );
   assert.match(
     byId.get("cursor-individual").includedValue,
     /generous Grok limits/i,
-    "Cursor Individual names the Grok limits"
+    "Cursor Pro names the Grok limits"
   );
   assert.match(
     byId.get("cursor-individual").includedValue,
     /MCPs, skills\/hooks, Cloud Agents, and Bugbot/i,
-    "Cursor Individual names the current bundled features"
+    "Cursor Pro names the current bundled features"
   );
   assert.match(
     byId.get("cursor-pro-plus").includedValue,
@@ -457,11 +463,6 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
     byId.get("cursor-teams").includedValue,
     /centralized billing, admin controls, and SSO/i,
     "Cursor Teams keeps the admin and SSO framing"
-  );
-  assert.match(
-    byId.get("cursor-teams-premium").includedValue,
-    /roughly 5× the Standard team Agent limits/i,
-    "Cursor Teams Premium preserves the 5x team Agent limits framing"
   );
   assert.match(
     byId.get("grok-supergrok").sourceNote,
@@ -803,8 +804,8 @@ test("Google AI tiers describe the current Plus / Pro / Ultra benefits", async (
   const { subscriptions } = await import(new URL("data.js", jsDir));
   const byId = new Map(subscriptions.map((s) => [s.id, s]));
 
-  // All four tiers are broad Google AI subscriptions marked official.
-  for (const id of ["google-ai-plus", "google-ai-pro", "google-ai-ultra", "google-ai-ultra-20x"]) {
+  // The free and paid tiers are broad Google AI subscriptions marked official.
+  for (const id of ["google-ai-free", "google-ai-plus", "google-ai-pro", "google-ai-ultra", "google-ai-ultra-20x"]) {
     const sub = byId.get(id);
     assert.ok(sub, `missing subscription tier: ${id}`);
     assert.equal(sub.verification, "official", `${id} is marked official`);
@@ -819,7 +820,8 @@ test("Google AI tiers describe the current Plus / Pro / Ultra benefits", async (
   assert.match(byId.get("google-ai-plus").includedValue, /custom tool creation/i, "google-ai-plus names custom tool creation");
   assert.match(byId.get("google-ai-plus").includedValue, /Daily Brief/i, "google-ai-plus names Daily Brief");
   assert.match(byId.get("google-ai-plus").includedValue, /Nano Banana/i, "google-ai-plus names Nano Banana in Search");
-  assert.match(byId.get("google-ai-pro").includedValue, /Gemini 3\.1 Pro/i, "google-ai-pro names Gemini 3.1 Pro");
+  assert.match(byId.get("google-ai-free").includedValue, /Gemini 3\.6 Flash/i, "google-ai-free names Gemini 3.6 Flash");
+  assert.match(byId.get("google-ai-pro").includedValue, /Gemini 3 Pro/i, "google-ai-pro names Gemini 3 Pro");
   assert.match(byId.get("google-ai-pro").includedValue, /Jules/, "google-ai-pro names Jules");
   assert.match(byId.get("google-ai-pro").includedValue, /Antigravity/, "google-ai-pro names Google Antigravity");
   assert.match(byId.get("google-ai-pro").includedValue, /Google Home Premium Standard/i, "google-ai-pro names Google Home Premium Standard");
@@ -828,7 +830,7 @@ test("Google AI tiers describe the current Plus / Pro / Ultra benefits", async (
   assert.match(byId.get("google-ai-ultra").includedValue, /Google Flow Credits/i, "google-ai-ultra names Google Flow Credits");
   assert.match(byId.get("google-ai-ultra").includedValue, /Deep Think/i, "google-ai-ultra names Deep Think");
   assert.match(byId.get("google-ai-ultra").includedValue, /Gemini Spark/i, "google-ai-ultra names Gemini Spark");
-  assert.match(byId.get("google-ai-ultra-20x").includedValue, /Gemini 3\.1 Pro/i, "google-ai-ultra-20x names Gemini 3.1 Pro");
+  assert.match(byId.get("google-ai-ultra-20x").includedValue, /Gemini 3 Pro/i, "google-ai-ultra-20x names Gemini 3 Pro");
   assert.match(byId.get("google-ai-ultra-20x").includedValue, /Deep Search/i, "google-ai-ultra-20x names Deep Search");
   assert.match(byId.get("google-ai-ultra-20x").includedValue, /Google Flow Credits/i, "google-ai-ultra-20x names Google Flow Credits");
 

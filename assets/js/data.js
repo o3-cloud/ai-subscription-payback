@@ -651,9 +651,22 @@ export const subscriptions = [
     },
   },
   {
+    id: "cursor-hobby",
+    name: "Cursor",
+    plan: "Hobby",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Hobby plan for individuals: no credit card required, limited Agent requests, and access to Composer.",
+    sourceUrl: "https://cursor.com/pricing",
+    sourceLabel: "Official Cursor pricing",
+    verification: "official",
+    lastUpdated: "2026-09-14",
+  },
+  {
     id: "cursor-individual",
     name: "Cursor",
-    plan: "Individual",
+    plan: "Pro",
     monthlyPrice: 20,
     billingCadence: "Billed monthly, per user",
     includedValue:
@@ -661,7 +674,7 @@ export const subscriptions = [
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-08-17",
+    lastUpdated: "2026-09-14",
   },
   {
     id: "cursor-pro-plus",
@@ -674,7 +687,7 @@ export const subscriptions = [
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-08-17",
+    lastUpdated: "2026-09-14",
   },
   {
     id: "cursor-ultra",
@@ -687,7 +700,7 @@ export const subscriptions = [
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-08-17",
+    lastUpdated: "2026-09-14",
   },
   {
     id: "cursor-teams",
@@ -700,20 +713,7 @@ export const subscriptions = [
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
-    lastUpdated: "2026-08-17",
-  },
-  {
-    id: "cursor-teams-premium",
-    name: "Cursor",
-    plan: "Teams Premium",
-    monthlyPrice: 120,
-    billingCadence: "Billed monthly, per user",
-    includedValue:
-      "Premium team seat with roughly 5× the Standard team Agent limits on top of the Teams admin controls and SSO, plus the broader Cursor bundle of frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
-    sourceUrl: "https://cursor.com/pricing",
-    sourceLabel: "Official Cursor pricing",
-    verification: "official",
-    lastUpdated: "2026-08-17",
+    lastUpdated: "2026-09-14",
   },
   {
     id: "grok-supergrok",
@@ -785,6 +785,19 @@ export const subscriptions = [
     lastUpdated: "2026-08-29",
   },
   {
+    id: "google-ai-free",
+    name: "Google AI",
+    plan: "Free",
+    monthlyPrice: 0,
+    billingCadence: "Free tier",
+    includedValue:
+      "Free Google AI plan with everyday Gemini help, access to Gemini 3.6 Flash, varying access to Gemini 3.1 Pro, image generation and editing, Deep Research, Gemini Live, Canvas, Gems, and 15 GB of cloud storage.",
+    sourceUrl: "https://gemini.google/subscriptions/",
+    sourceLabel: "Official Google pricing",
+    verification: "official",
+    lastUpdated: "2026-09-14",
+  },
+  {
     id: "google-ai-plus",
     name: "Google AI",
     plan: "Plus",
@@ -795,7 +808,7 @@ export const subscriptions = [
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-08-23",
+    lastUpdated: "2026-09-14",
   },
   {
     id: "google-ai-pro",
@@ -804,11 +817,11 @@ export const subscriptions = [
     monthlyPrice: 19.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Broad Google AI Pro subscription with 4× higher usage access than Free, varying access to Gemini 3.1 Pro / Deep Search and agentic capabilities, 1,000 Google Flow Credits, Jules, entry rate limits to Google Antigravity, Google Home Premium Standard, YouTube Premium Lite, and 5 TB of cloud storage.",
+      "Broad Google AI Pro subscription with 4× higher usage access than Free, varying access to Gemini 3 Pro / Deep Search and agentic capabilities, 1,000 Google Flow Credits, Jules, entry rate limits to Google Antigravity, Google Home Premium Standard, YouTube Premium Lite, and 5 TB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-08-23",
+    lastUpdated: "2026-09-14",
   },
   {
     id: "google-ai-ultra",
@@ -830,11 +843,11 @@ export const subscriptions = [
     monthlyPrice: 199.99,
     billingCadence: "Billed monthly",
     includedValue:
-      "Google AI Ultra at 20× higher usage limits vs. AI Pro, with the highest access to Gemini 3.1 Pro, Deep Search, and agentic capabilities, the highest Google Antigravity rate limits, 25,000 Google Flow Credits, and 20 TB of cloud storage.",
+      "Google AI Ultra at 20× higher usage limits vs. AI Pro, with the highest access to Gemini 3 Pro, Deep Search, and agentic capabilities, the highest Google Antigravity rate limits, 25,000 Google Flow Credits, and 20 TB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
-    lastUpdated: "2026-08-23",
+    lastUpdated: "2026-09-14",
   },
   {
     id: "amazon-q-developer-free",

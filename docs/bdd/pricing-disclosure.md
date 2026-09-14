@@ -23,10 +23,11 @@ Scenario: Supported subscription tiers are listed
   And Claude Max 20× is listed at $200/mo with its usage-limit caveats
   And the GitHub Copilot tiers are listed: Free, Pro, Pro+, and Max
   And the GitLab Premium + Duo Agent Platform credits tier is listed
-  And the Cursor tiers are listed: Individual, Pro+, Ultra, Teams, and Teams Premium
+  And the Cursor tiers are listed: Hobby (Free), Pro, Pro+, Ultra, and Teams
+  And Cursor Enterprise is custom-priced and out of scope for the monthly calculator
   And the xAI Grok tiers are listed: SuperGrok and SuperGrok Pro
   And the Zed tiers are listed: Personal, Pro, and Business
-  And the Google AI tiers are listed: Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x
+  And the Google AI tiers are listed: Free, Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x
   And the Amazon Q Developer tiers are listed: Free and Pro
   And the Devin tiers are listed: Free, Pro, Max, and Teams (base + 1 seat)
   And the Devin tiers surface the alias "Devin (Windsurf / Devin Desktop)" without duplicating any rows
@@ -89,13 +90,14 @@ Scenario: GitHub Copilot subscription prices are separated from included AI Cred
   And usage beyond the included AI Credits is identified as metered overage
 
 Scenario: Cursor included-value copy names the current pricing-page benefits
-  Given the Cursor Individual, Pro+, Ultra, Teams, and Teams Premium tiers
+  Given the Cursor Hobby, Pro, Pro+, Ultra, and Teams tiers
   When the visitor views their included-value text
-  Then the Individual copy names extended Agent limits, generous Grok limits, frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing
+  And the Hobby copy names limited Agent requests and Composer access
+  And the Pro copy names extended Agent limits, generous Grok limits, frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing
   And the Pro+ copy keeps the roughly 3× Pro Agent limits framing while naming the broader Cursor bundle of frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot
   And the Ultra copy keeps the roughly 20× Pro Agent limits and priority frontier-model access framing while naming the broader Cursor bundle
   And the Teams copy keeps the centralized billing, admin, and SSO framing for team seats
-  And the Teams Premium copy keeps the stronger team-agent limits framing while naming the broader Cursor bundle
+  And the Teams copy keeps the centralized billing, admin, and SSO framing
 
 Scenario: xAI Grok tiers are listed as optional comparators with a source caveat
   Given the xAI Grok SuperGrok and SuperGrok Pro tiers
@@ -127,14 +129,15 @@ Scenario: Editor-assistant and code-review tiers are optional and unchecked by d
   And checking one adds its monthly price to the comparison without changing the defaults on reload
 
 Scenario: Google AI tiers describe their current Plus, Pro, and Ultra benefits
-  Given the Google AI Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x tiers
+  Given the Google AI Free, Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x tiers
   When the visitor views their included-value text
   Then each is described as a broad Google AI subscription
+  And the Free tier is priced at $0/mo and names Gemini 3.6 Flash plus 15 GB of storage
   And the Plus tier highlights 2× usage access, Gemini Omni Flash, custom tool creation, Daily Brief, Nano Banana in Search, Google Flow Credits, and 400 GB of storage without the Jules or Google Antigravity benefits
-  And the Pro tier highlights 4× usage access, varying access to Gemini 3.1 Pro / Deep Search, Jules, Google Antigravity, Google Home Premium Standard, YouTube Premium Lite, Google Flow Credits, and 5 TB of storage
+  And the Pro tier is priced at $19.99/mo and highlights 4× usage access, Gemini 3 Pro / Deep Search, Jules, Google Antigravity, Google Home Premium Standard, YouTube Premium Lite, Google Flow Credits, and 5 TB of storage
   And the Google AI Ultra 5x and Google AI Ultra 20x tiers keep the current Google AI Ultra product wording while surfacing the 5× and 20× price points
   And the Google Home Premium and YouTube Premium Lite bundle value is treated as non-replaceable by local hardware
-  And all four are optional and unchecked in the default selection
+  And all five are optional and unchecked in the default selection
 
 Scenario: Amazon Q Developer tiers disclose their quota caveat
   Given the Amazon Q Developer Free and Pro tiers
