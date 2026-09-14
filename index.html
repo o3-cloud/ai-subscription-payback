@@ -206,7 +206,7 @@
       <h2 id="calculator-title">Payback calculator</h2>
       <p class="section-intro">
         Adjust the inputs to model your scenario. All math runs in your browser —
-        nothing is sent to a server.
+        calculator inputs are not submitted to the site's application server.
       </p>
 
       <div class="calculator-grid">
@@ -359,8 +359,10 @@
             <span id="share-status" class="share-status" role="status" aria-live="polite"></span>
           </div>
           <p class="share-note">
-            Shared links include your inputs in the URL hash — nothing is sent
-            to a server. Don't share sensitive scenarios.
+            Shared links encode your inputs locally in the URL hash. Calculator
+            inputs are not submitted to the site's application server, but
+            anonymous aggregate analytics may record page views, share actions,
+            and outbound clicks. Don't put sensitive information in URLs.
           </p>
 
           <!-- Chart region with an accessible table equivalent -->
@@ -695,10 +697,11 @@
       </p>
       <p class="footer-privacy">
         Privacy: the calculator runs entirely in your browser. No account is
-        required and your inputs are never sent to a server. The site uses
-        cookieless analytics to measure aggregate page views, scenario shares,
-        and outbound clicks only — no calculator inputs or personal data are
-        collected.
+        required and calculator inputs are not submitted to the site's
+        application server. Shared inputs stay in the URL hash. The site uses
+        cookieless analytics to measure anonymous aggregate page views,
+        scenario shares, and outbound clicks only — no calculator inputs or
+        personal data are collected.
       </p>
       <p class="footer-meta">
         Site last updated: <time id="site-last-updated" datetime="2026-09-13">2026-09-13</time>

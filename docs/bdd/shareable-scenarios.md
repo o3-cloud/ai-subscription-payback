@@ -70,9 +70,10 @@ Scenario: Share controls sit near the results summary
 Scenario: Privacy note accompanies the share button
   Given the visitor views the share button in the results area
   When they read the copy next to it
-  Then a visible note explains the shared link includes inputs in the URL hash
-  And it reassures that nothing is sent to a server
-  And it warns against sharing sensitive scenarios
+  Then a visible note explains the shared link encodes inputs locally in the URL hash
+  And it explains calculator inputs are not submitted to the site's application server
+  And it explains anonymous aggregate analytics may record page views, share actions, and outbound clicks
+  And it warns against putting sensitive information in a URL
 
 Scenario: A present-or-whitespace numeric param falls back to its default
   Given a shared URL carries a numeric param with no value or only whitespace, such as "boxPrice=" or "boxPrice=%20"

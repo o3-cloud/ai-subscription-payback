@@ -272,9 +272,20 @@ test("results area includes the capability caveat and privacy note", () => {
   );
   assert.match(
     html,
-    /<p class="share-note">[\s\S]*Shared links include your inputs in the URL hash[\s\S]*Don't share sensitive scenarios\.[\s\S]*<\/p>/i,
-    "share area explains the privacy implications of shared links"
+    /<p class="share-note">[\s\S]*encode your inputs locally in the URL hash[\s\S]*not submitted to the site's application server[\s\S]*anonymous aggregate analytics[\s\S]*page views[\s\S]*share actions[\s\S]*outbound clicks[\s\S]*Don't put sensitive information in URLs\.[\s\S]*<\/p>/i,
+    "share area distinguishes local inputs from aggregate analytics"
   );
+  assert.doesNotMatch(html, /<p class="share-note">[\s\S]*nothing is sent to a server/i);
+});
+
+test("footer privacy disclosure matches the calculator privacy boundary", () => {
+  const footerPrivacy = (html.match(/<p class="footer-privacy">([\s\S]*?)<\/p>/i)?.[1] ?? "").replace(/\s+/g, " ");
+  assert.match(footerPrivacy, /calculator inputs are not submitted to the site's application server/i);
+  assert.match(footerPrivacy, /Shared inputs stay in the URL hash/i);
+  for (const event of ["page views", "scenario shares", "outbound clicks"]) {
+    assert.match(footerPrivacy, new RegExp(event, "i"), `footer names aggregate ${event}`);
+  }
+  assert.match(footerPrivacy, /no calculator inputs or personal data are collected/i);
 });
 
 test("results note distinguishes monthly net savings from break-even month", () => {
