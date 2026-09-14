@@ -1604,6 +1604,28 @@ test("rerendered ROG NUC CTA keeps outbound analytics wired", async () => {
   );
 });
 
+test("persistent outbound links stay single-wired across rerenders and reset", async () => {
+  const { doc, win } = boot();
+  const modelSize = doc.getElementById("model-size");
+  const quantization = doc.getElementById("model-quantization");
+  modelSize.value = "70";
+  await modelSize.dispatch("input");
+  quantization.value = "fp16";
+  await quantization.dispatch("change");
+  await doc.getElementById("calculator-form").dispatch("reset");
+
+  const link = doc.querySelector("#comparison-body a");
+  assert.ok(link, "comparison link is rendered");
+  const href = link.getAttribute("href");
+  await link.dispatch("click");
+
+  const outboundCalls = win._plausibleCalls.filter(
+    ([name, options]) =>
+      name === "Outbound Link: Click" && options?.props?.url === href
+  );
+  assert.equal(outboundCalls.length, 1, "persistent links emit exactly one outbound event");
+});
+
 test("a URL-preloaded non-default trim survives model-fit rerenders", async () => {
   const strixIndex = featuredHardware.findIndex((box) => box.id === "strix-halo");
   const strixTrims = hardwareTrims(featuredHardware[strixIndex]);

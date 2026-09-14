@@ -24,6 +24,7 @@ Scenario: Share and outbound clicks are tracked as aggregate events
   Then the site records an aggregate share or outbound click event
   And the calculator results remain unchanged
   And outbound links recreated after a calculator model-fit update remain tracked
+  And persistent comparison and pricing links emit at most one outbound event after any number of model-fit rerenders or form resets
 
 Scenario: Tracking can be opted out with Do Not Track
   Given the browser Do Not Track signal is enabled

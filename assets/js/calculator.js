@@ -1475,10 +1475,12 @@ function wireOutboundLinks(doc, analytics) {
     ...doc.querySelectorAll("#pricing-list a"),
   ];
   for (const link of links) {
+    if (link.__outboundTrackingBound) continue;
     const href = link.getAttribute("href");
     if (!href) continue;
     const affiliate = /\bsponsored\b/.test(link.getAttribute("rel") || "");
     link.addEventListener("click", () => analytics.trackOutbound(href, affiliate));
+    link.__outboundTrackingBound = true;
   }
 }
 
