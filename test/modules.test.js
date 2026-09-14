@@ -834,6 +834,8 @@ test("Google AI tiers describe the current Plus / Pro / Ultra benefits", async (
   assert.match(byId.get("google-ai-plus").includedValue, /Daily Brief/i, "google-ai-plus names Daily Brief");
   assert.match(byId.get("google-ai-plus").includedValue, /Nano Banana/i, "google-ai-plus names Nano Banana in Search");
   assert.match(byId.get("google-ai-free").includedValue, /Gemini 3\.6 Flash/i, "google-ai-free names Gemini 3.6 Flash");
+  assert.match(byId.get("google-ai-free").includedValue, /Gemini 3 Pro/i, "google-ai-free names Gemini 3 Pro");
+  assert.doesNotMatch(byId.get("google-ai-free").includedValue, /Gemini 3\.1 Pro/i, "google-ai-free does not retain retired Gemini 3.1 Pro wording");
   assert.match(byId.get("google-ai-pro").includedValue, /Gemini 3 Pro/i, "google-ai-pro names Gemini 3 Pro");
   assert.match(byId.get("google-ai-pro").includedValue, /Jules/, "google-ai-pro names Jules");
   assert.match(byId.get("google-ai-pro").includedValue, /Antigravity/, "google-ai-pro names Google Antigravity");

@@ -133,7 +133,7 @@ Scenario: Google AI tiers describe their current Plus, Pro, and Ultra benefits
   Given the Google AI Free, Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x tiers
   When the visitor views their included-value text
   Then each is described as a broad Google AI subscription
-  And the Free tier is priced at $0/mo and names Gemini 3.6 Flash plus 15 GB of storage
+  And the Free tier is priced at $0/mo and names Gemini 3.6 Flash, varying access to Gemini 3 Pro, plus 15 GB of storage
   And the Plus tier highlights 2× usage access, Gemini Omni Flash, custom tool creation, Daily Brief, Nano Banana in Search, Google Flow Credits, and 400 GB of storage without the Jules or Google Antigravity benefits
   And the Pro tier is priced at $19.99/mo and highlights 4× usage access, Gemini 3 Pro / Deep Search, Jules, Google Antigravity, Google Home Premium Standard, YouTube Premium Lite, Google Flow Credits, and 5 TB of storage
   And the Google AI Ultra 5x and Google AI Ultra 20x tiers keep the current Google AI Ultra product wording while surfacing the 5× and 20× price points

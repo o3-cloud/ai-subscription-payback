@@ -791,7 +791,7 @@ export const subscriptions = [
     monthlyPrice: 0,
     billingCadence: "Free tier",
     includedValue:
-      "Free Google AI plan with everyday Gemini help, access to Gemini 3.6 Flash, varying access to Gemini 3.1 Pro, image generation and editing, Deep Research, Gemini Live, Canvas, Gems, and 15 GB of cloud storage.",
+      "Free Google AI plan with everyday Gemini help, access to Gemini 3.6 Flash, varying access to Gemini 3 Pro, image generation and editing, Deep Research, Gemini Live, Canvas, Gems, and 15 GB of cloud storage.",
     sourceUrl: "https://gemini.google/subscriptions/",
     sourceLabel: "Official Google pricing",
     verification: "official",
