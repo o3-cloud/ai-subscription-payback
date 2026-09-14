@@ -163,10 +163,10 @@
  */
 
 /** ISO date (YYYY-MM-DD) the pricing data as a whole was last curated. */
-export const pricingLastUpdated = "2026-09-13";
+export const pricingLastUpdated = "2026-09-14";
 
 /** Site-wide freshness stamp used in the footer. */
-export const siteLastUpdated = "2026-09-13";
+export const siteLastUpdated = "2026-09-14";
 
 /**
  * Assumptions used for the 24/7 yearly token-output value comparison.
@@ -1522,12 +1522,12 @@ export const hardware = [
     priceLow: 3970.99,
     priceHigh: 6030,
     priceNote:
-      "Current named retailer trims for the DGX Spark platform class begin with the ASUS Ascent GX10 at $3,970.99 and the Seeed Studio $3,999 listing, then extend through higher retailer offers such as PNY at $5,199.99, HP ZGX Nano G1n at $5,399.63 and $6,030, Acer at $5,199, GIGABYTE around $4,999.99-$5,999.99, and MSI around $5,339.99-$6,136.99, with availability and bundling varying by reseller.",
+      "NVIDIA's Founders Edition MSRP is $4,699 worldwide as of 2026-09-14 following a memory-supply-driven price increase; current named retailer trims for the DGX Spark platform class also include the ASUS Ascent GX10 at $3,970.99 and the Seeed Studio $3,999 listing, then extend through higher retailer offers such as PNY at $5,199.99, HP ZGX Nano G1n at $5,399.63 and $6,030, Acer at $5,199, GIGABYTE around $4,999.99-$5,999.99, and MSI around $5,339.99-$6,136.99, with availability and bundling varying by reseller.",
     sourceUrl: "https://www.nvidia.com/en-us/products/workstations/dgx-spark/",
     sourceLabel: "Current named retailer prices",
     verification: "retailer",
-    lastUpdated: "2026-08-24",
-    defaultBoxPrice: 3999,
+    lastUpdated: "2026-09-14",
+    defaultBoxPrice: 4699,
     powerDraw: 240,
     tokensPerSecond: { low: 8, high: 50 },
     officialModelFit:
@@ -1538,6 +1538,22 @@ export const hardware = [
       src: "assets/img/dgx-spark.jpg",
       alt: "NVIDIA product photo of the DGX Spark: a small silver Grace Blackwell desktop unit beside a laptop running its setup.",
     },
+  },
+  {
+    id: "nvidia-dgx-spark-founders-edition",
+    name: "NVIDIA DGX Spark Founders Edition",
+    spec: "GB10 Grace Blackwell desktop, 128 GB unified memory",
+    priceLow: 4699,
+    priceHigh: 4699,
+    priceNote:
+      "NVIDIA Founders Edition MSRP, increased worldwide from $3,999 to $4,699 because of memory-supply constraints.",
+    sourceUrl: "https://forums.developer.nvidia.com/t/2-23-2026-price-change-announcement/361713",
+    sourceLabel: "Official NVIDIA MSRP announcement",
+    verification: "official",
+    lastUpdated: "2026-09-14",
+    defaultBoxPrice: 4699,
+    powerDraw: 240,
+    exampleOf: "dgx-spark",
   },
   {
     id: "seeed-dgx-spark",
@@ -2009,7 +2025,7 @@ export function hardwareTrims(box) {
  * The trim that seeds a card by default — the one whose price matches the box's
  * `defaultBoxPrice` (falling back to `priceLow`). This preserves each box's
  * existing default preload: Mac Studio and Strix Halo default to their low-end
- * configuration, while DGX Spark keeps its documented high-end default.
+ * configuration, while DGX Spark defaults to NVIDIA's current Founders Edition MSRP.
  *
  * @param {Hardware} box
  * @returns {HardwareTrim}

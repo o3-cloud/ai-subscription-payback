@@ -1567,8 +1567,8 @@ test("featured hardware trims seed the documented default preload", async () => 
     assert.ok(trims.length >= 1, `${box.id} exposes at least one trim`);
 
     // The default trim honors each card's documented preload: Mac Studio and
-    // Strix Halo default to their low-end config, while DGX Spark now preloads
-    // the Seeed Studio listing that matches the base-platform estimate.
+    // Strix Halo default to their low-end config, while DGX Spark preloads
+    // NVIDIA's current Founders Edition MSRP.
     const def = defaultHardwareTrim(box);
     assert.equal(
       def.boxPrice,
@@ -1590,15 +1590,16 @@ test("featured hardware trims seed the documented default preload", async () => 
     }
   }
 
-  // DGX Spark's default preload now pins the Seeed Studio listing at the base
-  // platform estimate, not the old high-end-only assumption.
+  // DGX Spark's default preload pins NVIDIA's current Founders Edition MSRP,
+  // while retailer trims remain available as explicit alternatives.
   const dgx = featuredHardware.find((box) => box.id === "dgx-spark");
-  assert.equal(defaultHardwareTrim(dgx).id, "seeed-dgx-spark", "DGX Spark defaults to the Seeed Studio listing");
-  assert.equal(defaultHardwareTrim(dgx).boxPrice, 3999, "DGX Spark defaults to the $3,999 listing");
+  assert.equal(defaultHardwareTrim(dgx).id, "nvidia-dgx-spark-founders-edition", "DGX Spark defaults to NVIDIA's Founders Edition");
+  assert.equal(defaultHardwareTrim(dgx).boxPrice, 4699, "DGX Spark defaults to the $4,699 MSRP");
   assert.equal(dgx.priceHigh, 6030, "DGX Spark card summary spans the highest listed retailer trim");
   assert.deepEqual(
     hardwareTrims(dgx).map((trim) => trim.id),
     [
+      "nvidia-dgx-spark-founders-edition",
       "seeed-dgx-spark",
       "asus-ascent-gx10",
       "pny-dgx-spark",
@@ -1723,6 +1724,22 @@ test("DGX Spark retailer trims are modeled as named DGX Spark-class listings", a
       assert.equal(box.priceHigh, price, `${id} priceHigh`);
     }
   }
+});
+
+test("DGX Spark models NVIDIA's current Founders Edition MSRP separately from retailer trims", async () => {
+  const { hardware } = await import(new URL("data.js", jsDir));
+  const founders = hardware.find((entry) => entry.id === "nvidia-dgx-spark-founders-edition");
+  assert.ok(founders, "missing NVIDIA Founders Edition DGX Spark trim");
+  assert.equal(founders.name, "NVIDIA DGX Spark Founders Edition");
+  assert.equal(founders.priceLow, 4699);
+  assert.equal(founders.priceHigh, 4699);
+  assert.equal(founders.defaultBoxPrice, 4699);
+  assert.equal(founders.verification, "official");
+  assert.equal(founders.sourceLabel, "Official NVIDIA MSRP announcement");
+  assert.equal(founders.sourceUrl, "https://forums.developer.nvidia.com/t/2-23-2026-price-change-announcement/361713");
+  assert.equal(founders.lastUpdated, "2026-09-14");
+  assert.equal(founders.exampleOf, "dgx-spark");
+  assert.match(founders.priceNote, /increased worldwide from \$3,999 to \$4,699/i);
 });
 
 test("Strix Halo points at a current official AMD product page", async () => {

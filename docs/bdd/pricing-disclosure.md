@@ -388,6 +388,14 @@ Scenario: DGX Spark surfaces current retailer trims alongside the base range
   And the trim selector includes the MSI EdgeXpert retailer price band around $5,339.99-$6,136.99
   And the named trims stay separate from the official Marketplace CTA
 
+Scenario: DGX Spark discloses the current Founders Edition MSRP
+  Given the DGX Spark featured hardware card
+  When the visitor reads its price note and trim selector
+  Then the note says NVIDIA's Founders Edition MSRP is $4,699 as of 2026-09-14
+  And the note attributes the increase from $3,999 to memory-supply constraints
+  And the NVIDIA Founders Edition trim is labeled official rather than retailer-priced
+  And the calculator defaults to the $4,699 Founders Edition trim
+
 Scenario: Featured products are named clearly
   Given the hardware comparison section
   When the visitor views it

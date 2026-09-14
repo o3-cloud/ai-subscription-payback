@@ -1449,11 +1449,13 @@ test("DGX Spark exposes current retailer trims and loads them correctly", async 
   const selects = doc.querySelectorAll("#featured-hardware-cards .hardware-card-trim-select");
   const buttons = doc.querySelectorAll("#featured-hardware-cards .hardware-card-use");
   const select = selects[dgxSparkIndex];
+  const foundersTrim = trims.find((trim) => trim.id === "nvidia-dgx-spark-founders-edition");
   const seeedTrim = trims.find((trim) => trim.id === "seeed-dgx-spark");
   const asusTrim = trims.find((trim) => trim.id === "asus-ascent-gx10");
   const pnyTrim = trims.find((trim) => trim.id === "pny-dgx-spark");
   const hpTrim = trims.find((trim) => trim.id === "hp-zgx-nano-g1n-2tb");
 
+  assert.ok(foundersTrim, "expected the DGX Spark card to expose the NVIDIA Founders Edition trim");
   assert.ok(seeedTrim, "expected the DGX Spark card to expose the Seeed Studio trim");
   assert.ok(asusTrim, "expected the DGX Spark card to expose the ASUS Ascent GX10 trim");
   assert.ok(pnyTrim, "expected the DGX Spark card to expose the PNY trim");
@@ -1461,6 +1463,7 @@ test("DGX Spark exposes current retailer trims and loads them correctly", async 
   assert.deepEqual(
     trims.map((trim) => trim.id),
     [
+      "nvidia-dgx-spark-founders-edition",
       "seeed-dgx-spark",
       "asus-ascent-gx10",
       "pny-dgx-spark",
@@ -1472,9 +1475,9 @@ test("DGX Spark exposes current retailer trims and loads them correctly", async 
     ],
     "DGX Spark should surface the current named retailer trims"
   );
-  assert.equal(defaultTrim.id, "seeed-dgx-spark", "DGX Spark now defaults to the Seeed Studio trim");
+  assert.equal(defaultTrim.id, "nvidia-dgx-spark-founders-edition", "DGX Spark now defaults to NVIDIA's Founders Edition trim");
   assert.ok(select, "expected a DGX Spark trim selector");
-  assert.equal(select.children.length, 8, "DGX Spark trim selector lists eight options");
+  assert.equal(select.children.length, 9, "DGX Spark trim selector lists nine options");
 
   select.value = hpTrim.id;
   await buttons[dgxSparkIndex].dispatch("click");

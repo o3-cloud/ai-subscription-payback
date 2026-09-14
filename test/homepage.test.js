@@ -183,7 +183,7 @@ test("no-JS visitors receive a server-delivered default comparison snapshot", ()
     /JavaScript is required to edit inputs[\s\S]*recalculate results[\s\S]*copy shareable links/i,
     "snapshot explains which interactive features require JavaScript"
   );
-  assert.match(snapshot, /<time[^>]+datetime="2026-09-13">2026-09-13<\/time>/i, "snapshot includes freshness metadata");
+  assert.match(snapshot, /<time[^>]+datetime="2026-09-14">2026-09-14<\/time>/i, "snapshot includes freshness metadata");
 });
 
 test("no-JS comparison snapshot stays source-backed and matches calculator defaults", () => {

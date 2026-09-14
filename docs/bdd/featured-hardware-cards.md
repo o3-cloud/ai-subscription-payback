@@ -50,6 +50,13 @@ Scenario: DGX Spark exposes named retailer trims and a matching summary range
   And the card summary price range spans the selectable DGX Spark-class trims
   And each named trim keeps the DGX Spark card's source provenance and loads its retailer-sourced price
 
+Scenario: DGX Spark defaults to NVIDIA's current Founders Edition MSRP
+  Given the DGX Spark featured card
+  When the visitor opens its configuration drop-down
+  Then the selector includes an NVIDIA DGX Spark Founders Edition trim priced at $4,699
+  And the default selection is the official NVIDIA Founders Edition MSRP
+  And the retailer-priced Seeed Studio and other DGX Spark-class trims remain selectable alternatives
+
 Scenario: AMD Ryzen AI Halo is a separately priced Strix Halo trim
   Given the Strix Halo featured hardware card
   When the visitor opens its configuration drop-down
