@@ -98,6 +98,7 @@ Scenario: Cursor included-value copy names the current pricing-page benefits
   And the Ultra copy keeps the roughly 20× Pro Agent limits and priority frontier-model access framing while naming the broader Cursor bundle
   And the Teams copy keeps the centralized billing, admin, and SSO framing for team seats
   And the Teams copy keeps the centralized billing, admin, and SSO framing
+  And none of the current Cursor plan copy uses the retired Individual plan name
 
 Scenario: xAI Grok tiers are listed as optional comparators with a source caveat
   Given the xAI Grok SuperGrok and SuperGrok Pro tiers

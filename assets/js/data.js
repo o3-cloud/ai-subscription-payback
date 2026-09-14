@@ -670,7 +670,7 @@ export const subscriptions = [
     monthlyPrice: 20,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Individual (Pro) plan for one developer: extended Agent limits, generous Grok limits, frontier-model access, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
+      "Pro plan for one developer: extended Agent limits, generous Grok limits, frontier-model access, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
@@ -683,7 +683,7 @@ export const subscriptions = [
     monthlyPrice: 60,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Individual Pro+ plan for heavier agent use: roughly 3× the Pro Agent limits plus the broader Cursor bundle of frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
+      "Pro+ plan for heavier agent use: roughly 3× the Pro Agent limits plus the broader Cursor bundle of frontier models, MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
@@ -696,7 +696,7 @@ export const subscriptions = [
     monthlyPrice: 200,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Individual Ultra plan for power users: roughly 20× the Pro Agent limits, priority access to frontier models, and the broader Cursor bundle of MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
+      "Ultra plan for power users: roughly 20× the Pro Agent limits, priority access to frontier models, and the broader Cursor bundle of MCPs, skills/hooks, Cloud Agents, and Bugbot on usage-based billing, with usage-based billing beyond the included allowances.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",
@@ -709,7 +709,7 @@ export const subscriptions = [
     monthlyPrice: 40,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Everything in Individual plus centralized billing, admin controls, and SSO for a team seat.",
+      "Everything in the individual plans plus centralized billing, admin controls, and SSO for a team seat.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",

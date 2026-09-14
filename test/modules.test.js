@@ -422,6 +422,13 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
   assert.equal(byId.get("cursor-individual").plan, "Pro", "Cursor's $20 row is the current Pro plan");
   assert.equal(byId.get("cursor-teams").monthlyPrice, 40, "Cursor Teams is $40 per user per month");
   assert.match(byId.get("cursor-hobby").includedValue, /limited Agent requests/i, "Cursor Hobby names its limited Agent allowance");
+  for (const id of ["cursor-individual", "cursor-pro-plus", "cursor-ultra", "cursor-teams"]) {
+    assert.doesNotMatch(
+      byId.get(id).includedValue,
+      /\bIndividual\b/,
+      `${id} does not retain Cursor's retired Individual plan name`
+    );
+  }
   assert.equal(byId.has("cursor-teams-premium"), false, "retired Cursor Teams Premium is not modeled");
 
   assert.match(
