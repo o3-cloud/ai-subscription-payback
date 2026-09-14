@@ -709,7 +709,7 @@ export const subscriptions = [
     monthlyPrice: 40,
     billingCadence: "Billed monthly, per user",
     includedValue:
-      "Everything in the individual plans plus centralized billing, admin controls, and SSO for a team seat.",
+      "Everything in Pro plus centralized billing, admin controls, and SSO for a team seat.",
     sourceUrl: "https://cursor.com/pricing",
     sourceLabel: "Official Cursor pricing",
     verification: "official",

@@ -371,11 +371,11 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
     "copilot-pro": { name: "GitHub Copilot", monthlyPrice: 10 },
     "copilot-pro-plus": { name: "GitHub Copilot", monthlyPrice: 39 },
     "copilot-max": { name: "GitHub Copilot", monthlyPrice: 100 },
-    "cursor-hobby": { name: "Cursor", monthlyPrice: 0 },
-    "cursor-individual": { name: "Cursor", monthlyPrice: 20 },
-    "cursor-pro-plus": { name: "Cursor", monthlyPrice: 60 },
-    "cursor-ultra": { name: "Cursor", monthlyPrice: 200 },
-    "cursor-teams": { name: "Cursor", monthlyPrice: 40 },
+    "cursor-hobby": { name: "Cursor", plan: "Hobby", monthlyPrice: 0 },
+    "cursor-individual": { name: "Cursor", plan: "Pro", monthlyPrice: 20 },
+    "cursor-pro-plus": { name: "Cursor", plan: "Pro+", monthlyPrice: 60 },
+    "cursor-ultra": { name: "Cursor", plan: "Ultra", monthlyPrice: 200 },
+    "cursor-teams": { name: "Cursor", plan: "Teams", monthlyPrice: 40 },
     "grok-supergrok": { name: "xAI Grok", monthlyPrice: 30 },
     "grok-supergrok-pro": { name: "xAI Grok", monthlyPrice: 300 },
     "zed-personal": { name: "Zed", monthlyPrice: 0 },
@@ -408,10 +408,11 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
     "JetBrains AI": "https://www.jetbrains.com/store/?section=commercial&billing=yearly",
     Tabnine: "https://www.tabnine.com/pricing/",
   };
-  for (const [id, { name, monthlyPrice }] of Object.entries(expected)) {
+  for (const [id, { name, plan, monthlyPrice }] of Object.entries(expected)) {
     assert.ok(byId.has(id), `missing subscription tier: ${id}`);
     const sub = byId.get(id);
     assert.equal(sub.name, name, `${id} product name`);
+    if (plan) assert.equal(sub.plan, plan, `${id} plan name`);
     assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
     assert.equal(sub.sourceUrl, sourceUrls[name], `${id} points at the official plans page`);
     assert.equal(sub.verification, "official", `${id} is marked official`);
@@ -419,16 +420,15 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
     assert.ok(!sub.defaultSelected, `${id} must not be selected by default`);
   }
 
-  assert.equal(byId.get("cursor-individual").plan, "Pro", "Cursor's $20 row is the current Pro plan");
   assert.equal(byId.get("cursor-teams").monthlyPrice, 40, "Cursor Teams is $40 per user per month");
-  assert.match(byId.get("cursor-hobby").includedValue, /limited Agent requests/i, "Cursor Hobby names its limited Agent allowance");
-  for (const id of ["cursor-individual", "cursor-pro-plus", "cursor-ultra", "cursor-teams"]) {
+  for (const id of ["cursor-hobby", "cursor-individual", "cursor-pro-plus", "cursor-ultra", "cursor-teams"]) {
     assert.doesNotMatch(
       byId.get(id).includedValue,
-      /\bIndividual\b/,
-      `${id} does not retain Cursor's retired Individual plan name`
+      /\bIndividual\b/i,
+      `${id} does not retain the retired Cursor Individual label`
     );
   }
+  assert.match(byId.get("cursor-hobby").includedValue, /limited Agent requests/i, "Cursor Hobby names its limited Agent allowance");
   assert.equal(byId.has("cursor-teams-premium"), false, "retired Cursor Teams Premium is not modeled");
 
   assert.match(
@@ -506,6 +506,11 @@ test("subscriptions cover the Copilot, Cursor, xAI Grok, Zed, Google AI, Amazon 
   );
   assert.match(
     bdd,
+    /current plan labels and does not call any tier Individual/i,
+    "pricing BDD rejects the retired Cursor Individual label"
+  );
+  assert.match(
+    bdd,
     /xAI Grok tiers are listed: SuperGrok and SuperGrok Pro/i,
     "pricing BDD documents the Grok tiers"
   );
@@ -526,10 +531,11 @@ test("subscriptions cover the Warp Free, Build, Max, and Business tiers", async 
     "warp-max": { name: "Warp", monthlyPrice: 200 },
     "warp-business": { name: "Warp", monthlyPrice: 50 },
   };
-  for (const [id, { name, monthlyPrice }] of Object.entries(expected)) {
+  for (const [id, { name, plan, monthlyPrice }] of Object.entries(expected)) {
     assert.ok(byId.has(id), `missing subscription tier: ${id}`);
     const sub = byId.get(id);
     assert.equal(sub.name, name, `${id} product name`);
+    if (plan) assert.equal(sub.plan, plan, `${id} plan name`);
     assert.equal(sub.monthlyPrice, monthlyPrice, `${id} monthly price`);
     assert.equal(sub.sourceUrl, "https://www.warp.dev/pricing", `${id} points at the official plans page`);
     assert.equal(sub.verification, "official", `${id} is marked official`);
