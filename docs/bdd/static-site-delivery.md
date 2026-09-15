@@ -43,6 +43,15 @@ Scenario: Deployed freshness metadata matches the repository source
   Then the homepage timestamps match those source dates
   And every sitemap `<lastmod>` matches `siteLastUpdated`
   And deployment fails if either published surface is stale or inconsistent
+
+Scenario: Published freshness metadata is source-derived
+  Given the deployment is building the GitHub Pages artifact
+  When the artifact is packaged
+  Then the deployment runs `npm run sync-freshness` first
+  And the page freshness timestamps and every sitemap `<lastmod>` use the
+    canonical dates from `assets/js/data.js`
+  And synchronization fails before upload if a required freshness marker is missing
+  And the post-deployment check fails if the live artifact does not match those dates
 ```
 
 > Deployment: GitHub Pages publishing is gated by repository eligibility. The

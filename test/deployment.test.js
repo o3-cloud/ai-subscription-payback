@@ -83,6 +83,15 @@ test("the workflow verifies deployed freshness after publishing", () => {
   assert.match(yml, /npm run check-deployed-freshness/, "runs the deployed freshness check");
 });
 
+test("the artifact is synchronized from the canonical freshness source before upload", () => {
+  const yml = read(WORKFLOW);
+  assert.match(
+    yml,
+    /build:[\s\S]*?npm run sync-freshness[\s\S]*?upload-pages-artifact@/,
+    "build syncs freshness before packaging the Pages artifact"
+  );
+});
+
 test(".nojekyll disables Jekyll processing so files serve as committed", () => {
   assert.ok(exists(".nojekyll"), ".nojekyll marker is missing from the site root");
 });

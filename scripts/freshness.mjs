@@ -8,6 +8,13 @@ export const SITE_URL = "https://www.othree.cloud/ai-subscription-payback/";
 export const FRESHNESS = { pricingLastUpdated, siteLastUpdated };
 
 export function syncIndex(html, { pricingDate = pricingLastUpdated, siteDate = siteLastUpdated } = {}) {
+  const requiredMarkers = [
+    /id="pricing-last-updated"/, /id="site-last-updated"/,
+    /Pricing last updated: <time/, /Site last updated: <time/,
+  ];
+  if (requiredMarkers.some((marker) => !marker.test(html))) {
+    throw new Error("index.html is missing a required freshness marker");
+  }
   let result = html;
   result = result.replace(/(<time[^>]*id="pricing-last-updated"[^>]*datetime=")[^"]+("[^>]*>)[^<]+(<\/time>)/, `$1${pricingDate}$2${pricingDate}$3`);
   result = result.replace(/(<time[^>]*id="site-last-updated"[^>]*datetime=")[^"]+("[^>]*>)[^<]+(<\/time>)/, `$1${siteDate}$2${siteDate}$3`);
@@ -17,6 +24,9 @@ export function syncIndex(html, { pricingDate = pricingLastUpdated, siteDate = s
 }
 
 export function syncSitemap(xml, siteDate = siteLastUpdated) {
+  if (!/<lastmod>[^<]+<\/lastmod>/.test(xml)) {
+    throw new Error("sitemap.xml is missing a <lastmod> marker");
+  }
   return xml.replace(/(<lastmod>)[^<]+(<\/lastmod>)/g, `$1${siteDate}$2`);
 }
 

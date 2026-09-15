@@ -27,6 +27,11 @@ test("freshness sync updates both homepage timestamp forms and sitemap dates", (
   assert.doesNotMatch(syncSitemap(read("sitemap.xml"), "2026-01-03"), /<lastmod>2026-09-14<\/lastmod>/);
 });
 
+test("freshness sync fails instead of silently packaging an unmarked artifact", () => {
+  assert.throws(() => syncIndex("<html></html>"), /missing a required freshness marker/);
+  assert.throws(() => syncSitemap("<urlset></urlset>"), /missing a <lastmod> marker/);
+});
+
 test("deployed verification fetches both surfaces and rejects mismatches", async () => {
   const pages = {
     "https://example.test/": read("index.html"),
