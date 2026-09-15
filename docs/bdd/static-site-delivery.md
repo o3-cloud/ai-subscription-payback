@@ -36,6 +36,13 @@ Scenario: Site-wide last-updated disclosure is visible in the footer
     machine-readable ISO date
   And it reflects when the site content as a whole was last updated, independent
     of the pricing-freshness date shown in the pricing section
+
+Scenario: Deployed freshness metadata matches the repository source
+  Given the repository's `siteLastUpdated` and `pricingLastUpdated` dates are defined
+  When the deployment workflow verifies the published homepage and sitemap
+  Then the homepage timestamps match those source dates
+  And every sitemap `<lastmod>` matches `siteLastUpdated`
+  And deployment fails if either published surface is stale or inconsistent
 ```
 
 > Deployment: GitHub Pages publishing is gated by repository eligibility. The

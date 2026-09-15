@@ -76,6 +76,13 @@ test("the workflow runs the test suite before deploying", () => {
   assert.match(yml, /npm test/, "runs the test suite in the pipeline");
 });
 
+test("the workflow verifies deployed freshness after publishing", () => {
+  const yml = read(WORKFLOW);
+  assert.match(yml, /verify-deployment:/, "has a post-deployment verification job");
+  assert.match(yml, /needs:\s*deploy/, "verification waits for deployment");
+  assert.match(yml, /npm run check-deployed-freshness/, "runs the deployed freshness check");
+});
+
 test(".nojekyll disables Jekyll processing so files serve as committed", () => {
   assert.ok(exists(".nojekyll"), ".nojekyll marker is missing from the site root");
 });

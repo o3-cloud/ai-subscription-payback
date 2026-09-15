@@ -7,6 +7,8 @@
   "scripts": {
     "test": "node scripts/run-tests.mjs",
     "check-guides": "node scripts/check-guides.mjs",
-    "health-check": "node scripts/health-check.mjs"
+    "health-check": "node scripts/health-check.mjs",
+    "sync-freshness": "node scripts/freshness.mjs",
+    "check-deployed-freshness": "node scripts/check-deployed-freshness.mjs"
   }
 }
