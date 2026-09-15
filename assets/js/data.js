@@ -192,7 +192,7 @@ export const tokenOutputValueAssumptions = {
  * resets, weekly limits, and discretionary caps, so their usage allowances are
  * not unlimited. GitHub Copilot,
  * Cursor, and Zed round out the common IDE/editor assistant plans, and the
- * Google AI tiers (Plus, Pro, Google AI Ultra 5x, Google AI Ultra 20x) cover the broad Gemini
+ * Google AI tiers (Free, Plus, Pro, Google AI Ultra 5x, Google AI Ultra 20x) cover the broad Gemini
  * subscriptions whose Pro/Ultra tiers bundle the Jules and Google Antigravity
  * coding agents — Ultra ships as a plan family at $99.99/mo (5× AI Pro limits)
  * and $199.99/mo (20× AI Pro limits) — and the

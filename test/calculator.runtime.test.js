@@ -963,6 +963,28 @@ test("comparison table renders billing cadence and included value for every tier
   }
 });
 
+test("comparison table preserves the documented Google AI and Cursor tier order", () => {
+  const { doc } = boot();
+  const rows = doc.querySelectorAll("#comparison-body tr").slice(0, subscriptions.length);
+  const renderedTiers = rows.map((row) => ({
+    name: row.children[0].textContent,
+    plan: row.children[1].childNodes[0]?.textContent,
+  }));
+
+  assert.deepEqual(
+    renderedTiers
+      .filter(({ name }) => name === "Google AI" || name === "Google AI Ultra")
+      .map(({ name, plan }) => `${name} ${plan}`),
+    ["Google AI Free", "Google AI Plus", "Google AI Pro", "Google AI Ultra 5x", "Google AI Ultra 20x"],
+    "Google AI rows keep the documented tier order"
+  );
+  assert.deepEqual(
+    renderedTiers.filter(({ name }) => name === "Cursor").map(({ plan }) => plan),
+    ["Hobby", "Pro", "Pro+", "Ultra", "Teams"],
+    "Cursor rows keep the documented tier order"
+  );
+});
+
 test("comparison table renders the current ChatGPT pricing ladder", () => {
   const { doc } = boot();
   const rows = doc.querySelectorAll("#pricing-list li");

@@ -28,6 +28,7 @@ Scenario: Supported subscription tiers are listed
   And the xAI Grok tiers are listed: SuperGrok and SuperGrok Pro
   And the Zed tiers are listed: Personal, Pro, and Business
   And the Google AI tiers are listed: Free, Plus, Pro, Google AI Ultra 5x, and Google AI Ultra 20x
+  And the comparison table preserves the documented Google AI and Cursor tier order
   And the Amazon Q Developer tiers are listed: Free and Pro
   And the Devin tiers are listed: Free, Pro, Max, and Teams (base + 1 seat)
   And the Devin tiers surface the alias "Devin (Windsurf / Devin Desktop)" without duplicating any rows
