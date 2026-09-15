@@ -244,6 +244,16 @@
                   <option value="">All categories</option>
                 </select>
               </div>
+              <div class="subscription-selection-tools" aria-label="Selected subscription controls">
+                <label class="checkbox-inline" for="subscription-selected-only">
+                  <input type="checkbox" id="subscription-selected-only" name="subscriptionSelectedOnly" />
+                  Selected only
+                </label>
+                <button type="button" id="subscription-clear-all" class="button button-secondary">Clear all</button>
+              </div>
+              <p id="subscription-selection-summary" class="selection-summary">
+                Selected plans: <strong id="subscription-selected-count">0</strong> · Monthly total: <strong id="subscription-selected-total">$0.00</strong>
+              </p>
               <p id="subscription-filter-status" class="filter-status" role="status" aria-live="polite">Showing all subscription plans.</p>
               <p class="field-help">Filtering only hides rows to help you find a plan — it never changes which subscriptions are selected or the monthly spend.</p>
             </div>

@@ -881,7 +881,7 @@ test("subscription filters narrow visible rows without changing selections or sp
   );
   assert.equal(
     doc.getElementById("subscription-filter-status").textContent,
-    `Showing ${searchVisible.length} of ${rows().length} plans for “claude”.`
+    `Showing ${searchVisible.length} of ${rows().length} plans for “claude”; ${selectedBefore.length} selected.`
   );
   assert.deepEqual(selectedIds(), selectedBefore, "filtering does not change selections");
   assert.equal(doc.getElementById("spend-basis").textContent, spendBefore, "filtering does not change the spend basis");
@@ -909,7 +909,7 @@ test("subscription filters narrow visible rows without changing selections or sp
   );
   assert.equal(
     doc.getElementById("subscription-filter-status").textContent,
-    `Showing ${categoryVisible.length} of ${rows().length} plans in App builder.`
+    `Showing ${categoryVisible.length} of ${rows().length} plans in App builder; ${selectedBefore.length} selected.`
   );
   doc.getElementById("subscription-filter").value = "Kiro";
   doc.getElementById("subscription-category").value = "AI IDE/editor";
@@ -929,7 +929,7 @@ test("subscription filters narrow visible rows without changing selections or sp
   );
   assert.equal(
     doc.getElementById("subscription-filter-status").textContent,
-    `Showing ${kiroVisible.length} of ${rows().length} plans for “Kiro” in AI IDE/editor.`
+    `Showing ${kiroVisible.length} of ${rows().length} plans for “Kiro” in AI IDE/editor; ${selectedBefore.length} selected.`
   );
   assert.deepEqual(selectedIds(), selectedBefore, "category filtering also preserves selections");
 });

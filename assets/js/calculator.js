@@ -803,6 +803,7 @@ function renderSubscriptionOptions(doc, preselected) {
     label.className = "checkbox";
     const category = subscriptionCategory(sub);
     label.setAttribute("data-subscription-category", category);
+    label.setAttribute("data-subscription-id", sub.id);
     label.setAttribute("data-subscription-search", subscriptionSearchIndex(sub));
     const input = doc.createElement("input");
     input.type = "checkbox";
@@ -855,6 +856,8 @@ function clearSubscriptionFilters(doc) {
   const category = doc.getElementById(FILTER_IDS.category);
   if (search) search.value = "";
   if (category) category.value = "";
+  const selectedOnly = doc.getElementById("subscription-selected-only");
+  if (selectedOnly) selectedOnly.checked = false;
 }
 
 /**
@@ -866,33 +869,47 @@ function applySubscriptionFilters(doc) {
   const search = doc.getElementById(FILTER_IDS.search);
   const category = doc.getElementById(FILTER_IDS.category);
   const status = doc.getElementById(FILTER_IDS.status);
+  const selectedOnly = doc.getElementById("subscription-selected-only")?.checked;
   const rawQuery = (search?.value || "").trim();
   const query = rawQuery.toLowerCase();
   const activeCategory = category?.value || "";
 
   const rows = doc.querySelectorAll("#subscription-options .checkbox");
+  const selectedIds = new Set(
+    [...doc.querySelectorAll('#subscription-options input[type="checkbox"]:checked')].map((input) => input.value)
+  );
   let visible = 0;
   for (const row of rows) {
     const rowCategory = row.getAttribute("data-subscription-category") || "";
     const searchable = row.getAttribute("data-subscription-search") || "";
     const matchesQuery = !query || searchable.includes(query);
     const matchesCategory = !activeCategory || rowCategory === activeCategory;
-    const show = matchesQuery && matchesCategory;
+    const checked = selectedIds.has(row.getAttribute("data-subscription-id"));
+    const show = matchesQuery && matchesCategory && (!selectedOnly || checked);
     row.hidden = !show;
     row.setAttribute("aria-hidden", show ? "false" : "true");
     if (show) visible += 1;
   }
 
+  const selectedTotal = subscriptions.reduce(
+    (total, sub) => total + (selectedIds.has(sub.id) ? sub.monthlyPrice : 0),
+    0
+  );
+  const selectedCount = doc.getElementById("subscription-selected-count");
+  const selectedTotalNode = doc.getElementById("subscription-selected-total");
+  if (selectedCount) selectedCount.textContent = String(selectedIds.size);
+  if (selectedTotalNode) selectedTotalNode.textContent = formatCurrency(selectedTotal);
+
   if (status) {
     const total = rows.length;
     if (!query && !activeCategory) {
-      status.textContent = `Showing all ${total} subscription plans.`;
+      status.textContent = `Showing ${visible} of ${total} plans; ${selectedIds.size} selected.`;
     } else if (query && activeCategory) {
-      status.textContent = `Showing ${visible} of ${total} plans for “${rawQuery}” in ${activeCategory}.`;
+      status.textContent = `Showing ${visible} of ${total} plans for “${rawQuery}” in ${activeCategory}; ${selectedIds.size} selected.`;
     } else if (query) {
-      status.textContent = `Showing ${visible} of ${total} plans for “${rawQuery}”.`;
+      status.textContent = `Showing ${visible} of ${total} plans for “${rawQuery}”; ${selectedIds.size} selected.`;
     } else {
-      status.textContent = `Showing ${visible} of ${total} plans in ${activeCategory}.`;
+      status.textContent = `Showing ${visible} of ${total} plans in ${activeCategory}; ${selectedIds.size} selected.`;
     }
   }
 }
@@ -1680,6 +1697,14 @@ export function initCalculator(doc, win) {
       update(doc, win);
     });
   }
+
+  const clearAll = doc.getElementById("subscription-clear-all");
+  clearAll?.addEventListener("click", () => {
+    doc.querySelectorAll('#subscription-options input[type="checkbox"]').forEach((input) => {
+      input.checked = false;
+    });
+    update(doc, win);
+  });
 
   const modelSize = doc.getElementById("model-size");
   const modelQuantization = doc.getElementById("model-quantization");
